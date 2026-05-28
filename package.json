@@ -1,62 +1,82 @@
 {
-  "name": "anduril",
+  "name": "@mattia-carcione/kernel",
   "version": "0.1.0",
-  "private": true,
-  "description": "Anduril enterprise blueprint for SMB websites (DDD + Clean Architecture)",
-  "workspaces": [
-    "app",
-    "kernel",
-    "api",
-    "supabase/functions"
+  "description": "Anduril agnostic core — DDD + Clean Architecture npm package",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
   "scripts": {
-    "dev": "npm run dev --workspace app",
-    "dev:app": "npm run dev --workspace app",
-    "docker:dev": "docker compose --env-file .env.docker --profile dev up --build",
-    "docker:dev:down": "docker compose --env-file .env.docker --profile dev down",
-    "docker:dev:logs": "docker compose --env-file .env.docker --profile dev logs -f",
-    "docker:prod": "docker compose --env-file .env.docker --profile prod up --build -d",
-    "docker:prod:down": "docker compose --env-file .env.docker --profile prod down",
-    "docker:ps": "docker compose --env-file .env.docker ps",
-    "build": "npm run build --workspace app",
-    "preview": "npm run preview --workspace app",
-    "lint": "npm run lint:root && npm run lint:app",
-    "lint:app": "npm run lint --workspace app",
-    "lint:root": "eslint --config eslint.config.mjs \"api/**/*.ts\" \"kernel/**/*.ts\" \"supabase/functions/**/*.ts\" --max-warnings=0",
-    "lint:fix": "npm run lint:fix:root && npm run lint:fix:app",
-    "lint:fix:app": "npm run lint:fix --workspace app",
-    "lint:fix:root": "eslint --config eslint.config.mjs \"api/**/*.ts\" \"kernel/**/*.ts\" \"supabase/functions/**/*.ts\" --fix --max-warnings=0",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint --config eslint.config.mjs \"src/**/*.ts\" --max-warnings=0",
+    "lint:fix": "eslint --config eslint.config.mjs \"src/**/*.ts\" --fix --max-warnings=0",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "npm run typecheck --workspace app && npm run typecheck --workspace kernel && npm run typecheck --workspace api && npm run typecheck --workspace supabase/functions",
-    "test": "npm run test --workspace app",
-    "test:unit": "npm run test --workspace app",
-    "test:e2e": "npm run test:e2e --workspace app",
-    "test:e2e:install": "npm run test:e2e:install --workspace app",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build",
-    "verify:commit": "npm run lint-staged",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "verify:commit": "npm run lint-staged && npm run test",
     "verify:push": "npm run check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepublishOnly": "npm run check && npm run build",
+    "release": "npm run prepublishOnly && npm publish"
   },
-  "keywords": [],
+  "keywords": [
+    "ddd",
+    "clean-architecture",
+    "core",
+    "kernel",
+    "inversify",
+    "mediatr",
+    "zod"
+  ],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "cockatiel": "^4.0.0",
+    "drizzle-orm": "^0.45.2",
+    "inversify": "^8.1.0",
+    "mediatr-ts": "^2.2.0",
+    "p-limit": "^7.3.0",
+    "pino": "^10.3.1",
+    "postgres": "^3.4.9",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
     "prettier": "^3.8.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.60.0"
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^4.1.7"
   }
 }
