@@ -1,7 +1,0 @@
-project_id = "anduril-local"
-
-[functions.health]
-verify_jwt = false
-
-[functions.gatekeeper]
-verify_jwt = true
