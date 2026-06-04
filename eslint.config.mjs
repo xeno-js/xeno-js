@@ -44,7 +44,10 @@ export default tseslint.config(
       'curly': ['error', 'all'],
       'eqeqeq': ['error', 'always', { null: 'ignore' }],
       'no-console': ['error', { allow: ['warn', 'error'] }],
-      'no-duplicate-imports': 'error',
+      // Disabled: the core rule does not understand TypeScript's `import type`
+      // and flags intentional type/value split imports from the same module.
+      // `@typescript-eslint/consistent-type-imports` already enforces correct usage.
+      'no-duplicate-imports': 'off',
       'no-var': 'error',
       'object-shorthand': ['error', 'always'],
       'prefer-const': 'error',
