@@ -1,5 +1,5 @@
 import type { IHandler } from '@/domain'
-import type { Guid, InjectionToken, RequestType } from '@/shared'
+import type { Guid, InjectionToken, Optional, RequestType } from '@/shared'
 
 /**
  * @fileoverview Defines the IBaseRequest interface for base requests in a CQRS architecture.
@@ -20,4 +20,7 @@ export interface IBaseRequest<T = unknown> {
 
   /** A unique token to identify the request, which can be used for idempotency and tracing purposes. */
   readonly token: InjectionToken<IHandler<IBaseRequest<T>, T>>
+
+  /** An optional AbortSignal to allow cancellation of the request. */
+  readonly signal: Optional<AbortSignal>
 }

@@ -1,5 +1,6 @@
-export * from './contracts/index'
+export type * from './contracts/index'
 export type * from './entities/index'
 export * from './errors/index'
 export * from './results/index'
 export * from './unique_id/index'
+export * from './value_objects/index'

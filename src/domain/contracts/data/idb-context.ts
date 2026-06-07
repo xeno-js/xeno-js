@@ -1,4 +1,5 @@
 import type { ResultType } from '@/domain'
+import type { Optional } from '@/shared'
 
 /**
  * An interface representing a context for managing transactions in a data access layer. This interface defines methods for beginning a transaction, committing it, and rolling it back in case of errors.
@@ -24,5 +25,8 @@ export interface IDbContext {
    * @param operation A function that performs the operations to be executed within the transaction. It should return a promise that resolves to a result of type T.
    * @returns A promise that resolves to a ResultType containing the result of the operation, or an error if the operation fails.
    */
-  runInTransaction<T>(operation: () => Promise<ResultType<T>>): Promise<ResultType<T>>
+  runInTransaction<T>(
+    operation: () => Promise<ResultType<T>>,
+    signal: Optional<AbortSignal>,
+  ): Promise<ResultType<T>>
 }

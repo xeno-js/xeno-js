@@ -9,7 +9,10 @@ import type { Guid, Optional } from '@/shared'
  */
 export interface Identity {
   /** @description The unique identifier of the user. */
-  readonly id: Optional<Guid>
+  readonly userId: Optional<Guid>
+
+  /** @description The tenant ID associated with the user. */
+  readonly tenantId: Optional<Guid>
 
   /** @description The roles assigned to the user, which can be used for authorization purposes. */
   readonly roles: Optional<readonly string[]>

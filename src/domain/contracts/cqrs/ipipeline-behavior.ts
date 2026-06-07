@@ -13,12 +13,12 @@ export type Delegate<TResult> = () => Promise<ResultType<TResult>>
  * @template TInput - The type of the input request that the pipeline behavior will handle. This allows for type safety and ensures that the behavior can work with specific types of requests, which can be defined based on the application's needs.
  * @template TResult - The type of the result that the pipeline behavior will return after processing the request. This allows for flexibility in defining the expected output of the behavior, which can be tailored to the specific requirements of the request being handled.
  */
-export interface IPipelineBehavior {
+export interface IPipelineBehavior<TInput, TResult> {
   /**
    * @description Handles the processing of a request within the pipeline. This method is responsible for executing any pre-processing logic, invoking the next behavior in the pipeline, and performing any post-processing logic. It ensures that the request is handled in a structured manner, allowing for cross-cutting concerns to be applied consistently.
    * @param request - The input request to be processed by the pipeline behavior.
    * @param next - A delegate function representing the next step in the pipeline. Invoking this delegate will pass control to the next behavior or the actual request handler.
    * @returns A promise that resolves to a ResultType, which can be either a successful result or an error.
    */
-  handle<TInput, TResult>(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>>
+  handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>>
 }

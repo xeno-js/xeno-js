@@ -1,7 +1,6 @@
+import type { IValueObject } from '@/domain'
 import type { Optional } from '@/shared'
-import { Guards } from '@/shared'
-
-import type { IValueObject } from './index'
+import { Guards, StringHelper } from '@/shared'
 
 /**
  * The ValueObject class is an abstract implementation of the IValueObject interface, providing a base class for creating value objects in the domain. A value object is an immutable type that represents a concept or measurement in the domain, and its equality is based on its properties rather than its identity. The ValueObject class includes a constructor that initializes the properties of the value object and an equals method that compares two value objects for equality based on their properties.
@@ -20,7 +19,7 @@ export abstract class ValueObject<T extends object> implements IValueObject<T> {
       return false
     }
 
-    return JSON.stringify(this._props) === JSON.stringify(vo.getValue())
+    return StringHelper.safeStringify(this._props) === StringHelper.safeStringify(vo.getValue())
   }
 
   public getValue(): T {
@@ -28,6 +27,6 @@ export abstract class ValueObject<T extends object> implements IValueObject<T> {
   }
 
   public toString(): string {
-    return JSON.stringify(this._props)
+    return StringHelper.safeStringify(this._props)
   }
 }

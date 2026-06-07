@@ -1,6 +1,4 @@
-import type { Dictionary, Optional } from '@/shared'
-
-import type { LogLevel } from './index'
+import type { Dictionary, LogLevel, Optional } from '@/shared'
 
 /**
  * @description Interface for a logger client that provides a method for tracking log messages with a specified log level, message, optional context, and optional error.

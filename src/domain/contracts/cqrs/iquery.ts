@@ -1,32 +1,24 @@
-import type { IPaginationParams } from '@/domain'
-import type { Optional } from '@/shared'
-
-import type { IBaseRequest } from './index'
+import type { IBaseRequest } from '@/domain'
+import type { ICacheableOptions, IPaginationParams } from '@/shared'
 
 /**
  * @fileoverview Defines the IQuery interface for query requests in a CQRS architecture.
  */
 
 /**
- * @description An interface representing a paginated query request, which extends the base IQuery interface and includes pagination parameters.
+ * @description An interface representing a paginated query request, which extends the IBaseRequest interface and includes pagination parameters.
  */
-export interface IPaginatedQuery<T = unknown> extends IBaseRequest<T>, IPaginationParams {}
+export interface IQuery<T = unknown> extends IBaseRequest<T> {
+  /** @description The pagination parameters for the query, which can include page number, page size, sorting, and filtering options. */
+  pagination: IPaginationParams
+}
 
 /**
- * @description Marker interface per le Query che supportano il caching.
- * Il CachingBehavior intercetterà automaticamente i comandi che implementano questo contratto.
+ * @description An interface representing a cached query request, which extends the base IQuery interface and includes additional properties for caching behavior. This allows query handlers to determine how to cache the results of the query based on the provided options.
  */
-export interface ICachedQuery<T = unknown> extends IBaseRequest<T> {
-  /** * @description La chiave univoca sotto cui salvare il risultato.
-   * Deve includere i parametri (es. `travel-intents:tenant-123:page-1`).
+export interface ICachedQuery<T = unknown> extends IQuery<T> {
+  /**
+   * @description Cache options for the query, including cache key, TTL, and bypass flags.
    */
-  readonly cacheKey: string
-
-  /** @description (Opzionale) Tempo di vita in secondi. Se omesso, usa il default del servizio. */
-  readonly cacheTtlSeconds: Optional<number>
-
-  /** * @description (Opzionale) Se true, forza la lettura dal DB ignorando la cache (Hard Refresh).
-   * Sovrascriverà comunque la cache con il nuovo risultato.
-   */
-  readonly bypassCache: Optional<boolean>
+  cacheOptions: ICacheableOptions
 }

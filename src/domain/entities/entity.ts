@@ -1,8 +1,7 @@
+import type { IEntity } from '@/domain'
 import { UniqueId } from '@/domain'
 import type { Optional } from '@/shared'
 import { Guards, GuidHelper } from '@/shared'
-
-import type { IEntity } from './index'
 
 /**
  * A base class representing a generic entity in the domain. An entity is an object that has a unique identity and is defined by its properties.

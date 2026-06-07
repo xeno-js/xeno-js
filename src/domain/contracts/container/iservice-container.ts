@@ -1,6 +1,5 @@
+import type { IServiceScope } from '@/domain'
 import type { Constructor, InjectionToken, Optional } from '@/shared'
-
-import type { IServiceScope } from './index'
 
 /**
  * @fileoverview Defines the IServiceContainer interface for a dependency injection container.
