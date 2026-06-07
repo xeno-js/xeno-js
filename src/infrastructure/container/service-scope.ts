@@ -1,5 +1,5 @@
 import type { IServiceContainer, IServiceScope, ServiceDescriptor } from '@/domain'
-import type { InjectionToken } from '@/shared'
+import { Guards, type InjectionToken } from '@/shared'
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ export class ServiceScope implements IServiceScope {
 
     const descriptor = this._descriptors.get(token.symbol)
 
-    if (!descriptor) {
+    if (!Guards.isDefined(descriptor)) {
       throw new Error(`No registration found for token: ${token.symbol.toString()}`)
     }
 

@@ -1,7 +1,6 @@
 import type { IServiceContainer, IServiceScope, ServiceDescriptor } from '@/domain'
-import type { Constructor, InjectionToken, Optional } from '@/shared'
-
-import { ServiceScope } from './service-scope'
+import { ServiceScope } from '@/infrastructure'
+import { type Constructor, Guards, type InjectionToken, type Optional } from '@/shared'
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -72,7 +71,7 @@ export class ServiceContainer implements IServiceContainer {
   public resolve<T>(token: InjectionToken<T>): T {
     const descriptor = this._descriptors.get(token.symbol)
 
-    if (!descriptor) {
+    if (!Guards.isDefined(descriptor)) {
       throw new Error(`No registration found for token: ${token.symbol.toString()}`)
     }
 
