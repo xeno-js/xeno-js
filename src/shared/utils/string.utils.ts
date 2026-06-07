@@ -1,4 +1,5 @@
-import { Guards } from './index'
+import type { Dictionary, Optional } from '@/shared'
+import { Guards } from '@/shared'
 
 /**
  * @description Namespace for string manipulation utilities.
@@ -14,6 +15,20 @@ export const StringHelper = Object.freeze({
       return JSON.stringify(value)
     } catch {
       return String(value)
+    }
+  },
+
+  /**
+   * @description Safely parses a JSON string, returning a fallback value on failure.
+   * @param input The JSON string to parse.
+   * @param fallback Optional fallback value to return if parsing fails.
+   * @returns The parsed value, or the fallback value if parsing fails.
+   */
+  safeParse<T = unknown>(input: string, fallback: Optional<T> = undefined): T | Optional<string> {
+    try {
+      return JSON.parse(input) as T
+    } catch {
+      return fallback ?? input
     }
   },
 
@@ -35,7 +50,7 @@ export const StringHelper = Object.freeze({
    * @param vars Key-value substitution map.
    * @returns Interpolated string with resolved placeholders.
    */
-  interpolate(template: string, vars: Readonly<Record<string, string | number>>): string {
+  interpolate(template: string, vars: Readonly<Dictionary<string | number>>): string {
     return template.replace(/\{\{(\w+)\}\}/g, (_match, key: string) => {
       const value = vars[key]
       return Guards.isDefined(value) ? String(value) : `{{${key}}}`

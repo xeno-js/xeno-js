@@ -1,4 +1,4 @@
-import { type Dictionary, type Maybe } from '@/shared'
+import type { Dictionary, Maybe } from '@/shared'
 
 const OBJECT_TAG = '[object Object]'
 const DATE_TAG = '[object Date]'
@@ -22,7 +22,11 @@ export const Guards = Object.freeze({
    * @returns True when value is null, undefined, empty string, or false.
    */
   isNullOrEmpty<TValue>(value: Maybe<TValue>): value is null | undefined {
-    return !Guards.isDefined(value) || (Guards.isString(value) && value.trim() === '')
+    return (
+      !Guards.isDefined(value) ||
+      (Guards.isString(value) && value.trim() === '') ||
+      (Guards.isArray(value) && value.length === 0)
+    )
   },
 
   /**
@@ -33,6 +37,30 @@ export const Guards = Object.freeze({
    */
   throwIfNullOrEmpty<TValue>(value: Maybe<TValue>, errorMessage: string): void {
     if (Guards.isNullOrEmpty(value)) {
+      throw new Error(errorMessage)
+    }
+  },
+
+  /**
+   * @description Throws an error if the value is not a positive integer.
+   * @param value Candidate value.
+   * @param errorMessage Error message to throw if the check fails.
+   * @throws Error with the provided message if the value is not a positive integer.
+   */
+  throwIfNegative(value: number, errorMessage: string): void {
+    if (Guards.isInteger(value) && value < 0) {
+      throw new Error(errorMessage)
+    }
+  },
+
+  /**
+   * @description Throws an error if the value is not an integer.
+   * @param value Candidate value.
+   * @param errorMessage Error message to throw if the check fails.
+   * @throws Error with the provided message if the value is not an integer.
+   */
+  throwIfNotInteger(value: number, errorMessage: string): void {
+    if (!Guards.isInteger(value)) {
       throw new Error(errorMessage)
     }
   },

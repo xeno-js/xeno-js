@@ -1,5 +1,13 @@
 import type { InjectionToken } from '@/shared'
 
+/**
+ * @fileoverview Utility for creating and managing typed injection tokens.
+ * This module defines the `TokenHelper` factory for generating unique, type-safe tokens
+ * that can be used for dependency injection in the application.
+ * The `createToken` method produces an `InjectionToken<T>` which binds a runtime `symbol`
+ * to a compile-time type `T` via a phantom property, ensuring type safety and preventing
+ * accidental cross-token resolution.
+ */
 export const TokenHelper = Object.freeze({
   /**
    * @description Factory that produces a uniquely branded {@link InjectionToken} for type `T`.

@@ -26,6 +26,9 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The request was well-formed but semantically invalid. */
   BAD_REQUEST: 'BAD_REQUEST',
+
+  /** @description The request was aborted before it could be processed. */
+  ABORTED: 'ABORTED',
 } as const)
 
 /** @description Inferred union of every valid ERROR_CODES value. */
@@ -74,7 +77,7 @@ export const STATUS_CODES = Object.freeze({
   TOO_MANY_REQUESTS: 429,
 
   /** @description The client closed the connection before the server finished responding. */
-  CLIENT_CLOSED_REQUEST: 499,
+  ABORTED: 499,
 
   // ── 5xx Server Errors ─────────────────────────────────────────────────────
 
@@ -87,3 +90,17 @@ export const STATUS_CODES = Object.freeze({
 
 /** @description Inferred union of every valid STATUS_CODES value. */
 export type StatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES]
+
+/**
+ * @description A mapping of ERROR_CODES to human-readable messages, used for logging and user feedback when an AppError is created with a specific error code. This allows for consistent and centralized management of error messages across the application, ensuring that each error code corresponds to a clear and descriptive message that can be easily maintained and localized if necessary.
+ */
+export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
+  [ERROR_CODES.SYSTEM_ERROR]: 'errors.system_error',
+  [ERROR_CODES.NOT_IMPLEMENTED]: 'errors.not_implemented',
+  [ERROR_CODES.EXTERNAL_SERVICE_ERROR]: 'errors.external_service_error',
+  [ERROR_CODES.VALIDATION_FAILED]: 'errors.validation_failed',
+  [ERROR_CODES.UNAUTHORIZED]: 'errors.unauthorized',
+  [ERROR_CODES.FORBIDDEN]: 'errors.forbidden',
+  [ERROR_CODES.BAD_REQUEST]: 'errors.bad_request',
+  [ERROR_CODES.ABORTED]: 'errors.aborted',
+} as const)

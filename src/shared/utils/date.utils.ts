@@ -1,4 +1,4 @@
-import { Guards } from './index'
+import { Guards } from '@/shared'
 
 const MS_PER_DAY = 86_400_000
 
