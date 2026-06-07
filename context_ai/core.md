@@ -255,7 +255,7 @@ interface Identity {
   roles: Optional<ReadonlyArray<string>>
   correlationId: Optional<string>
 }
-interface IRequestIdentity {
+interface IRequestContext {
   runAsync<T>(fn: (identity: Identity) => Promise<T>): Promise<T>
   getIdentity(): Identity
 }

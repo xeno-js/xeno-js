@@ -43,7 +43,7 @@ export default tseslint.config(
       // ── Core JS ──────────────────────────────────────────────────────────
       'curly': ['error', 'all'],
       'eqeqeq': ['error', 'always', { null: 'ignore' }],
-      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-console': ['error', { allow: ['warn', 'error', 'info', 'debug'] }],
       // Disabled: the core rule does not understand TypeScript's `import type`
       // and flags intentional type/value split imports from the same module.
       // `@typescript-eslint/consistent-type-imports` already enforces correct usage.
@@ -70,8 +70,29 @@ export default tseslint.config(
         { checksVoidReturn: { attributes: false } },
       ],
       '@typescript-eslint/only-throw-error': 'error',
-      '@typescript-eslint/return-await': ['error', 'in-try-catch'],
-
+      // '@typescript-eslint/return-await': ['error', 'in-try-catch'],
+      '@typescript-eslint/strict-boolean-expressions': [
+        'error',
+        {
+          allowString: false,
+          allowNumber: false,
+          allowNullableObject: false,
+          allowNullableBoolean: false,
+          allowNullableString: false,
+          allowNullableNumber: false,
+          allowAny: false,
+        },
+      ],
+      '@typescript-eslint/unbound-method': 'error',
+      '@typescript-eslint/no-unsafe-assignment': 'error',
+      '@typescript-eslint/no-unsafe-call': 'error',
+      '@typescript-eslint/no-unsafe-member-access': 'error',
+      '@typescript-eslint/no-unsafe-return': 'error',
+      '@typescript-eslint/no-unsafe-argument': 'error',
+      '@typescript-eslint/restrict-template-expressions': 'error',
+      '@typescript-eslint/restrict-plus-operands': 'error',
+      '@typescript-eslint/no-unsafe-enum-comparison': 'error',
+      '@typescript-eslint/require-await': 'off',
       // ── TypeScript: code quality ──────────────────────────────────────────
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-vars': [
@@ -124,6 +145,171 @@ export default tseslint.config(
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+
+  // ── Layered architecture boundaries (DDD / Clean Architecture) ─────────
+  {
+    files: ['src/shared/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '@/domain',
+                '@/domain/**',
+                '@/application',
+                '@/application/**',
+                '@/infrastructure',
+                '@/infrastructure/**',
+                '@/presentation',
+                '@/presentation/**',
+              ],
+              message: 'shared can only import from shared and external libraries.',
+            },
+            {
+              group: [
+                '../**/domain',
+                '../**/domain/**',
+                '../**/application',
+                '../**/application/**',
+                '../**/infrastructure',
+                '../**/infrastructure/**',
+                '../**/presentation',
+                '../**/presentation/**',
+              ],
+              message: 'shared can only import from shared and external libraries.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/domain/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '@/application',
+                '@/application/**',
+                '@/infrastructure',
+                '@/infrastructure/**',
+                '@/presentation',
+                '@/presentation/**',
+              ],
+              message: 'domain can only import from domain, shared, and external libraries.',
+            },
+            {
+              group: [
+                '../**/application',
+                '../**/application/**',
+                '../**/infrastructure',
+                '../**/infrastructure/**',
+                '../**/presentation',
+                '../**/presentation/**',
+              ],
+              message: 'domain can only import from domain, shared, and external libraries.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/application/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '@/infrastructure',
+                '@/infrastructure/**',
+                '@/presentation',
+                '@/presentation/**',
+              ],
+              message:
+                'application can only import from application, domain, shared, and external libraries.',
+            },
+            {
+              group: [
+                '../**/infrastructure',
+                '../**/infrastructure/**',
+                '../**/presentation',
+                '../**/presentation/**',
+              ],
+              message:
+                'application can only import from application, domain, shared, and external libraries.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/infrastructure/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/application', '@/application/**', '@/presentation', '@/presentation/**'],
+              message:
+                'infrastructure can only import from infrastructure, domain, shared, and external libraries.',
+            },
+            {
+              group: [
+                '../**/application',
+                '../**/application/**',
+                '../**/presentation',
+                '../**/presentation/**',
+              ],
+              message:
+                'infrastructure can only import from infrastructure, domain, shared, and external libraries.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/presentation/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '@/application',
+                '@/application/**',
+                '@/infrastructure',
+                '@/infrastructure/**',
+              ],
+              message:
+                'presentation can only import from presentation, domain, shared, and external libraries.',
+            },
+            {
+              group: [
+                '../**/application',
+                '../**/application/**',
+                '../**/infrastructure',
+                '../**/infrastructure/**',
+              ],
+              message:
+                'presentation can only import from presentation, domain, shared, and external libraries.',
+            },
+          ],
+        },
+      ],
     },
   },
 
