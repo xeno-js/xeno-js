@@ -1,11 +1,15 @@
 import type {
   Delegate,
   IBaseRequest,
+  ICommand,
   IMediator,
   IPipelineBehavior,
+  IQuery,
   IServiceScope,
   ResultType,
 } from '@/domain'
+import { AppError, Result } from '@/domain'
+import { Guards, TokenHelper } from '@/shared'
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).
@@ -13,24 +17,23 @@ import type {
 export class Mediator implements IMediator {
   /**
    * @param _resolver An instance of IServiceScope used to resolve handlers for commands and queries.
-   * @param _pipelines An optional array of IPipelineBehavior instances that represent the middleware pipeline to be applied to all requests.
    */
   constructor(
     private readonly _resolver: IServiceScope,
-    private readonly _pipelines: IPipelineBehavior,
+    private readonly _token: string,
   ) {}
 
   /**
    * @inheritdoc
    */
-  async send<TResponse>(request: IBaseRequest<TResponse>): Promise<ResultType<TResponse>> {
+  async send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request)
   }
 
   /**
    * @inheritdoc
    */
-  async query<TResponse>(request: IBaseRequest<TResponse>): Promise<ResultType<TResponse>> {
+  async query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request)
   }
 
@@ -42,10 +45,17 @@ export class Mediator implements IMediator {
   private async process<TResponse>(
     request: IBaseRequest<TResponse>,
   ): Promise<ResultType<TResponse>> {
+    if (Guards.isDefined(request.signal) && request.signal.aborted)
+      return Result.fail(AppError.aborted(request.token.symbol.toString()))
+
     const handler = this._resolver.resolve(request.token)
+
+    const pipelines = this._resolver.resolve(
+      TokenHelper.createToken<IPipelineBehavior<IBaseRequest<TResponse>, TResponse>>(this._token),
+    )
 
     const next: Delegate<TResponse> = () => handler.handle(request)
 
-    return this._pipelines.handle(request, next)
+    return pipelines.handle(request, next)
   }
 }

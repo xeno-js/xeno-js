@@ -1,6 +1,20 @@
-import type { IBaseRequest, ICachedQuery, IHandler, IPaginatedQuery, SortDirection } from '@/domain'
-import type { Dictionary, Guid, InjectionToken, RequestType } from '@/shared'
-import { GuidHelper, REQUEST_TYPE, TokenHelper } from '@/shared'
+import type { ICachedQuery, IHandler, IQuery } from '@/domain'
+import type {
+  Guid,
+  ICacheableOptions,
+  InjectionToken,
+  IPaginationParams,
+  Optional,
+  RequestType,
+} from '@/shared'
+import {
+  Guards,
+  GuidHelper,
+  PAGINATION_DEFAULTS,
+  REQUEST_TYPE,
+  SORT_DIRECTION,
+  TokenHelper,
+} from '@/shared'
 
 /**
  * @fileoverview Defines the Query class, which serves as a base implementation for query requests in a CQRS architecture. The Query class implements the IQuery interface and provides common properties such as the request type, timestamp, and a unique token for identification.
@@ -10,96 +24,60 @@ import { GuidHelper, REQUEST_TYPE, TokenHelper } from '@/shared'
  * A class representing a query request in a CQRS architecture. This class implements the IQuery interface and provides common properties and functionality for all query requests.
  * @template T - The type of the response that the query will return after being handled.
  */
-export class Query<T = unknown> implements IBaseRequest<T> {
+export class Query<T = unknown> implements IQuery<T> {
   /**
    * Constructs a new Query instance with a unique token based on the provided string.
    * @param id A unique identifier for the query request.
    * @param type The type of the request, which should be 'QUERY'.
    * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
    * @param timestamp The timestamp when the query is created.
+   * @param signal An optional AbortSignal to allow cancellation of the query.
+   * @param pagination The pagination parameters for the query, which can include page number, page size, sorting, and filtering options.
    */
   protected constructor(
     public readonly id: Guid,
     public readonly type: RequestType,
     public readonly timestamp: Date,
-    public readonly token: InjectionToken<IHandler<IBaseRequest<T>, T>>,
+    public readonly token: InjectionToken<IHandler<IQuery<T>, T>>,
+    public readonly signal: Optional<AbortSignal> = undefined,
+    public readonly pagination: IPaginationParams,
   ) {}
 
   /**
    * Static factory method to create a new Query instance with a unique token.
+   * @param id A unique identifier for the query request.
    * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
+   * @param signal An optional AbortSignal to allow cancellation of the query.
+   * @param pagination The pagination parameters for the query, which can include page number, page size, sorting, and filtering options.
+   *
    * @returns A new instance of the Query class.
    */
-  static create<T>(token: string, ..._args: unknown[]): IBaseRequest<T> {
-    const id = GuidHelper.generate()
-    const type = REQUEST_TYPE.QUERY
-    const timestamp = new Date()
-    const injectionToken = TokenHelper.createToken<IHandler<IBaseRequest<T>, T>>(token)
-
-    return new Query<T>(id, type, timestamp, injectionToken)
-  }
-}
-
-/**
- * @description A class representing a paginated query request in a CQRS architecture. This class extends the base Query class and implements the IPaginatedQuery interface, providing additional properties for pagination, sorting, and filtering.
- */
-export class PaginatedQuery<T = unknown> extends Query<T> implements IPaginatedQuery<T> {
-  /**
-   * Constructs a new PaginatedQuery instance with pagination properties.
-   * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
-   * @param page The page number to retrieve (optional).
-   * @param pageSize The number of items per page (optional).
-   * @param sortBy The field by which to sort the results (optional).
-   * @param sortDirection The direction of sorting, either 'asc' or 'desc' (optional).
-   * @param filters A dictionary of filters to apply to the query (optional).
-   * @param id A unique identifier for the query request.
-   * @param type The type of the request, which should be 'QUERY'.
-   * @param timestamp The timestamp when the query is created.
-   * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
-   * @return A new instance of the PaginatedQuery class.
-   */
-  protected constructor(
-    public readonly page: number,
-    public readonly pageSize: number,
-    public readonly sortBy: string,
-    public readonly sortDirection: SortDirection,
-    public readonly filters: Readonly<Dictionary<unknown>>,
+  static create<T>(
     id: Guid,
-    type: RequestType,
-    timestamp: Date,
-    token: InjectionToken<IHandler<IBaseRequest<T>, T>>,
-  ) {
-    super(id, type, timestamp, token)
-  }
-
-  static override create<T>(
     token: string,
-    page = 1,
-    pageSize = 10,
-    sortBy = '',
-    sortDirection: SortDirection = 'asc',
-    filters: Readonly<Dictionary<unknown>> = {},
-  ): IPaginatedQuery<T> {
-    if (page < 1 || pageSize < 1) {
-      throw new Error('Page and Page size number must be greater than 0')
-    }
+    signal: Optional<AbortSignal> = undefined,
+    pagination: IPaginationParams = {
+      limit: PAGINATION_DEFAULTS.PAGE,
+      offset: PAGINATION_DEFAULTS.PAGE_SIZE,
+      orderBy: '',
+      sortDirection: SORT_DIRECTION.ASC,
+      filters: [],
+    },
+    ..._args: unknown[]
+  ): IQuery<T> {
+    if (!GuidHelper.isValid(id)) throw new Error('Invalid ID')
 
-    const id = GuidHelper.generate()
+    if (
+      (Guards.isDefined(pagination.limit) && pagination.limit < 1) ||
+      (Guards.isDefined(pagination.offset) && pagination.offset < 0)
+    )
+      throw new Error('Limit must be greater than 0 and offset must be non-negative')
+
     const type = REQUEST_TYPE.QUERY
     const timestamp = new Date()
-    const injectionToken = TokenHelper.createToken<IHandler<IBaseRequest<T>, T>>(token)
+    const injectionToken = TokenHelper.createToken<IHandler<IQuery<T>, T>>(token)
 
-    return new PaginatedQuery<T>(
-      page,
-      pageSize,
-      sortBy,
-      sortDirection,
-      filters,
-      id,
-      type,
-      timestamp,
-      injectionToken,
-    )
+    return new Query<T>(id, type, timestamp, injectionToken, signal, pagination)
   }
 }
 
@@ -117,43 +95,55 @@ export class CachedQuery<T = unknown> extends Query<T> implements ICachedQuery<T
    * @param type The type of the request, which should be 'QUERY'.
    * @param timestamp The timestamp when the query is created.
    * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
+   * @param signal An optional AbortSignal to allow cancellation of the query.
    * @returns A new instance of the CachedQuery class.
    */
   protected constructor(
-    public readonly cacheKey: string,
-    public readonly cacheTtlSeconds: number,
-    public readonly bypassCache: boolean,
+    public readonly cacheOptions: ICacheableOptions,
     id: Guid,
     type: RequestType,
     timestamp: Date,
-    token: InjectionToken<IHandler<IBaseRequest<T>, T>>,
+    token: InjectionToken<IHandler<IQuery<T>, T>>,
+    signal: Optional<AbortSignal> = undefined,
+    pagination: IPaginationParams,
   ) {
-    super(id, type, timestamp, token)
+    super(id, type, timestamp, token, signal, pagination)
   }
 
   static override create<T>(
+    id: Guid,
     token: string,
-    cacheKey: string,
-    cacheTtlSeconds = 3600,
-    bypassCache = false,
+    signal: Optional<AbortSignal> = undefined,
+    pagination: IPaginationParams = {
+      limit: PAGINATION_DEFAULTS.PAGE,
+      offset: PAGINATION_DEFAULTS.PAGE_SIZE,
+      orderBy: '',
+      sortDirection: SORT_DIRECTION.ASC,
+      filters: [],
+    },
+    cacheOptions: ICacheableOptions,
   ): ICachedQuery<T> {
-    if (cacheTtlSeconds < 0) {
-      throw new Error('Cache TTL must be a non-negative number')
-    }
+    if (!GuidHelper.isValid(id)) throw new Error('Invalid ID')
 
-    const id = GuidHelper.generate()
+    if (
+      (Guards.isDefined(pagination.limit) && pagination.limit < 1) ||
+      (Guards.isDefined(pagination.offset) && pagination.offset < 0)
+    )
+      throw new Error('Limit must be greater than 0 and offset must be non-negative')
+
+    if (Guards.isDefined(cacheOptions.cacheTtlSeconds))
+      if (cacheOptions.cacheTtlSeconds < 0)
+        throw new Error('Cache TTL must be a non-negative number')
+      else
+        cacheOptions = {
+          ...cacheOptions,
+          cacheTtlSeconds: 3600,
+        }
+
     const type = REQUEST_TYPE.QUERY
     const timestamp = new Date()
-    const injectionToken = TokenHelper.createToken<IHandler<IBaseRequest<T>, T>>(token)
+    const injectionToken = TokenHelper.createToken<IHandler<IQuery<T>, T>>(token)
 
-    return new CachedQuery<T>(
-      cacheKey,
-      cacheTtlSeconds,
-      bypassCache,
-      id,
-      type,
-      timestamp,
-      injectionToken,
-    )
+    return new CachedQuery<T>(cacheOptions, id, type, timestamp, injectionToken, signal, pagination)
   }
 }

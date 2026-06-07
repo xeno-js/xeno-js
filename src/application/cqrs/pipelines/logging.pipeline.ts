@@ -2,12 +2,14 @@ import type {
   AppError,
   Delegate,
   IBaseRequest,
+  Identity,
   ILogger,
   IPipelineBehavior,
-  IRequestIdentity,
+  IRequestContext,
   ResultType,
 } from '@/domain'
 import type { Optional } from '@/shared'
+import { REQUEST_TYPE } from '@/shared'
 
 /**
  * @description A pipeline behavior that logs the handling of commands and queries, including their success or failure, along with contextual information such as request ID, correlation ID, and user ID.
@@ -16,22 +18,22 @@ import type { Optional } from '@/shared'
  * @template TInput - The type of the input request, which must extend the IBaseRequest interface.
  * @template TResult - The type of the result returned by the request handler.
  */
-export class LoggingPipeline implements IPipelineBehavior {
+export class LoggingPipeline<
+  TInput extends IBaseRequest<TResult>,
+  TResult,
+> implements IPipelineBehavior<TInput, TResult> {
   /**
-   * @description Constructs a new instance of the LoggingPipeline class, which requires an ILogger for logging and an IRequestIdentity for accessing the current user's identity context. The pipeline will use these dependencies to log relevant information about each request being handled, including any errors that occur during processing.
+   * @description Constructs a new instance of the LoggingPipeline class, which requires an ILogger for logging and an IRequestContext for accessing the current user's identity context. The pipeline will use these dependencies to log relevant information about each request being handled, including any errors that occur during processing.
    * @param _logger An instance of ILogger used for logging informational messages and errors related to the handling of requests.
-   * @param _requestContext An instance of IRequestIdentity used to access the current user's identity context, allowing the pipeline to include user-related information in the logs for better traceability and debugging.
+   * @param _requestContext An instance of IRequestContext used to access the current user's identity context, allowing the pipeline to include user-related information in the logs for better traceability and debugging.
    */
   constructor(
     private readonly _logger: ILogger,
-    private readonly _requestContext: IRequestIdentity,
+    private readonly _requestContext: IRequestContext<Identity>,
   ) {}
 
-  public async handle<TInput, TResult>(
-    request: TInput extends IBaseRequest<TResult> ? TInput : never,
-    next: Delegate<TResult>,
-  ): Promise<ResultType<TResult>> {
-    const requestType = request.type
+  public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
+    const requestType = REQUEST_TYPE[request.type]
     const resolverToken = request.token.symbol.toString()
 
     this.logContext('info', request, `Handling ${requestType} ${resolverToken}`)
@@ -62,11 +64,12 @@ export class LoggingPipeline implements IPipelineBehavior {
     const identity = this._requestContext.getIdentity()
     const context = {
       context: {
-        messageType: request.type,
+        messageType: REQUEST_TYPE[request.type],
         command: request.token.symbol.toString(),
         requestId: request.id,
         correlationId: identity?.correlationId,
-        userId: identity?.id,
+        userId: identity?.userId,
+        tenantId: identity?.tenantId,
       },
     }
     switch (type) {
