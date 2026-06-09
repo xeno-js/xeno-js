@@ -19,7 +19,7 @@ export class NodeRequestContext<TCtx> implements IRequestContext<TCtx> {
     return this._storage.run(context, fn)
   }
 
-  public getIdentity(): Optional<TCtx> {
+  public getContext(): Optional<TCtx> {
     const store = this._storage.getStore()
     if (!Guards.isDefined(store)) return undefined
     return Object.freeze({ ...store })

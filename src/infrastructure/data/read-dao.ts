@@ -1,4 +1,4 @@
-import type { IBaseDataSource, IMapper, IReadDao, ResultType, UniqueId } from '@/domain'
+import type { IBaseDataSource, IMapper, IReadDao, ResultType } from '@/domain'
 import { Result } from '@/domain'
 import type { IPaginationParams, Maybe, Optional } from '@/shared'
 import { Guards } from '@/shared'
@@ -20,11 +20,8 @@ export class ReadDao<T, TDto, TFilter = IPaginationParams> implements IReadDao<T
     protected readonly _mapper: IMapper<T, TDto>,
   ) {}
 
-  public async findById(
-    id: UniqueId,
-    signal: Optional<AbortSignal>,
-  ): Promise<ResultType<Maybe<T>>> {
-    const result = await this._dataSource.findById(id.toString(), signal)
+  public async findById(id: string, signal: Optional<AbortSignal>): Promise<ResultType<Maybe<T>>> {
+    const result = await this._dataSource.findById(id, signal)
     if (Guards.isNullOrEmpty(result)) return Result.ok(result)
 
     const entity = this._mapper.toEntity(result)

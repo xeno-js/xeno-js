@@ -3,15 +3,8 @@ import { AxiosError } from 'axios'
 
 import type { IHttpClient } from '@/domain'
 import { AppError } from '@/domain'
-import type {
-  Dictionary,
-  HttpHeaders,
-  HttpOptions,
-  HttpRequest,
-  HttpResponse,
-  Optional,
-} from '@/shared'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared'
+import type { HttpOptions, HttpRequest, HttpResponse, Optional } from '@/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } from '@/shared'
 
 /**
  * @description Axios-based implementation of the agnostic IHttpClient contract.
@@ -40,13 +33,31 @@ export class AxiosHttpClient implements IHttpClient {
         validateStatus: () => true,
       })
 
+      if (!Guards.isDefined(response.status) || response.status >= 400) {
+        AppError.throw({
+          code: ERROR_CODES.EXTERNAL_SERVICE_ERROR,
+          message: ERROR_CODE_MESSAGES[ERROR_CODES.EXTERNAL_SERVICE_ERROR],
+          status: response.status,
+          name: 'AxiosHttpClientException',
+          cause: new AxiosError(
+            `Request failed with status code ${response.status}`,
+            undefined,
+            response.config,
+            response.request,
+            response,
+          ),
+        })
+      }
+
       return {
         status: response.status,
         ok: response.status >= 200 && response.status < 300,
-        headers: AxiosHttpClient.normalizeHeaders(response.headers),
+        headers: HttpHelper.normalizeHeaders(response.headers),
         data: response.data,
       }
     } catch (error: unknown) {
+      if (error instanceof AppError) throw error
+
       const status =
         error instanceof AxiosError && Guards.isDefined(error.response)
           ? error.response.status
@@ -116,22 +127,5 @@ export class AxiosHttpClient implements IHttpClient {
       signal: options?.signal,
       timeoutMs: options?.timeoutMs,
     }
-  }
-
-  private static normalizeHeaders(headers: unknown): HttpHeaders {
-    if (!Guards.isDefined(headers) || !Guards.isObject(headers)) return {}
-
-    const normalized: HttpHeaders = {}
-    for (const [key, value] of Object.entries(headers as Dictionary)) {
-      if (!Guards.isDefined(value)) {
-        continue
-      }
-
-      normalized[key] = Array.isArray(value)
-        ? value.map((part) => String(part)).join(',')
-        : String(value)
-    }
-
-    return normalized
   }
 }

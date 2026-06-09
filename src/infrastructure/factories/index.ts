@@ -1,2 +1,7 @@
 export * from './cache.factory'
 export * from './http.factory'
+export * from './pino-logger.factory'
+export * from './resilience.factory'
+export * from './sentry-logger.factory'
+export * from './storage.factory'
+export * from './validator.factory'
