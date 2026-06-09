@@ -58,7 +58,7 @@ export class PerformancePipeline<
       const duration = endTime - startTime
 
       if (duration > this._thresholdMs) {
-        const identity = this._requestContext.getIdentity()
+        const identity = this._requestContext.getContext()
         this._logger.warn(
           `Performance warning: ${requestType} ${resolverToken} took ${duration.toFixed(2)}ms`,
           {

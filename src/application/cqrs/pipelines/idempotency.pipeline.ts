@@ -8,20 +8,12 @@ import type {
 import { AppError, Result } from '@/domain'
 import {
   Guards,
+  IDEMPOTENCY_CONSTANTS,
   PIPELINE_ERROR_CODES,
   PIPELINE_ERROR_CODES_KEYS,
   REQUEST_TYPE,
   STATUS_CODES,
 } from '@/shared'
-
-/**
- * @description Default TTL (time-to-live) in seconds for locks acquired in the idempotency mechanism. This value determines how long a lock will be held for a given command ID when it is being processed. If a lock is not released within this time frame, it will automatically expire, allowing other instances of the command to be processed. The default value is set to 300 seconds (5 minutes), which provides a reasonable balance between allowing sufficient time for command processing and preventing long-term locks that could lead to delays in processing subsequent commands with the same ID.
- */
-const DEFAULT_IDEMPOTENCY_LOCK_TTL_SECONDS = 300
-/**
- * @description Default TTL (time-to-live) in seconds for processed command results stored in the idempotency mechanism. This value determines how long the result of a processed command will be stored and available for retrieval when subsequent requests with the same command ID are received. If a result is not retrieved within this time frame, it will automatically expire and be removed from the store, meaning that subsequent requests with the same command ID will not be able to retrieve the previous result and may need to reprocess the command. The default value is set to 86400 seconds (24 hours), which allows for a reasonable window of time for clients to retrieve results of processed commands while also ensuring that stale results do not persist indefinitely in the store.
- */
-const DEFAULT_IDEMPOTENCY_PROCESSED_TTL_SECONDS = 86400
 
 /**
  * @description A pipeline behavior that implements idempotency for command requests in the CQRS architecture. This behavior ensures that if multiple requests with the same command ID are received, only one of them will be processed, and the others will receive the same result without reprocessing the command. The pipeline uses an IIdempotencyStore to manage locks and store results for processed commands, allowing it to handle concurrent requests safely and efficiently while preventing duplicate processing of commands. The behavior checks if the incoming request is a command and if it has a valid ID. If the command has already been processed, it retrieves the stored result and returns it. If the command is currently being processed by another request, it returns an error indicating that the command is locked. If the command has not been processed and is not locked, it acquires a lock, processes the command, stores the result, and releases the lock accordingly. The pipeline also includes error handling to ensure that locks are released in case of exceptions during command processing.
@@ -44,8 +36,8 @@ export class IdempotencyPipeline<
    */
   constructor(
     private readonly _idempotencyStore: IIdempotencyStore,
-    lockTtlSeconds: number = DEFAULT_IDEMPOTENCY_LOCK_TTL_SECONDS,
-    processedTtlSeconds: number = DEFAULT_IDEMPOTENCY_PROCESSED_TTL_SECONDS,
+    lockTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_IDEMPOTENCY_LOCK_TTL_SECONDS,
+    processedTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_TTL_SECONDS,
   ) {
     const values: number[] = [lockTtlSeconds, processedTtlSeconds]
     const errorMessages = [

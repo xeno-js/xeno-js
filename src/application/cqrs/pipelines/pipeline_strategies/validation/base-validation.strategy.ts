@@ -21,7 +21,7 @@ export abstract class BaseValidationStrategy implements IStrategy<boolean> {
       AppError.create({
         code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
         message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR],
-        status: STATUS_CODES.FORBIDDEN,
+        status: STATUS_CODES.BAD_REQUEST,
         name: request.token.symbol.toString(),
         cause: new Error(message),
       }),

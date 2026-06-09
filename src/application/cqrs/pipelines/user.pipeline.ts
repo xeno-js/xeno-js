@@ -19,8 +19,8 @@ export class UserContextPipeline<
     if (Guards.isNullOrEmpty(request.userId)) {
       return Result.fail(
         AppError.create({
-          code: PIPELINE_ERROR_CODES.AUTH_UNAUTHENTICATED,
-          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.AUTH_UNAUTHENTICATED],
+          code: PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED,
+          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED],
           status: STATUS_CODES.UNAUTHORIZED,
           name: request.token.symbol.toString(),
           cause: new Error(`User is not authenticated.`),

@@ -61,7 +61,7 @@ export class LoggingPipeline<
     message: string,
     error: Optional<AppError> = undefined,
   ): void {
-    const identity = this._requestContext.getIdentity()
+    const identity = this._requestContext.getContext()
     const context = {
       context: {
         messageType: REQUEST_TYPE[request.type],

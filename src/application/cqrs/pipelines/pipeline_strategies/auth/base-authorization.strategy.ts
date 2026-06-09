@@ -24,7 +24,7 @@ export abstract class BaseAuthorizationStrategy<
   public abstract isApplicable(context: IBaseRequest): context is TInput
 
   public async execute(request: IBaseRequest): Promise<ResultType<void>> {
-    const auth = this._requestContext.getIdentity()
+    const auth = this._requestContext.getContext()
     if (!Guards.isDefined(auth)) {
       return Result.fail(
         AppError.create({
