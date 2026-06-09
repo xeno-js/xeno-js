@@ -38,20 +38,20 @@ export type HttpOptions = 'url' | 'method' | 'body'
  * @description Request options accepted by the agnostic HTTP client.
  */
 export interface HttpRequest<TBody = unknown> {
-  /** @description Absolute or relative target URL. */
-  readonly url: string
-
   /** @description HTTP method used for the outgoing call. */
   readonly method: HttpMethod
-
-  /** @description Optional request headers. */
-  readonly headers: Optional<HttpHeaders>
 
   /** @description Optional query string parameters. */
   readonly query: Optional<Dictionary<HttpQueryValue>>
 
   /** @description Optional request body. */
   readonly body: Optional<TBody>
+
+  /** @description Optional request headers. */
+  readonly headers: Optional<HttpHeaders>
+
+  /** @description Absolute or relative target URL. */
+  readonly url: string
 
   /** @description Optional abort signal used to cancel the request. */
   readonly signal: Optional<AbortSignal>

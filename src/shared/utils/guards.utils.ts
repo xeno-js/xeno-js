@@ -146,7 +146,7 @@ export const Guards = Object.freeze({
    * @param value Candidate value.
    * @returns True when value is array.
    */
-  isArray<TValue>(value: unknown): value is readonly TValue[] {
+  isArray<TValue>(value: unknown): value is TValue[] {
     return Array.isArray(value)
   },
 

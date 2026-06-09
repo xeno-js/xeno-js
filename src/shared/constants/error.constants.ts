@@ -18,6 +18,9 @@ export const ERROR_CODES = Object.freeze({
   /** @description One or more input fields failed invariant or schema validation. */
   VALIDATION_FAILED: 'VALIDATION_FAILED',
 
+  /** @description Authentication failed due to invalid credentials or token. */
+  AUTHENTICATION_FAILED: 'AUTHENTICATION_FAILED',
+
   /** @description The caller is not authenticated. */
   UNAUTHORIZED: 'UNAUTHORIZED',
 
@@ -103,4 +106,5 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
   [ERROR_CODES.FORBIDDEN]: 'errors.forbidden',
   [ERROR_CODES.BAD_REQUEST]: 'errors.bad_request',
   [ERROR_CODES.ABORTED]: 'errors.aborted',
+  [ERROR_CODES.AUTHENTICATION_FAILED]: 'errors.authentication_failed',
 } as const)

@@ -1,5 +1,8 @@
+export type * from './auth.types'
 export type * from './cache.types'
 export type * from './common.types'
 export type * from './http.types'
 export type * from './injection-token'
+export type * from './logger.types'
 export type * from './pagination.types'
+export type * from './resilience.types'

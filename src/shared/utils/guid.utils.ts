@@ -1,4 +1,5 @@
-import type { Guid } from '@/shared'
+import type { Guid, Optional } from '@/shared'
+import { Guards } from '@/shared'
 
 /**
  * @fileoverview Utility functions for generating and validating GUIDs (UUID v4).
@@ -18,12 +19,29 @@ export const GuidHelper = Object.freeze({
    * @param value Candidate string to validate.
    * @returns True if the string is a valid UUID v4, false otherwise.
    */
-  isValid(value: Guid): boolean {
+  isValid(value: string): value is Guid {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
     return uuidRegex.test(value)
   },
 
-  isEmpty(value: Guid): boolean {
+  /**
+   * @description Converts a string to a GUID if it's valid.
+   * @param value The string to convert.
+   * @returns The GUID if the string is valid, otherwise undefined.
+   */
+  parse(value: Optional<string>): Optional<Guid> {
+    if (!Guards.isNullOrEmpty(value) && this.isValid(value) && !this.isEmpty(value)) {
+      return value
+    }
+    return undefined
+  },
+
+  /**
+   * @description Checks if a GUID is the empty GUID (all zeros).
+   * @param value The GUID to check.
+   * @returns True if the GUID is the empty GUID, false otherwise.
+   */
+  isEmpty(value: string): boolean {
     const emptyGuid = '00000000-0000-0000-0000-000000000000'
     return value === emptyGuid
   },
