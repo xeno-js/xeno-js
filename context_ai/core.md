@@ -257,7 +257,7 @@ interface Identity {
 }
 interface IRequestContext {
   runAsync<T>(fn: (identity: Identity) => Promise<T>): Promise<T>
-  getIdentity(): Identity
+  getContext(): Identity
 }
 ```
 
