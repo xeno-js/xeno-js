@@ -1,4 +1,4 @@
-import type { ResultType, UniqueId } from '@/domain'
+import type { ResultType } from '@/domain'
 import type { IPaginationParams, Maybe, Optional } from '@/shared'
 
 /**
@@ -11,7 +11,7 @@ export interface IReadDao<T, TFilter = IPaginationParams> {
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
    */
-  findById(id: UniqueId, signal: Optional<AbortSignal>): Promise<ResultType<Maybe<T>>>
+  findById(id: string, signal: Optional<AbortSignal>): Promise<ResultType<Maybe<T>>>
 
   /**
    * @description Finds entities based on a filter. This method takes a filter object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the filter criteria. The implementation of this method is responsible for constructing the appropriate query based on the provided filter and handling any necessary data transformations before returning the results.

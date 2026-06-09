@@ -20,5 +20,5 @@ export interface IRequestContext<TCtx> {
    * Retrieves the current user's identity information, including user ID, roles, and correlation ID. This method can be used to access identity data outside of the context of an asynchronous function, allowing for synchronous access to identity information when needed.
    * @returns An object representing the current user's identity, containing properties such as user ID, roles, and correlation ID. This information can be used for authentication and authorization purposes throughout the application.
    */
-  getIdentity(): Optional<TCtx>
+  getContext(): Optional<TCtx>
 }
