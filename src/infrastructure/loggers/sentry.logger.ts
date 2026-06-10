@@ -13,10 +13,10 @@ export class SentryTransport implements ILoggerClient {
     public readonly _minLevel: LogLevel,
   ) {}
 
-  public track(
+  public track<T>(
     level: LogLevel,
     message: string,
-    context: Optional<Dictionary<unknown>> = undefined,
+    context: Optional<T extends Dictionary<unknown> ? T : never> = undefined,
     error: Optional<Error> = undefined,
   ): void {
     if (level < this._minLevel) return

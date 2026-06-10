@@ -1,7 +1,7 @@
 import type { Logger } from 'pino'
 
 import type { ILoggerClient } from '@/domain'
-import type { Dictionary, LogLevel, Optional } from '@/shared'
+import type { LogLevel, Optional } from '@/shared'
 import { Guards, LOG_LEVEL } from '@/shared'
 
 /**
@@ -18,10 +18,10 @@ export class PinoTransport implements ILoggerClient {
     private readonly _minLevel: LogLevel = LOG_LEVEL.DEBUG,
   ) {}
 
-  public track(
+  public track<T>(
     level: LogLevel,
     message: string,
-    context: Optional<Dictionary<unknown>> = undefined,
+    context: T,
     error: Optional<Error> = undefined,
   ): void {
     if (level < this._minLevel) return
