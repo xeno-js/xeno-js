@@ -11,17 +11,16 @@ import {
   IDEMPOTENCY_CONSTANTS,
   PIPELINE_ERROR_CODES,
   PIPELINE_ERROR_CODES_KEYS,
-  REQUEST_TYPE,
   STATUS_CODES,
 } from '@/shared'
 
 /**
  * @description A pipeline behavior that implements idempotency for command requests in the CQRS architecture. This behavior ensures that if multiple requests with the same command ID are received, only one of them will be processed, and the others will receive the same result without reprocessing the command. The pipeline uses an IIdempotencyStore to manage locks and store results for processed commands, allowing it to handle concurrent requests safely and efficiently while preventing duplicate processing of commands. The behavior checks if the incoming request is a command and if it has a valid ID. If the command has already been processed, it retrieves the stored result and returns it. If the command is currently being processed by another request, it returns an error indicating that the command is locked. If the command has not been processed and is not locked, it acquires a lock, processes the command, stores the result, and releases the lock accordingly. The pipeline also includes error handling to ensure that locks are released in case of exceptions during command processing.
  */
-export class IdempotencyPipeline<
-  TInput extends IBaseRequest<TResult>,
-  TResult,
-> implements IPipelineBehavior<TInput, TResult> {
+export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+  TInput,
+  TResult
+> {
   /** @description TTL (time-to-live) in seconds for locks acquired in the idempotency mechanism. This value determines how long a lock will be held for a given command ID when it is being processed. If a lock is not released within this time frame, it will automatically expire, allowing other instances of the command to be processed. The default value is set to 300 seconds (5 minutes), which provides a reasonable balance between allowing sufficient time for command processing and preventing long-term locks that could lead to delays in processing subsequent commands with the same ID. This value can be overridden by providing a different lockTtlSeconds value when constructing the IdempotencyPipeline instance. */
   private readonly _lockTtlSeconds: number
   /** @description TTL (time-to-live) in seconds for processed command results stored in the idempotency mechanism. This value determines how long the result of a processed command will be stored and available for retrieval when subsequent requests with the same command ID are received. If a result is not retrieved within this time frame, it will automatically expire and be removed from the store, meaning that subsequent requests with the same command ID will not be able to retrieve the previous result and may need to reprocess the command. The default value is set to 86400 seconds (24 hours), which allows for a reasonable window of time for clients to retrieve results of processed commands while also ensuring that stale results do not persist indefinitely in the store. This value can be overridden by providing a different processedTtlSeconds value when constructing the IdempotencyPipeline instance. */
@@ -57,10 +56,6 @@ export class IdempotencyPipeline<
   }
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    if (REQUEST_TYPE[request.type] === REQUEST_TYPE.QUERY) {
-      return next()
-    }
-
     try {
       const alreadyProcessed = await this._idempotencyStore.hasBeenProcessed(request.id)
       if (alreadyProcessed) {
@@ -73,7 +68,7 @@ export class IdempotencyPipeline<
               code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
               message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
               status: STATUS_CODES.CONFLICT,
-              name: request.token.symbol.toString(),
+              name: request.intent,
               cause: new Error(
                 `Idempotency store indicates command has been processed but no payload found for command ID ${request.id}`,
               ),
@@ -93,7 +88,7 @@ export class IdempotencyPipeline<
             code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
             message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
             status: STATUS_CODES.CONFLICT,
-            name: request.token.symbol.toString(),
+            name: request.intent,
             cause: new Error(`Failed to acquire lock for command ID ${request.id}`),
           }),
         )

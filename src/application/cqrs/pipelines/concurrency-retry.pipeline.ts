@@ -6,7 +6,6 @@ import {
   PIPELINE_ERROR_CODES,
   PIPELINE_ERROR_CODES_KEYS,
   PromiseHelper,
-  REQUEST_TYPE,
   STATUS_CODES,
 } from '@/shared'
 
@@ -14,7 +13,7 @@ import {
  * @description A pipeline behavior that implements a retry mechanism for handling concurrency conflicts in the CQRS pipelines. When a request results in a concurrency conflict error, this behavior will automatically retry the request up to a specified maximum number of attempts, with an exponential backoff strategy and added jitter to prevent thundering herd problems. If the maximum number of retry attempts is exceeded, it returns a failed Result with an AppError indicating the concurrency conflict.
  */
 export class ConcurrencyRetryPipeline<
-  TInput extends IBaseRequest<TResult>,
+  TInput extends IBaseRequest,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**
@@ -65,8 +64,6 @@ export class ConcurrencyRetryPipeline<
    * @returns A Promise that resolves to a ResultType containing either the successful result or a failed AppError if the maximum retry attempts are exceeded due to concurrency conflicts.
    */
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    if (REQUEST_TYPE[request.type] !== REQUEST_TYPE.COMMAND) return next()
-
     let attempts = 0
 
     while (true) {
@@ -82,7 +79,7 @@ export class ConcurrencyRetryPipeline<
             code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
             message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
             status: STATUS_CODES.CONFLICT,
-            name: request.token.symbol.toString(),
+            name: request.intent,
             cause: new Error(
               `Maximum retry attempts (${this._maxRetries}) exceeded due to concurrency conflicts.`,
             ),

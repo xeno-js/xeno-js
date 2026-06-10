@@ -1,3 +1,4 @@
+export * from './base-request'
 export * from './command'
 export * from './mediator'
 export * from './pipelines/index'

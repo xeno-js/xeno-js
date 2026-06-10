@@ -1,15 +1,4 @@
-import type {
-  AppError,
-  Delegate,
-  IBaseRequest,
-  Identity,
-  ILogger,
-  IPipelineBehavior,
-  IRequestContext,
-  ResultType,
-} from '@/domain'
-import type { Optional } from '@/shared'
-import { REQUEST_TYPE } from '@/shared'
+import type { Delegate, IBaseRequest, ILogger, IPipelineBehavior, ResultType } from '@/domain'
 
 /**
  * @description A pipeline behavior that logs the handling of commands and queries, including their success or failure, along with contextual information such as request ID, correlation ID, and user ID.
@@ -18,74 +7,31 @@ import { REQUEST_TYPE } from '@/shared'
  * @template TInput - The type of the input request, which must extend the IBaseRequest interface.
  * @template TResult - The type of the result returned by the request handler.
  */
-export class LoggingPipeline<
-  TInput extends IBaseRequest<TResult>,
-  TResult,
-> implements IPipelineBehavior<TInput, TResult> {
+export class LoggingPipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+  TInput,
+  TResult
+> {
   /**
-   * @description Constructs a new instance of the LoggingPipeline class, which requires an ILogger for logging and an IRequestContext for accessing the current user's identity context. The pipeline will use these dependencies to log relevant information about each request being handled, including any errors that occur during processing.
+   * @description Constructs a new instance of the LoggingPipeline class, which requires an ILogger for logging. The pipeline will use this dependency to log relevant information about each request being handled, including any errors that occur during processing.
    * @param _logger An instance of ILogger used for logging informational messages and errors related to the handling of requests.
-   * @param _requestContext An instance of IRequestContext used to access the current user's identity context, allowing the pipeline to include user-related information in the logs for better traceability and debugging.
    */
-  constructor(
-    private readonly _logger: ILogger,
-    private readonly _requestContext: IRequestContext<Identity>,
-  ) {}
+  constructor(private readonly _logger: ILogger) {}
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    const requestType = REQUEST_TYPE[request.type]
-    const resolverToken = request.token.symbol.toString()
-
-    this.logContext('info', request, `Handling ${requestType} ${resolverToken}`)
+    this._logger.info(`Handling ${request.type} ${request.intent}`)
 
     const result = await next()
 
     if (!result.isOk()) {
       const error = result.getErrorOrThrow()
-      this.logContext(
-        'error',
-        request,
-        `Failed to handle ${requestType} ${resolverToken}: ${error.message}`,
+      this._logger.error(
+        `Failed to handle ${request.type} ${request.intent}: ${error.message}`,
         error,
       )
     } else {
-      this.logContext('info', request, `Successfully handled ${requestType} ${resolverToken}`)
+      this._logger.info(`Successfully handled ${request.type} ${request.intent}`)
     }
 
     return result
-  }
-
-  private logContext(
-    type: 'info' | 'error',
-    request: IBaseRequest<unknown>,
-    message: string,
-    error: Optional<AppError> = undefined,
-  ): void {
-    const identity = this._requestContext.getContext()
-    const context = {
-      context: {
-        messageType: REQUEST_TYPE[request.type],
-        command: request.token.symbol.toString(),
-        requestId: request.id,
-        correlationId: identity?.correlationId,
-        userId: identity?.userId,
-        tenantId: identity?.tenantId,
-      },
-    }
-    switch (type) {
-      case 'info':
-        this._logger.info(message, context)
-        break
-      case 'error':
-        this._logger.error(message, error, {
-          ...context,
-          error: {
-            code: error?.code,
-            status: error?.status,
-            stack: error?.stack,
-          },
-        })
-        break
-    }
   }
 }

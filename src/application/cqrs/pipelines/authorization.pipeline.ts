@@ -11,7 +11,7 @@ export class AuthorizationPipeline<TInput, TResult> implements IPipelineBehavior
    * @description Costruisce una nuova istanza di AuthorizationPipeline, accettando un array di strategie di autorizzazione. Ogni strategia rappresenta una regola o un criterio specifico per determinare se un comando è autorizzato o meno. Durante l'esecuzione del pipeline, ogni strategia viene valutata in ordine, e se una qualsiasi strategia determina che il comando non è autorizzato, il pipeline restituisce un risultato di fallimento con l'errore corrispondente. Se tutte le strategie passano, il pipeline delega al prossimo comportamento nella catena.
    * @param _strategies Un array di oggetti che implementano l'interfaccia IStrategy, utilizzati per valutare l'autorizzazione dei comandi.
    */
-  constructor(private readonly _strategies: IStrategy[]) {}
+  constructor(private readonly _strategies: IStrategy<TInput>[]) {}
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     for (const strategy of this._strategies) {
