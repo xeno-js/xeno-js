@@ -1,4 +1,4 @@
-import type { Dictionary, LogLevel, Optional } from '@/shared'
+import type { LogLevel, Optional } from '@/shared'
 
 /**
  * @description Interface for a logger client that provides a method for tracking log messages with a specified log level, message, optional context, and optional error.
@@ -11,10 +11,5 @@ export interface ILoggerClient {
    * @param context An optional dictionary containing additional context for the log message.
    * @param error An optional Error object associated with the log message.
    */
-  track(
-    level: LogLevel,
-    message: string,
-    context: Optional<Dictionary<unknown>>,
-    error: Optional<Error>,
-  ): void
+  track<T>(level: LogLevel, message: string, context: Optional<T>, error: Optional<Error>): void
 }

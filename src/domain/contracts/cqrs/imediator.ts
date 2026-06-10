@@ -10,12 +10,12 @@ export interface IMediator {
    * @param request The command object to be executed.
    * @returns A promise that resolves to the response from the handler.
    */
-  send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>>
+  send<TResponse>(request: ICommand<unknown>): Promise<ResultType<TResponse>>
 
   /**
    * Executes a query and returns the result.
    * @param request The query object to be executed.
    * @returns A promise that resolves to the result of the query.
    */
-  query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>>
+  query<TResponse>(request: IQuery): Promise<ResultType<TResponse>>
 }
