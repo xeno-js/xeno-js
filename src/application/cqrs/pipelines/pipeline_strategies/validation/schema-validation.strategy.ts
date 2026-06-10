@@ -15,11 +15,11 @@ export class SchemaValidationStrategy extends BaseValidationStrategy {
   }
 
   public isApplicable(request: IBaseRequest): boolean {
-    return this._validator.hasSchema(request.token.symbol.toString())
+    return this._validator.hasSchema(request.intent)
   }
 
   public async execute(request: IBaseRequest): Promise<ResultType<boolean>> {
-    const key = request.token.symbol.toString()
+    const key = request.intent
     const parseResult: ResultType<boolean> = this._validator.validate(key, request)
 
     if (!parseResult.isOk())

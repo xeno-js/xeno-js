@@ -1,1 +1,1 @@
-export * from './identity.mapper'
+export * from './claims-identity.mapper'

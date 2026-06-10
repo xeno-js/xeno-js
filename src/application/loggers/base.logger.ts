@@ -1,5 +1,5 @@
-import type { ILogger, ILoggerClient } from '@/domain'
-import type { Dictionary, LogLevel, Optional } from '@/shared'
+import type { ExecutionContext, ILogger, ILoggerClient, IRequestContext } from '@/domain'
+import type { LogLevel, Optional } from '@/shared'
 import { LOG_LEVEL } from '@/shared'
 
 /**
@@ -13,27 +13,24 @@ export class BaseLogger implements ILogger {
    */
   constructor(
     private readonly _loggers: ILoggerClient[],
+    private readonly _requestContext: IRequestContext<ExecutionContext>,
     private readonly _minLevel: LogLevel = LOG_LEVEL.DEBUG,
   ) {}
 
-  public info(message: string, context: Optional<Dictionary<unknown>> = undefined): void {
-    this.broadcast(LOG_LEVEL.INFO, message, context)
+  public info(message: string): void {
+    this.broadcast(LOG_LEVEL.INFO, message)
   }
 
-  public warn(message: string, context: Optional<Dictionary<unknown>> = undefined): void {
-    this.broadcast(LOG_LEVEL.WARN, message, context)
+  public warn(message: string): void {
+    this.broadcast(LOG_LEVEL.WARN, message)
   }
 
-  public debug(message: string, context: Optional<Dictionary<unknown>> = undefined): void {
-    this.broadcast(LOG_LEVEL.DEBUG, message, context)
+  public debug(message: string): void {
+    this.broadcast(LOG_LEVEL.DEBUG, message)
   }
 
-  public error(message: string, error?: Error, context?: Optional<Dictionary<unknown>>): void {
-    this.broadcast(LOG_LEVEL.ERROR, message, context, error)
-  }
-
-  public trackException(error: Error, context?: Optional<Dictionary<unknown>>): void {
-    this.broadcast(LOG_LEVEL.ERROR, error.message, context, error)
+  public error(message: string, error?: Error): void {
+    this.broadcast(LOG_LEVEL.ERROR, message, error)
   }
 
   /**
@@ -43,14 +40,10 @@ export class BaseLogger implements ILogger {
    * @param context Optional context information to include with the log message.
    * @param error Optional error object to include with the log message.
    */
-  private broadcast(
-    level: LogLevel,
-    message: string,
-    context: Optional<Dictionary<unknown>> = undefined,
-    error: Optional<Error> = undefined,
-  ): void {
+  private broadcast(level: LogLevel, message: string, error: Optional<Error> = undefined): void {
     if (level < this._minLevel) return
 
+    const context = this._requestContext.getContext()
     for (const logger of this._loggers) {
       logger.track(level, message, context, error)
     }
