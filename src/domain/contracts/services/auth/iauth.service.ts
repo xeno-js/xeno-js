@@ -1,4 +1,4 @@
-import type { ResultType } from '@/domain'
+import type { Identity, ResultType } from '@/domain'
 import type { AuthClaims } from '@/shared'
 
 /**
@@ -16,4 +16,12 @@ export interface IAuthService {
    * @returns A promise that resolves to the user's claims, or null if not authenticated.
    */
   getClaims(token: string): Promise<ResultType<AuthClaims>>
+
+  /**
+   * Authorizes a user based on their identity and a specific permission.
+   * @param identity The identity of the user to authorize.
+   * @param permission The permission to check for the user.
+   * @returns True if the user is authorized, false otherwise.
+   */
+  authorize(identity: Identity, permission: string): boolean
 }
