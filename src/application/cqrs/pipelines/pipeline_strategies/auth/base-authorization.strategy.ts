@@ -1,8 +1,8 @@
 import type {
+  ExecutionContext,
   IBaseRequest,
   Identity,
   IRequestContext,
-  ISecureCommand,
   IStrategy,
   ResultType,
 } from '@/domain'
@@ -13,31 +13,31 @@ import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES }
  * @description Abstract base class for authorization strategies in the CQRS pipeline. This class implements the IStrategy interface and provides a common structure for performing authorization checks based on the identity of the authenticated user. It defines an abstract method performAuthorizationCheck that must be implemented by concrete authorization strategies to specify the logic for checking if the user has the necessary permissions to execute a given request. The execute method retrieves the user's identity from the request context and ensures that the user is authenticated before delegating to the performAuthorizationCheck method for further authorization validation. If the user is not authenticated, it returns a failed Result with an appropriate AppError indicating that authentication is required.
  */
 export abstract class BaseAuthorizationStrategy<
-  TInput extends ISecureCommand,
-> implements IStrategy {
+  TInput extends IBaseRequest,
+> implements IStrategy<TInput> {
   /**
    * @description Constructs a new instance of the BaseAuthorizationStrategy class, which serves as an abstract base for specific authorization strategies in the CQRS pipeline. It takes an IRequestContext as a parameter, which is used to retrieve the identity of the currently authenticated user during the authorization process. This context is essential for performing the authorization checks based on the user's identity when executing requests that require specific permissions.
    * @param requestContext An instance of IRequestContext used to access the identity of the currently authenticated user. This context is essential for performing the authorization checks based on the user's identity when executing requests that require specific permissions.
    */
-  constructor(protected readonly _requestContext: IRequestContext<Identity>) {}
+  constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
 
   public abstract isApplicable(context: IBaseRequest): context is TInput
 
   public async execute(request: IBaseRequest): Promise<ResultType<void>> {
-    const auth = this._requestContext.getContext()
-    if (!Guards.isDefined(auth)) {
+    const ctx = this._requestContext.getContext()
+    if (!Guards.isDefined(ctx) || !Guards.isDefined(ctx.identity)) {
       return Result.fail(
         AppError.create({
           code: PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED,
           message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED],
           status: STATUS_CODES.UNAUTHORIZED,
-          name: request.token.symbol.toString(),
+          name: request.intent,
           cause: new Error('User is not authenticated'),
         }),
       )
     }
 
-    return this.performAuthorizationCheck(request, auth)
+    return this.performAuthorizationCheck(request, ctx.identity)
   }
 
   /**
@@ -48,7 +48,7 @@ export abstract class BaseAuthorizationStrategy<
    */
   protected abstract performAuthorizationCheck(
     request: IBaseRequest,
-    ctx: Identity,
+    auth: Identity,
   ): ResultType<void>
 
   /**
@@ -63,7 +63,7 @@ export abstract class BaseAuthorizationStrategy<
         code: PIPELINE_ERROR_CODES.AUTH_FORBIDDEN,
         message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.AUTH_FORBIDDEN],
         status: STATUS_CODES.FORBIDDEN,
-        name: request.token.symbol.toString(),
+        name: request.intent,
         cause: new Error(message),
       }),
     )

@@ -7,13 +7,13 @@ import type {
   ResultType,
 } from '@/domain'
 import { Result } from '@/domain'
-import { Guards, REQUEST_TYPE } from '@/shared'
+import { Guards } from '@/shared'
 
 /**
  * @description A pipeline behavior that implements caching for query requests in the CQRS architecture. This behavior checks if the incoming request is a query and if it implements the ICachedQuery interface. If so, it attempts to retrieve the response from the cache using the provided cache key. If a cached response is found, it returns it immediately. If not, it delegates control to the next handler in the pipeline to execute the query and retrieve the data from the database. After successfully retrieving the data, it stores the result in the cache with the specified TTL (time-to-live) for future requests. This behavior also includes error handling for cache read/write operations, ensuring that any cache-related errors do not disrupt the normal flow of query execution and that appropriate warnings are logged.
  */
 export class QueryCachingPipeline<
-  TInput extends ICachedQuery<TResult>,
+  TInput extends ICachedQuery,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**
@@ -27,11 +27,7 @@ export class QueryCachingPipeline<
   ) {}
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    if (
-      REQUEST_TYPE[request.type] !== REQUEST_TYPE.QUERY ||
-      Guards.isNullOrEmpty(request.cacheOptions.cacheKey)
-    )
-      return next()
+    if (Guards.isNullOrEmpty(request.cacheOptions.cacheKey)) return next()
 
     const bypass =
       request.cacheOptions.bypassCache === true || request.cacheOptions.consistentRead === true
@@ -43,15 +39,13 @@ export class QueryCachingPipeline<
         if (Guards.isDefined(cachedResponse)) {
           this._logger.debug(
             `[Cache HIT] Returning data from cache for: ${request.cacheOptions.cacheKey}`,
-            { ttl: request.cacheOptions.cacheTtlSeconds },
           )
           return Result.ok(cachedResponse)
         }
       } catch (error) {
         // If Redis fails, we don't crash the app. Log and proceed to the DB.
         this._logger.warn(
-          `[Cache ERROR] Unable to read cache for: ${request.cacheOptions.cacheKey}`,
-          { error },
+          `[Cache ERROR] Unable to read cache for: ${request.cacheOptions.cacheKey}. Proceeding to DB. Error: ${error instanceof Error ? error.message : String(error)}`,
         )
       }
     }
@@ -67,14 +61,10 @@ export class QueryCachingPipeline<
           result.getValueOrThrow(),
           request.cacheOptions.cacheTtlSeconds,
         )
-        this._logger.debug(
-          `[Cache SET] Data saved in cache for: ${request.cacheOptions.cacheKey}`,
-          { ttl: request.cacheOptions.cacheTtlSeconds },
-        )
+        this._logger.debug(`[Cache SET] Data saved in cache for: ${request.cacheOptions.cacheKey}`)
       } catch (error) {
         this._logger.warn(
-          `[Cache ERROR] Unable to save cache for: ${request.cacheOptions.cacheKey}`,
-          { error },
+          `[Cache ERROR] Unable to save cache for: ${request.cacheOptions.cacheKey}. Error: ${error instanceof Error ? error.message : String(error)}`,
         )
       }
     }
