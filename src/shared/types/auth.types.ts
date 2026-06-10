@@ -14,10 +14,6 @@ export interface AuthClaims {
    */
   readonly sub: string
   /**
-   * The email address of the user.
-   */
-  readonly email: Optional<string>
-  /**
    * The tenant ID associated with the user, if applicable. This is useful in multi-tenant applications to identify which tenant the user belongs to.
    */
   readonly tenantId: Optional<string>
@@ -29,18 +25,6 @@ export interface AuthClaims {
    * An array of permissions assigned to the user. This can be used for permission-based access control to determine what specific operations the user is authorized to perform.
    */
   readonly permissions: Optional<string[]>
-  /**
-   * The timestamp indicating when the user was deleted, if applicable. This can be used to determine if the user's account is active or has been marked for deletion.
-   */
-  readonly deletedAt: Optional<string>
-  /**
-   * The timestamp indicating until when the user is banned, if applicable. This can be used to determine if the user's account is currently suspended from performing certain actions or accessing resources.
-   */
-  readonly bannedUntil: Optional<string>
-  /**
-   * Additional claims can be added as needed.
-   */
-  readonly [key: string]: unknown
 }
 
 /**

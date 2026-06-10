@@ -32,7 +32,7 @@ export interface ICacheableOptions {
   readonly cacheTtlSeconds: Optional<number>
 
   /**
-   * @description If true, indicates that a consistent read is required, bypassing the cache. Similar to bypassCache but more semantically explicit.
+   * @description If true, indicates that the cache should be bypassed for this request. Similar to consistentRead but less semantically explicit.
    * If both bypassCache and consistentRead are provided, consistentRead takes precedence.
    */
   readonly bypassCache: Optional<boolean>

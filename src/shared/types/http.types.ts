@@ -1,4 +1,4 @@
-import type { Dictionary, Optional } from '@/shared'
+import type { Dictionary, Maybe, Optional } from '@/shared'
 
 /**
  * @description Agnostic contract used to execute HTTP calls independently
@@ -21,12 +21,12 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 
 /**
  * @description Header map used by agnostic HTTP clients.
  */
-export type HttpHeaders = Dictionary<string>
+export type HttpHeaders = Dictionary<string | string[]>
 
 /**
  * @description Query string value accepted by the HTTP contract.
  */
-export type HttpQueryValue = string | number | boolean | null | undefined
+export type HttpQueryValue = Maybe<string | number | boolean>
 
 /**
  * @description Agnostic contract used to execute HTTP calls independently

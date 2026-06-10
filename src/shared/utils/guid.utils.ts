@@ -15,6 +15,16 @@ export const GuidHelper = Object.freeze({
   },
 
   /**
+   * @description Validates if a value is a valid GUID (UUID v4) and not empty.
+   * @param value The value to validate.
+   * @returns True if the value is a valid and non-empty GUID, false otherwise.
+   */
+  isValidGuid(value: Guid): boolean {
+    const guid = value.toString()
+    return GuidHelper.isValid(guid) && !GuidHelper.isEmpty(guid)
+  },
+
+  /**
    * @description Validates if a string is a valid UUID v4.
    * @param value Candidate string to validate.
    * @returns True if the string is a valid UUID v4, false otherwise.
