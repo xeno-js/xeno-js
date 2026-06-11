@@ -1,4 +1,5 @@
-import type { ICache, Identity, IIdempotencyStore, IRequestContext } from '@/domain'
+import type { ICache, IIdempotencyStore, IRequestContext } from '@/domain'
+import type { Identity } from '@/shared'
 import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 /**
