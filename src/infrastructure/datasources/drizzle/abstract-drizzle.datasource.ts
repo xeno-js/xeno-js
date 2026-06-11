@@ -2,10 +2,11 @@ import type { SQL } from 'drizzle-orm'
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import type { PgTable } from 'drizzle-orm/pg-core'
 
-import type { IFilter, IFilterBuilder } from '@/domain'
+import type { IFilterBuilder } from '@/domain'
 import { AppError } from '@/domain'
 import { BaseDrizzleDataSource } from '@/infrastructure'
-import { type Dictionary, Guards, type Optional } from '@/shared'
+import type { Dictionary, IFilter, Optional } from '@/shared'
+import { Guards } from '@/shared'
 
 /**
  * @description An abstract base class for DrizzleDataSource that provides common functionality for executing SQL queries against a PostgreSQL database using Drizzle ORM. This class includes methods for retrieving table schemas from a schema registry and executing queries with support for cancellation via AbortSignal. It serves as a foundation for concrete implementations of data sources that interact with specific tables and schemas in the database, allowing them to focus on implementing the specific data access logic while leveraging the common query execution logic provided by this base class.

@@ -1,6 +1,6 @@
-import type { IDataSource, IFilter, IMapper, IRepository, ResultType } from '@/domain'
+import type { IDataSource, IMapper, IRepository, ResultType } from '@/domain'
 import { Result } from '@/domain'
-import type { Maybe, Optional } from '@/shared'
+import type { IFilter, Maybe, Optional } from '@/shared'
 import { Guards } from '@/shared'
 
 /**
