@@ -1,1 +1,1 @@
-export type * from './ifactory'
+export type * from './ifactory.contracts'
