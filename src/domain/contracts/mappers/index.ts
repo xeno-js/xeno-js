@@ -1,2 +1,2 @@
-export type * from './ibase-mapper'
-export type * from './imapper'
+export type * from './ibase-mapper.contracts'
+export type * from './imapper.contracts'

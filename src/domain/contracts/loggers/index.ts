@@ -1,2 +1,2 @@
-export type * from './ilogger'
-export type * from './ilogger-client'
+export type * from './ilogger.contracts'
+export type * from './ilogger-client.contracts'

@@ -1,1 +1,1 @@
-export type * from './imiddleware'
+export type * from './imiddleware.contracts'

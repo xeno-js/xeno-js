@@ -1,1 +1,1 @@
-export type * from './iauth.service'
+export type * from './iauth-service.contracts'
