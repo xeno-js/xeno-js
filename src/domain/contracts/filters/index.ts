@@ -1,2 +1,1 @@
-export type * from './ifilter'
-export type * from './ifilter-builder'
+export type * from './ifilter-builder.contracts'

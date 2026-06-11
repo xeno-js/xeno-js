@@ -1,2 +1,1 @@
-export type * from './ihttp-client'
-export type * from './ihttp-header.extractor'
+export type * from './ihttp-client.contracts'

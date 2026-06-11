@@ -1,1 +1,1 @@
-export type * from './idempotency-store'
+export type * from './idempotency-store.contracts'
