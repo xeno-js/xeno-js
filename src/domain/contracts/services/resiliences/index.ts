@@ -1,1 +1,1 @@
-export type * from './iservice.resilience'
+export type * from './iresilience-service.contracts'

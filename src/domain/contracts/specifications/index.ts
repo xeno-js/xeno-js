@@ -1,1 +1,1 @@
-export type * from './ispecification'
+export type * from './ispecification.contracts'
