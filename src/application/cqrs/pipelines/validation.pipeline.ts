@@ -1,6 +1,6 @@
-import type { Delegate, IBaseRequest, IPipelineBehavior, IStrategy, ResultType } from '@/domain'
+import type { Delegate, IPipelineBehavior, IStrategy, ResultType } from '@/domain'
 import { Result } from '@/domain'
-
+import type { IBaseRequest } from '@/shared'
 /**
  * @description A pipeline behavior that performs validation on the incoming request in a CQRS architecture. It checks if the request has a validate method and, if so, invokes it to perform validation. If the validation fails, it returns a failed Result containing the validation error. If the validation succeeds or if there is no validate method, it proceeds to the next behavior in the pipeline. This allows for a structured approach to ensuring that requests meet certain criteria before being processed further in the CQRS pipeline.
  */

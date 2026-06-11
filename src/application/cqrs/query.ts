@@ -1,13 +1,14 @@
 import { BaseRequest } from '@/application'
-import type { ICachedQuery, IQuery } from '@/domain'
-import {
-  type Dictionary,
-  type Guid,
-  type ICacheableOptions,
-  type IPaginationParams,
-  type Optional,
-  REQUEST_TYPE,
+import type {
+  Dictionary,
+  Guid,
+  ICacheableOptions,
+  ICachedQuery,
+  IPaginationParams,
+  IQuery,
+  Optional,
 } from '@/shared'
+import { REQUEST_TYPE } from '@/shared'
 
 /**
  * @fileoverview Defines the Query class, which serves as a base implementation for query requests in a CQRS architecture. The Query class implements the IQuery interface and provides common properties such as the request type, timestamp, and a unique token for identification.
