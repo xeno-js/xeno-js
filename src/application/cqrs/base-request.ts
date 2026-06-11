@@ -1,9 +1,7 @@
 /**
  * @fileoverview Defines the BaseRequest class, which serves as a base implementation for both command and query requests in a CQRS architecture. The BaseRequest class implements the IBaseRequest interface and provides common properties such as the request type, timestamp, and a unique token for identification.
  */
-
-import type { IBaseRequest } from '@/domain'
-import type { Dictionary, Guid, Optional, RequestType } from '@/shared'
+import type { Dictionary, Guid, IBaseRequest, Optional, RequestType } from '@/shared'
 
 /**
  * A class representing a base request in a CQRS architecture. This class implements the IBaseRequest interface and provides common properties and functionality for both command and query requests.

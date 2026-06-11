@@ -1,4 +1,5 @@
-import type { Delegate, IBaseRequest, ILogger, IPipelineBehavior, ResultType } from '@/domain'
+import type { Delegate, ILogger, IPipelineBehavior, ResultType } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 
 /**
  * @description A pipeline behavior that logs the handling of commands and queries, including their success or failure, along with contextual information such as request ID, correlation ID, and user ID.

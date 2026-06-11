@@ -1,6 +1,5 @@
 import { BaseRequest } from '@/application'
-import type { ICommand } from '@/domain'
-import type { Dictionary, Guid, Optional } from '@/shared'
+import type { Dictionary, Guid, ICommand, Optional } from '@/shared'
 import { REQUEST_TYPE } from '@/shared'
 
 /**

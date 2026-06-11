@@ -1,12 +1,6 @@
-import type {
-  ExecutionContext,
-  IBaseRequest,
-  Identity,
-  IRequestContext,
-  IStrategy,
-  ResultType,
-} from '@/domain'
+import type { IRequestContext, IStrategy, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { ExecutionContext, IBaseRequest, Identity } from '@/shared'
 import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
 
 /**

@@ -1,11 +1,6 @@
-import type {
-  Delegate,
-  IBaseRequest,
-  IIdempotencyStore,
-  IPipelineBehavior,
-  ResultType,
-} from '@/domain'
+import type { Delegate, IIdempotencyStore, IPipelineBehavior, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 import {
   Guards,
   IDEMPOTENCY_CONSTANTS,

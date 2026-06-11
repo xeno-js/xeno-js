@@ -1,15 +1,13 @@
 import type {
   Delegate,
-  IBaseRequest,
-  ICommand,
   IHandler,
   IMediator,
   IPipelineBehavior,
-  IQuery,
   IServiceScope,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { IBaseRequest, ICommand, IQuery } from '@/shared'
 import { Guards, TokenHelper, TOKENS } from '@/shared'
 
 /**

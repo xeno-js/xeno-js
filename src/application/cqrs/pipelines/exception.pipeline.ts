@@ -1,5 +1,6 @@
-import type { Delegate, IBaseRequest, IPipelineBehavior, ResultType } from '@/domain'
+import type { Delegate, IPipelineBehavior, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 import { PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
 
 /**

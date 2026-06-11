@@ -1,4 +1,5 @@
-import type { Delegate, IBaseRequest, ILogger, IPipelineBehavior, ResultType } from '@/domain'
+import type { Delegate, ILogger, IPipelineBehavior, ResultType } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 import { Guards } from '@/shared'
 
 /**

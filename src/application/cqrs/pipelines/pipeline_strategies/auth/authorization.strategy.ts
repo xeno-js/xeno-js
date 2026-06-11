@@ -1,13 +1,7 @@
 import { BaseAuthorizationStrategy } from '@/application'
-import type {
-  AppError,
-  ExecutionContext,
-  IAuthService,
-  IBaseRequest,
-  Identity,
-  IRequestContext,
-} from '@/domain'
+import type { AppError, IGateKeeper, IRequestContext } from '@/domain'
 import { Result } from '@/domain'
+import type { ExecutionContext, IBaseRequest, Identity } from '@/shared'
 import { Guards } from '@/shared'
 
 /**
@@ -18,7 +12,7 @@ export class AuthorizationStrategy extends BaseAuthorizationStrategy<IBaseReques
    * @param requestContext An instance of IRequestContext used to access the identity of the currently authenticated user. This context is essential for performing the authorization checks based on the user's permissions when executing commands that require specific permission-based access.
    */
   constructor(
-    private readonly _authService: IAuthService,
+    private readonly _gateKeeper: IGateKeeper,
     requestContext: IRequestContext<ExecutionContext>,
   ) {
     super(requestContext)
@@ -34,7 +28,7 @@ export class AuthorizationStrategy extends BaseAuthorizationStrategy<IBaseReques
   ): Result<void, AppError> {
     const permissions = auth.permissions ?? []
     for (const permission of permissions) {
-      if (this._authService.authorize(auth, permission)) {
+      if (this._gateKeeper.authorize(auth, permission)) {
         return Result.ok()
       }
     }
