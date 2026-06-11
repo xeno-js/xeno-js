@@ -11,12 +11,12 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     passWithNoTests: true,
-    include: ['tests/**/*.{test,spec}.ts'],
+    include: ['**/__tests__/**/*.{test,spec}.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],
       include: ['src/**/*.ts'],
-      exclude: ['src/index.ts'],
+      exclude: ['**/index.ts', 'src/domain/contracts/**', '**/*.d.ts', '**/*.types.ts', '**/__tests__/**', '**/*.constants.ts', '**/*.enums.ts', '**/*.contracts.ts'],
       thresholds: {
         lines: 80,
         functions: 80,
