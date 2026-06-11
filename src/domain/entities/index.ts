@@ -1,1 +1,1 @@
-export type * from './ientity'
+export type * from './ientity.contracts'
