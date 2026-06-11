@@ -204,7 +204,7 @@ export const Guards = Object.freeze({
       return false
     }
 
-    if (!Guards.isObjectRecord(value) && !Guards.isFunction(value)) {
+    if (!Guards.isObject(value) && !Guards.isFunction(value)) {
       return false
     }
 

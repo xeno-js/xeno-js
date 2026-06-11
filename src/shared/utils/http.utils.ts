@@ -1,9 +1,16 @@
 /**
  * @description This module provides utility functions for handling HTTP-related tasks, such as normalizing HTTP headers. It includes a single function, `normalizeHeaders`, which takes an input of unknown type and returns an object with normalized header values. The function ensures that all header values are converted to strings, and if a header value is an array, it joins the elements into a single string separated by commas. This utility is useful for ensuring consistent header formats when working with various HTTP client libraries.
  */
-
-import type { Dictionary, HttpHeaders } from '@/shared'
-import { Guards } from '@/shared'
+import type {
+  Dictionary,
+  ErrorResponseDto,
+  Guid,
+  HttpHeaders,
+  Optional,
+  ResponseDto,
+  SuccessResponseDto,
+} from '@/shared'
+import { DateHelper, Guards, GuidHelper, STATUS_CODES } from '@/shared'
 
 /**
  * @description A helper object that provides utility functions for HTTP-related tasks. Currently, it includes a method for normalizing HTTP headers, which ensures that all header values are strings and handles cases where header values may be arrays. This helper can be extended in the future to include additional HTTP-related utilities as needed.
@@ -29,5 +36,88 @@ export const HttpHelper = Object.freeze({
     }
 
     return normalized
+  },
+  /**
+   * @description Generates a standardized successful HTTP response with the provided data, status code, metadata, and custom headers. The response includes a success flag set to true, the data payload, and any additional metadata. The headers include a default 'Content-Type' of 'application/json' along with any custom headers provided.
+   * @param data The actual data payload to be included in the successful response. This can be of any type and will be wrapped in a SuccessResponseDto structure.
+   * @param status The HTTP status code for the response, defaulting to 200 (OK) if not provided. This allows for flexibility in indicating different types of successful responses (e.g., 201 for created, 204 for no content).
+   * @param meta Optional metadata to be included in the response. This can contain additional information relevant to the response, such as pagination details, rate limit information, or any other contextual data that may be useful for clients consuming the API.
+   * @param customHeaders Optional custom HTTP headers to be included in the response. This allows for adding any additional headers that may be necessary for specific responses, such as caching directives, custom authentication headers, or other relevant information.
+   * @returns A ResponseDto object representing the successful HTTP response, containing the status code, success flag, headers, and data payload structured as a SuccessResponseDto.
+   */
+  success<T>(
+    data: T,
+    status = 200,
+    meta: Dictionary = {},
+    customHeaders: HttpHeaders = {},
+  ): ResponseDto<T> {
+    const successPayload: SuccessResponseDto<T> = {
+      success: true,
+      data,
+      meta,
+    }
+
+    return {
+      status,
+      ok: true,
+      headers: {
+        ...customHeaders,
+        'Content-Type': ['application/json'],
+      },
+      data: successPayload,
+    }
+  },
+
+  /**
+   * @description Generates a standardized error HTTP response with the provided error details, status code, correlation ID, request ID, timestamp, and custom headers. The response includes a success flag set to false, an error object containing the error code, message, and optional details, as well as metadata such as correlation ID and request ID for tracking purposes. The headers include a default 'Content-Type' of 'application/json' along with any custom headers provided.
+   * @param params An object containing the parameters for generating the error response, including:
+   * - code: A string code that categorizes the type of error that occurred. This can be used for programmatic handling of different error types.
+   * - message: A human-readable message that describes the error. This should provide enough information for developers to understand what went wrong and how to address it.
+   * - status: An optional HTTP status code for the error response, defaulting to 500 (Internal Server Error) if not provided. This allows for flexibility in indicating different types of errors (e.g., 400 for bad request, 401 for unauthorized).
+   * - details: Optional additional details about the error. This can include stack traces, validation errors, or any other relevant information that can assist in diagnosing and fixing the issue.
+   * - correlationId: An optional correlation ID for tracking the error across different systems or services. If not provided, a new GUID will be generated.
+   * - requestId: An optional request ID for tracking the specific request that led to the error. If not provided, a new GUID will be generated.
+   * - customHeaders: Optional custom HTTP headers to be included in the error response. This allows for adding any additional headers that may be necessary for specific error responses, such as retry-after headers or custom authentication headers.
+   * @returns A ResponseDto object representing the error HTTP response, containing the status code, success flag, headers, and data payload structured as an ErrorResponseDto.
+   */
+  error(params: {
+    code: string
+    message: string
+    status: Optional<number>
+    details: Optional<string>
+    correlationId: Optional<Guid>
+    requestId: Optional<Guid>
+    customHeaders: Optional<HttpHeaders>
+  }): ResponseDto<never> {
+    const status = params.status ?? STATUS_CODES.INTERNAL_SERVER_ERROR
+    const correlationId = params.correlationId ?? GuidHelper.generate()
+    const requestId = params.requestId ?? GuidHelper.generate()
+
+    const errorPayload: ErrorResponseDto = {
+      success: false,
+      error: {
+        code: params.code,
+        message: params.message,
+        details: params.details ?? undefined,
+      },
+      correlationId,
+      requestId,
+      timestamp: DateHelper.toISOString(new Date()),
+    }
+
+    return {
+      status,
+      ok: false,
+      headers: {
+        ...(params.customHeaders ?? {}),
+        'Content-Type': ['application/json'],
+        'X-Correlation-Id': [correlationId],
+        'X-Request-Id': [requestId],
+        'Cache-Control': ['no-store, no-cache, must-revalidate, proxy-revalidate'],
+        'Pragma': ['no-cache'],
+        'Expires': ['0'],
+      },
+      data: errorPayload,
+    }
   },
 } as const)

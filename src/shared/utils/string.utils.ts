@@ -84,4 +84,19 @@ export const StringHelper = Object.freeze({
     const year = new Date().getFullYear()
     return `${prefix}-${randomPart}-${year}` // Es: TRV-XJ82L9-2026
   },
+
+  /**
+   * @description Extracts a single string value from a header that may be a string or an array of strings.
+   * @param value The header value, which can be a string or an array of strings.
+   * @returns The first string value if it's an array, the string itself if it's a string, or undefined if it's empty or not defined.
+   */
+  getSingleValue(value: string | string[]): Optional<string> {
+    if (Guards.isArray(value)) {
+      if (Guards.isNullOrEmpty(value)) {
+        return undefined
+      }
+      return value[0]
+    }
+    return value
+  },
 } as const)

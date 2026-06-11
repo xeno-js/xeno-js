@@ -11,7 +11,7 @@ export const DateHelper = Object.freeze({
    * @param date Input date.
    * @returns ISO 8601 UTC string.
    */
-  toISO(date: Date): string {
+  toISOString(date: Date): string {
     return date.toISOString()
   },
 
