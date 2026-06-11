@@ -1,6 +1,7 @@
 import { BaseValidationStrategy } from '@/application'
-import type { IBaseRequest, ResultType } from '@/domain'
+import type { ResultType } from '@/domain'
 import { Result } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 import { Guards, GuidHelper } from '@/shared'
 
 /**

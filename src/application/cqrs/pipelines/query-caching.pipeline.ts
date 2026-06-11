@@ -1,12 +1,6 @@
-import type {
-  Delegate,
-  ICache,
-  ICachedQuery,
-  ILogger,
-  IPipelineBehavior,
-  ResultType,
-} from '@/domain'
+import type { Delegate, ICache, ILogger, IPipelineBehavior, ResultType } from '@/domain'
 import { Result } from '@/domain'
+import type { ICachedQuery } from '@/shared'
 import { Guards } from '@/shared'
 
 /**

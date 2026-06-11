@@ -1,5 +1,6 @@
-import type { IBaseRequest, IStrategy, ResultType } from '@/domain'
+import type { IStrategy, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { IBaseRequest } from '@/shared'
 import { PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
 
 /**
