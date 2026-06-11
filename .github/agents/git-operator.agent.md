@@ -5,7 +5,7 @@ description:
   pusha, invia modifiche su branch, versiona le modifiche, prepara un commit,
   raggruppa i file per commit.'
 tools: [execute]
-model: 'claude-haiku-3-5'
+model: Auto (copilot)
 argument-hint: 'Branch di destinazione (es. main, develop, feat/nome-feature)'
 user-invocable: true
 ---
@@ -174,69 +174,3 @@ Al termine, mostra all'utente:
   `git push` su branch protetto senza autorizzazione).
 - Non eseguire operazioni che potrebbero violare le policy aziendali o di
   sicurezza (es. push su branch protetto senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di performance (es.
-  push di grandi quantità di dati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di sicurezza (es. push
-  di dati sensibili senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di compliance (es.
-  push di dati regolamentati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi legali (es. push di
-  dati protetti da copyright senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di reputazione (es.
-  push di dati inappropriati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di governance (es.
-  push di dati non conformi senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di audit (es. push di
-  dati non tracciati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di monitoraggio (es.
-  push di dati non monitorati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di logging (es. push
-  di dati non loggati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di alerting (es. push
-  di dati non alertati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di incident response
-  (es. push di dati non gestiti senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di disaster recovery
-  (es. push di dati non backupati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di business continuity
-  (es. push di dati non ridondati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di risk management
-  (es. push di dati non valutati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di change management
-  (es. push di dati non approvati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di configuration
-  management (es. push di dati non versionati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di release management
-  (es. push di dati non testati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di deployment
-  management (es. push di dati non deployati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di performance
-  management (es. push di dati non ottimizzati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di capacity management
-  (es. push di dati non scalabili senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di availability
-  management (es. push di dati non ridondati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di security management
-  (es. push di dati non protetti senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di compliance
-  management (es. push di dati non conformi senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di legal management
-  (es. push di dati non autorizzati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di reputation
-  management (es. push di dati inappropriati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di governance
-  management (es. push di dati non conformi senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di audit management
-  (es. push di dati non tracciati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di monitoring
-  management (es. push di dati non monitorati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di logging management
-  (es. push di dati non loggati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di alerting management
-  (es. push di dati non alertati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di incident response
-  management (es. push di dati non gestiti senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di disaster recovery
-  management (es. push di dati non backupati senza autorizzazione).
-- Non eseguire operazioni che potrebbero causare problemi di business continuity
-  management (es. push di dati non ridondati senza autorizzazione).
