@@ -1,15 +1,13 @@
+import type { IGateKeeper, IMiddleware, IRequestContext, IServiceExtractor } from '@/domain'
 import type {
   ExecutionContext,
-  Identity,
-  IHttpHeaderExtractor,
-  IMiddleware,
-  IRequestContext,
-  IStrategy,
+  HttpHeaders,
+  Metadata,
   NetworkContext,
+  ResponseDto,
   TracingContext,
-} from '@/domain'
-import type { HttpHeaders, Optional } from '@/shared'
-import { GUEST, GuidHelper } from '@/shared'
+} from '@/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, GuidHelper, HttpHelper, STATUS_CODES } from '@/shared'
 
 /**
  * @description The RequestContextMiddleware class is responsible for extracting metadata from incoming HTTP requests, performing authentication using the provided authentication middleware, and composing an ExecutionContext that includes identity, network, and tracing information. It implements the IMiddleware interface, allowing it to be used as part of a middleware chain in the request processing pipeline. The middleware ensures that the ExecutionContext is properly set up for downstream handlers, controllers, or use cases to access necessary contextual information for processing the request.
@@ -17,39 +15,65 @@ import { GUEST, GuidHelper } from '@/shared'
 export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,
-    private readonly _extractor: IHttpHeaderExtractor,
-    private readonly _authMiddleware: IStrategy<Optional<string>, Identity>,
+    private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
+    private readonly _gateKeeper: IGateKeeper,
   ) {}
 
-  public async execute<T>(headers: HttpHeaders, next: () => Promise<T>): Promise<T> {
-    const meta = this._extractor.extract(headers)
-    const authResult = await this._authMiddleware.execute(meta.token)
-    if (!authResult.isOk()) {
-      const error = authResult.getErrorOrThrow()
-      throw error
-    }
+  public async execute<T>(
+    headers: HttpHeaders,
+    next: () => Promise<ResponseDto<T>>,
+  ): Promise<ResponseDto<T>> {
+    let correlationId = GuidHelper.generate()
+    let requestId = GuidHelper.generate()
+    try {
+      const meta = this._extractor.extract(headers)
+      correlationId = meta.correlationId ?? correlationId
+      requestId = meta.requestId ?? requestId
 
-    // 3. Composizione dell'ExecutionContext strutturato
-    const network: NetworkContext = {
-      requestId: meta.requestId ?? GuidHelper.generate(),
-      clientIp: meta.clientIp,
-    }
-    const tracing: TracingContext = {
-      correlationId: meta.correlationId ?? GuidHelper.generate(),
-      startTime: Date.now(),
-      spanId: meta.spanId,
-    }
-    const identity = authResult.getValueOrThrow()
+      const authResult = await this._gateKeeper.authenticate(meta.token)
+      if (!authResult.isOk()) {
+        const error = authResult.getErrorOrThrow()
+        return HttpHelper.error({
+          code: error.code,
+          message: error.message,
+          status: error.status,
+          details: undefined,
+          correlationId,
+          requestId,
+          customHeaders: undefined,
+        })
+      }
 
-    const executionContext: ExecutionContext = {
-      identity: identity ?? (GUEST as unknown as Identity),
-      network,
-      tracing,
-    }
+      const network: NetworkContext = {
+        requestId,
+        clientIp: meta.clientIp,
+      }
+      const tracing: TracingContext = {
+        correlationId,
+        startTime: Date.now(),
+        spanId: meta.spanId,
+      }
+      const identity = authResult.getValueOrThrow()
 
-    // 4. Avvio dell'AsyncLocalStorage per i middleware successivi, controller o use cases
-    return this._requestContext.runAsync(executionContext, async () => {
-      return next() // Passa al prossimo anello della catena
-    })
+      const executionContext: ExecutionContext = {
+        identity: identity!,
+        network,
+        tracing,
+      }
+
+      return this._requestContext.runAsync(executionContext, async () => {
+        return next()
+      })
+    } catch (error) {
+      return HttpHelper.error({
+        code: ERROR_CODES.SYSTEM_ERROR,
+        message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
+        status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+        details: error instanceof Error ? error.message : String(error),
+        correlationId,
+        requestId,
+        customHeaders: undefined,
+      })
+    }
   }
 }
