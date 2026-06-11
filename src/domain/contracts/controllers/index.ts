@@ -1,1 +1,1 @@
-export type * from './icontroller'
+export type * from './icontroller.contracts'
