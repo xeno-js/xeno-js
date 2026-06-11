@@ -1,3 +1,3 @@
-export type * from './iservice-container'
-export type * from './iservice-scope'
-export type * from './service-descriptor'
+export type * from './iservice-container.contracts'
+export type * from './iservice-descriptor.contracts'
+export type * from './iservice-scope.contracts'

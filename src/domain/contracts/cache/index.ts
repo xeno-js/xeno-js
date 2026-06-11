@@ -1,1 +1,1 @@
-export type * from './icache'
+export type * from './icache.contracts'
