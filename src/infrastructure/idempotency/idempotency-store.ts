@@ -1,5 +1,5 @@
 import type { ICache, IIdempotencyStore, IRequestContext } from '@/domain'
-import type { Identity } from '@/shared'
+import type { Identity, Optional } from '@/shared'
 import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 /**
@@ -43,11 +43,11 @@ export class IdempotencyStore implements IIdempotencyStore {
     )
   }
 
-  public async getPayload<T>(commandId: string): Promise<T | null> {
+  public async getPayload<T>(commandId: string): Promise<Optional<T>> {
     const key = this.buildContextualKey(commandId)
     const payload = await this._cache.get<T>(`${IDEMPOTENCY_CONSTANTS.PROCESSED_KEY_PREFIX}${key}`)
 
-    return payload ?? null
+    return payload
   }
 
   public async releaseLock(commandId: string): Promise<void> {

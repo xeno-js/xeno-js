@@ -7,7 +7,7 @@ import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES }
 /**
  * @description Implementation of the IValidatorService interface using Zod schemas for validation. This service maintains a registry of Zod schemas identified by unique keys and provides methods to check for the existence of a schema and to validate data against a specified schema. The validate method returns a ResultType indicating success or failure, with detailed error information in case of validation failure, including formatted error messages from Zod.
  */
-export class ZodValidatorService<T> implements IValidatorService {
+export class ZodValidatorService<T> implements IValidatorService<T> {
   /**
    * @description Constructs a new instance of the ZodValidatorService class, which takes a Map of string keys to ZodType instances as a parameter. This schema registry is used to store and manage the validation schemas that will be applied to incoming data. The constructor initializes the service with the provided schema registry, allowing it to perform validation checks based on the registered schemas when the validate method is called.
    * @param _schemaRegistry A Map where the keys are strings representing the type of data or request, and the values are ZodType instances that define the validation rules for that type. This registry is essential for the operation of the validator service, as it allows it to look up and apply the correct schema for validating incoming data.

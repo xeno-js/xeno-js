@@ -9,7 +9,7 @@ import {
   wrap,
 } from 'cockatiel'
 
-import type { IFactory, IServiceResilience } from '@/domain'
+import { AppError, type IFactory, type IServiceResilience } from '@/domain'
 import { ServiceResilience } from '@/infrastructure'
 import {
   Guards,
@@ -90,10 +90,21 @@ export class CockatielResilienceFactory implements IFactory<ResilienceConfig, IS
     if (!Guards.isDefined(error) || !Guards.isObject(error)) {
       return false
     }
+    if (error instanceof AppError) {
+      const status = error.status
+      return (
+        Guards.isDefined(status) && status >= STATUS_CODES.INTERNAL_SERVER_ERROR && status < 600
+      )
+    }
+    if (error instanceof Error) {
+      const status = 'status' in error ? (error as { status?: number }).status : undefined
+      if (Guards.isDefined(status)) {
+        return status >= STATUS_CODES.INTERNAL_SERVER_ERROR && status < 600
+      }
+      return true
+    }
 
-    const status = 'status' in error ? (error as { status?: number }).status : undefined
-
-    return status === STATUS_CODES.INTERNAL_SERVER_ERROR
+    return false
   }
 
   private checkConfigValue(value: Optional<number>, defaultValue: number, message: string): number {
