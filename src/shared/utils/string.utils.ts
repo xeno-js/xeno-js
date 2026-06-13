@@ -10,7 +10,7 @@ export const StringHelper = Object.freeze({
    * @param value The value to stringify.
    * @returns A JSON string representation of the value, or a fallback string if serialization fails.
    */
-  safeStringify(value: unknown): string {
+  safeStringify<T>(value: T): string {
     try {
       return JSON.stringify(value)
     } catch {

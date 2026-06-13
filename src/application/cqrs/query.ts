@@ -4,9 +4,9 @@ import type {
   Guid,
   ICacheableOptions,
   ICachedQuery,
-  IPaginationParams,
   IQuery,
   Optional,
+  ReadCriteria,
 } from '@/shared'
 import { REQUEST_TYPE } from '@/shared'
 
@@ -26,10 +26,10 @@ export abstract class Query extends BaseRequest implements IQuery {
    * @param token A string used to create a unique token for this query, which can be used for idempotency and tracing purposes.
    * @param timestamp The timestamp when the query is created.
    * @param signal An optional AbortSignal to allow cancellation of the query.
-   * @param pagination The pagination parameters for the query, which can include page number, page size, sorting, and filtering options.
+   * @param readCriteria The criteria for reading data, which can include pagination, sorting, and filtering options.
    */
   protected constructor(
-    public readonly pagination: IPaginationParams,
+    public readonly readCriteria: ReadCriteria,
     id: Guid,
     timestamp: Date,
     correlationId: Guid,
@@ -86,10 +86,10 @@ export abstract class CachedQuery extends Query implements ICachedQuery {
     permissions: Optional<readonly string[]>,
     rawHeaders: Optional<Dictionary<string>>,
     signal: Optional<AbortSignal>,
-    pagination: IPaginationParams,
+    readCriteria: ReadCriteria,
   ) {
     super(
-      pagination,
+      readCriteria,
       id,
       timestamp,
       correlationId,

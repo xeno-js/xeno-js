@@ -1,4 +1,4 @@
-import type { Dictionary, Guid, HttpHeaders, Optional } from '@/shared'
+import type { Dictionary, Guid, HttpHeaders, IPaginatedResult, Optional } from '@/shared'
 
 /**
  * @description Defines the structure of the API response returned by the server. It includes a status indicating whether the request was successful or resulted in an error, a boolean flag 'ok' for quick checks, headers containing any relevant HTTP headers, and a data field that can either be a successful response with the expected data or an error response with details about the failure.
@@ -21,9 +21,9 @@ export interface SuccessResponseDto<T = unknown> {
   /** @description A boolean flag that is always true for successful responses. This provides a consistent way to check for success in the API response. */
   readonly success: true
   /** @description The actual data payload returned by the API call. The structure of this field can vary depending on the specific endpoint and the type of data being returned. It is defined as a generic type T, allowing for flexibility in the shape of the response data. */
-  data: T
+  readonly data: T | IPaginatedResult<T>
   /** @description Metadata associated with the successful API response. This can include pagination information, rate limit details, or other relevant metadata. */
-  meta: Dictionary
+  readonly meta: Dictionary
 }
 
 /**

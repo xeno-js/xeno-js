@@ -13,7 +13,7 @@ export const Guards = Object.freeze({
    * @returns True when value is defined.
    */
   isDefined<TValue>(value: Maybe<TValue>): value is TValue {
-    return value !== null && value !== undefined && value !== '' && value !== false
+    return value !== null && value !== undefined && value !== '' && !Number.isNaN(value)
   },
 
   /**

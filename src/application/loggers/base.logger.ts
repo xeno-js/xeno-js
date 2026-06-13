@@ -1,6 +1,6 @@
 import type { ILogger, ILoggerClient, IRequestContext } from '@/domain'
 import type { ExecutionContext, LogLevel, Optional } from '@/shared'
-import { LOG_LEVEL } from '@/shared'
+import { LOG_LEVEL, LOG_LEVEL_NAMES } from '@/shared'
 
 /**
  * @description Concrete implementation of the ILogger interface that serves as a central logging service within the application. This class is designed to broadcast log messages to multiple logging clients (implementations of ILoggerClient) that are injected via the constructor. The BaseLogger class provides methods for logging messages at different levels (info, warn, debug, error) and ensures that only messages that meet or exceed the specified minimum log level are forwarded to the registered logging clients. This design allows for flexibility in logging, enabling the use of various logging providers (e.g., Sentry, Pino) without coupling the application code to specific logging frameworks.
@@ -43,9 +43,10 @@ export class BaseLogger implements ILogger {
   private broadcast(level: LogLevel, message: string, error: Optional<Error> = undefined): void {
     if (level < this._minLevel) return
 
+    const logMessage = `[${LOG_LEVEL_NAMES[level]}] ${message}`
     const context = this._requestContext.getContext()
     for (const logger of this._loggers) {
-      logger.track(level, message, context, error)
+      logger.track(level, logMessage, context, error)
     }
   }
 }

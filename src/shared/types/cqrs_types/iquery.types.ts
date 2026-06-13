@@ -1,4 +1,4 @@
-import type { ICacheableOptions, IPaginationParams } from '@/shared'
+import type { ICacheableOptions, ReadCriteria } from '@/shared'
 
 import type { IBaseRequest } from './index'
 
@@ -10,8 +10,8 @@ import type { IBaseRequest } from './index'
  * @description An interface representing a paginated query request, which extends the IBaseRequest interface and includes pagination parameters.
  */
 export interface IQuery extends IBaseRequest {
-  /** @description The pagination parameters for the query, which can include page number, page size, sorting, and filtering options. */
-  pagination: IPaginationParams
+  /** @description The criteria for reading data, which can include pagination, sorting, and filtering options. */
+  readCriteria: ReadCriteria
 }
 
 /**

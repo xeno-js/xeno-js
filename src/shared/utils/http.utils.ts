@@ -6,6 +6,7 @@ import type {
   ErrorResponseDto,
   Guid,
   HttpHeaders,
+  IPaginatedResult,
   Optional,
   ResponseDto,
   SuccessResponseDto,
@@ -46,7 +47,7 @@ export const HttpHelper = Object.freeze({
    * @returns A ResponseDto object representing the successful HTTP response, containing the status code, success flag, headers, and data payload structured as a SuccessResponseDto.
    */
   success<T>(
-    data: T,
+    data: T | IPaginatedResult<T>,
     status = 200,
     meta: Dictionary = {},
     customHeaders: HttpHeaders = {},
