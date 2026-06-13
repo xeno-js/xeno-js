@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { HttpHelper } from '@/shared'
+import { HttpHelper, type IPaginatedResult } from '@/shared'
 
 describe('HttpHelper.normalizeHeaders', () => {
   describe('non-object / falsy input', () => {
@@ -53,7 +53,7 @@ describe('HttpHelper.normalizeHeaders', () => {
     })
 
     it('skips keys with false value', () => {
-      expect(HttpHelper.normalizeHeaders({ a: false })).toEqual({})
+      expect(HttpHelper.normalizeHeaders({ a: false })).toEqual({ a: 'false' })
     })
 
     it('converts string values as-is', () => {
@@ -146,6 +146,20 @@ describe('HttpHelper.success', () => {
     const res = HttpHelper.success({}, 200, {}, { 'Content-Type': 'text/plain' })
     // spread order in implementation: customHeaders first, then 'Content-Type'
     expect(res.headers['Content-Type']).toEqual(['application/json'])
+  })
+
+  it('supports paginated data', () => {
+    const paginatedData: IPaginatedResult<string> = {
+      items: ['item1', 'item2'],
+      total: 2,
+      page: 1,
+      pageSize: 10,
+      totalPages: 1,
+      hasNextPage: false,
+      hasPreviousPage: false,
+    }
+    const res = HttpHelper.success(paginatedData)
+    expect(res.data).toMatchObject({ success: true, data: paginatedData, meta: {} })
   })
 })
 

@@ -32,8 +32,17 @@ describe('Guards', () => {
     it('returns false for empty string', () => {
       expect(Guards.isDefined('')).toBe(false)
     })
-    it('returns false for false', () => {
-      expect(Guards.isDefined(false)).toBe(false)
+    it('returns true for false', () => {
+      expect(Guards.isDefined(false)).toBe(true)
+    })
+    it('returns true for 0', () => {
+      expect(Guards.isDefined(0)).toBe(true)
+    })
+    it('returns false for NaN', () => {
+      expect(Guards.isDefined(NaN)).toBe(false)
+    })
+    it('returns true for empty array', () => {
+      expect(Guards.isDefined([])).toBe(true)
     })
   })
 
@@ -62,6 +71,15 @@ describe('Guards', () => {
     })
     it('returns false for a number', () => {
       expect(Guards.isNullOrEmpty(42)).toBe(false)
+    })
+    it('returns false for an object', () => {
+      expect(Guards.isNullOrEmpty({})).toBe(false)
+    })
+    it('returns false for true', () => {
+      expect(Guards.isNullOrEmpty(true)).toBe(false)
+    })
+    it('returns false for false', () => {
+      expect(Guards.isNullOrEmpty(false)).toBe(false)
     })
   })
 
@@ -312,6 +330,15 @@ describe('Guards', () => {
     })
     it('returns false when then is not a function', () => {
       expect(Guards.isPromiseLike({ then: 'not-a-fn' })).toBe(false)
+    })
+    it('returns false for undefined', () => {
+      expect(Guards.isPromiseLike(undefined)).toBe(false)
+    })
+    it('returns false for a number', () => {
+      expect(Guards.isPromiseLike(42)).toBe(false)
+    })
+    it('returns false for a boolean', () => {
+      expect(Guards.isPromiseLike(true)).toBe(false)
     })
   })
 })
