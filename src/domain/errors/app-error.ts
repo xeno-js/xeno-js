@@ -1,4 +1,4 @@
-import type { Optional } from '@/shared'
+import type { Maybe, Optional } from '@/shared'
 import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared'
 /**
  * A class representing an application error, which extends the built-in Error class.
@@ -83,7 +83,7 @@ export class AppError extends Error {
    * @param signal - The AbortSignal to check for abortion.
    * @param name - The name of the error, typically the class name or context where the error occurred.
    */
-  public static throwIfAborted(signal: Optional<AbortSignal>, name: string): void {
+  public static throwIfAborted(signal: Maybe<AbortSignal>, name: string): void {
     if (Guards.isDefined(signal) && signal.aborted) {
       throw AppError.aborted(name)
     }

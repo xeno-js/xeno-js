@@ -1,3 +1,3 @@
-export type * from './ibase.data-source.contracts'
-export type * from './idata-source.contracts'
-export type * from './iremote-data-source.contracts'
+export type * from './iread-datasource.contracts'
+export type * from './iremote-datasource.contracts'
+export type * from './iwrite-datasource.contracts'

@@ -30,10 +30,11 @@ export abstract class Entity<T> implements IEntity<T> {
     } else {
       throw new Error('Invalid UniqueId provided.')
     }
-    this.props = props
+    this.props = Object.freeze({ ...props })
+    Object.freeze(this)
   }
 
   public getProps(): T {
-    return this.props
+    return structuredClone(this.props)
   }
 }

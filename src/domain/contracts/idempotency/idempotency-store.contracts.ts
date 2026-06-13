@@ -1,3 +1,5 @@
+import type { Optional } from '@/shared'
+
 /**
  * @description Interface for an idempotency store that provides methods for acquiring locks, checking if a command has been processed, marking commands as processed with associated payloads, retrieving stored payloads, and releasing locks. This interface is designed to support idempotent command processing in a distributed system, ensuring that duplicate commands are not processed multiple times and that the results of previously processed commands can be retrieved when necessary.
  */
@@ -27,7 +29,7 @@ export interface IIdempotencyStore {
    * @param commandId The unique identifier for the command whose associated payload is being retrieved. This ID is used to query the idempotency store for the stored result of the command execution.
    * @returns A promise that resolves to the payload associated with the processed command if it exists, or null if there is no stored result for the specified commandId.
    */
-  getPayload<T>(commandId: string): Promise<T | null>
+  getPayload<T>(commandId: string): Promise<Optional<T>>
 
   /** @description Releases the lock associated with the given commandId, allowing other instances of the command to be processed. This method is used to free up the lock after a command has been processed, ensuring that subsequent attempts to process the same commandId can acquire the lock and execute the command if necessary. Releasing the lock is important for preventing deadlocks and ensuring that the idempotency mechanism functions correctly by allowing new commands with the same commandId to be processed after the previous one has completed.
    * @param commandId The unique identifier for the command whose lock is being released. This ID is used to identify the lock in the idempotency store and free it for subsequent command processing.

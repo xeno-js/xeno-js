@@ -11,7 +11,9 @@ export class UniqueId {
    * @param _value The string representation of the unique identifier (UUID v4).
    * @returns A new instance of UniqueId with a generated UUID v4.
    */
-  private constructor(private readonly _value: Guid) {}
+  private constructor(private readonly _value: Guid) {
+    Object.freeze(this)
+  }
 
   /**
    * Static factory method to create a new UniqueId instance with a generated UUID v4.
@@ -44,6 +46,9 @@ export class UniqueId {
    * @returns True if both UniqueIds have the same string value, false otherwise.
    */
   public equals(other: UniqueId): boolean {
+    if (!(other instanceof UniqueId)) {
+      return false
+    }
     return this._value === other.getValue()
   }
 }

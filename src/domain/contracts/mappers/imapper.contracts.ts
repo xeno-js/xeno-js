@@ -20,4 +20,11 @@ export interface IMapper<TE, TDto> {
    * @returns An entity representation of the given DTO.
    */
   toEntity(dto: TDto): TE
+
+  /**
+   * Converts a partial entity of type TE to a partial Data Transfer Object (DTO) of type TDto.
+   * @param entity - The partial entity to be converted.
+   * @returns A partial DTO representation of the given partial entity.
+   */
+  toPartialDto(entity: Partial<TE>): Partial<TDto>
 }
