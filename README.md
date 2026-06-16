@@ -1,4 +1,4 @@
-# @anduril/kernel
+# @gear5/kernel
 
 Core agnostico — DDD + Clean Architecture npm package.
 
@@ -15,7 +15,7 @@ src/
 ## Installazione
 
 ```bash
-npm install @anduril/kernel
+npm install @gear5/kernel
 ```
 
 ## Setup sviluppo
