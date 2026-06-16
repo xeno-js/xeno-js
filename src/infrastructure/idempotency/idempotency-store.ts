@@ -1,5 +1,5 @@
-import type { ICache, IIdempotencyStore, IRequestContext } from '@/domain'
-import type { Identity, Optional } from '@/shared'
+import type { ExecutionContext, ICache, IIdempotencyStore, IRequestContext } from '@/domain'
+import type { Optional } from '@/shared'
 import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 /**
@@ -13,7 +13,7 @@ export class IdempotencyStore implements IIdempotencyStore {
    */
   constructor(
     private readonly _cache: ICache,
-    private readonly _requestContext: IRequestContext<Identity>,
+    private readonly _requestContext: IRequestContext<ExecutionContext>,
   ) {}
 
   public async acquireLock(requestId: string, ttlSeconds: number): Promise<boolean> {
@@ -61,11 +61,11 @@ export class IdempotencyStore implements IIdempotencyStore {
    * @returns A string representing the contextual key to be used in the cache for storing locks and processed command results, incorporating tenant information if available.
    */
   private buildContextualKey(requestId: string): string {
-    const identity = this._requestContext.getContext()
+    const { context } = this._requestContext.getContext() ?? {}
 
     // AWS SaaS Factory Pattern: logical partitioning via tenant prefix keyspace
-    if (Guards.isDefined(identity) && !Guards.isNullOrEmpty(identity.tenantId)) {
-      return `tenant:${identity.tenantId}:commands:${requestId}`
+    if (Guards.isDefined(context) && !Guards.isNullOrEmpty(context.identity.tenantId)) {
+      return `tenant:${context.identity.tenantId}:commands:${requestId}`
     }
 
     return `commands:${requestId}`

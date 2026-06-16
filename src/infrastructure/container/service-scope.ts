@@ -46,10 +46,20 @@ export class ServiceScope implements IServiceScope {
       return this._scopedInstances.get(token.symbol) as T
     }
 
-    const deps = descriptor.dependencies.map((depToken) => this.resolve(depToken))
-    const instance = new descriptor.implementation(...deps)
-    this._scopedInstances.set(token.symbol, instance)
-    return instance as T
+    if (Guards.isDefined(descriptor.factory)) {
+      const instance = descriptor.factory(this._rootResolve)
+      this._scopedInstances.set(token.symbol, instance)
+      return instance as T
+    } else if (
+      Guards.isDefined(descriptor.implementation) &&
+      Guards.isDefined(descriptor.dependencies)
+    ) {
+      const deps = (descriptor.dependencies ?? []).map((depToken) => this.resolve(depToken))
+      const instance = new descriptor.implementation(...deps)
+      this._scopedInstances.set(token.symbol, instance)
+      return instance as T
+    }
+    throw new Error(`Cannot instantiate service for token: ${token.symbol.toString()}`)
   }
 
   /**

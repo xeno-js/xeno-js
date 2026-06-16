@@ -1,6 +1,7 @@
 import type { IServiceContainer, IServiceScope, ServiceDescriptor } from '@/domain'
-import { ServiceScope } from '@/infrastructure'
 import { type Constructor, Guards, type InjectionToken, type Optional } from '@/shared'
+
+import { ServiceScope } from './service-scope'
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -68,6 +69,48 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * @inheritdoc
    */
+  public addSingletonFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._descriptors.set(token.symbol, {
+      factory,
+      lifetime: 'singleton',
+    })
+    return this
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public addScopedFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._descriptors.set(token.symbol, {
+      factory,
+      lifetime: 'scoped',
+    })
+    return this
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public addTransientFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._descriptors.set(token.symbol, {
+      factory,
+      lifetime: 'transient',
+    })
+    return this
+  }
+
+  /**
+   * @inheritdoc
+   */
   public resolve<T>(token: InjectionToken<T>): T {
     const descriptor = this._descriptors.get(token.symbol)
 
@@ -105,7 +148,10 @@ export class ServiceContainer implements IServiceContainer {
   }
 
   private _create(descriptor: ServiceDescriptor<unknown>): unknown {
-    const deps = descriptor.dependencies.map((depToken) => this.resolve(depToken))
-    return new descriptor.implementation(...deps)
+    if (descriptor.factory !== undefined && descriptor.factory !== null) {
+      return descriptor.factory(this)
+    }
+    const deps = (descriptor.dependencies ?? []).map((depToken) => this.resolve(depToken))
+    return new descriptor.implementation!(...deps)
   }
 }

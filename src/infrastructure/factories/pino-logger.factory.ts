@@ -1,8 +1,7 @@
 import { pino } from 'pino'
 
-import type { IFactory, ILoggerClient } from '@/domain'
+import type { IFactory, ILoggerClient, LoggerConfig } from '@/domain'
 import { PinoLogger } from '@/infrastructure'
-import type { LoggerConfig } from '@/shared'
 import { LOG_LEVEL } from '@/shared'
 
 /**
