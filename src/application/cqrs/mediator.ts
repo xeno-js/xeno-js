@@ -1,23 +1,31 @@
 import type {
   Delegate,
+  ExecutionContext,
   IHandler,
   IMediator,
   IPipelineBehavior,
-  IServiceScope,
+  IRequestContext,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
 import type { IBaseRequest, ICommand, IQuery } from '@/shared'
-import { Guards, TokenHelper, TOKENS } from '@/shared'
+import {
+  ERROR_CODE_MESSAGES,
+  ERROR_CODES,
+  Guards,
+  STATUS_CODES,
+  TokenHelper,
+  TOKENS,
+} from '@/shared'
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).
  */
 export class Mediator implements IMediator {
   /**
-   * @param _resolver An instance of IServiceScope used to resolve handlers for commands and queries.
+   * @param _requestContext An instance of IRequestContext used to manage the execution context for commands and queries.
    */
-  constructor(private readonly _resolver: IServiceScope) {}
+  constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
 
   /**
    * @inheritdoc
@@ -45,10 +53,22 @@ export class Mediator implements IMediator {
     if (Guards.isDefined(request.signal) && request.signal.aborted)
       return Result.fail(AppError.aborted(request.intent))
 
-    const token = TokenHelper.createToken<IHandler<IBaseRequest, TResponse>>(request.intent)
-    const handler = this._resolver.resolve(token)
+    const { scope } = this._requestContext.getContext() ?? {}
+    if (!Guards.isDefined(scope))
+      return Result.fail(
+        AppError.create({
+          code: ERROR_CODES.SCOPE_NOT_AVAILABLE,
+          status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+          name: request.intent,
+          message: ERROR_CODE_MESSAGES[ERROR_CODES.SCOPE_NOT_AVAILABLE],
+          cause: new Error('Service scope is required to process the request.'),
+        }),
+      )
 
-    const pipelines = this._resolver.resolve(
+    const token = TokenHelper.createToken<IHandler<IBaseRequest, TResponse>>(request.intent)
+    const handler = scope.resolve(token)
+
+    const pipelines = scope.resolve(
       TokenHelper.createToken<IPipelineBehavior<IBaseRequest, TResponse>>(pipelineToken),
     )
 

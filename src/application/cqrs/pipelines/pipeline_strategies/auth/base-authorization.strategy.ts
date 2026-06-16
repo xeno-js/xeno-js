@@ -1,6 +1,6 @@
-import type { IRequestContext, IStrategy, ResultType } from '@/domain'
+import type { ExecutionContext, Identity, IRequestContext, IStrategy, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
-import type { ExecutionContext, IBaseRequest, Identity } from '@/shared'
+import type { IBaseRequest } from '@/shared'
 import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
 
 /**
@@ -18,8 +18,8 @@ export abstract class BaseAuthorizationStrategy<
   public abstract isApplicable(context: IBaseRequest): context is TInput
 
   public async execute(request: IBaseRequest): Promise<ResultType<void>> {
-    const ctx = this._requestContext.getContext()
-    if (!Guards.isDefined(ctx) || !Guards.isDefined(ctx.identity)) {
+    const { context } = this._requestContext.getContext() ?? {}
+    if (!Guards.isDefined(context) || !Guards.isDefined(context.identity)) {
       return Result.fail(
         AppError.create({
           code: PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED,
@@ -31,7 +31,7 @@ export abstract class BaseAuthorizationStrategy<
       )
     }
 
-    return this.performAuthorizationCheck(request, ctx.identity)
+    return this.performAuthorizationCheck(request, context.identity)
   }
 
   /**

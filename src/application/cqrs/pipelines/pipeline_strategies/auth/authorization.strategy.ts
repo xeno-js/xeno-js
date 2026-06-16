@@ -1,7 +1,7 @@
 import { BaseAuthorizationStrategy } from '@/application'
-import type { AppError, IGateKeeper, IRequestContext } from '@/domain'
+import type { AppError, ExecutionContext, Identity, IGateKeeper, IRequestContext } from '@/domain'
 import { Result } from '@/domain'
-import type { ExecutionContext, IBaseRequest, Identity } from '@/shared'
+import type { IBaseRequest } from '@/shared'
 import { Guards } from '@/shared'
 
 /**

@@ -1,5 +1,5 @@
-import type { IBaseMapper } from '@/domain'
-import type { AuthClaims, Identity } from '@/shared'
+import type { IBaseMapper, Identity } from '@/domain'
+import type { AuthClaims } from '@/shared'
 import { GuidHelper } from '@/shared'
 
 /**

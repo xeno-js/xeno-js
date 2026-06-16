@@ -1,6 +1,6 @@
-import type { IAuthService, IBaseMapper, IGateKeeper, ResultType } from '@/domain'
+import type { IAuthService, IBaseMapper, Identity, IGateKeeper, ResultType } from '@/domain'
 import { Result } from '@/domain'
-import type { AuthClaims, Identity, Optional } from '@/shared'
+import type { AuthClaims, Optional } from '@/shared'
 import { Guards, GUEST, ROLES } from '@/shared'
 
 /**
