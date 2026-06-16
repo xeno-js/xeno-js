@@ -261,19 +261,14 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ['@/application', '@/application/**', '@/presentation', '@/presentation/**'],
+              group: ['@/presentation', '@/presentation/**'],
               message:
-                'infrastructure can only import from infrastructure, domain, shared, and external libraries.',
+                'infrastructure can only import from infrastructure, domain, application, shared, and external libraries.',
             },
             {
-              group: [
-                '../**/application',
-                '../**/application/**',
-                '../**/presentation',
-                '../**/presentation/**',
-              ],
+              group: ['../**/presentation', '../**/presentation/**'],
               message:
-                'infrastructure can only import from infrastructure, domain, shared, and external libraries.',
+                'infrastructure can only import from infrastructure, domain, application, shared, and external libraries.',
             },
           ],
         },
@@ -288,24 +283,14 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: [
-                '@/application',
-                '@/application/**',
-                '@/infrastructure',
-                '@/infrastructure/**',
-              ],
+              group: ['@/infrastructure', '@/infrastructure/**'],
               message:
-                'presentation can only import from presentation, domain, shared, and external libraries.',
+                'presentation can only import from presentation, domain, application, shared, and external libraries.',
             },
             {
-              group: [
-                '../**/application',
-                '../**/application/**',
-                '../**/infrastructure',
-                '../**/infrastructure/**',
-              ],
+              group: ['../**/infrastructure', '../**/infrastructure/**'],
               message:
-                'presentation can only import from presentation, domain, shared, and external libraries.',
+                'presentation can only import from presentation, domain, application, shared, and external libraries.',
             },
           ],
         },
