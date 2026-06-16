@@ -1,5 +1,4 @@
-import type { ResultType } from '@/domain'
-import type { ICommand, IQuery } from '@/shared'
+import type { ICommand, IQuery, ResultType } from '@/domain'
 
 /**
  * An interface representing a mediator in the CQRS (Command Query Responsibility Segregation) pattern. The mediator is responsible for sending commands and executing queries by delegating them to the appropriate handlers.
@@ -10,12 +9,12 @@ export interface IMediator {
    * @param request The command object to be executed.
    * @returns A promise that resolves to the response from the handler.
    */
-  send<TResponse>(request: ICommand<unknown>): Promise<ResultType<TResponse>>
+  send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>>
 
   /**
    * Executes a query and returns the result.
    * @param request The query object to be executed.
    * @returns A promise that resolves to the result of the query.
    */
-  query<TResponse>(request: IQuery): Promise<ResultType<TResponse>>
+  query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>>
 }

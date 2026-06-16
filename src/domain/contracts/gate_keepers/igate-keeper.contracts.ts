@@ -6,14 +6,6 @@ import type { Optional } from '@/shared'
  */
 export interface IGateKeeper {
   /**
-   * Authorizes a user based on their identity and a specific permission.
-   * @param identity The identity of the user to authorize.
-   * @param permission The permission to check for the user.
-   * @returns True if the user is authorized, false otherwise.
-   */
-  authorize(identity: Identity, permission: string): boolean
-
-  /**
    * Authenticates a user based on a provided token and returns their identity.
    * @param token The authentication token to validate and extract the user's identity from.
    * @returns A promise that resolves to the user's identity if authentication is successful, or an error if it fails.

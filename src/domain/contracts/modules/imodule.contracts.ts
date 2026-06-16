@@ -14,7 +14,7 @@ export interface IModule<TOptions = unknown> {
    * @description Configures the module with the provided options.
    *
    * @param container - The service container to register services with.
-   * @param options - The configuration options for the module.
+   * @param opts - The configuration options for the module.
    */
-  configure(container: IServiceContainer, options: Optional<TOptions>): Promise<void>
+  configure(container: IServiceContainer, opts?: Optional<TOptions>): Promise<void>
 }
