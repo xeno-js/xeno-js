@@ -1,6 +1,6 @@
 import type { IServiceContainer, LoggerConfig } from '@/domain'
 import type { InjectionToken, Optional } from '@/shared'
-import { LOG_LEVEL } from '@/shared'
+import { Guards, LOG_LEVEL } from '@/shared'
 
 /**
  * @description LoggerUtils is a utility object that provides helper functions for the CoreModule. It includes the addLogger function, which is responsible for configuring and registering the logging services in the dependency injection container based on the provided LoggerConfig options. This function dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
@@ -13,7 +13,7 @@ export const LoggerUtils = Object.freeze({
    * @param opts - The LoggerConfig options to determine which loggers to enable and their configurations.
    */
   addLogger: async (container: IServiceContainer, opts: Optional<LoggerConfig>): Promise<void> => {
-    const { INJECTION_TOKENS } = await import('@/domain/tokens/injection-tokens.constants')
+    const { INJECTION_TOKENS } = await import('@/infrastructure/di/injection-tokens.constants')
 
     const minLevel = opts?.level ?? LOG_LEVEL.DEBUG
     class RuntimeLoggerConfig implements LoggerConfig {
@@ -36,7 +36,7 @@ export const LoggerUtils = Object.freeze({
       loggerDependencies.push(INJECTION_TOKENS.CONSOLE_LOGGER)
     }
 
-    if (opts?.sentry?.isEnabled === true) {
+    if (Guards.isDefined(opts?.sentry) && opts.sentry.isEnabled) {
       const { SentryLoggerFactory } = await import('@/infrastructure/factories/')
       container.addSingletonFactory(INJECTION_TOKENS.SENTRY_LOGGER, (resolver) => {
         const config = resolver.resolve<LoggerConfig>(INJECTION_TOKENS.LOGGER_CONFIG)
@@ -46,7 +46,7 @@ export const LoggerUtils = Object.freeze({
       loggerDependencies.push(INJECTION_TOKENS.SENTRY_LOGGER)
     }
 
-    if (opts?.pino?.isEnabled === true) {
+    if (Guards.isDefined(opts?.pino) && opts.pino.isEnabled) {
       const { PinoLoggerFactory } = await import('@/infrastructure/factories/')
       container.addSingletonFactory(INJECTION_TOKENS.PINO_LOGGER, (resolver) => {
         const config = resolver.resolve<LoggerConfig>(INJECTION_TOKENS.LOGGER_CONFIG)
@@ -56,7 +56,7 @@ export const LoggerUtils = Object.freeze({
       loggerDependencies.push(INJECTION_TOKENS.PINO_LOGGER)
     }
 
-    if (Array.isArray(opts?.customLoggers) && opts.customLoggers.length > 0) {
+    if (!Guards.isNullOrEmpty(opts?.customLoggers)) {
       const customLoggers = opts.customLoggers
       customLoggers.forEach((logger) => {
         loggerDependencies.push(logger)
