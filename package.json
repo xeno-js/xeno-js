@@ -1,7 +1,7 @@
 {
   "name": "@mattia-carcione/kernel",
   "version": "0.1.0",
-  "description": "Anduril agnostic core — DDD + Clean Architecture npm package",
+  "description": "gear5 agnostic core — DDD + Clean Architecture npm package",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
