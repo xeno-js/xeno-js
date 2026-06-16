@@ -15,11 +15,9 @@ export class AuthorizationPipeline<TInput, TResult> implements IPipelineBehavior
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     for (const strategy of this._strategies) {
-      if (strategy.isApplicable(request)) {
-        const result = await strategy.execute(request)
-        if (!result.isOk()) {
-          return Result.fail(result.getErrorOrThrow())
-        }
+      const result = await strategy.execute(request)
+      if (!result.isOk()) {
+        return Result.fail(result.getErrorOrThrow())
       }
     }
 

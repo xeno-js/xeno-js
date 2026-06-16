@@ -1,5 +1,5 @@
-import type { Dictionary, Optional } from '@/shared'
-import { Guards } from '@/shared'
+import type { Dictionary, Optional } from '../types/index'
+import { Guards } from './guards.utils'
 
 /**
  * @description Namespace for string manipulation utilities.

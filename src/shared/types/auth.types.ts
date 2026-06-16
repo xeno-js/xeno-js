@@ -1,4 +1,4 @@
-import type { Dictionary, Optional } from '@/shared'
+import type { Dictionary, Optional } from './common.types'
 
 /**
  * @file auth.types.ts

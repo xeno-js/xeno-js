@@ -1,6 +1,5 @@
-import type { Delegate, IPipelineBehavior, ResultType } from '@/domain'
+import type { Delegate, ICommand, IPipelineBehavior, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
-import type { IBaseRequest } from '@/shared'
 import {
   DEFAULT_CONCURRENCY,
   Guards,
@@ -14,7 +13,7 @@ import {
  * @description A pipeline behavior that implements a retry mechanism for handling concurrency conflicts in the CQRS pipelines. When a request results in a concurrency conflict error, this behavior will automatically retry the request up to a specified maximum number of attempts, with an exponential backoff strategy and added jitter to prevent thundering herd problems. If the maximum number of retry attempts is exceeded, it returns a failed Result with an AppError indicating the concurrency conflict.
  */
 export class ConcurrencyRetryPipeline<
-  TInput extends IBaseRequest,
+  TInput extends ICommand,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**
@@ -60,7 +59,7 @@ export class ConcurrencyRetryPipeline<
 
   /**
    * @description Handles the request by implementing a retry mechanism for concurrency conflicts. It retries the request up to the maximum number of attempts with an exponential backoff strategy and added jitter. If the request succeeds or fails with an error that is not a concurrency conflict, it returns the result immediately. If the maximum number of retry attempts is exceeded due to concurrency conflicts, it returns a failed Result with an AppError indicating the concurrency conflict.
-   * @param request The input request to be handled, which must extend IBaseRequest.
+   * @param request The input request to be handled, which must extend ICommand.
    * @param next The delegate function that represents the next behavior or handler in the pipeline.
    * @returns A Promise that resolves to a ResultType containing either the successful result or a failed AppError if the maximum retry attempts are exceeded due to concurrency conflicts.
    */

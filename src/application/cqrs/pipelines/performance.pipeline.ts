@@ -1,5 +1,4 @@
-import type { Delegate, ILogger, IPipelineBehavior, ResultType } from '@/domain'
-import type { IBaseRequest } from '@/shared'
+import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from '@/domain'
 import { Guards } from '@/shared'
 
 /**
@@ -10,10 +9,10 @@ const defaultThresholdMs = 500
 /**
  * @description A pipeline behavior that measures the execution time of commands and queries, logging a warning if the execution time exceeds a specified threshold. This pipeline can be used to identify performance bottlenecks in the application and ensure that requests are processed within acceptable time limits.
  *
- * @template TInput - The type of the input request, which must extend the IBaseRequest interface.
+ * @template TInput - The type of the input request, which must extend the IRequest interface.
  * @template TResult - The type of the result returned by the request handler.
  */
-export class PerformancePipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+export class PerformancePipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
   TResult
 > {
@@ -49,9 +48,7 @@ export class PerformancePipeline<TInput extends IBaseRequest, TResult> implement
       const duration = endTime - startTime
 
       if (duration > this._thresholdMs) {
-        this._logger.warn(
-          `Performance warning: ${request.constructor.name} took ${duration.toFixed(2)}ms`,
-        )
+        this._logger.warn(`Performance warning: ${request.intent} took ${duration.toFixed(2)}ms`)
       }
     }
   }

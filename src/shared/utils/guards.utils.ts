@@ -1,4 +1,4 @@
-import type { Dictionary, Maybe } from '@/shared'
+import type { Dictionary, Maybe } from '../types/common.types'
 
 const OBJECT_TAG = '[object Object]'
 const DATE_TAG = '[object Date]'

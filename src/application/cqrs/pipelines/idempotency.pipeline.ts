@@ -1,6 +1,13 @@
-import type { Delegate, IIdempotencyStore, IPipelineBehavior, ResultType } from '@/domain'
+import type {
+  Delegate,
+  ExecutionContext,
+  ICommand,
+  IIdempotencyStore,
+  IPipelineBehavior,
+  IRequestContext,
+  ResultType,
+} from '@/domain'
 import { AppError, Result } from '@/domain'
-import type { IBaseRequest } from '@/shared'
 import {
   Guards,
   IDEMPOTENCY_CONSTANTS,
@@ -12,7 +19,7 @@ import {
 /**
  * @description A pipeline behavior that implements idempotency for command requests in the CQRS architecture. This behavior ensures that if multiple requests with the same command ID are received, only one of them will be processed, and the others will receive the same result without reprocessing the command. The pipeline uses an IIdempotencyStore to manage locks and store results for processed commands, allowing it to handle concurrent requests safely and efficiently while preventing duplicate processing of commands. The behavior checks if the incoming request is a command and if it has a valid ID. If the command has already been processed, it retrieves the stored result and returns it. If the command is currently being processed by another request, it returns an error indicating that the command is locked. If the command has not been processed and is not locked, it acquires a lock, processes the command, stores the result, and releases the lock accordingly. The pipeline also includes error handling to ensure that locks are released in case of exceptions during command processing.
  */
-export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+export class IdempotencyPipeline<TInput extends ICommand, TResult> implements IPipelineBehavior<
   TInput,
   TResult
 > {
@@ -29,6 +36,7 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
    * @throws Will throw an error if the provided lockTtlSeconds or processedTtlSeconds values are not positive integers, ensuring that the pipeline is configured with valid TTL values for proper functioning of the idempotency mechanism.
    */
   constructor(
+    private readonly _requestContext: IRequestContext<ExecutionContext>,
     private readonly _idempotencyStore: IIdempotencyStore,
     lockTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_IDEMPOTENCY_LOCK_TTL_SECONDS,
     processedTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_TTL_SECONDS,
@@ -51,10 +59,24 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
   }
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
+    const { context } = this._requestContext.getContext() ?? {}
+    if (!Guards.isDefined(context))
+      return Result.fail(
+        AppError.create({
+          code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
+          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
+          status: STATUS_CODES.CONFLICT,
+          name: request.intent,
+          cause: new Error(`Request context is not defined for request ${request.intent}`),
+        }),
+      )
+
     try {
-      const alreadyProcessed = await this._idempotencyStore.hasBeenProcessed(request.id)
+      const alreadyProcessed = await this._idempotencyStore.hasBeenProcessed(
+        context.network.requestId,
+      )
       if (alreadyProcessed) {
-        const payload = await this._idempotencyStore.getPayload<TResult>(request.id)
+        const payload = await this._idempotencyStore.getPayload<TResult>(context.network.requestId)
         if (Guards.isDefined(payload)) {
           return Result.ok(payload)
         } else {
@@ -65,7 +87,7 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
               status: STATUS_CODES.CONFLICT,
               name: request.intent,
               cause: new Error(
-                `Idempotency store indicates command has been processed but no payload found for command ID ${request.id}`,
+                `Idempotency store indicates request has been processed but no payload found for request ID ${context.network.requestId}`,
               ),
             }),
           )
@@ -73,7 +95,7 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
       }
 
       const lockAcquired = await this._idempotencyStore.acquireLock(
-        request.id,
+        context.network.requestId,
         this._lockTtlSeconds,
       )
 
@@ -84,7 +106,7 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
             message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
             status: STATUS_CODES.CONFLICT,
             name: request.intent,
-            cause: new Error(`Failed to acquire lock for command ID ${request.id}`),
+            cause: new Error(`Failed to acquire lock for request ID ${context.network.requestId}`),
           }),
         )
       }
@@ -93,17 +115,17 @@ export class IdempotencyPipeline<TInput extends IBaseRequest, TResult> implement
 
       if (result.isOk()) {
         await this._idempotencyStore.markAsProcessed(
-          request.id,
+          context.network.requestId,
           result.getValueOrThrow(),
           this._processedTtlSeconds,
         )
       } else {
-        await this._idempotencyStore.releaseLock(request.id)
+        await this._idempotencyStore.releaseLock(context.network.requestId)
       }
 
       return result
     } catch (error: unknown) {
-      await this._idempotencyStore.releaseLock(request.id)
+      await this._idempotencyStore.releaseLock(context.network.requestId)
 
       throw error
     }

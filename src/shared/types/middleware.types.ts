@@ -1,4 +1,4 @@
-import type { Guid, Optional } from '@/shared'
+import type { Guid, Optional } from './common.types'
 
 /**
  * @description The Metadata interface defines a structure for storing optional metadata information that can be associated with various operations, such as HTTP requests, logging, or tracing. It includes properties like correlationId, requestId, token, clientIp, and spanId, which can be used for tracking, authentication, and monitoring purposes. Additionally, it allows for any number of additional key-value pairs to be included as optional strings, providing flexibility for different use cases.

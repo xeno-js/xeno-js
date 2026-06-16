@@ -1,4 +1,4 @@
-import type { Maybe, Optional } from '@/shared'
+import type { Maybe, Optional } from './common.types'
 
 /**
  * @description Defines the structure of a filter used for querying data. This interface includes an optional array of where conditions, pagination parameters (limit and offset), and sorting options (orderBy). The IFilter interface is used to specify the criteria for retrieving data from a repository or data source, allowing for flexible querying based on various conditions.

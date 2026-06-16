@@ -1,4 +1,11 @@
-import type { Dictionary, Guid, HttpHeaders, IPaginatedResult, Optional } from '@/shared'
+import type { Dictionary, Guid, Optional } from './common.types'
+import type { HttpHeaders } from './http.types'
+import type { IPaginatedResult } from './pagination.types'
+
+/**
+ * @file api-response.types.ts
+ * @description Defines types related to API responses, including the structure of successful and error responses returned by the server.
+ */
 
 /**
  * @description Defines the structure of the API response returned by the server. It includes a status indicating whether the request was successful or resulted in an error, a boolean flag 'ok' for quick checks, headers containing any relevant HTTP headers, and a data field that can either be a successful response with the expected data or an error response with details about the failure.

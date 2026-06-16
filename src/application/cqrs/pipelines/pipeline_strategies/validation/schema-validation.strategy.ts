@@ -1,7 +1,7 @@
-import { BaseValidationStrategy } from '@/application'
-import type { IValidatorService, ResultType } from '@/domain'
+import type { IRequest, IValidatorService, ResultType } from '@/domain'
 import { Result } from '@/domain'
-import type { IBaseRequest } from '@/shared'
+
+import { BaseValidationStrategy } from './base-validation.strategy'
 
 /**
  * @description Strategy that validates incoming requests against predefined schemas. It implements the IStrategy interface and uses a schema registry to determine if a schema exists for the given request type. If a schema is found, it validates the request against the schema using a safe parsing method. If the validation fails, it returns a failed Result with an appropriate AppError indicating a validation error. If the validation succeeds, it returns a successful Result with a boolean value of true.
@@ -15,11 +15,11 @@ export class SchemaValidationStrategy extends BaseValidationStrategy {
     super()
   }
 
-  public isApplicable(request: IBaseRequest): boolean {
-    return this._validator.hasSchema(request.intent)
-  }
+  public async execute(request: IRequest): Promise<ResultType<boolean>> {
+    if (!this._validator.hasSchema(request.intent)) {
+      return this.createValidationError(request, 'No schema found for the request')
+    }
 
-  public async execute(request: IBaseRequest): Promise<ResultType<boolean>> {
     const key = request.intent
     const parseResult = this._validator.validate(key, request)
 

@@ -1,4 +1,4 @@
-import type { Optional } from '@/shared'
+import type { Optional } from './common.types'
 
 /**
  * @description An interface representing a cache client, which provides methods for getting and setting values in a cache storage. This interface abstracts the underlying cache implementation, allowing for flexibility in choosing different caching solutions (e.g., in-memory, Redis) without affecting the rest of the application.

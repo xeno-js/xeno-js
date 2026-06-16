@@ -1,13 +1,13 @@
-import { BaseAuthorizationStrategy } from '@/application'
-import type { AppError, ExecutionContext, Identity, IRequestContext } from '@/domain'
+import type { AppError, ExecutionContext, Identity, IRequest, IRequestContext } from '@/domain'
 import { Result } from '@/domain'
-import type { IBaseRequest } from '@/shared'
-import { Guards } from '@/shared'
+import { Guards, GuidHelper } from '@/shared'
+
+import { BaseAuthorizationStrategy } from './base-authorization.strategy'
 
 /**
  * @description Authorization strategy that checks if the authenticated user has the required user ID specified in the command. It extends the BaseAuthorizationStrategy and implements the performAuthorizationCheck method to verify if the user's ID matches the required user ID for the command. If the user is not authenticated or does not have the necessary user ID, it returns a failed Result with an appropriate AppError.
  */
-export class UserAuthorizationStrategy extends BaseAuthorizationStrategy<IBaseRequest> {
+export class UserAuthorizationStrategy extends BaseAuthorizationStrategy<IRequest> {
   /** @description Constructs a new instance of the UserAuthorizationStrategy class, which is responsible for checking if the authenticated user has the required user ID specified in the command. It takes an IRequestContext as a parameter, which is used to retrieve the identity of the currently authenticated user during the authorization process.
    * @param requestContext An instance of IRequestContext used to access the identity of the currently authenticated user. This context is essential for performing the authorization checks based on the user's ID when executing commands that require specific user-based permissions.
    */
@@ -15,16 +15,12 @@ export class UserAuthorizationStrategy extends BaseAuthorizationStrategy<IBaseRe
     super(requestContext)
   }
 
-  public isApplicable(command: IBaseRequest): command is IBaseRequest {
-    return !Guards.isNullOrEmpty(command.userId)
-  }
-
-  protected performAuthorizationCheck(
-    command: IBaseRequest,
+  protected async performAuthorizationCheck(
+    command: IRequest,
     auth: Identity,
-  ): Result<void, AppError> {
-    if (auth.userId !== command.userId)
-      return this.createAuthError(command, 'User authenticated mismatch.')
+  ): Promise<Result<void, AppError>> {
+    if (Guards.isNullOrEmpty(auth.userId) || !GuidHelper.isValidGuid(auth.userId))
+      return this.createUnauthError(command, 'User is not authenticated.')
 
     return Result.ok()
   }

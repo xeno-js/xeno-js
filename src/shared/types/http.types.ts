@@ -1,4 +1,4 @@
-import type { Dictionary, Maybe, Optional } from '@/shared'
+import type { Dictionary, Maybe, Optional } from './common.types'
 
 /**
  * @description Agnostic contract used to execute HTTP calls independently

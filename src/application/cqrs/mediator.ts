@@ -1,14 +1,16 @@
 import type {
   Delegate,
   ExecutionContext,
+  ICommand,
   IHandler,
   IMediator,
   IPipelineBehavior,
+  IQuery,
+  IRequest,
   IRequestContext,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
-import type { IBaseRequest, ICommand, IQuery } from '@/shared'
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
@@ -30,14 +32,14 @@ export class Mediator implements IMediator {
   /**
    * @inheritdoc
    */
-  async send<TResponse>(request: ICommand<unknown>): Promise<ResultType<TResponse>> {
+  async send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR)
   }
 
   /**
    * @inheritdoc
    */
-  async query<TResponse>(request: IQuery): Promise<ResultType<TResponse>> {
+  async query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.QUERY_PIPELINES_BEHAVIOR)
   }
 
@@ -47,7 +49,7 @@ export class Mediator implements IMediator {
    * @returns A promise that resolves to the result of processing the request.
    */
   private async process<TResponse>(
-    request: IBaseRequest,
+    request: IRequest<TResponse>,
     pipelineToken: string,
   ): Promise<ResultType<TResponse>> {
     if (Guards.isDefined(request.signal) && request.signal.aborted)
@@ -65,11 +67,11 @@ export class Mediator implements IMediator {
         }),
       )
 
-    const token = TokenHelper.createToken<IHandler<IBaseRequest, TResponse>>(request.intent)
+    const token = TokenHelper.createToken<IHandler<ICommand<TResponse>, TResponse>>(request.intent)
     const handler = scope.resolve(token)
 
     const pipelines = scope.resolve(
-      TokenHelper.createToken<IPipelineBehavior<IBaseRequest, TResponse>>(pipelineToken),
+      TokenHelper.createToken<IPipelineBehavior<ICommand<TResponse>, TResponse>>(pipelineToken),
     )
 
     const next: Delegate<TResponse> = () => handler.handle(request)

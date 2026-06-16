@@ -1,14 +1,13 @@
-import type { Delegate, ILogger, IPipelineBehavior, ResultType } from '@/domain'
-import type { IBaseRequest } from '@/shared'
+import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from '@/domain'
 
 /**
  * @description A pipeline behavior that logs the handling of commands and queries, including their success or failure, along with contextual information such as request ID, correlation ID, and user ID.
  * This pipeline can be used to enhance observability and debugging capabilities in the application by providing detailed logs for each request processed through the CQRS pipeline.
  *
- * @template TInput - The type of the input request, which must extend the IBaseRequest interface.
+ * @template TInput - The type of the input request, which must extend the IRequest interface.
  * @template TResult - The type of the result returned by the request handler.
  */
-export class LoggingPipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
   TResult
 > {

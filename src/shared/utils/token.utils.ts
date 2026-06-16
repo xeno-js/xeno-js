@@ -1,4 +1,4 @@
-import type { InjectionToken } from '@/shared'
+import type { InjectionToken } from '../types/index'
 
 /**
  * @fileoverview Utility for creating and managing typed injection tokens.

@@ -1,3 +1,5 @@
 export * from './base-authorization.strategy'
+export * from './permission-authorization.strategy'
 export * from './role-authorization.strategy'
+export * from './tenant-authorization.strategy'
 export * from './user-authorization.strategy'

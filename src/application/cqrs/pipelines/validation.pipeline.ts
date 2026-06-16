@@ -1,10 +1,9 @@
-import type { Delegate, IPipelineBehavior, IStrategy, ResultType } from '@/domain'
+import type { Delegate, IPipelineBehavior, IRequest, IStrategy, ResultType } from '@/domain'
 import { Result } from '@/domain'
-import type { IBaseRequest } from '@/shared'
 /**
  * @description A pipeline behavior that performs validation on the incoming request in a CQRS architecture. It checks if the request has a validate method and, if so, invokes it to perform validation. If the validation fails, it returns a failed Result containing the validation error. If the validation succeeds or if there is no validate method, it proceeds to the next behavior in the pipeline. This allows for a structured approach to ensuring that requests meet certain criteria before being processed further in the CQRS pipeline.
  */
-export class ValidationPipeline<TInput extends IBaseRequest, TResult> implements IPipelineBehavior<
+export class ValidationPipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
   TResult
 > {
@@ -15,11 +14,9 @@ export class ValidationPipeline<TInput extends IBaseRequest, TResult> implements
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     for (const validator of this._validators) {
-      if (validator.isApplicable(request)) {
-        const validationResult = await validator.execute(request)
-        if (!validationResult.isOk()) {
-          return Result.fail(validationResult.getErrorOrThrow())
-        }
+      const validationResult = await validator.execute(request)
+      if (!validationResult.isOk()) {
+        return Result.fail(validationResult.getErrorOrThrow())
       }
     }
     return next()

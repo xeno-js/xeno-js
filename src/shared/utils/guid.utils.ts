@@ -1,5 +1,5 @@
-import type { Guid, Optional } from '@/shared'
-import { Guards } from '@/shared'
+import type { Guid, Optional } from '../types/common.types'
+import { Guards } from './guards.utils'
 
 /**
  * @fileoverview Utility functions for generating and validating GUIDs (UUID v4).

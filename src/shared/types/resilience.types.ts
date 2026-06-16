@@ -1,4 +1,4 @@
-import type { Optional } from '@/shared'
+import type { Optional } from './common.types'
 
 /**
  * @description This file defines the ResilienceConfig interface, which specifies the configuration options for implementing resilience features such as retries, circuit breakers, and bulkheads in service calls. The ResilienceConfig interface includes properties for configuring retry attempts, base delay, maximum delay, consecutive failures for circuit breakers, half-open timeout, and maximum concurrent operations for bulkheads. This configuration can be used to enhance the reliability of service interactions by automatically handling transient faults and preventing cascading failures in distributed systems.
