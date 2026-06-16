@@ -1,4 +1,5 @@
 export type * from './execution-context.types'
 export type * from './identity-context.types'
 export type * from './network-context.types'
+export type * from './request-context.types'
 export type * from './tracing-context.types'

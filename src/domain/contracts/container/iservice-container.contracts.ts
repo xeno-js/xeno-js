@@ -66,6 +66,45 @@ export interface IServiceContainer {
   ): this
 
   /**
+   * Registers a factory function under the given token with **singleton** lifetime.
+   * A single instance is created on first resolution and reused for every
+   * subsequent call within the container's lifetime.
+   *
+   * @param token - The unique injection token that identifies this service binding.
+   * @param factory - The factory function to create the service instance.
+   * @returns The container instance to allow method chaining.
+   */
+  addSingletonFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this
+
+  /**
+   * Registers a factory function under the given token with **transient** lifetime.
+   * A new instance is created on every call to {@link resolve}.
+   *
+   * @param token - The unique injection token that identifies this service binding.
+   * @param factory - The factory function to create the service instance.
+   * @returns The container instance to allow method chaining.
+   */
+  addTransientFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this
+
+  /**
+   * Registers a factory function under the given token with **scoped** lifetime.
+   * One instance is created per logical scope (e.g. per HTTP request).
+   * Scoped services must be resolved through an {@link IServiceScope} obtained
+   * via {@link createScope}; resolving them directly from the root container throws.
+   *
+   * @param token - The unique injection token that identifies this service binding.
+   * @param factory - The factory function to create the service instance.
+   * @returns The container instance to allow method chaining.
+   */
+  addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceContainer) => T): this
+
+  /**
    * Resolves and returns the service registered under the given token.
    * Scoped services cannot be resolved from the root container; use
    * {@link createScope} instead.

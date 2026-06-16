@@ -19,15 +19,15 @@ export type Optional<T> = T | undefined
 export type Maybe<T> = T | null | undefined
 
 // ─── Constructor Types ────────────────────────────────────────────────────────
-
 /**
  * @description Represents a concrete (instantiable) class.
  * Used by IoC containers and auto-wiring utilities to bind concrete implementations.
  *
  * @template T  The instance type produced by `new`.
- * @template TArgs  Constructor parameter tuple; defaults to `unknown[]`.
+ * @template TArgs  Constructor parameter tuple; defaults to `any[]`.
  */
-export type Constructor<T, TArgs extends unknown[] = unknown[]> = new (...args: TArgs) => T
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) => T
 
 /**
  * @description Represents an abstract class that cannot be instantiated directly.
@@ -36,7 +36,8 @@ export type Constructor<T, TArgs extends unknown[] = unknown[]> = new (...args: 
  *
  * @template T  The instance type produced by subclasses.
  */
-export type AbstractConstructor<T> = abstract new (...args: unknown[]) => T
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AbstractConstructor<T> = abstract new (...args: any[]) => T
 
 // ─── Object / Record Helpers ──────────────────────────────────────────────────
 

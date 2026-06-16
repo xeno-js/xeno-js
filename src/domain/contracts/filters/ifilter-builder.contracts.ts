@@ -3,7 +3,7 @@ import type { Dictionary, Optional } from '@/shared'
 /**
  * Interface for building filter objects based on specifications.
  */
-export interface IFilterBuilder<TQueryConditions, TQueryProjections = unknown> {
+export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = unknown> {
   /**
    * Builds a filter object based on the provided filter data.
    * @param filter The filter data to use for building the filter.

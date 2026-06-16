@@ -7,5 +7,5 @@ export const GUEST = Object.freeze({
   userId: undefined,
   tenantId: undefined,
   roles: [ROLES.GUEST],
-  permissions: undefined,
+  permissions: [],
 } as const)

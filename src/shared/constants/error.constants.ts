@@ -32,6 +32,9 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The request was aborted before it could be processed. */
   ABORTED: 'ABORTED',
+
+  /** @description Required service scope is not available in the request context. */
+  SCOPE_NOT_AVAILABLE: 'SCOPE_NOT_AVAILABLE',
 } as const)
 
 /** @description Inferred union of every valid ERROR_CODES value. */
@@ -107,4 +110,5 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
   [ERROR_CODES.BAD_REQUEST]: 'errors.bad_request',
   [ERROR_CODES.ABORTED]: 'errors.aborted',
   [ERROR_CODES.AUTHENTICATION_FAILED]: 'errors.authentication_failed',
+  [ERROR_CODES.SCOPE_NOT_AVAILABLE]: 'errors.scope_not_available',
 } as const)
