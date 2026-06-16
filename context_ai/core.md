@@ -156,13 +156,13 @@ class UniqueId {
 ## domain/contracts/cqrs
 
 ```ts
-interface IBaseRequest {
+interface ICommand {
   readonly type: RequestType
   readonly timestamp: Date
   readonly TOKEN: symbol
 }
-interface ICommand extends IBaseRequest {}
-interface IQuery extends IBaseRequest {}
+interface ICommand extends ICommand {}
+interface IQuery extends ICommand {}
 interface IPaginatedQuery extends IQuery, IPaginationParams {}
 interface ICachedQuery extends IQuery {
   cacheKey: string
