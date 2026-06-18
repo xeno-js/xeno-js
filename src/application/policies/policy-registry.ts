@@ -1,4 +1,4 @@
-import type { ICache, IPolicyRegistry } from '@/domain'
+import type { IPolicyRegistry } from '@/domain'
 import type { AuthPolicy, Optional } from '@/shared'
 
 /**
@@ -9,17 +9,17 @@ export class PolicyRegistry implements IPolicyRegistry {
    * @description Constructs a new instance of the PolicyRegistry class, which is responsible for managing role-based access control policies. It takes an ICache instance as a parameter, which is used to store and retrieve policies for specific intents. The cache allows for efficient management of access control policies across the application.
    * @param _cache An instance of ICache used to store and retrieve policies for specific intents. This cache is essential for efficient management of access control policies across the application.
    */
-  constructor(private readonly _cache: ICache) {}
+  constructor(private readonly _cache: Map<string, AuthPolicy> = new Map()) {}
 
-  public async addPolicy(intent: string, policy: AuthPolicy): Promise<this> {
+  public addPolicy(intent: string, policy: AuthPolicy): this {
     const key = this.getKey(intent)
-    await this._cache.set(key, policy, undefined)
+    this._cache.set(key, policy)
     return this
   }
 
-  public async getPolicy(intent: string): Promise<Optional<AuthPolicy>> {
+  public getPolicy(intent: string): Optional<AuthPolicy> {
     const key = this.getKey(intent)
-    return await this._cache.get(key)
+    return this._cache.get(key)
   }
 
   private getKey(intent: string): string {

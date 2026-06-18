@@ -10,12 +10,12 @@ export interface IPolicyRegistry {
    * @param policy - The policy to be added.
    * @returns The current instance of the policy registry.
    */
-  addPolicy(intent: string, policy: AuthPolicy): Promise<this>
+  addPolicy(intent: string, policy: AuthPolicy): this
 
   /**
    * @description Retrieves the policy for a specific intent.
    * @param intent - The intent for which the policy is being retrieved.
    * @returns The policy associated with the intent, or undefined if no policy exists.
    */
-  getPolicy(intent: string): Promise<Optional<AuthPolicy>>
+  getPolicy(intent: string): Optional<AuthPolicy>
 }
