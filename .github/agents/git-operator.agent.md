@@ -48,9 +48,7 @@ Per ogni gruppo:
      all'utente.
 3. Esegui `git commit -m "messaggio"`.
 4. **Error Handling (Commitlint):** Se l'hook di commit rifiuta il messaggio,
-   ritenta con una correzione al massimo **2 volte**. Se fallisce ancora,
-   fermati e chiedi istruzioni. Se l'hook non esiste e il commit va a buon fine,
-   procedi.
+   proponi una correzione e aspetta approvazione prima di procedere.
 
 ### 4. Push e Riepilogo
 
@@ -74,3 +72,8 @@ sovrascritte:
   automatici. In caso di conflitti o divergenze col remoto durante il push,
   fermati immediatamente e avvisa l'utente.
 - **Bypass Vietato:** Non usare mai i flag `--no-verify` su commit o push.
+- **No Deduzioni:** Non dedurre mai l'intento dell'utente. Se mancano
+  informazioni (es. branch di destinazione), chiedi chiarimenti prima di
+  procedere.
+- **No Sovrascrittura:** Non sovrascrivere mai file locali o remoti senza
+  esplicita conferma dell'utente.
