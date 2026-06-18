@@ -1,20 +1,26 @@
-import type { BaseAuthorizationStrategy } from '@/application'
+import type { BaseAuthorizationStrategy, BaseValidationStrategy } from '@/application'
 import type {
   ExecutionContext,
+  IAuthService,
+  IBaseMapper,
   ICache,
+  Identity,
   IGateKeeper,
+  IIdempotencyStore,
   ILogger,
   ILoggerClient,
   IMediator,
   IMiddleware,
   IPipelineBehavior,
   IPolicyRegistry,
+  IRequest,
   IRequestContext,
   IServiceContainer,
   IServiceExtractor,
+  IValidatorService,
   LoggerConfig,
 } from '@/domain'
-import type { HttpHeaders, Metadata, Optional } from '@/shared'
+import type { AuthClaims, HttpHeaders, Metadata, Optional } from '@/shared'
 import { TokenHelper, TOKENS } from '@/shared'
 
 /**
@@ -24,7 +30,7 @@ import { TokenHelper, TOKENS } from '@/shared'
  */
 export const INJECTION_TOKENS = Object.freeze({
   /** @description Token used to register and resolve the InMemoryCache instance in the dependency injection container. */
-  IN_MEMORY_CACHE: TokenHelper.createToken<ICache>(TOKENS.IN_MEMORY_CACHE),
+  CACHE: TokenHelper.createToken<ICache>(TOKENS.CACHE),
   /** @description Token used to register and resolve the RequestContextMiddleware in the dependency injection container. */
   MIDDLEWARE: TokenHelper.createToken<IMiddleware<HttpHeaders>>(TOKENS.REQUEST_CONTEXT_MIDDLEWARE),
   /** @description Token used to register and resolve the RequestContext instance in the dependency injection container. */
@@ -56,63 +62,88 @@ export const INJECTION_TOKENS = Object.freeze({
   /** @description Token used to register and resolve the PinoLogger instance in the dependency injection container. */
   PINO_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.PINO_LOGGER),
   /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  EXCEPTION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  EXCEPTION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.EXCEPTION_PIPELINE,
   ),
   /** @description Token used to register and resolve the AuthorizationPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AUTHORIZATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  AUTHORIZATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the CompositePipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  COMPOSITE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  COMPOSITE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.COMPOSITE_PIPELINE,
   ),
   /** @description Token used to register and resolve the ConcurrencyRetryPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  CONCURRENCY_RETRY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  CONCURRENCY_RETRY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.CONCURRENCY_RETRY_PIPELINE,
   ),
   /** @description Token used to register and resolve the IdempotencyPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IDEMPOTENCY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  IDEMPOTENCY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.IDEMPOTENCY_PIPELINE,
   ),
   /** @description Token used to register and resolve the LoggingPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  LOGGING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(TOKENS.LOGGING_PIPELINE),
+
+  LOGGING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+    TOKENS.LOGGING_PIPELINE,
+  ),
   /** @description Token used to register and resolve the PerformancePipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  PERFORMANCE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  PERFORMANCE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.PERFORMANCE_PIPELINE,
   ),
   /** @description Token used to register and resolve the QueryCachingPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  QUERY_CACHING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  QUERY_CACHING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.QUERY_CACHING_PIPELINE,
   ),
   /** @description Token used to register and resolve the ValidationPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  VALIDATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<any, any>>(
+
+  VALIDATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.VALIDATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TENANT_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<any>>(
+  TENANT_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.TENANT_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the RoleAuthorizationPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ROLE_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<any>>(
+  ROLE_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.ROLE_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the PermissionAuthorizationPipeline instance in the dependency injection container. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  PERMISSION_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<any>>(
+  PERMISSION_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the PolicyRegistry instance in the dependency injection container. */
   POLICY_REGISTRY: TokenHelper.createToken<IPolicyRegistry>(TOKENS.POLICY_REGISTRY),
+  /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container. */
+  USER_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
+    TOKENS.USER_AUTHORIZATION_PIPELINE,
+  ),
+  /** @description Token used to register and resolve the SchemaValidationStrategy instance in the dependency injection container. */
+  SCHEMA_VALIDATION_STRATEGY: TokenHelper.createToken<BaseValidationStrategy>(
+    TOKENS.SCHEMA_VALIDATION_STRATEGY,
+  ),
+  /** @description Token used to register and resolve the ZodValidator instance in the dependency injection container. */
+  ZOD_VALIDATOR: TokenHelper.createToken<IValidatorService>(TOKENS.ZOD_VALIDATOR),
+  /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container. */
+  IDEMPOTENCY_STORE: TokenHelper.createToken<IIdempotencyStore>(TOKENS.IDEMPOTENCY_STORE),
+  /** @description Token used to register and resolve the AuthService instance in the dependency injection container. */
+  AUTH_SERVICE: TokenHelper.createToken<IAuthService>(TOKENS.AUTH_SERVICE),
+  /** @description Token used to register and resolve the CommandPipeline behaviors in the dependency injection container. */
+  COMMAND_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+    TOKENS.COMMAND_PIPELINES_BEHAVIOR,
+  ),
+  /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container. */
+  QUERY_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+    TOKENS.QUERY_PIPELINES_BEHAVIOR,
+  ),
+  /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container. */
+  CLAIMS_IDENTITY_MAPPER: TokenHelper.createToken<IBaseMapper<AuthClaims, Identity>>(
+    TOKENS.CLAIMS_IDENTITY_MAPPER,
+  ),
 } as const)

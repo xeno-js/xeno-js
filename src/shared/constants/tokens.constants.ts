@@ -4,10 +4,10 @@
  * They can be symbols, strings, or classes, but using symbols is a common practice to avoid naming collisions.
  */
 export const TOKENS = Object.freeze({
+  /** @description Token used to register and resolve the AuthService instance in the dependency injection container. */
+  AUTH_SERVICE: 'AUTH_SERVICE',
   /** @description Token used to register and resolve the InMemoryCache instance in the dependency injection container. */
-  IN_MEMORY_CACHE: 'IN_MEMORY_CACHE',
-  /** @description Token used to register and resolve the RedisCache instance in the dependency injection container. */
-  REDIS_CACHE: 'REDIS_CACHE',
+  CACHE: 'CACHE',
   /** @description Token used to register and resolve the RequestContextMiddleware in the dependency injection container. */
   REQUEST_CONTEXT_MIDDLEWARE: 'REQUEST_CONTEXT_MIDDLEWARE',
   /** @description Token used to register and resolve command pipeline behaviors in the dependency injection container. */
@@ -52,6 +52,8 @@ export const TOKENS = Object.freeze({
   PERFORMANCE_PIPELINE: 'PERFORMANCE_PIPELINE',
   /** @description Token used to register and resolve the SchemaValidationStrategy instance in the dependency injection container. */
   SCHEMA_VALIDATION_STRATEGY: 'SCHEMA_VALIDATION_STRATEGY',
+  /** @description Token used to register and resolve the ZodValidator instance in the dependency injection container. */
+  ZOD_VALIDATOR: 'ZOD_VALIDATOR',
   /** @description Token used to register and resolve the QueryCachingPipeline instance in the dependency injection container. */
   QUERY_CACHING_PIPELINE: 'QUERY_CACHING_PIPELINE',
   /** @description Token used to register and resolve the ValidationPipeline instance in the dependency injection container. */
@@ -64,4 +66,10 @@ export const TOKENS = Object.freeze({
   PERMISSION_AUTHORIZATION_PIPELINE: 'PERMISSION_AUTHORIZATION_PIPELINE',
   /** @description Token used to register and resolve the PolicyRegistry instance in the dependency injection container. */
   POLICY_REGISTRY: 'POLICY_REGISTRY',
+  /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container. */
+  USER_AUTHORIZATION_PIPELINE: 'USER_AUTHORIZATION_PIPELINE',
+  /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container. */
+  IDEMPOTENCY_STORE: 'IDEMPOTENCY_STORE',
+  /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container. */
+  CLAIMS_IDENTITY_MAPPER: 'CLAIMS_IDENTITY_MAPPER',
 } as const)
