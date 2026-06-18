@@ -1,13 +1,19 @@
-import type { ZodType } from 'zod'
-
 import type { IFactory, IValidatorService } from '@/domain'
-import { ZodValidatorService } from '@/infrastructure'
 
+import type { ZodConfig } from '../modules/config'
+import { ZodValidatorService } from '../services/validators/zod.validator'
 /**
- * @description Factory class responsible for creating instances of ZodValidatorService. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, promoting separation of concerns and flexibility in managing validator instances across the application.
+ * @description Factory class responsible for creating instances of ZodValidatorService based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, including the initialization of the underlying ZodValidatorService instance with the specified configuration options such as URL and API key. This design promotes separation of concerns and allows for flexibility in managing ZodValidatorService instances across the application.
  */
-export class ZodValidatorFactory<T> implements IFactory<void, IValidatorService> {
-  public create(): IValidatorService {
-    return new ZodValidatorService(new Map<string, ZodType<T>>())
+export class ZodValidatorFactory implements IFactory<ZodConfig, IValidatorService> {
+  public create(opts: ZodConfig): IValidatorService {
+    const validatorService = new ZodValidatorService()
+
+    // 2. Iteriamo sugli schemi passati nella configurazione e li registriamo (Ora in modo sincrono!)
+    for (const [intentKey, schema] of Object.entries(opts.schemas)) {
+      validatorService.addSchema(intentKey, schema)
+    }
+
+    return validatorService
   }
 }

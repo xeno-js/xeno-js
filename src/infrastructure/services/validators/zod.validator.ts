@@ -7,12 +7,12 @@ import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES }
 /**
  * @description Implementation of the IValidatorService interface using Zod schemas for validation. This service maintains a registry of Zod schemas identified by unique keys and provides methods to check for the existence of a schema and to validate data against a specified schema. The validate method returns a ResultType indicating success or failure, with detailed error information in case of validation failure, including formatted error messages from Zod.
  */
-export class ZodValidatorService<T> implements IValidatorService<T> {
+export class ZodValidatorService implements IValidatorService {
   /**
-   * @description Constructs a new instance of the ZodValidatorService class, which takes a Map of string keys to ZodType instances as a parameter. This schema registry is used to store and manage the validation schemas that will be applied to incoming data. The constructor initializes the service with the provided schema registry, allowing it to perform validation checks based on the registered schemas when the validate method is called.
-   * @param _schemaRegistry A Map where the keys are strings representing the type of data or request, and the values are ZodType instances that define the validation rules for that type. This registry is essential for the operation of the validator service, as it allows it to look up and apply the correct schema for validating incoming data.
+   * @description Constructs a new instance of the ZodValidatorService class, which takes an ICache instance as a parameter. This cache is used to store and manage the validation schemas that will be applied to incoming data. The constructor initializes the service with the provided cache, allowing it to perform validation checks based on the cached schemas when the validate method is called.
+   * @param _cache An instance of ICache used to store and retrieve Zod schemas. This cache is essential for the operation of the validator service, as it allows it to look up and apply the correct schema for validating incoming data.
    */
-  constructor(private readonly _schemaRegistry: Map<string, ZodType<T>>) {}
+  constructor(private readonly _cache: Map<string, ZodType> = new Map()) {}
 
   private static formatIssue(issue: core.$ZodIssue): string {
     const issuePath = !Guards.isNullOrEmpty(issue.path) ? issue.path.map(String).join('.') : 'root'
@@ -20,21 +20,20 @@ export class ZodValidatorService<T> implements IValidatorService<T> {
     return `[${issuePath}] ${issue.message}`
   }
 
-  public hasSchema(key: string): boolean {
-    return this._schemaRegistry.has(key)
+  public addSchema<T>(key: string, schema: T extends ZodType ? T : never): void {
+    this._cache.set(key, schema)
   }
 
-  public validate(key: string, data: T): ResultType<boolean> {
-    const schema = this._schemaRegistry.get(key)
-
+  public async validate<T>(key: string, data: T): Promise<ResultType<boolean>> {
+    const schema = this._cache.get(key)
     if (!Guards.isDefined(schema)) {
       return Result.fail(
         AppError.create({
-          code: PIPELINE_ERROR_CODES.UNEXPECTED_ERROR,
-          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.UNEXPECTED_ERROR],
-          status: STATUS_CODES.INTERNAL_SERVER_ERROR,
-          name: key,
-          cause: new Error(`Schema with key "${key}" does not exist in the registry.`),
+          code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
+          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR],
+          status: STATUS_CODES.BAD_REQUEST,
+          name: 'ZodValidatorService',
+          cause: new Error(`Validation schema not found for key: ${key}`),
         }),
       )
     }
@@ -51,8 +50,8 @@ export class ZodValidatorService<T> implements IValidatorService<T> {
           code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
           message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR],
           status: STATUS_CODES.BAD_REQUEST,
-          name: key,
-          cause: new Error(`Validation failed for schema with key "${key}": ${errorMessage}`),
+          name: 'ZodValidatorService',
+          cause: new Error(`Validation failed for schema: ${errorMessage}`),
         }),
       )
     }
