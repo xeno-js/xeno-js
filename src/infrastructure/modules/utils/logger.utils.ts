@@ -1,4 +1,4 @@
-import type { IServiceContainer, LoggerConfig } from '@/domain'
+import type { ILoggerClient, IServiceContainer, LoggerConfig } from '@/domain'
 import type { InjectionToken, Optional } from '@/shared'
 import { Guards, LOG_LEVEL } from '@/shared'
 
@@ -23,10 +23,7 @@ export const LoggerUtils = Object.freeze({
     // 3. Registriamo questa classe nel container
     container.addSingleton(INJECTION_TOKENS.LOGGER_CONFIG, RuntimeLoggerConfig, [])
 
-    const loggerDependencies: InjectionToken<unknown>[] = [
-      INJECTION_TOKENS.REQUEST_CONTEXT,
-      INJECTION_TOKENS.LOGGER_CONFIG,
-    ]
+    const loggerDependencies: InjectionToken<ILoggerClient>[] = []
 
     if (opts?.console ?? true) {
       const { ConsoleLogger } = await import('@/infrastructure/loggers/')
@@ -64,6 +61,10 @@ export const LoggerUtils = Object.freeze({
     }
 
     const { BaseLogger } = await import('@/application/loggers')
-    container.addSingleton(INJECTION_TOKENS.LOGGER, BaseLogger, loggerDependencies)
+    container.addSingletonFactory(INJECTION_TOKENS.LOGGER, (resolver) => {
+      const context = resolver.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
+      const resolvedDependencies = loggerDependencies.map((token) => resolver.resolve(token))
+      return new BaseLogger(context, minLevel, ...resolvedDependencies)
+    })
   },
 } as const)
