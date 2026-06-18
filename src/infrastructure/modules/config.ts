@@ -1,0 +1,107 @@
+import type { ZodType } from 'zod'
+
+import type { IRequest, IStrategy } from '@/domain'
+import type { AuthPolicy, CacheClientConfig, InjectionToken } from '@/shared'
+
+/**
+ * @description PipelineConfig defines the configuration options for the CQRS pipelines in the application. It includes settings for performance monitoring, authorization, validation, command bus, and query bus. Each section allows for enabling or disabling specific features and providing additional configuration details as needed. This configuration is used by the CqrsModule to set up the appropriate middleware and services in the dependency injection container based on the specified options.
+ */
+export interface PipelineConfig {
+  /** @description Configuration for performance monitoring, including the ability to set a threshold in milliseconds for logging slow operations. If enabled, the PerformancePipeline will log a warning whenever the execution of a command or query exceeds the specified threshold, helping to identify potential performance bottlenecks in the application. If the threshold is not defined, all operations will be monitored without duration-based filtering. */
+  readonly performance?: {
+    /** @description Flag to enable or disable performance monitoring. If set to true, the PerformancePipeline will be included in the CQRS processing, and it will log warnings for operations that exceed the specified threshold. If set to false or not defined, the PerformancePipeline will be skipped, and no performance monitoring will occur. */
+    isEnabled: boolean
+    /** @description Optional threshold in milliseconds for logging slow operations. If defined, the PerformancePipeline will log a warning whenever the execution of a command or query exceeds this duration, allowing for performance monitoring and optimization. If not defined, all operations will be monitored without duration-based filtering. */
+    thresholdMs?: number
+  }
+  /** @description Configuration for authorization, allowing the enabling of authorization strategies based on tenant, policy, roles, and permissions. If enabled, the authorization pipeline will evaluate the specified strategies for each command or query, ensuring that only authorized users can perform certain actions. The configuration also includes the ability to define custom authorization strategies via injection tokens, providing flexibility in implementing application-specific access rules. */
+  readonly authorization?: {
+    /** @description Flag to enable or disable authorization. If set to true, the authorization pipeline will be included in the CQRS processing, and the specified strategies will be evaluated for each command or query. If set to false or not defined, the authorization pipeline will be skipped, allowing all commands and queries to be processed without authorization checks. */
+    isEnabled: boolean
+    /** @description Flag to enable tenant-based authorization. If set to true, the authorization pipeline will include a strategy that checks if the user belongs to the appropriate tenant for the command or query being executed. This is typically used in multi-tenant applications to ensure that users can only access resources and perform actions within their own tenant context. */
+    tenant?: boolean
+    /** @description Configuration for policy-based authorization, allowing the definition of a policy registry and the option to enable role-based or permission-based checks. If policy-based authorization is enabled, the authorization pipeline will include a strategy that evaluates the defined policies for each command or query, ensuring that users meet the necessary criteria based on their roles and permissions. The policy registry allows for central management of authorization policies, making it easier to maintain and update access rules across the application. */
+    policy?: {
+      /** @description Flag to enable policy-based authorization. If set to true, the authorization pipeline will include a strategy that evaluates the defined policies for each command or query, ensuring that users meet the necessary criteria based on their roles and permissions. If set to false or not defined, policy-based checks will be skipped, and only tenant-based or custom strategies (if any) will be evaluated. */
+      isEnabled: boolean
+      /** @description An optional registry of authorization policies, where each policy is associated with a specific intent (e.g., a command or query type). Each policy defines the required roles and permissions for executing the associated intent. If provided, the authorization pipeline will use this registry to evaluate policies for incoming commands and queries, ensuring that users have the necessary roles and permissions to perform the requested actions. */
+      policyRegistry?: Record<string, AuthPolicy>
+      /** @description Flags to enable role-based and permission-based authorization checks. If role-based checks are enabled, the authorization pipeline will verify that the user has the required roles as defined in the policies. If permission-based checks are enabled, the pipeline will verify that the user has the necessary permissions. At least one of these checks must be enabled when policy-based authorization is active to ensure that there are criteria for evaluating access. */
+      role?: boolean
+      /** @description Flag to enable permission-based authorization checks. If set to true, the authorization pipeline will verify that the user has the necessary permissions as defined in the policies. This allows for fine-grained access control based on specific actions that a user is allowed to perform, rather than just their roles. If set to false or not defined, permission-based checks will be skipped, and only role-based checks (if enabled) or tenant-based/custom strategies will be evaluated. */
+      permission?: boolean
+    }
+    /** @description An optional array of custom authorization strategies defined via injection tokens. If provided, these strategies will be included in the authorization pipeline and evaluated for each command or query, allowing for custom logic to determine if a user is authorized to perform a specific action. This provides flexibility in implementing application-specific access rules that may not fit into standard tenant-based or policy-based checks. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is authorized. */
+    customAuthorizationStrategy?: InjectionToken<IStrategy<IRequest>>[]
+  }
+  /** @description Configuration for validation, allowing the enabling of validation based on Zod schemas or custom validation strategies. If enabled, the validation pipeline will validate commands and queries based on the specified criteria, ensuring that input data meets expectations before further processing. The configuration includes the ability to define Zod schemas for structural validation or to use custom strategies via injection tokens, providing flexibility in implementing application-specific validation rules. */
+  readonly validation?: {
+    /** @description Flag to enable or disable validation. If set to true, the validation pipeline will be included in the CQRS processing, and the specified validation criteria will be applied to incoming commands and queries. If set to false or not defined, the validation pipeline will be skipped, allowing all commands and queries to be processed without validation checks. */
+    isEnabled: boolean
+    /** @description An optional configuration for Zod-based validation, allowing the definition of schemas for validating the structure and content of commands and queries. If provided, the validation pipeline will use these schemas to validate incoming requests, ensuring that they conform to the expected format and contain valid data before being processed further. This provides a powerful and flexible way to enforce data integrity and prevent invalid input from causing issues in the application. */
+    zod?: ZodConfig
+    /** @description An optional array of custom validation strategies defined via injection tokens. If provided, these strategies will be included in the validation pipeline and evaluated for each command or query, allowing for custom logic to determine if the input data is valid. This provides flexibility in implementing application-specific validation rules that may not fit into standard schema-based validation. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is valid. */
+    customValidationStrategy?: InjectionToken<IStrategy<IRequest, boolean>>[]
+  }
+  /** @description Configuration for the command bus, allowing the enabling of features such as idempotency and concurrency management. If enabled, the command bus pipeline will include specific behaviors to handle these features, such as acquiring locks to ensure idempotency or managing retries in case of concurrency conflicts. The configuration includes specific details for each feature, such as TTLs for idempotency locks or delay strategies for concurrency retries, providing granular control over how commands are processed and managed within the application. */
+  readonly commandBus?: {
+    /** @description Flag to enable or disable command bus features. If set to true, the command bus pipeline will include additional behaviors based on the specified configuration, such as idempotency handling and concurrency management. If set to false or not defined, the command bus will operate without these additional features, allowing commands to be processed in a standard manner without idempotency or concurrency controls. */
+    isEnabled: boolean
+    idempotency?: {
+      /** @description Flag to enable idempotency for commands. If set to true, the command bus pipeline will include behaviors to ensure that commands with the same ID are processed only once, using locks and storing results for a defined period. This helps prevent duplicate processing of commands in scenarios such as retries or network issues. If set to false or not defined, idempotency features will be skipped, and commands will be processed without checks for duplicate execution. */
+      isEnabled: boolean
+      /** @description Configuration for idempotency, allowing the definition of TTLs for locks and processed results. If enabled, the command bus pipeline will include specific behaviors to handle idempotency, such as acquiring locks to ensure that a command with the same ID is processed only once and storing the results of processed commands for a defined period. The configuration includes specific details for TTLs, such as the duration of the lock and the duration for which processed results are retained, providing granular control over how idempotency is managed within the application. */
+      config: IdempotencyConfig
+    }
+    concurrency?: {
+      /** @description Flag to enable concurrency management for commands. If set to true, the command bus pipeline will include behaviors to handle concurrency conflicts, such as retries or delays. If set to false or not defined, concurrency management features will be skipped, and commands will be processed without checks for concurrency issues. */
+      isEnabled: boolean
+      /** @description Configuration for concurrency management, allowing the definition of maximum retries and delay strategies for retries. If enabled, the command bus pipeline will include specific behaviors to handle concurrency conflicts, such as retrying a command in case of failure due to a conflict. The configuration includes specific details for retries, such as the maximum number of attempts and delay strategies (e.g., exponential backoff with jitter) between attempts, providing granular control over how concurrency is managed within the application. */
+      config: ConcurrencyConfig
+    }
+  }
+  /** @description Configuration for the query bus, allowing the enabling of features such as result caching. If enabled, the query bus pipeline will include specific behaviors to handle caching, such as storing query results in a cache system and retrieving results from the cache when available. The configuration includes specific details for caching, such as settings for Redis integration or the ability to use a custom cache via injection tokens, providing flexibility in how query results are stored and retrieved within the application. */
+  readonly queryBus?: {
+    /** @description Flag to enable or disable query bus features. If set to true, the query bus pipeline will include additional behaviors based on the specified configuration, such as result caching. If set to false or not defined, the query bus will operate without these additional features, allowing queries to be processed in a standard manner without caching or other enhancements. */
+    isEnabled: boolean
+  }
+}
+
+/** @description Configuration for Redis integration, including details such as host, port, and credentials. If enabled, the query bus and command bus (in case of idempotency) pipelines will use Redis as the cache system to store and retrieve data efficiently. The configuration includes specific details for Redis integration, such as host, port, and credentials, providing flexibility in how the cache is implemented and used within the application. */
+export interface CacheConfig {
+  /** @description Flag to enable or disable Redis integration for caching. If set to true, the application will use Redis as the cache system for the query bus and command bus (in case of idempotency) pipelines, allowing for efficient storage and retrieval of data. If set to false or not defined, Redis integration will be skipped, and the application may use an alternative caching mechanism (e.g., in-memory cache) based on other configurations. */
+  isEnabled: boolean
+  redis?: {
+    /** @description Flag to enable or disable Redis caching. If set to true, the application will use Redis as the cache system for the query bus and command bus (in case of idempotency) pipelines, allowing for efficient storage and retrieval of data. If set to false or not defined, Redis caching will be skipped, and the application may use an alternative caching mechanism (e.g., in-memory cache) based on other configurations. */
+    isEnabled: boolean
+    /** @description Optional configuration for the Redis cache client, including details such as host, port, and credentials. If provided, this configuration will be used to establish a connection to the Redis server for caching purposes. If not defined, default connection settings will be used. */
+    config?: CacheClientConfig
+  }
+}
+
+/** @description Configuration for caching, allowing the enabling of Redis integration or the use of a custom cache. If enabled, the query bus and command bus (in case of idempotency) pipelines will use the configured cache system to store and retrieve data efficiently. The configuration includes specific details for Redis integration, such as host, port, and credentials, as well as the ability to define a custom cache via injection tokens, providing flexibility in how the cache is implemented and used within the application. */
+export interface ZodConfig {
+  /** @description A record of Zod schemas, where each key represents a specific command or query type, and the corresponding value is the Zod schema used to validate that type. If provided, the validation pipeline will use these schemas to validate incoming requests, ensuring that they conform to the expected format and contain valid data before being processed further. This allows for powerful and flexible validation rules based on the structure and content of commands and queries. */
+  schemas: Record<string, ZodType>
+}
+
+/** @description Configuration for idempotency, allowing the definition of TTLs for locks and processed results. If enabled, the command bus pipeline will include specific behaviors to handle idempotency, such as acquiring locks to ensure that a command with the same ID is processed only once and storing the results of processed commands for a defined period. The configuration includes specific details for TTLs, such as the duration of the lock and the duration for which processed results are retained, providing granular control over how idempotency is managed within the application. */
+interface IdempotencyConfig {
+  /** @description Optional TTL in seconds for the idempotency lock. This defines how long the lock should be held to prevent duplicate processing of commands with the same ID. If not defined, a default value will be used. */
+  lockTtlSeconds?: number
+  /** @description Optional TTL in seconds for storing the results of processed commands. This defines how long the results of a processed command should be retained in the cache, allowing for retrieval if the same command is received again within that period. If not defined, a default value will be used. */
+  processedTtlSeconds?: number
+}
+
+/** @description Configuration for concurrency management, allowing the definition of maximum retries and delay strategies for retries. If enabled, the command bus pipeline will include specific behaviors to handle concurrency conflicts, such as retrying a command in case of failure due to a conflict. The configuration includes specific details for retries, such as the maximum number of attempts and delay strategies (e.g., exponential backoff with jitter) between attempts, providing granular control over how concurrency is managed within the application. */
+interface ConcurrencyConfig {
+  /** @description Optional maximum number of retry attempts in case of concurrency conflicts. This defines how many times the command bus should attempt to retry a command if it fails due to a concurrency issue, such as a version conflict in an optimistic concurrency control scenario. If not defined, a default value will be used. */
+  maxRetries?: number
+  /** @description Optional configuration for delay strategies between retry attempts. This can include settings for exponential backoff, jitter, or fixed delays to manage the timing of retries in case of concurrency conflicts. If not defined, a default delay strategy will be used. */
+  delayConfig?: {
+    /** @description Base delay in milliseconds for retries. This defines the initial delay before the first retry attempt in case of a concurrency conflict. If using an exponential backoff strategy, this base delay will be multiplied for each subsequent retry attempt. If not defined, a default value will be used. */
+    baseDelayMs: number
+    /** @description Optional maximum delay in milliseconds for retries. This defines the upper limit for the delay between retry attempts, preventing excessively long delays in case of multiple retries. If not defined, a default value will be used. */
+    maxJitterMs: number
+  }
+}
