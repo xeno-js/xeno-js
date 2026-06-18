@@ -29,7 +29,7 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
     command: IRequest,
     auth: Identity,
   ): Promise<Result<void, AppError>> {
-    const policy = await this._policy.getPolicy(command.intent)
+    const policy = this._policy.getPolicy(command.intent)
     if (!Guards.isDefined(policy))
       return this.createAuthError(command, 'No authorization policy found for the command.')
 

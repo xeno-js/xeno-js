@@ -16,12 +16,8 @@ export class SchemaValidationStrategy extends BaseValidationStrategy {
   }
 
   public async execute(request: IRequest): Promise<ResultType<boolean>> {
-    if (!this._validator.hasSchema(request.intent)) {
-      return this.createValidationError(request, 'No schema found for the request')
-    }
-
     const key = request.intent
-    const parseResult = this._validator.validate(key, request)
+    const parseResult = await this._validator.validate(key, request)
 
     if (!parseResult.isOk())
       return this.createValidationError(
