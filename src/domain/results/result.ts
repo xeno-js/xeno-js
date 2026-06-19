@@ -1,4 +1,3 @@
-import { type AppError } from '@/domain'
 import type { Optional } from '@/shared'
 
 /**
@@ -90,10 +89,3 @@ export class Result<TValue, TError = never> {
     return this._error as TError
   }
 }
-
-/**
- * A utility type to extract the value type from a Result instance.
- *
- * @template T - The type of the Result instance.
- */
-export type ResultType<T, E = AppError> = Result<T, E>

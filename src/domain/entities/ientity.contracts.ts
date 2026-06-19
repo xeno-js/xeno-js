@@ -1,4 +1,4 @@
-import type { UniqueId } from '@/domain'
+import type { UniqueId } from '../unique_id/unique-id'
 
 /**
  * An interface representing a generic entity in the domain. An entity is an object that has a unique identity and is defined by its properties.

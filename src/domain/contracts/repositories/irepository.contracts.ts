@@ -1,5 +1,6 @@
-import type { ResultType } from '@/domain'
 import type { Optional, WriteCriteria } from '@/shared'
+
+import type { ResultType } from '../../results/result.types'
 
 /**
  * @fileoverview Defines the IRepository interface for generic data access operations.

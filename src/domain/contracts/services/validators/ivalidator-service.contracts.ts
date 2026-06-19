@@ -1,4 +1,4 @@
-import type { ResultType } from '@/domain'
+import type { ResultType } from '../../../results/result.types'
 
 /**
  * @description Interface for a validation service that provides methods to check for the existence of validation schemas and to validate data against those schemas. The IValidatorService interface defines two methods: hasSchema, which checks if a validation schema exists for a given key, and validate, which validates data against a specified schema key and returns a ResultType indicating the success or failure of the validation process. This interface can be implemented by various validation services that utilize different schema validation libraries or custom validation logic to ensure that incoming data meets the required criteria before being processed further in the application.

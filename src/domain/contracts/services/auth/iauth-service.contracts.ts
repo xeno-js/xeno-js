@@ -1,5 +1,6 @@
-import type { ResultType } from '@/domain'
 import type { AuthClaims } from '@/shared'
+
+import type { ResultType } from '../../../results/result.types'
 
 /**
  * @description IAuthService defines the contract for authentication services.

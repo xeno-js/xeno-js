@@ -1,5 +1,6 @@
-import type { ResultType } from '@/domain'
 import type { HttpRequest } from '@/shared'
+
+import type { ResultType } from '../../results/result.types'
 
 /**
  * @description Contract for a remote data source that defines the method for fetching data from a remote endpoint. This interface abstracts the details of how the data is fetched, allowing for different implementations (e.g., using different HTTP clients or protocols) while providing a consistent method signature for fetching data.

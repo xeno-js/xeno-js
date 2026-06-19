@@ -1,4 +1,4 @@
-import type { ResultType } from '@/domain'
+import type { ResultType } from '../../results/result.types'
 
 /**
  * @description A delegate function type that represents the next step in the pipeline behavior. It returns a promise that resolves to a ResultType, which can be either a successful result or an error. This delegate is used to invoke the next behavior in the pipeline or the actual request handler, allowing for a chain of behaviors to be executed in a structured manner.

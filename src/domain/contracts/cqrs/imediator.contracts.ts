@@ -1,4 +1,6 @@
-import type { ICommand, IQuery, ResultType } from '@/domain'
+import type { ResultType } from '../../results/result.types'
+import type { ICommand } from './cqrs_types/icommand.types'
+import type { IQuery } from './cqrs_types/iquery.types'
 
 /**
  * An interface representing a mediator in the CQRS (Command Query Responsibility Segregation) pattern. The mediator is responsible for sending commands and executing queries by delegating them to the appropriate handlers.

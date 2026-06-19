@@ -1,5 +1,6 @@
-import type { ResultType } from '@/domain'
 import type { Optional } from '@/shared'
+
+import type { ResultType } from '../../results/result.types'
 
 /**
  * An interface representing a context for managing transactions in a data access layer. This interface defines methods for beginning a transaction, committing it, and rolling it back in case of errors.

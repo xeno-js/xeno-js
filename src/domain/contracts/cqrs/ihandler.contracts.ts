@@ -1,4 +1,4 @@
-import type { ResultType } from '@/domain'
+import type { ResultType } from '../../results/result.types'
 
 /**
  * An interface representing a handler for processing requests in a CQRS (Command Query Responsibility Segregation) pattern.

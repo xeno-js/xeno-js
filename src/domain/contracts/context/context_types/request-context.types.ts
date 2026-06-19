@@ -1,4 +1,6 @@
-import type { Identity, NetworkContext, TracingContext } from './index'
+import type { Identity } from './identity-context.types'
+import type { NetworkContext } from './network-context.types'
+import type { TracingContext } from './tracing-context.types'
 
 /**
  * @description RequestContext defines the structure for the context of a request execution, which includes the identity of the user or system executing the request, the network context for tracing and logging purposes, and the tracing context for distributed tracing across services. This context is essential for ensuring proper authentication, authorization, and observability in a distributed system.
