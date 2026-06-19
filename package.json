@@ -65,6 +65,7 @@
     "drizzle-orm": "^0.45.2",
     "ioredis": "^5.3.1",
     "p-limit": "^7.3.0",
+    "pg": "^8.22.0",
     "pino": "^10.3.1",
     "postgres": "^3.4.9",
     "zod": "^4.4.3"
@@ -91,6 +92,9 @@
     "p-limit": {
       "optional": true
     },
+    "pg": {
+      "optional": true
+    },
     "pino": {
       "optional": true
     },
@@ -105,17 +109,28 @@
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
+    "@sentry/node": "^7.64.0",
+    "@supabase/supabase-js": "^2.35.0",
     "@types/pg": "^8.20.0",
     "@vitest/coverage-v8": "^4.1.7",
+    "axios": "^1.16.1",
+    "cockatiel": "^4.0.0",
     "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "husky": "^9.1.7",
+    "ioredis": "^5.3.1",
     "lint-staged": "^17.0.5",
+    "p-limit": "^7.3.0",
+    "pg": "^8.22.0",
+    "pino": "^10.3.1",
+    "postgres": "^3.4.9",
     "prettier": "^3.8.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "zod": "^4.4.3"
   }
 }
