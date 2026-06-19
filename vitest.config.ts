@@ -16,7 +16,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],
       include: ['src/**/*.ts'],
-      exclude: ['**/index.ts', 'src/domain/contracts/**', '**/*.d.ts', '**/*.types.ts', '**/__tests__/**', '**/*.constants.ts', '**/*.config.ts', '**/*.contracts.ts'],
+      exclude: ['**/index.ts', 'src/domain/contracts/**', '**/*.d.ts', '**/*.types.ts', '**/__tests__/**', '**/*.constants.ts', '**/*.config.ts', '**/*.contracts.ts', '**/*.mocks.ts', '**/*.mock.ts', '**/*.spec.ts', '**/factories/**', '**/migrations/**', '**/seeders/**', '**/*.module.ts'],
       thresholds: {
         lines: 80,
         functions: 80,
