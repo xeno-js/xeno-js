@@ -204,5 +204,4 @@ your README:
 
 ## 📄 License
 
-Copyright (c) 2024 Mattia Carcione. Licensed under the
-[ISC License](https://www.google.com/search?q=LICENSE).
+Copyright (c) 2024 Mattia Carcione. Licensed under the [ISC License](LICENSE).
