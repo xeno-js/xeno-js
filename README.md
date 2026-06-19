@@ -152,17 +152,47 @@ src/
 
 ## 🤝 For Contributors
 
-Want to contribute to Gear5? Awesome! Here is how the repository is structured
-and how to run it locally.
+We welcome contributions to Gear5! To maintain the highest code quality and
+stability of the core framework, **direct pushes to the `main` and `develop`
+branches are strictly prohibited.** Please follow this Git Flow to contribute:
 
-### Setup
+1. **Branch off from `develop`**: Create a new branch for your feature or
+   bugfix.
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout -b feat/your-awesome-feature
+   ```
+
+````
+
+
+2. **Make your changes**: Write your code and ensure it passes all local checks (linting, types, and tests).
+```bash
+npm run check
+````
+
+3. **Commit your changes**: We enforce
+   [Conventional Commits](https://www.conventionalcommits.org/). Husky will
+   verify your commit message format.
+
+4. **Commit Format:**
 
 ```bash
-git clone [https://github.com/Mattia-Carcione/gear5.git](https://github.com/Mattia-Carcione/gear5.git)
-cd gear5
-npm install
+feat(scope): add new feature
+fix(scope): resolve bug
+chore(scope): update dependencies
 
 ```
+
+5. **Submit a Pull Request (PR)**: Push your branch to GitHub and open a Pull
+   Request targeting the **`develop`** branch.
+
+6. **Review**: The repository owner will review your code, run pipeline tests,
+   and merge it into `develop`.
+
+_Note: The `main` branch is strictly reserved for production releases. Code
+flows from feature branches ➡️ `develop` ➡️ `main`._
 
 ### Scripts
 
@@ -185,15 +215,6 @@ repository:
   Conventional Commits).
 - **`pre-push`**: Runs type checking, linting, and testing before code leaves
   your machine.
-
-**Commit Format:**
-
-```bash
-feat(scope): add new feature
-fix(scope): resolve bug
-chore(scope): update dependencies
-
-```
 
 ---
 
