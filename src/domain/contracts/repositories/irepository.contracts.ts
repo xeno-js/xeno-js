@@ -4,19 +4,37 @@ import type { ResultType } from '../../results/result.types'
 
 /**
  * @fileoverview Defines the IRepository interface for generic data access operations.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 
 /**
  * A generic repository interface for performing basic CRUD operations on entities of type T.
  *
  * @template T - The type of the entity that the repository will manage.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface IRepository<T> {
   /**
    * @description Finds an entity by its unique identifier. This method takes an ID and an optional AbortSignal for cancellation. It returns a promise that resolves to the entity if found, or null | undefined if not found. The implementation of this method is responsible for constructing the appropriate query based on the provided ID and handling any necessary data transformations before returning the result.
    * @param id The unique identifier of the entity to find.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   findById(id: string, signal: Optional<AbortSignal>): Promise<ResultType<Optional<T>>>
 
@@ -25,6 +43,12 @@ export interface IRepository<T> {
    * @param criteria The write criteria object to use for querying entities.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to an array of entities that match the criteria.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   find(criteria: WriteCriteria, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 
@@ -34,6 +58,12 @@ export interface IRepository<T> {
    * @param criteria The write criteria object to use for updating entities.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves when the update operation is complete.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   update(
     entity: Partial<T>,
@@ -46,6 +76,12 @@ export interface IRepository<T> {
    * @param entity The entity object to save.
    * @param signal An optional AbortSignal to allow cancellation of the save operation.
    * @returns A promise that resolves when the entity has been saved.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   save(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 
@@ -55,6 +91,12 @@ export interface IRepository<T> {
    * @param entity - The entity to delete.
    * @param signal An optional AbortSignal to allow cancellation of the delete operation.
    * @returns A promise that resolves when the entity has been deleted.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   delete(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 }

@@ -12,6 +12,11 @@ import {
 
 /**
  * @description A pipeline behavior that implements a retry mechanism for handling concurrency conflicts in the CQRS pipelines. When a request results in a concurrency conflict error, this behavior will automatically retry the request up to a specified maximum number of attempts, with an exponential backoff strategy and added jitter to prevent thundering herd problems. If the maximum number of retry attempts is exceeded, it returns a failed Result with an AppError indicating the concurrency conflict.
+ *
+ * @author Mattia Carcione :|
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
  */
 export class ConcurrencyRetryPipeline<
   TInput extends ICommand,
@@ -19,10 +24,20 @@ export class ConcurrencyRetryPipeline<
 > implements IPipelineBehavior<TInput, TResult> {
   /**
    * @description Configuration for the retry mechanism, including the base delay and maximum jitter for calculating the delay between retry attempts, as well as the maximum number of retry attempts allowed before giving up and returning a failed Result with an AppError indicating the concurrency conflict.
+   *
+   * @author Mattia Carcione :O
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   private readonly _delayConfig: { baseDelayMs: number; maxJitterMs: number }
   /**
    * @description Maximum number of retry attempts for handling concurrency conflicts. If the number of attempts exceeds this value, the pipeline will return a failed Result with an AppError indicating that the maximum retry attempts have been exceeded due to concurrency conflicts.
+   *
+   * @author Mattia Carcione <>
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   private readonly _maxRetries: number
 
@@ -31,6 +46,11 @@ export class ConcurrencyRetryPipeline<
    * @param maxRetries An optional parameter that specifies the maximum number of retry attempts for handling concurrency conflicts. The default value is DEFAULT_CONCURRENCY.MAX_RETRIES. It must be a positive integer.
    * @param delayConfig An optional parameter that specifies the delay configuration for the exponential backoff strategy, including a base delay in milliseconds and a maximum jitter in milliseconds. The default values are DEFAULT_CONCURRENCY.BASE_DELAY for the base delay and DEFAULT_CONCURRENCY.MAX_JITTER for the maximum jitter. Both values must be non-negative integers.
    * @throws Will throw an error if the provided maxRetries value is not a positive integer or if the provided delayConfig values are not valid non-negative integers.
+   *
+   * @author Mattia Carcione :$
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   constructor(
     maxRetries: number = DEFAULT_CONCURRENCY.MAX_RETRIES,
@@ -63,6 +83,11 @@ export class ConcurrencyRetryPipeline<
    * @param request The input request to be handled, which must extend ICommand.
    * @param next The delegate function that represents the next behavior or handler in the pipeline.
    * @returns A Promise that resolves to a ResultType containing either the successful result or a failed AppError if the maximum retry attempts are exceeded due to concurrency conflicts.
+   *
+   * @author Mattia Carcione _|_
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     let attempts = 0
@@ -97,6 +122,11 @@ export class ConcurrencyRetryPipeline<
    * @description Checks if the given error is a concurrency conflict error.
    * @param error The error to be checked.
    * @returns A boolean indicating whether the error is a concurrency conflict error.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   private isConcurrencyError(error: AppError): boolean {
     return (

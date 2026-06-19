@@ -15,16 +15,34 @@ import { GuidHelper } from './guid.utils'
 
 /**
  * @description This module provides utility functions for handling HTTP-related tasks, such as normalizing HTTP headers. It includes a single function, `normalizeHeaders`, which takes an input of unknown type and returns an object with normalized header values. The function ensures that all header values are converted to strings, and if a header value is an array, it joins the elements into a single string separated by commas. This utility is useful for ensuring consistent header formats when working with various HTTP client libraries.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 
 /**
  * @description A helper object that provides utility functions for HTTP-related tasks. Currently, it includes a method for normalizing HTTP headers, which ensures that all header values are strings and handles cases where header values may be arrays. This helper can be extended in the future to include additional HTTP-related utilities as needed.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const HttpHelper = Object.freeze({
   /**
    * @description Normalizes HTTP headers by converting all header values to strings. If a header value is an array, it joins the array elements into a single string separated by commas. This method ensures that the headers are in a consistent format, which can be particularly useful when working with different HTTP client libraries that may represent headers in various ways. If the input headers are not defined or not an object, it returns an empty object.
    * @param headers The input headers to be normalized, which can be of any type. The method checks if the headers are defined and are an object before processing them.
    * @returns An object containing the normalized headers, where each header value is a string. If the input headers were not valid, it returns an empty object.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   normalizeHeaders(headers: unknown): HttpHeaders {
     if (!Guards.isDefined(headers) || !Guards.isObject(headers)) return {}
@@ -49,6 +67,12 @@ export const HttpHelper = Object.freeze({
    * @param meta Optional metadata to be included in the response. This can contain additional information relevant to the response, such as pagination details, rate limit information, or any other contextual data that may be useful for clients consuming the API.
    * @param customHeaders Optional custom HTTP headers to be included in the response. This allows for adding any additional headers that may be necessary for specific responses, such as caching directives, custom authentication headers, or other relevant information.
    * @returns A ResponseDto object representing the successful HTTP response, containing the status code, success flag, headers, and data payload structured as a SuccessResponseDto.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   success<T>(
     data: T | IPaginatedResult<T>,
@@ -84,6 +108,12 @@ export const HttpHelper = Object.freeze({
    * - requestId: An optional request ID for tracking the specific request that led to the error. If not provided, a new GUID will be generated.
    * - customHeaders: Optional custom HTTP headers to be included in the error response. This allows for adding any additional headers that may be necessary for specific error responses, such as retry-after headers or custom authentication headers.
    * @returns A ResponseDto object representing the error HTTP response, containing the status code, success flag, headers, and data payload structured as an ErrorResponseDto.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   error(params: {
     code: string

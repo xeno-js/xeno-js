@@ -9,6 +9,12 @@ export const CommandUtils = Object.freeze({
    * @description Checks if the provided command configuration requires any command strategies.
    * @param commandConfig The command configuration to check.
    * @returns True if any command strategies are required, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addCommand: async (
     container: IServiceContainer,
@@ -55,6 +61,12 @@ export const CommandUtils = Object.freeze({
    * @description Checks if the provided query configuration requires any query strategies.
    * @param queryConfig The query configuration to check.
    * @returns True if any query strategies are required, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addQuery: async (
     container: IServiceContainer,

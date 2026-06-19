@@ -22,15 +22,33 @@ import {
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).
- */
+
+   * 
+   * @author Mattia Carcione -,-
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class Mediator implements IMediator {
   /**
    * @param _requestContext An instance of IRequestContext used to manage the execution context for commands and queries.
+  
+   * 
+   * @author Mattia Carcione O
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione X
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   async send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR)
@@ -38,6 +56,11 @@ export class Mediator implements IMediator {
 
   /**
    * @inheritdoc
+   *
+   * @author Mattia Carcione :-:
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
    */
   async query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.QUERY_PIPELINES_BEHAVIOR)
@@ -47,6 +70,12 @@ export class Mediator implements IMediator {
    * @description Internal method to process both commands and queries. It resolves the appropriate handler for the request and applies the registered pipeline behaviors in the correct order.
    * @param request The command or query to be processed.
    * @returns A promise that resolves to the result of processing the request.
+  
+   * 
+   * @author Mattia Carcione .-.-.
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private async process<TResponse>(
     request: IRequest<TResponse>,

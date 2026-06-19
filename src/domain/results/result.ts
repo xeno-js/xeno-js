@@ -6,18 +6,42 @@ import type { Optional } from '@/shared'
  *
  * @template TValue - The type of the value in case of a successful operation.
  * @template TError - The type of the error in case of a failed operation (default is never).
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class Result<TValue, TError = never> {
   /**
    * Indicates whether the operation was successful or not.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private readonly _isSuccess: boolean
   /**
    * The error of the operation in case it failed.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private readonly _error: Optional<TError>
   /**
    * The value of the operation in case it succeeded.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private readonly _value: Optional<TValue>
 
@@ -27,6 +51,12 @@ export class Result<TValue, TError = never> {
    * @param isSuccess - A boolean indicating whether the operation was successful.
    * @param error - The error of the operation in case it failed (optional).
    * @param value - The value of the operation in case it succeeded (optional).
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private constructor(isSuccess: boolean, error: Optional<TError>, value: Optional<TValue>) {
     this._isSuccess = isSuccess
@@ -39,6 +69,12 @@ export class Result<TValue, TError = never> {
    *
    * @param value - The value of the successful operation.
    * @returns A Result instance representing a successful operation.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public static ok<U>(value?: U): Result<U> {
     return new Result<U>(true, undefined, value)
@@ -49,6 +85,12 @@ export class Result<TValue, TError = never> {
    *
    * @param error - The error of the failed operation.
    * @returns A Result instance representing a failed operation.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public static fail<U, V = never>(error: V): Result<U, V> {
     return new Result<U, V>(false, error, undefined)
@@ -58,6 +100,12 @@ export class Result<TValue, TError = never> {
    * Checks if the result is a success.
    *
    * @returns True if the result is a success, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public isOk(): boolean {
     return this._isSuccess
@@ -68,6 +116,12 @@ export class Result<TValue, TError = never> {
    *
    * @returns The value of the result.
    * @throws An error if the result is a failure.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public getValueOrThrow(): Optional<TValue> {
     if (!this._isSuccess) {
@@ -81,6 +135,12 @@ export class Result<TValue, TError = never> {
    *
    * @returns The error of the result.
    * @throws An error if the result is a success.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public getErrorOrThrow(): TError {
     if (this._isSuccess) {

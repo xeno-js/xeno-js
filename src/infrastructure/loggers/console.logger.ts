@@ -4,11 +4,23 @@ import { Guards, LOG_LEVEL } from '@/shared'
 
 /**
  * @description Concrete implementation of ILoggerClient that uses the built-in console for logging. This class serves as a simple logging provider that can be used for development and debugging purposes, allowing log messages to be output to the console with different log levels (e.g., error, warning, info, debug) and optional context and error information.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class ConsoleLogger implements ILoggerClient {
   /**
    * Constructs a new instance of the ConsoleLogger class, which takes an optional minimum log level. The minimum log level determines the threshold for logging messages, where messages with a log level below the specified minimum will be ignored.
    * @param _minLevel The minimum log level for logging messages. Messages with a log level below this threshold will not be logged. Default is LOG_LEVEL.DEBUG.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(private readonly _minLevel: LogLevel = LOG_LEVEL.DEBUG) {}
 

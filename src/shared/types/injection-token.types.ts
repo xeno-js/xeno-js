@@ -13,10 +13,28 @@ declare const _phantom: unique symbol
  * such as `container.resolve<IBlogService>(userRepositoryToken)`.
  *
  * Tokens must be created exclusively through {@link createToken}.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface InjectionToken<T> {
-  /** @description The unique symbol that identifies this token at runtime. */
+  /** @description The unique symbol that identifies this token at runtime.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   readonly symbol: symbol
-  /** @description Phantom property to bind the generic type `T` to this token. */
+  /** @description Phantom property to bind the generic type `T` to this token.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   readonly [_phantom]: T
 }

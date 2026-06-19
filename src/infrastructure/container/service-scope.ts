@@ -9,7 +9,13 @@ import { Guards, type InjectionToken } from '@/shared'
  * Created by {@link ServiceContainer.createScope}. Maintains its own isolated
  * instance cache for scoped services. Singleton and transient services are
  * resolved by delegating to the root container resolver.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class ServiceScope implements IServiceScope {
   private readonly _scopedInstances = new Map<symbol, unknown>()
   private _disposed = false
@@ -18,6 +24,12 @@ export class ServiceScope implements IServiceScope {
    * @param _descriptors - The full registration map from the root container.
    * @param _rootResolve - Delegate to the root container's resolve method for
    *   singleton and transient services.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public constructor(
     private readonly _descriptors: ReadonlyMap<symbol, ServiceDescriptor<unknown>>,
@@ -26,6 +38,12 @@ export class ServiceScope implements IServiceScope {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     if (this._disposed) {
@@ -64,6 +82,12 @@ export class ServiceScope implements IServiceScope {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public dispose(): void {
     this._scopedInstances.clear()

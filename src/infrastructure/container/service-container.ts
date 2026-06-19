@@ -13,13 +13,25 @@ import { ServiceScope } from './service-scope'
  * - **transient** — a new instance on every {@link resolve} call.
  * - **scoped** — one instance per {@link IServiceScope}; must be resolved
  *   through a scope obtained via {@link createScope}.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class ServiceContainer implements IServiceContainer {
   private readonly _descriptors = new Map<symbol, ServiceDescriptor<unknown>>()
   private readonly _singletons = new Map<symbol, unknown>()
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addSingleton<T>(
     token: InjectionToken<T>,
@@ -36,6 +48,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addTransient<T>(
     token: InjectionToken<T>,
@@ -52,6 +70,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addScoped<T>(
     token: InjectionToken<T>,
@@ -68,6 +92,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -82,6 +112,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addScopedFactory<T>(
     token: InjectionToken<T>,
@@ -96,6 +132,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -110,6 +152,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     const descriptor = this._descriptors.get(token.symbol)
@@ -127,6 +175,12 @@ export class ServiceContainer implements IServiceContainer {
 
   /**
    * @inheritdoc
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public createScope(): IServiceScope {
     return new ServiceScope(this._descriptors, this)

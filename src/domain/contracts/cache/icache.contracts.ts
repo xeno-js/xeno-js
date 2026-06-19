@@ -2,16 +2,33 @@ import type { Optional } from '@/shared'
 
 /**
  * @fileoverview Defines the ICache interface for caching mechanisms within the application.
+ *
+ * @author Mattia Carcione - ICache
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
  */
 
 /**
  * An interface representing a caching mechanism within the application. This interface provides methods for retrieving and storing values in the cache, as well as clearing the cache when necessary. The get method allows for retrieving values from the cache based on a specified key, while the set method enables storing values in the cache with an optional time-to-live (TTL) parameter to specify how long the value should remain in the cache before it expires. The clear method provides a way to remove all entries from the cache when needed.
- */
+
+   * 
+   * @author Mattia Carcione - GG
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface ICache {
   /**
    * Retrieves a value from the cache based on the specified key. If the key exists in the cache and has not expired, the corresponding value will be returned. If the key does not exist or has expired, this method will return undefined, indicating that there is no valid cached value available for the given key.
    * @param key The unique identifier for the cached value. This key is used to store and retrieve values from the cache.
    * @returns The value associated with the specified key if it exists and has not expired; otherwise, returns undefined.
+  
+   * 
+   * @author Mattia Carcione - ?^?
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   get<T>(key: string): Promise<Optional<T>>
 
@@ -20,6 +37,12 @@ export interface ICache {
    * @param key The unique identifier for the cached value. This key is used to store and retrieve values from the cache.
    * @param value The value to be stored in the cache associated with the specified key.
    * @param ttl Optional time-to-live (TTL) in milliseconds, indicating how long the value should remain in the cache before it expires. If not provided, the value will be stored indefinitely.
+  
+   * 
+   * @author Mattia Carcione ^.^
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   set<T>(key: string, value: T, ttl: Optional<number>): Promise<void>
 
@@ -29,12 +52,24 @@ export interface ICache {
    * @param value The value to be stored in the cache associated with the specified key.
    * @param ttl Optional time-to-live (TTL) in milliseconds, indicating how long the value should remain in the cache before it expires. If not provided, the value will be stored indefinitely.
    * @returns True if the value was successfully stored in the cache because the key did not already exist; otherwise, returns false if the key already exists in the cache and the value was not set.
+  
+   * 
+   * @author Mattia Carcione ^^
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   setIfAbsent<T>(key: string, value: T, ttl: Optional<number>): Promise<boolean>
 
   /**
    * Removes a specific entry from the cache based on the provided key. This method allows for targeted invalidation of cached values when they are no longer valid or needed. After calling this method with a specific key, subsequent calls to the get method with that key will return undefined until a new value is stored in the cache using the set method.
    * @param key The unique identifier for the cached value to be removed. This key is used to identify which entry in the cache should be invalidated.
+  
+   * 
+   * @author Mattia Carcione ^=^
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   remove(key: string): Promise<void>
 
@@ -42,11 +77,23 @@ export interface ICache {
    * Checks if a specific key exists in the cache and has not expired. This method returns true if the key is present in the cache and its associated value is still valid; otherwise, it returns false. This can be useful for determining whether a cached value can be retrieved without actually fetching it, allowing for more efficient cache management and decision-making based on the presence of valid cached data.
    * @param key The unique identifier for the cached value to check for existence. This key is used to determine if a valid entry exists in the cache.
    * @returns True if the key exists in the cache and has not expired; otherwise, returns false.
+  
+   * 
+   * @author Mattia Carcione ^p^
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   has(key: string): Promise<boolean>
 
   /**
    * Clears all entries from the cache, effectively removing all stored values. This method can be used when there is a need to invalidate the entire cache, such as when significant changes occur in the underlying data or when the cache needs to be reset for any reason. After calling this method, subsequent calls to the get method will return undefined until new values are stored in the cache using the set method.
+  
+   * 
+   * @author Mattia Carcione ^_^
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   clear(): Promise<void>
 }

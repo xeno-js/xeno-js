@@ -5,7 +5,13 @@ import { GUEST } from '@/shared'
 
 /**
  * @description The NoAuthGateKeeper class is a specialized implementation of the IGateKeeper interface that bypasses authentication and authorization checks. It is designed for scenarios where authentication is not required, such as public endpoints or testing environments. The authenticate method returns a guest identity, effectively granting access without requiring a valid token.
- */
+
+   * 
+   * @author Mattia Carcione - Hi
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class NoAuthGateKeeper implements IGateKeeper {
   public async authenticate(_token: Optional<string>): Promise<ResultType<Identity>> {
     const guest = GUEST as unknown as Identity

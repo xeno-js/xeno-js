@@ -3,19 +3,37 @@
 /**
  * @description Represents a value that may be `null`.
  * Prefer this over `T | null` in all public APIs so intent is self-documenting.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Nullable<T> = T | null
 
 /**
  * @description Represents a value that may be `undefined`.
  * Prefer this over `T | undefined` in all public APIs.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Optional<T> = T | undefined
 
 /**
  * @description Represents a value that may be either `null` or `undefined`.
  * Use when a value is absent regardless of the reason.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Maybe<T> = T | null | undefined
 
 // ─── Constructor Types ────────────────────────────────────────────────────────
@@ -25,7 +43,13 @@ export type Maybe<T> = T | null | undefined
  *
  * @template T  The instance type produced by `new`.
  * @template TArgs  Constructor parameter tuple; defaults to `any[]`.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) => T
 
@@ -35,7 +59,13 @@ export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) =
  * a concrete constructor signature.
  *
  * @template T  The instance type produced by subclasses.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T> = abstract new (...args: any[]) => T
 
@@ -44,19 +74,37 @@ export type AbstractConstructor<T> = abstract new (...args: any[]) => T
 /**
  * @description A plain-object dictionary with string keys and uniform value type.
  * Prefer over `{ [key: string]: V }` for self-documenting intent.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Dictionary<V = unknown> = Record<string, V>
 
 /**
  * @description Produces a new type with only the keys `K` made required;
  * all other keys retain their original optionality.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type RequireKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
 /**
  * @description Produces a new type where property `K` is overridden with type `V`.
  * Useful for narrowing a property inside a generic base type.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Override<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>
 
 /**
@@ -65,7 +113,13 @@ export type Override<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>
  * @example
  * type StringKeys = KeysOfType<{ a: string; b: number; c: string }, string>;
  * // => 'a' | 'c'
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type KeysOfType<T, V> = {
   [K in keyof T]: T[K] extends V ? K : never
 }[keyof T]
@@ -89,7 +143,13 @@ export type KeysOfType<T, V> = {
  * // Parameterised factory
  * const makeRepo: Factory<IRepository<Entity>, [tx: Transaction]> =
  *   (tx) => new DrizzleRepository(tx);
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Factory<T, TArgs extends unknown[] = []> = (...args: TArgs) => T
 
 /**
@@ -98,7 +158,13 @@ export type Factory<T, TArgs extends unknown[] = []> = (...args: TArgs) => T
  *
  * @template T     The type of the resolved value.
  * @template TArgs Tuple of factory argument types.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type AsyncFactory<T, TArgs extends unknown[] = []> = (...args: TArgs) => Promise<T>
 
 // ─── IoC Resolver ─────────────────────────────────────────────────────────────
@@ -123,7 +189,13 @@ export type AsyncFactory<T, TArgs extends unknown[] = []> = (...args: TArgs) => 
  *     return handler.execute(command);
  *   }
  * }
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Resolver<T = unknown> = (token: symbol) => T
 
 /**
@@ -131,7 +203,13 @@ export type Resolver<T = unknown> = (token: symbol) => T
  * dependencies asynchronously (e.g. lazy module loading, remote config).
  *
  * @template T  Narrows the resolved type at each call site.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type AsyncResolver = <T>(token: symbol) => Promise<T>
 
 // ─── Miscellaneous Types ─────────────────────────────────────────────────────
@@ -139,11 +217,23 @@ export type AsyncResolver = <T>(token: symbol) => Promise<T>
 /**
  * @description Represents a globally unique identifier (GUID/UUID) as a string.
  * The format is typically 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type Guid = `${string}-${string}-${string}-${string}-${string}`
 
 /**
  * @description Represents a function that performs setup or configuration
  * based on the provided options of type `T`.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export type SetupAction<T> = (options: T) => void

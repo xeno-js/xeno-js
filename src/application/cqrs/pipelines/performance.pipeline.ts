@@ -3,7 +3,13 @@ import { Guards } from '@/shared'
 
 /**
  * @description Default threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value can be overridden by providing a different thresholdMs value when constructing the PerformancePipeline instance.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 const defaultThresholdMs = 500
 
 /**
@@ -11,13 +17,25 @@ const defaultThresholdMs = 500
  *
  * @template TInput - The type of the input request, which must extend the IRequest interface.
  * @template TResult - The type of the result returned by the request handler.
- */
+
+   * 
+   * @author Mattia Carcione - Hello
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class PerformancePipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
   TResult
 > {
   /**
    * @description Threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value is set through the constructor and must be a positive integer.
+  
+   * 
+   * @author Mattia Carcione - Hola
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private readonly _thresholdMs: number
 
@@ -26,6 +44,12 @@ export class PerformancePipeline<TInput extends IRequest, TResult> implements IP
    * @param _logger An instance of ILogger used for logging performance warnings related to the handling of requests.
    * @param thresholdMs An optional parameter that specifies the execution time threshold in milliseconds. If a request takes longer than this threshold to execute, a warning will be logged. The default value is 500ms.
    * @throws Will throw an error if the provided thresholdMs value is not a positive integer.
+  
+   * 
+   * @author Mattia Carcione *§*
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(
     private readonly _logger: ILogger,

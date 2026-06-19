@@ -8,11 +8,23 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } fr
 
 /**
  * @description Axios-based implementation of the agnostic IHttpClient contract.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class AxiosHttpClient implements IHttpClient {
   /**
    * @description Creates a new AxiosHttpClient.
    * @param config Optional HTTP client config used to initialize the internal client instance.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(private readonly _client: AxiosInstance) {}
 

@@ -6,7 +6,13 @@ import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from 
  *
  * @template TInput - The type of the input request, which must extend the IRequest interface.
  * @template TResult - The type of the result returned by the request handler.
- */
+
+   * 
+   * @author Mattia Carcione §
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
   TResult
@@ -14,6 +20,12 @@ export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipel
   /**
    * @description Constructs a new instance of the LoggingPipeline class, which requires an ILogger for logging. The pipeline will use this dependency to log relevant information about each request being handled, including any errors that occur during processing.
    * @param _logger An instance of ILogger used for logging informational messages and errors related to the handling of requests.
+  
+   * 
+   * @author Mattia Carcione ()
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(private readonly _logger: ILogger) {}
 

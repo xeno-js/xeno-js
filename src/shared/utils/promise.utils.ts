@@ -1,12 +1,24 @@
 /**
  * @description Fornisce utilità per la gestione avanzata di Promise, ritardi asincroni e concorrenza.
  * Astrae le logiche di timing per renderle facilmente testabili e riutilizzabili.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const PromiseHelper = Object.freeze({
   /**
    * @description Sospende l'esecuzione asincrona per un numero esatto di millisecondi.
    * @param ms I millisecondi di attesa.
    * @returns Una Promise che si risolve al termine del tempo.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -19,6 +31,12 @@ export const PromiseHelper = Object.freeze({
    * * @param baseDelayMs Il ritardo minimo garantito.
    * @param maxJitterMs La variazione massima casuale aggiuntiva.
    * @returns Una Promise che si risolve al termine del calcolo.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   delayWithJitter(baseDelayMs: number, maxJitterMs: number): Promise<void> {
     const jitter = Math.floor(Math.random() * maxJitterMs)

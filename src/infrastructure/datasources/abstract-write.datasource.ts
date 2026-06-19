@@ -5,7 +5,13 @@ import type { Optional, WriteCriteria } from '@/shared'
  * The AbstractWriteDataSource class is an implementation of the IWriteDataSource interface that provides methods for writing data to a database using a specified IDbClient and IFilterBuilder. This class is designed to be used as a data source for write operations in a repository pattern, allowing for separation of concerns and easier testing. The AbstractWriteDataSource class takes care of building the appropriate filters based on the provided criteria and executing the write queries against the database using the IDbClient.
  * @template TDto - The type of the data transfer object (DTO) that represents the data being written to the database.
  * @template TQueryConditions - The type of the query conditions object that is built using the IFilterBuilder to specify the criteria for writing data to the database.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export abstract class AbstractWriteDataSource<
   TDto extends object,
   TQueryConditions = unknown,
@@ -50,6 +56,12 @@ export abstract class AbstractWriteDataSource<
    * @param filter The filter object built using the IFilterBuilder to specify the criteria for deleting data from the database.
    * @param signal An optional AbortSignal to allow cancellation of the delete operation.
    * @returns A promise that resolves when the delete operation has been executed successfully.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   protected abstract performDelete(
     dto: TDto,

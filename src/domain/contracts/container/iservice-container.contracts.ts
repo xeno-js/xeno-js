@@ -4,7 +4,13 @@ import type { IServiceScope } from './iservice-scope.contracts'
 
 /**
  * @fileoverview Defines the IServiceContainer interface for a dependency injection container.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 
 /**
  * @description Agnostic contract for a dependency injection container that mimics
@@ -13,7 +19,13 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * Each registration method returns `this` to enable a fluent builder chain.
  * Dependencies are expressed as an ordered array of injection tokens
  * that the container will resolve and inject into the constructor.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface IServiceContainer {
   /**
    * Registers an implementation under the given token with **singleton** lifetime.
@@ -25,6 +37,12 @@ export interface IServiceContainer {
    * @param dependencies - Ordered array of injection tokens whose resolved values will be
    *   passed as constructor arguments.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addSingleton<T>(
     token: InjectionToken<T>,
@@ -41,6 +59,12 @@ export interface IServiceContainer {
    * @param dependencies - Ordered array of injection tokens whose resolved values will be
    *   passed as constructor arguments.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addTransient<T>(
     token: InjectionToken<T>,
@@ -59,6 +83,12 @@ export interface IServiceContainer {
    * @param dependencies - Ordered array of injection tokens whose resolved values will be
    *   passed as constructor arguments.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addScoped<T>(
     token: InjectionToken<T>,
@@ -74,6 +104,12 @@ export interface IServiceContainer {
    * @param token - The unique injection token that identifies this service binding.
    * @param factory - The factory function to create the service instance.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -87,6 +123,12 @@ export interface IServiceContainer {
    * @param token - The unique injection token that identifies this service binding.
    * @param factory - The factory function to create the service instance.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -102,6 +144,12 @@ export interface IServiceContainer {
    * @param token - The unique injection token that identifies this service binding.
    * @param factory - The factory function to create the service instance.
    * @returns The container instance to allow method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceContainer) => T): this
 
@@ -114,6 +162,12 @@ export interface IServiceContainer {
    * @returns The resolved service instance of type `T`.
    * @throws An error if no registration is found for the given token.
    * @throws An error if the token is registered with scoped lifetime.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   resolve<T>(token: InjectionToken<T>): T
 
@@ -125,6 +179,12 @@ export interface IServiceContainer {
    * Call {@link IServiceScope.dispose} when the scope is no longer needed.
    *
    * @returns A new scope instance.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   createScope(): IServiceScope
 }

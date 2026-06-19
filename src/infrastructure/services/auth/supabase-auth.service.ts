@@ -7,7 +7,13 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared
 
 /**
  * @description The SupabaseAuthService class is responsible for handling authentication-related operations using a SupabaseClient instance. It implements the IAuthService interface, providing methods to check if a user is authenticated and to retrieve authentication claims from a given token. The authenticate method interacts with the Supabase authentication API to fetch user information based on the provided token, while the isAuthenticated method checks if there is an active session. The class also includes error handling to create standardized authentication errors when necessary.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class SupabaseAuthService implements IAuthService {
   constructor(
     private readonly _supabase: SupabaseClient,
@@ -35,6 +41,12 @@ export class SupabaseAuthService implements IAuthService {
    * @description Creates an authentication error with a standardized format.
    * @param message The error message to include in the authentication error.
    * @returns An AppError instance representing the authentication error.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private createAuthError(message: string): AppError {
     return AppError.create({

@@ -15,7 +15,13 @@ import type {
 
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 interface QueuedModule {
   name: string
   action: () => Promise<void>
@@ -24,7 +30,13 @@ interface QueuedModule {
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application.
  * It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class AppBuilder {
   private readonly _container: IServiceContainer = new ServiceContainer()
 
@@ -67,6 +79,12 @@ export class AppBuilder {
   /**
    * @description Enables the use of middlewares in the application. Middlewares can be used for cross-cutting concerns such as logging, authentication, and request/response manipulation.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addMiddlewares(): this {
     this._queueMiddlewareModule()
@@ -76,6 +94,12 @@ export class AppBuilder {
   /**
    * @description Enables the use of context in the application. Context can be used to store and manage request-specific data, such as user information, correlation IDs, and other metadata that needs to be accessible throughout the request lifecycle.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addContext(): this {
     this._queueContextModule()
@@ -86,6 +110,12 @@ export class AppBuilder {
    * @description Configures the logger for the application. This method allows you to set up logging options such as log level, console logging, and integration with external logging services like Sentry or Pino.
    * @param setupAction A callback function that receives a LoggerConfig object to configure the logger settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addLogger(setupAction: SetupAction<LoggerConfig>): this {
     if (this._isLoggerModuleQueued) return this
@@ -112,6 +142,12 @@ export class AppBuilder {
    * @description Configures the authentication client for the application. This method allows you to set up authentication options such as the authentication server URL, API key, and additional options.
    * @param setupAction A callback function that receives an AuthClientConfig object to configure the authentication client settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addAuthentication(setupAction: SetupAction<AuthClientConfig>): this {
     if (this._isAuthModuleQueued) return this
@@ -132,6 +168,12 @@ export class AppBuilder {
    * @description Configures the authorization settings for the application. This method allows you to set up authorization options such as enabling/disabling authorization, tenant-based access control, policy-based access control, and custom authorization strategies.
    * @param setupAction A callback function that receives a PipelineConfig['authorization'] object to configure the authorization settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addAuthorization(setupAction: SetupAction<PipelineConfig['authorization']>): this {
     setupAction(this._pipelineConfig.authorization)
@@ -143,6 +185,12 @@ export class AppBuilder {
    * @description Configures the database settings for the application. This method allows you to set up database options such as enabling/disabling the database, connection string, and table definitions.
    * @param setupAction A callback function that receives a DbConfig object to configure the database settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addDb(setupAction: SetupAction<DbConfig>): this {
     if (this._isDbContextModuleQueued) return this
@@ -163,6 +211,12 @@ export class AppBuilder {
   /**
    * @description Enables the use of the service for concurrency control in the application. This method allows you to limit the number of concurrent asynchronous tasks being executed, which is useful for managing system resources and preventing event loop blocking during massive batch operations.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addConcurrencyService(): this {
     if (this._isConcurrencyServiceQueued) return this
@@ -190,6 +244,12 @@ export class AppBuilder {
    * @description Configures the CQRS pipeline settings for the application. This method allows you to set up various aspects of the CQRS pipeline, including performance monitoring, authorization, validation, command bus settings, and query bus settings.
    * @param setupAction A callback function that receives a PipelineConfig object to configure the CQRS pipeline settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addPipeline(setupAction: SetupAction<PipelineConfig>): this {
     setupAction(this._pipelineConfig)
@@ -205,6 +265,12 @@ export class AppBuilder {
    * @description Configures the HTTP settings for the application. This method allows you to set up HTTP options such as authentication token, headers, and other HTTP client configurations.
    * @param setupAction A callback function that receives an HttpConfig object to configure the HTTP settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addHttp(setupAction: SetupAction<HttpConfig>): this {
     const config = { token: undefined, client: {} } as unknown as HttpConfig
@@ -223,6 +289,12 @@ export class AppBuilder {
    * @description Configures the resilience settings for the application. This method allows you to set up resilience options such as retry policies, circuit breakers, and bulkhead isolation.
    * @param setupAction A callback function that receives a ResilienceConfig object to configure the resilience settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addResilience(setupAction: SetupAction<ResilienceConfig>): this {
     if (this._isResilienceModuleQueued) return this
@@ -256,6 +328,12 @@ export class AppBuilder {
    * @description Configures the HTTP core settings for the application. This method allows you to set up HTTP core options such as data source token, HTTP client configuration, and resilience settings.
    * @param setupAction A callback function that receives an HttpCoreConfig object to configure the HTTP core settings.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
     const config = {
@@ -287,6 +365,12 @@ export class AppBuilder {
    * @param implementation The constructor of the service implementation.
    * @param dependencies Optional array of injection tokens representing the dependencies of the service.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addSingleton<T>(
     token: InjectionToken<T>,
@@ -303,6 +387,12 @@ export class AppBuilder {
    * @param implementation The constructor of the service implementation.
    * @param dependencies Optional array of injection tokens representing the dependencies of the service.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addScoped<T>(
     token: InjectionToken<T>,
@@ -319,6 +409,12 @@ export class AppBuilder {
    * @param implementation The constructor of the service implementation.
    * @param dependencies Optional array of injection tokens representing the dependencies of the service.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addTransient<T>(
     token: InjectionToken<T>,
@@ -334,6 +430,12 @@ export class AppBuilder {
    * @param token The injection token used to identify the service.
    * @param factory The factory function that creates the service instance.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -348,6 +450,12 @@ export class AppBuilder {
    * @param token The injection token used to identify the service.
    * @param factory The factory function that creates the service instance.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addScopedFactory<T>(
     token: InjectionToken<T>,
@@ -362,6 +470,12 @@ export class AppBuilder {
    * @param token The injection token used to identify the service.
    * @param factory The factory function that creates the service instance.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -376,6 +490,12 @@ export class AppBuilder {
    * @param factory A factory function that creates the module instance.
    * @param opts Optional configuration options for the module.
    * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public addModule<T>(name: string, factory: () => Promise<IModule<T>>, opts?: T): this {
     this._modules.push({
@@ -392,6 +512,12 @@ export class AppBuilder {
    * @description Resolves a service from the dependency injection container.
    * @param token The injection token used to identify the service.
    * @returns The resolved service instance.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     return this._container.resolve(token)
@@ -404,6 +530,12 @@ export class AppBuilder {
   /**
    * @description Finalizes the configuration and initializes all registered modules in the container.
    * @returns The fully configured ServiceContainer.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   public async build(): Promise<IServiceContainer> {
     for (const queued of this._modules) {
@@ -440,6 +572,12 @@ export class AppBuilder {
 
   /**
    * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private _queuePipelineModule(): void {
     if (this._isPipelineModuleQueued) return
@@ -459,6 +597,12 @@ export class AppBuilder {
 
   /**
    * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return
@@ -478,6 +622,12 @@ export class AppBuilder {
 
   /**
    * @description Queues the configuration of the context module if it has not already been queued. This method ensures that the context module is only added once, even if multiple context-related configurations are made.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private _queueContextModule(): void {
     if (this._isContextModuleQueued) return

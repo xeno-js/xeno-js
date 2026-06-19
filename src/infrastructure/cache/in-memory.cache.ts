@@ -4,11 +4,23 @@ import { Guards, StringHelper } from '@/shared'
 
 /**
  * @description The InMemoryCache class provides an implementation of the ICache interface using an in-memory Map to store cached values. This class allows for storing, retrieving, and managing cached values in memory, supporting features such as time-to-live (TTL) for cache entries and atomic operations for setting values only if they do not already exist. The InMemoryCache class is a simple and efficient caching solution for scenarios where a lightweight, in-memory cache is sufficient, such as during development or for caching non-critical data that does not require persistence across application restarts.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class InMemoryCache implements ICache {
   /**
    * @description Constructs a new instance of the InMemoryCache class, which initializes an internal Map to store cached values. The Map is used to associate cache keys with their corresponding values and expiration times, allowing for efficient retrieval and management of cached data. The constructor does not take any parameters, as the in-memory cache is self-contained and does not require external dependencies or configuration.
    * @param _cache An optional Map instance to use as the underlying storage for the cache. If not provided, a new Map will be created to store cached values.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(
     private _cache: Map<string, { value: string; expiresAt: Optional<number> }> = new Map(),

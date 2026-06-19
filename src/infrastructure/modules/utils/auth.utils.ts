@@ -6,12 +6,24 @@ import type { AuthClientConfig, PipelineConfig } from '../config'
 
 /**
  *  @description Utility functions for configuring authentication and authorization in the service container.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const AuthUtils = Object.freeze({
   /**
    * @description Checks if the provided authorization configuration requires any authorization strategies.
    * @param authorizationConfig The authorization configuration to check.
    * @returns True if any authorization strategies are required, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
 
   addAuthZ: async (
@@ -106,6 +118,12 @@ export const AuthUtils = Object.freeze({
    * @description Configures the authentication service and gatekeeper in the service container.
    * @param container The service container to configure.
    * @param opts The authentication configuration options.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addAuthN: async (container: IServiceContainer, opts: AuthClientConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

@@ -11,7 +11,9 @@
   `GuidHelper`)
 - Private constructors + static factory methods (`create`, `ok`, `fail`)
 - `readonly` on all props; deep immutability with `Object.freeze()`
-- JSDoc `/** */` on every public API
+- JSDoc
+  `/** *[DOCUMENTAZIONE]  * @author Mattia Carcione * @version 1.0.0 * @since 2025-09-30 * @link https://github.com/Mattia-Carcione/gear5*/`
+  on every public API
 - Barrel `index.ts` per cartella con `export * from '...'`
 - Generics: `TValue`, `TError`, `TRequest`, `TResponse`, `TInput`, `TOutput`
 

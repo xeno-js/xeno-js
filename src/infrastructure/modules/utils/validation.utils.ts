@@ -6,12 +6,24 @@ import type { PipelineConfig } from '../config'
 
 /**
  * @description ValidationUtils is a utility class that provides methods for adding validation strategies to the dependency injection container based on the provided configuration. It checks if the validation configuration is defined and, if so, it registers the appropriate validation strategies (such as Zod schema validation) in the container and adds them to the pipeline behaviors. This allows for flexible and configurable validation of requests in the application.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const ValidationUtils = Object.freeze({
   /**
    * @description Checks if the provided validation configuration requires any validation strategies.
    * @param validationConfig The validation configuration to check.
    * @returns True if any validation strategies are required, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
 
   addValidation: async (

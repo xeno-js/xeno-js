@@ -4,7 +4,13 @@ import { LOG_LEVEL, LOG_LEVEL_NAMES } from '@/shared'
 
 /**
  * @description Concrete implementation of the ILogger interface that serves as a central logging service within the application. This class is designed to broadcast log messages to multiple logging clients (implementations of ILoggerClient) that are injected via the constructor. The BaseLogger class provides methods for logging messages at different levels (info, warn, debug, error) and ensures that only messages that meet or exceed the specified minimum log level are forwarded to the registered logging clients. This design allows for flexibility in logging, enabling the use of various logging providers (e.g., Sentry, Pino) without coupling the application code to specific logging frameworks.
- */
+
+   * 
+   * @author Mattia Carcione - Logger
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class BaseLogger implements ILogger {
   // ─── Private Fields ─────────────────────────────────────────────────────────
   private readonly _minLevel: LogLevel
@@ -15,6 +21,12 @@ export class BaseLogger implements ILogger {
    * @param _requestContext The request context that provides contextual information for log messages, such as request-specific data or metadata.
    * @param config The minimum log level for this logger instance. Only messages with a log level equal to or higher than this level will be processed and forwarded to the logging clients.
    * @param loggers An array of ILoggerClient instances that will receive log messages from this logger. Each ILoggerClient represents a different logging provider or destination (e.g., console, file, external service).
+  
+   * 
+   * @author Mattia Carcione - CinCin
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,
@@ -47,6 +59,12 @@ export class BaseLogger implements ILogger {
    * @param message The log message.
    * @param context Optional context information to include with the log message.
    * @param error Optional error object to include with the log message.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private broadcast(level: LogLevel, message: string, error: Optional<Error> = undefined): void {
     if (level < this._minLevel) return

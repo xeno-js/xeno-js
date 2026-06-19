@@ -2,7 +2,13 @@ import type { InjectionToken } from '@/shared'
 
 /**
  * @fileoverview Defines the IServiceScope interface for scoped dependency injection.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 
 /**
  * @description Represents a logical scope for resolving scoped services,
@@ -14,7 +20,13 @@ import type { InjectionToken } from '@/shared'
  *
  * Call {@link dispose} when the scope is no longer needed to release all
  * scoped instances and invalidate the scope.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface IServiceScope {
   /**
    * Resolves the service registered under the given token within this scope.
@@ -26,6 +38,12 @@ export interface IServiceScope {
    * @returns The resolved service instance of type `T`.
    * @throws An error if no registration is found for the given token.
    * @throws An error if the scope has already been disposed.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   resolve<T>(token: InjectionToken<T>): T
 
@@ -34,6 +52,12 @@ export interface IServiceScope {
    * marking the scope as no longer usable.
    *
    * Any subsequent call to {@link resolve} on a disposed scope will throw.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   dispose(): void
 }

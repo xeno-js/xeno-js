@@ -5,12 +5,24 @@ import type { CacheConfig } from '../config'
 
 /**
  * @description Utility functions for configuring caching in the service container.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const CacheUtils = Object.freeze({
   /**
    * @description Checks if the provided cache configuration requires any cache strategies.
    * @param cacheConfig The cache configuration to check.
    * @returns True if any cache strategies are required, false otherwise.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

@@ -6,12 +6,24 @@ import { Guards, LOG_LEVEL } from '@/shared'
 
 /**
  * @description Class that implements the ILoggerClient interface using the Pino logging library. This class serves as an adapter between the ILoggerClient interface and the Pino logging library, allowing the use of Pino as a logging provider within the application's architecture without directly coupling the code to the specific logging framework.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class PinoLogger implements ILoggerClient {
   /**
    * Constructs a new instance of the PinoTransport class, which takes an optional minimum log level and an optional instance of the Pino logger. If no logger instance is provided, it initializes a new Pino logger with default settings. The minimum log level determines the threshold for logging messages, where messages with a log level below the specified minimum will be ignored.
    * @param _logger The Pino logger instance used for logging messages.
    * @param _minLevel The minimum log level for logging messages. Messages with a log level below this threshold will not be logged. Default is LOG_LEVEL.DEBUG.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   constructor(
     private readonly _logger: Logger,

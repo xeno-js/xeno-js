@@ -6,12 +6,24 @@ import type { Factory } from '@/shared'
  *
  * @template TInput  The type of the input parameter for the factory method.
  * @template TOutput The type of the output produced by the factory method.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export interface IFactory<TInput, TOutput> {
   /**
    * Creates an instance of `Output` using the provided `input` of type `TInput`.
    * @param input The input data required to create the instance.
    * @returns An instance of type `Output`.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   create: Factory<TOutput, [TInput]>
 }

@@ -5,7 +5,13 @@ import { Guards, GUEST } from '@/shared'
 
 /**
  * @description The GateKeeper class is responsible for authenticating users based on their identity and permissions. It provides a method to authenticate a user using a token and returns their identity. If the token is invalid or missing, it returns a guest identity.
- */
+
+   * 
+   * @author Mattia Carcione PP
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export class GateKeeper implements IGateKeeper {
   constructor(
     private readonly _authService: IAuthService,

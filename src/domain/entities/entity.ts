@@ -7,12 +7,24 @@ import type { IEntity } from './ientity.contracts'
  * A base class representing a generic entity in the domain. An entity is an object that has a unique identity and is defined by its properties.
  *
  * @template T - The type of the properties of the entity.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export abstract class Entity<T> implements IEntity<T> {
   public readonly id: UniqueId
 
   /**
    * The properties of the entity. This is a private property that holds the state of the entity. It should be accessed and modified through methods defined in the concrete entity classes to ensure encapsulation and maintain invariants.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   private readonly props: T
 
@@ -21,6 +33,12 @@ export abstract class Entity<T> implements IEntity<T> {
    *
    * @param props - The properties of the entity.
    * @param id - An optional unique identifier for the entity. If not provided, a new UniqueId will be generated.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   protected constructor(props: T, id: Optional<UniqueId> = undefined) {
     if (Guards.isNullOrEmpty(id)) {

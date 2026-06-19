@@ -1,6 +1,12 @@
 /**
  * @description Namespace for safe mathematical operations.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const MathHelper = Object.freeze({
   /**
    * @description Constrains a value within an inclusive min-max range.
@@ -8,6 +14,12 @@ export const MathHelper = Object.freeze({
    * @param min Minimum bound.
    * @param max Maximum bound.
    * @returns Clamped value.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max)
@@ -18,6 +30,12 @@ export const MathHelper = Object.freeze({
    * @param value Input value.
    * @param decimals Number of decimal places.
    * @returns Rounded value.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   roundTo(value: number, decimals: number): number {
     const factor = 10 ** decimals
@@ -30,6 +48,12 @@ export const MathHelper = Object.freeze({
    * @param denominator Denominator.
    * @param fallback Return value when denominator is zero.
    * @returns Division result or fallback.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   safeDivide(numerator: number, denominator: number, fallback = 0): number {
     if (denominator === 0) return fallback
@@ -41,6 +65,12 @@ export const MathHelper = Object.freeze({
    * @param part Part value.
    * @param total Total value.
    * @returns Percentage or 0 when total is zero.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
    */
   toPercentage(part: number, total: number): number {
     if (total === 0) return 0

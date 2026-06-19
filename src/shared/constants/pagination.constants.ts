@@ -1,23 +1,65 @@
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-/** @description Default page index when no page is supplied by the caller. */
+/** @description Default page index when no page is supplied by the caller.
+ *
+ * @author Mattia Carcione
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
+ */
 const DEFAULT_PAGE = 1
 
-/** @description Default maximum number of items per page. */
+/** @description Default maximum number of items per page.
+ *
+ * @author Mattia Carcione
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
+ */
 const DEFAULT_PAGE_SIZE = 20
 
-/** @description Absolute maximum allowed page size to prevent resource exhaustion. */
+/** @description Absolute maximum allowed page size to prevent resource exhaustion.
+ *
+ * @author Mattia Carcione
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
+ */
 const MAX_PAGE_SIZE = 100
 
-/** @description Canonical pagination defaults. */
+/** @description Canonical pagination defaults.
+ *
+ * @author Mattia Carcione
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
+ */
 export const PAGINATION_DEFAULTS = Object.freeze({
-  /** @description Default page index (1-based). */
+  /** @description Default page index (1-based).
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   PAGE: DEFAULT_PAGE,
 
-  /** @description Default maximum items per page. */
+  /** @description Default maximum items per page.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   PAGE_SIZE: DEFAULT_PAGE_SIZE,
 
-  /** @description Hard ceiling on page size accepted by the system. */
+  /** @description Hard ceiling on page size accepted by the system.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   MAX_PAGE_SIZE,
 } as const)
 
@@ -26,14 +68,38 @@ export const PAGINATION_DEFAULTS = Object.freeze({
 /**
  * @description Canonical sort direction values.
  * Used by IPaginationParams.sortDirection to avoid string magic.
- */
+
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
 export const SORT_DIRECTION = Object.freeze({
-  /** @description Ascending order (A → Z, 0 → 9, oldest → newest). */
+  /** @description Ascending order (A → Z, 0 → 9, oldest → newest).
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   ASC: 'asc',
 
-  /** @description Descending order (Z → A, 9 → 0, newest → oldest). */
+  /** @description Descending order (Z → A, 9 → 0, newest → oldest).
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
   DESC: 'desc',
 } as const)
 
-/** @description Inferred union of valid sort direction values. */
+/** @description Inferred union of valid sort direction values.
+ *
+ * @author Mattia Carcione
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/gear5
+ */
 export type SortDirection = (typeof SORT_DIRECTION)[keyof typeof SORT_DIRECTION]
