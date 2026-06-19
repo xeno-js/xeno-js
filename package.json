@@ -1,6 +1,6 @@
 {
-  "name": "@mattia-carcione/kernel",
-  "version": "0.1.0",
+  "name": "@gear5/core",
+  "version": "1.0.0",
   "description": "gear5 agnostic core — DDD + Clean Architecture npm package",
   "type": "module",
   "main": "./dist/index.js",
@@ -9,6 +9,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -43,35 +44,70 @@
     "clean-architecture",
     "core",
     "kernel",
-    "inversify",
-    "mediatr",
+    "domain-driven-design",
+    "mediator",
+    "event-sourcing",
+    "cqrs",
+    "repository-pattern",
+    "supabase",
     "zod"
   ],
-  "author": "",
+  "author": "Mattia Carcione",
   "license": "ISC",
   "engines": {
     "node": ">=20.0.0"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "@sentry/node": "^7.64.0",
+    "@supabase/supabase-js": "^2.35.0",
     "axios": "^1.16.1",
     "cockatiel": "^4.0.0",
     "drizzle-orm": "^0.45.2",
     "ioredis": "^5.3.1",
-    "inversify": "^8.1.0",
-    "mediatr-ts": "^2.2.0",
     "p-limit": "^7.3.0",
     "pino": "^10.3.1",
     "postgres": "^3.4.9",
-    "reflect-metadata": "^0.2.2",
-    "@sentry/node": "^7.64.0",
-    "@supabase/supabase-js": "^2.35.0",
     "zod": "^4.4.3"
+  },
+  "peerDependenciesMeta": {
+    "@sentry/node": {
+      "optional": true
+    },
+    "@supabase/supabase-js": {
+      "optional": true
+    },
+    "axios": {
+      "optional": true
+    },
+    "cockatiel": {
+      "optional": true
+    },
+    "drizzle-orm": {
+      "optional": true
+    },
+    "ioredis": {
+      "optional": true
+    },
+    "p-limit": {
+      "optional": true
+    },
+    "pino": {
+      "optional": true
+    },
+    "postgres": {
+      "optional": true
+    },
+    "zod": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
+    "@types/pg": "^8.20.0",
     "@vitest/coverage-v8": "^4.1.7",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^13.0.0",
