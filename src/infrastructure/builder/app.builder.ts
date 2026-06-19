@@ -1,0 +1,496 @@
+import type { IModule, IServiceContainer } from '@/domain'
+import type { Constructor, InjectionToken, SetupAction } from '@/shared'
+import { Guards } from '@/shared'
+
+import { ServiceContainer } from '../container/service-container'
+import type {
+  AuthClientConfig,
+  DbConfig,
+  HttpConfig,
+  HttpCoreConfig,
+  LoggerConfig,
+  PipelineConfig,
+  ResilienceConfig,
+} from '../modules/config'
+
+/**
+ * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
+ */
+interface QueuedModule {
+  name: string
+  action: () => Promise<void>
+}
+
+/**
+ * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application.
+ * It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
+ */
+export class AppBuilder {
+  private readonly _container: IServiceContainer = new ServiceContainer()
+
+  // --- Module Configurations ---
+  private readonly _modules: QueuedModule[] = []
+
+  // --- Specific Configurations ---
+  private _pipelineConfig: PipelineConfig = {
+    performance: { isEnabled: false, thresholdMs: undefined },
+    authorization: {
+      isEnabled: false,
+      tenant: false,
+      policy: { isEnabled: false, role: false, permission: false, policyRegistry: undefined },
+      customAuthorizationStrategy: undefined,
+    },
+    validation: {
+      isEnabled: false,
+      zod: { isEnabled: false, config: undefined },
+      customValidationStrategy: undefined,
+    },
+    commandBus: {
+      isEnabled: false,
+      idempotency: { isEnabled: false, config: undefined },
+      concurrency: { isEnabled: false, config: undefined },
+    },
+    queryBus: { isEnabled: false },
+  }
+
+  // --- Module Queuing Flags ---
+  private _isContextModuleQueued = false
+  private _isMiddlewareModuleQueued = false
+  private _isPipelineModuleQueued = false
+  private _isLoggerModuleQueued = false
+  private _isAuthModuleQueued = false
+  private _isDbContextModuleQueued = false
+  private _isConcurrencyServiceQueued = false
+  private _isResilienceModuleQueued = false
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Application Modules Configuration
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Enables the use of middlewares in the application. Middlewares can be used for cross-cutting concerns such as logging, authentication, and request/response manipulation.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addMiddlewares(): this {
+    this._queueMiddlewareModule()
+    return this
+  }
+
+  /**
+   * @description Enables the use of context in the application. Context can be used to store and manage request-specific data, such as user information, correlation IDs, and other metadata that needs to be accessible throughout the request lifecycle.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addContext(): this {
+    this._queueContextModule()
+    return this
+  }
+
+  /**
+   * @description Configures the logger for the application. This method allows you to set up logging options such as log level, console logging, and integration with external logging services like Sentry or Pino.
+   * @param setupAction A callback function that receives a LoggerConfig object to configure the logger settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addLogger(setupAction: SetupAction<LoggerConfig>): this {
+    if (this._isLoggerModuleQueued) return this
+    this._isLoggerModuleQueued = true
+    const config = {
+      console: true,
+      sentry: { isEnabled: false },
+      pino: { isEnabled: false },
+    } as LoggerConfig
+    setupAction(config)
+    this._modules.push({
+      name: 'LoggerModule',
+      action: async () => {
+        const { LoggerUtils } = await import('../modules/utils/logger.utils')
+        await LoggerUtils.addLogger(this._container, config)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Configures the authentication client for the application. This method allows you to set up authentication options such as the authentication server URL, API key, and additional options.
+   * @param setupAction A callback function that receives an AuthClientConfig object to configure the authentication client settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addAuthentication(setupAction: SetupAction<AuthClientConfig>): this {
+    if (this._isAuthModuleQueued) return this
+    this._isAuthModuleQueued = true
+    const config = { url: '', key: '', options: undefined }
+    setupAction(config)
+    this._modules.push({
+      name: 'AuthModule',
+      action: async () => {
+        const { AuthUtils } = await import('../modules/utils/auth.utils')
+        await AuthUtils.addAuthN(this._container, config)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Configures the authorization settings for the application. This method allows you to set up authorization options such as enabling/disabling authorization, tenant-based access control, policy-based access control, and custom authorization strategies.
+   * @param setupAction A callback function that receives a PipelineConfig['authorization'] object to configure the authorization settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addAuthorization(setupAction: SetupAction<PipelineConfig['authorization']>): this {
+    setupAction(this._pipelineConfig.authorization)
+    this._queuePipelineModule()
+    return this
+  }
+
+  /**
+   * @description Configures the database settings for the application. This method allows you to set up database options such as enabling/disabling the database, connection string, and table definitions.
+   * @param setupAction A callback function that receives a DbConfig object to configure the database settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addDb(setupAction: SetupAction<DbConfig>): this {
+    if (this._isDbContextModuleQueued) return this
+    this._isDbContextModuleQueued = true
+    const config = { isEnabled: false, connectionString: '', tables: {} } as DbConfig
+    setupAction(config)
+    this._modules.push({
+      name: 'DbModule',
+      action: async () => {
+        const { DbModule } = await import('../modules/db.module')
+        const dbModule = new DbModule()
+        await dbModule.configure(this._container, config)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Enables the use of the service for concurrency control in the application. This method allows you to limit the number of concurrent asynchronous tasks being executed, which is useful for managing system resources and preventing event loop blocking during massive batch operations.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addConcurrencyService(): this {
+    if (this._isConcurrencyServiceQueued) return this
+    this._isConcurrencyServiceQueued = true
+    this._modules.push({
+      name: 'ConcurrencyServiceModule',
+      action: async () => {
+        const { PLimitConcurrencyService } = await import('../services/concurrency')
+        const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
+        this._container.addSingleton(
+          INJECTION_TOKENS.CONCURRENCY_SERVICE,
+          PLimitConcurrencyService,
+          [],
+        )
+      },
+    })
+    return this
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // CQRS Pipeline Configuration
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Configures the CQRS pipeline settings for the application. This method allows you to set up various aspects of the CQRS pipeline, including performance monitoring, authorization, validation, command bus settings, and query bus settings.
+   * @param setupAction A callback function that receives a PipelineConfig object to configure the CQRS pipeline settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addPipeline(setupAction: SetupAction<PipelineConfig>): this {
+    setupAction(this._pipelineConfig)
+    this._queuePipelineModule()
+    return this
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // HTTP & Resilience Configuration
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Configures the HTTP settings for the application. This method allows you to set up HTTP options such as authentication token, headers, and other HTTP client configurations.
+   * @param setupAction A callback function that receives an HttpConfig object to configure the HTTP settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addHttp(setupAction: SetupAction<HttpConfig>): this {
+    const config = { token: undefined, config: {} } as unknown as HttpConfig
+    setupAction(config)
+    this._modules.push({
+      name: 'HttpModule',
+      action: async () => {
+        const { HttpUtils } = await import('../modules/utils/http.utils')
+        await HttpUtils.addAxios(this._container, config)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Configures the resilience settings for the application. This method allows you to set up resilience options such as retry policies, circuit breakers, and bulkhead isolation.
+   * @param setupAction A callback function that receives a ResilienceConfig object to configure the resilience settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addResilience(setupAction: SetupAction<ResilienceConfig>): this {
+    if (this._isResilienceModuleQueued) return this
+    this._isResilienceModuleQueued = true
+    const resilienceConfig = {
+      retry: {
+        attempts: undefined,
+        baseDelayMs: undefined,
+        maxDelayMs: undefined,
+      },
+      circuitBreaker: {
+        consecutiveFailures: undefined,
+        halfOpenTimeoutMs: undefined,
+      },
+      bulkhead: {
+        maxConcurrent: undefined,
+      },
+    }
+    setupAction(resilienceConfig)
+    this._modules.push({
+      name: 'ResilienceModule',
+      action: async () => {
+        const { HttpUtils } = await import('../modules/utils/http.utils')
+        await HttpUtils.addResilience(this._container, resilienceConfig)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Configures the HTTP core settings for the application. This method allows you to set up HTTP core options such as data source token, HTTP client configuration, and resilience settings.
+   * @param setupAction A callback function that receives an HttpCoreConfig object to configure the HTTP core settings.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
+    const config = {
+      dataSourceToken: undefined as unknown,
+      http: { token: undefined as unknown, config: {} },
+      resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
+    } as unknown as HttpCoreConfig
+    setupAction(config)
+    this._modules.push({
+      name: 'HttpCoreModule',
+      action: async () => {
+        const { HttpCoreModule } = await import('../modules/http-core.module')
+        const coreModule = new HttpCoreModule()
+        await coreModule.configure(this._container, config)
+      },
+    })
+    return this
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Dependency Injection Pass-through Methods
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Dependency Injection Pass-through Methods
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Registers a singleton service in the dependency injection container. A singleton service is instantiated once and shared throughout the application.
+   * @param token The injection token used to identify the service.
+   * @param implementation The constructor of the service implementation.
+   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addSingleton<T>(
+    token: InjectionToken<T>,
+    implementation: Constructor<T>,
+    dependencies?: readonly InjectionToken<unknown>[],
+  ): this {
+    this._container.addSingleton(token, implementation, dependencies)
+    return this
+  }
+
+  /**
+   * @description Registers a scoped service in the dependency injection container. A scoped service is instantiated once per scope, typically per request in web applications.
+   * @param token The injection token used to identify the service.
+   * @param implementation The constructor of the service implementation.
+   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addScoped<T>(
+    token: InjectionToken<T>,
+    implementation: Constructor<T>,
+    dependencies?: readonly InjectionToken<unknown>[],
+  ): this {
+    this._container.addScoped(token, implementation, dependencies)
+    return this
+  }
+
+  /**
+   * @description Registers a transient service in the dependency injection container. A transient service is instantiated every time it is requested.
+   * @param token The injection token used to identify the service.
+   * @param implementation The constructor of the service implementation.
+   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addTransient<T>(
+    token: InjectionToken<T>,
+    implementation: Constructor<T>,
+    dependencies?: readonly InjectionToken<unknown>[],
+  ): this {
+    this._container.addTransient(token, implementation, dependencies)
+    return this
+  }
+
+  /**
+   * @description Registers a singleton service factory in the dependency injection container. A singleton service factory is a function that creates a single instance of the service, which is shared throughout the application.
+   * @param token The injection token used to identify the service.
+   * @param factory The factory function that creates the service instance.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addSingletonFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._container.addSingletonFactory(token, factory)
+    return this
+  }
+
+  /**
+   * @description Registers a scoped service factory in the dependency injection container. A scoped service factory is a function that creates a single instance of the service per scope, typically per request in web applications.
+   * @param token The injection token used to identify the service.
+   * @param factory The factory function that creates the service instance.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addScopedFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._container.addScopedFactory(token, factory)
+    return this
+  }
+
+  /**
+   * @description Registers a transient service factory in the dependency injection container. A transient service factory is a function that creates a new instance of the service every time it is requested.
+   * @param token The injection token used to identify the service.
+   * @param factory The factory function that creates the service instance.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addTransientFactory<T>(
+    token: InjectionToken<T>,
+    factory: (container: IServiceContainer) => T,
+  ): this {
+    this._container.addTransientFactory(token, factory)
+    return this
+  }
+
+  /**
+   * @description Registers a module in the application. A module is a self-contained unit of functionality that can configure services and dependencies in the service container. This method allows you to add custom modules to the application, enabling modular and organized configuration of services.
+   * @param factory A factory function that creates the module instance.
+   * @param opts Optional configuration options for the module.
+   * @returns The current instance of AppBuilder for method chaining.
+   */
+  public addModule<T>(name: string, factory: () => Promise<IModule<T>>, opts?: T): this {
+    this._modules.push({
+      name,
+      action: async () => {
+        const module = await factory()
+        await module.configure(this._container, opts)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Resolves a service from the dependency injection container.
+   * @param token The injection token used to identify the service.
+   * @returns The resolved service instance.
+   */
+  public resolve<T>(token: InjectionToken<T>): T {
+    return this._container.resolve(token)
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Build
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Finalizes the configuration and initializes all registered modules in the container.
+   * @returns The fully configured ServiceContainer.
+   */
+  public async build(): Promise<IServiceContainer> {
+    for (const queued of this._modules) {
+      try {
+        // If in the future you want to add a debug log for each module:
+        // console.log(`[AppBuilder] Initializing module: ${queued.name}...`);
+        await queued.action()
+      } catch (error) {
+        // 1. Extract the error message safely
+        const errorMessage = error instanceof Error ? error.message : String(error)
+
+        // 2. Direct output for the developer in the terminal
+        console.error(`\n❌ [AppBuilder Fatal Error]`)
+        console.error(`An error occurred while initializing the module:`)
+        console.error(`👉 Module: **${queued.name}**`)
+        console.error(`📝 Reason: ${errorMessage}\n`)
+
+        // If the error has a useful stack trace, print it for debugging
+        if (error instanceof Error && Guards.isDefined(error.stack)) {
+          console.error(error.stack)
+        }
+
+        // 3. Throw a descriptive exception to halt execution (Graceful Shutdown pre-start)
+        throw new Error(`Bootstrap failed at [${queued.name}]: ${errorMessage}`, { cause: error })
+      }
+    }
+
+    return this._container
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Private Helper Methods
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
+   */
+  private _queuePipelineModule(): void {
+    if (this._isPipelineModuleQueued) return
+    this._isPipelineModuleQueued = true
+
+    this._queueMiddlewareModule()
+
+    this._modules.push({
+      name: 'CqrsModule',
+      action: async () => {
+        const { CqrsModule } = await import('../modules/cqrs.module')
+        const pipelineModule = new CqrsModule()
+        await pipelineModule.configure(this._container, this._pipelineConfig)
+      },
+    })
+  }
+
+  /**
+   * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
+   */
+  private _queueMiddlewareModule(): void {
+    if (this._isMiddlewareModuleQueued) return
+    this._isMiddlewareModuleQueued = true
+
+    this._queueContextModule()
+
+    this._modules.push({
+      name: 'MiddlewareModule',
+      action: async () => {
+        const { MiddlewareModule } = await import('../modules/middleware.module')
+        const middlewareModule = new MiddlewareModule()
+        await middlewareModule.configure(this._container)
+      },
+    })
+  }
+
+  /**
+   * @description Queues the configuration of the context module if it has not already been queued. This method ensures that the context module is only added once, even if multiple context-related configurations are made.
+   */
+  private _queueContextModule(): void {
+    if (this._isContextModuleQueued) return
+    this._isContextModuleQueued = true
+
+    this._modules.push({
+      name: 'ContextModule',
+      action: async () => {
+        const { ContextModule } = await import('../modules/context.module')
+        const contextModule = new ContextModule()
+        await contextModule.configure(this._container)
+      },
+    })
+  }
+}

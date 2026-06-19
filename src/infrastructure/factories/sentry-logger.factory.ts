@@ -1,8 +1,10 @@
 import * as Sentry from '@sentry/node'
 
-import type { IFactory, ILoggerClient, LoggerConfig } from '@/domain'
-import { SentryLogger } from '@/infrastructure'
+import type { IFactory, ILoggerClient } from '@/domain'
 import { Guards, LOG_LEVEL } from '@/shared'
+
+import { SentryLogger } from '../loggers/sentry.logger'
+import type { LoggerConfig } from '../modules/config/logger.config'
 
 /**
  * @description Factory class responsible for creating instances of SentryLogger based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the SentryLogger, including the initialization of the underlying Sentry instance with the specified configuration options such as DSN and environment. This design promotes separation of concerns and allows for flexibility in managing SentryLogger instances across the application.

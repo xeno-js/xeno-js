@@ -1,6 +1,6 @@
 import type { IServiceExtractor } from '@/domain'
+import type { Metadata } from '@/shared'
 import { GuidHelper, type HttpHeaders, type Optional, StringHelper } from '@/shared'
-import type { Metadata } from '@/shared/types/middleware.types'
 
 /**
  * @description The HttpHeaderExtractor class implements the IServiceExtractor interface, providing a concrete implementation for extracting HTTP header values from an incoming HttpRequest. The extract method retrieves the value of a specified header, handling both string and array formats for header values. If the header is not present or if the headers object is null or empty, it returns undefined, allowing for consistent handling of missing headers in the application.

@@ -1,7 +1,8 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 import type { IFactory, IRequestContext } from '@/domain'
-import { NodeRequestContext } from '@/infrastructure'
+
+import { NodeRequestContext } from '../context/request-context'
 
 /**
  * @description Factory class responsible for creating instances of NodeRequestContext. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the NodeRequestContext, promoting separation of concerns and flexibility in managing request context instances across the application.

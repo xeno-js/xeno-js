@@ -1,6 +1,6 @@
 import type { IFactory, IValidatorService } from '@/domain'
 
-import type { ZodConfig } from '../modules/config'
+import type { ZodConfig } from '../modules/config/pipeline.config'
 import { ZodValidatorService } from '../services/validators/zod.validator'
 /**
  * @description Factory class responsible for creating instances of ZodValidatorService based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, including the initialization of the underlying ZodValidatorService instance with the specified configuration options such as URL and API key. This design promotes separation of concerns and allows for flexibility in managing ZodValidatorService instances across the application.
