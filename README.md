@@ -157,20 +157,21 @@ stability of the core framework, **direct pushes to the `main` and `develop`
 branches are strictly prohibited.** Please follow this Git Flow to contribute:
 
 1. **Branch off from `develop`**: Create a new branch for your feature or
+
    bugfix.
-   ```bash
+
+```bash
    git checkout develop
    git pull origin develop
    git checkout -b feat/your-awesome-feature
-   ```
+```
 
-````
+2. **Make your changes**: Write your code and ensure it passes all local checks
+   (linting, types, and tests).
 
-
-2. **Make your changes**: Write your code and ensure it passes all local checks (linting, types, and tests).
 ```bash
 npm run check
-````
+```
 
 3. **Commit your changes**: We enforce
    [Conventional Commits](https://www.conventionalcommits.org/). Husky will
@@ -182,7 +183,6 @@ npm run check
 feat(scope): add new feature
 fix(scope): resolve bug
 chore(scope): update dependencies
-
 ```
 
 5. **Submit a Pull Request (PR)**: Push your branch to GitHub and open a Pull
