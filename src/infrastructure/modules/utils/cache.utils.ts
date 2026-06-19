@@ -15,16 +15,13 @@ export const CacheUtils = Object.freeze({
   addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    if (!opts.redis.isEnabled) {
+    if (!Guards.isDefined(opts.redis.config)) {
       const { InMemoryCache } = await import('../../cache/in-memory.cache')
       container.addSingleton(INJECTION_TOKENS.CACHE, InMemoryCache, [])
       return
     }
 
-    if (opts.redis.isEnabled) {
-      if (!Guards.isDefined(opts.redis.config)) {
-        throw new Error('Redis cache configuration must be provided when Redis caching is enabled.')
-      }
+    if (Guards.isDefined(opts.redis.config)) {
       const { RedisCacheFactory } = await import('../../factories/redis-cache.factory')
       container.addSingletonFactory(INJECTION_TOKENS.CACHE, () => {
         const config = opts.redis?.config

@@ -14,7 +14,7 @@ export class MiddlewareModule implements IModule {
       return factory.create()
     })
 
-    const { NoAuthGateKeeper } = await import('@/application/gate_keepers/noauth.gate-keeper')
+    const { NoAuthGateKeeper } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, NoAuthGateKeeper, [])
 
     const { BearerTokenExtractor } = await import('../services/extractors/extract-bearer.extractor')
@@ -24,8 +24,7 @@ export class MiddlewareModule implements IModule {
       INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR,
     ])
 
-    const { RequestContextMiddleware } =
-      await import('@/presentation/middlewares/request.middleware')
+    const { RequestContextMiddleware } = await import('@/presentation')
     container.addSingleton<IMiddleware<HttpHeaders>>(
       INJECTION_TOKENS.MIDDLEWARE,
       RequestContextMiddleware,

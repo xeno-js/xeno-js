@@ -29,12 +29,7 @@ export const LoggerUtils = Object.freeze({
     }
 
     if (Guards.isDefined(opts)) {
-      if (opts.sentry.isEnabled) {
-        if (!Guards.isDefined(opts.sentry.config)) {
-          throw new Error(
-            'Sentry logger configuration must be provided when Sentry logging is enabled.',
-          )
-        }
+      if (Guards.isDefined(opts.sentry.config)) {
         const { SentryLoggerFactory } = await import('../../factories/sentry-logger.factory')
         container.addSingletonFactory(INJECTION_TOKENS.SENTRY_LOGGER, () => {
           const factory = new SentryLoggerFactory()
@@ -43,12 +38,7 @@ export const LoggerUtils = Object.freeze({
         loggerDependencies.push(INJECTION_TOKENS.SENTRY_LOGGER)
       }
 
-      if (opts.pino.isEnabled) {
-        if (!Guards.isDefined(opts.pino.config)) {
-          throw new Error(
-            'Pino logger configuration must be provided when Pino logging is enabled.',
-          )
-        }
+      if (Guards.isDefined(opts.pino.config)) {
         const { PinoLoggerFactory } = await import('../../factories/pino-logger.factory')
         container.addSingletonFactory(INJECTION_TOKENS.PINO_LOGGER, () => {
           const factory = new PinoLoggerFactory()
@@ -65,7 +55,7 @@ export const LoggerUtils = Object.freeze({
       }
     }
 
-    const { BaseLogger } = await import('@/application/loggers')
+    const { BaseLogger } = await import('@/application')
     container.addSingletonFactory(INJECTION_TOKENS.LOGGER, (resolver) => {
       const context = resolver.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
       const resolvedDependencies = loggerDependencies.map((token) => resolver.resolve(token))

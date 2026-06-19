@@ -19,14 +19,20 @@ export const AuthUtils = Object.freeze({
     opts: PipelineConfig['authorization'],
     pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (!opts.isEnabled) return [...pipelines]
+    if (
+      !Guards.isDefined(opts.policy.role) &&
+      !Guards.isDefined(opts.policy.permission) &&
+      !opts.tenant &&
+      Guards.isNullOrEmpty(opts.customAuthorizationStrategy)
+    ) {
+      return pipelines
+    }
 
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
     const strategies = []
 
-    const { UserAuthorizationStrategy } =
-      await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
+    const { UserAuthorizationStrategy } = await import('@/application')
     container.addSingleton(
       INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE,
       UserAuthorizationStrategy,
@@ -35,8 +41,7 @@ export const AuthUtils = Object.freeze({
     strategies.push(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
 
     if (opts.tenant) {
-      const { TenantAuthorizationStrategy } =
-        await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
+      const { TenantAuthorizationStrategy } = await import('@/application')
       container.addSingleton(
         INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE,
         TenantAuthorizationStrategy,
@@ -45,20 +50,14 @@ export const AuthUtils = Object.freeze({
       strategies.push(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
     }
 
-    if (opts.policy.isEnabled) {
+    if (opts.policy.permission || opts.policy.role) {
       if (!Guards.isDefined(opts.policy.policyRegistry)) {
         throw new Error(
-          'Policy registry must be provided when policy-based authorization is enabled.',
+          'Policy registry must be provided when role or permission based authorization is enabled.',
         )
       }
 
-      if (!opts.policy.role && !opts.policy.permission) {
-        throw new Error(
-          'At least one of role or permission based authorization must be enabled when policy-based authorization is enabled.',
-        )
-      }
-
-      const { PolicyRegistry } = await import('@/application/policies')
+      const { PolicyRegistry } = await import('@/application')
       container.addSingleton(INJECTION_TOKENS.POLICY_REGISTRY, PolicyRegistry, [])
 
       const policyRegistry = opts.policy.policyRegistry
@@ -68,8 +67,7 @@ export const AuthUtils = Object.freeze({
       }
 
       if (opts.policy.role) {
-        const { RoleAuthorizationStrategy } =
-          await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
+        const { RoleAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
           INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE,
           RoleAuthorizationStrategy,
@@ -79,8 +77,7 @@ export const AuthUtils = Object.freeze({
       }
 
       if (opts.policy.permission) {
-        const { PermissionAuthorizationStrategy } =
-          await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
+        const { PermissionAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
           INJECTION_TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
           PermissionAuthorizationStrategy,
@@ -97,7 +94,7 @@ export const AuthUtils = Object.freeze({
       }
     }
 
-    const { AuthorizationPipeline } = await import('@/application/cqrs/pipelines')
+    const { AuthorizationPipeline } = await import('@/application')
     const resolvedStrategies = strategies.map((strategy) => container.resolve(strategy))
     container.addSingletonFactory(INJECTION_TOKENS.AUTHORIZATION_PIPELINE, () => {
       return new AuthorizationPipeline(resolvedStrategies)
@@ -120,10 +117,10 @@ export const AuthUtils = Object.freeze({
       return factory.create(opts)
     })
 
-    const { ClaimsIdentityMapper } = await import('@/application/mappers')
+    const { ClaimsIdentityMapper } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER, ClaimsIdentityMapper, [])
 
-    const { GateKeeper } = await import('@/application/gate_keepers')
+    const { GateKeeper } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, GateKeeper, [
       INJECTION_TOKENS.AUTH_SERVICE,
       INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER,

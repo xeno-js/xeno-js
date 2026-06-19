@@ -12,10 +12,10 @@ export const HttpUtils = Object.freeze({
    * @returns A string representing the encoded query string that can be appended to a URL for making HTTP requests.
    */
   addAxios: async (container: IServiceContainer, opts: HttpConfig): Promise<void> => {
-    const { AxiosFactory } = await import('@/infrastructure/factories/axios.factory')
+    const { AxiosFactory } = await import('@/infrastructure')
     container.addSingletonFactory(opts.token, () => {
       const factory = new AxiosFactory()
-      return factory.create(opts.config)
+      return factory.create(opts.client)
     })
   },
   /**

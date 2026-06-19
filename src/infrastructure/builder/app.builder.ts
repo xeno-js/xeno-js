@@ -33,22 +33,19 @@ export class AppBuilder {
 
   // --- Specific Configurations ---
   private _pipelineConfig: PipelineConfig = {
-    performance: { isEnabled: false, thresholdMs: undefined },
+    performance: { thresholdMs: undefined },
     authorization: {
-      isEnabled: false,
       tenant: false,
-      policy: { isEnabled: false, role: false, permission: false, policyRegistry: undefined },
+      policy: { role: false, permission: false, policyRegistry: undefined },
       customAuthorizationStrategy: undefined,
     },
     validation: {
-      isEnabled: false,
-      zod: { isEnabled: false, config: undefined },
+      zod: undefined,
       customValidationStrategy: undefined,
     },
     commandBus: {
-      isEnabled: false,
-      idempotency: { isEnabled: false, config: undefined },
-      concurrency: { isEnabled: false, config: undefined },
+      idempotency: undefined,
+      concurrency: undefined,
     },
     queryBus: { isEnabled: false },
   }
@@ -95,8 +92,8 @@ export class AppBuilder {
     this._isLoggerModuleQueued = true
     const config = {
       console: true,
-      sentry: { isEnabled: false },
-      pino: { isEnabled: false },
+      sentry: { config: undefined },
+      pino: { config: undefined },
     } as LoggerConfig
     setupAction(config)
     this._modules.push({
@@ -208,7 +205,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
    */
   public addHttp(setupAction: SetupAction<HttpConfig>): this {
-    const config = { token: undefined, config: {} } as unknown as HttpConfig
+    const config = { token: undefined, client: {} } as unknown as HttpConfig
     setupAction(config)
     this._modules.push({
       name: 'HttpModule',
@@ -261,7 +258,7 @@ export class AppBuilder {
   public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
     const config = {
       dataSourceToken: undefined as unknown,
-      http: { token: undefined as unknown, config: {} },
+      http: { token: undefined as unknown, client: {} },
       resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
     } as unknown as HttpCoreConfig
     setupAction(config)

@@ -1,5 +1,6 @@
 import type { IPipelineBehavior, IRequest, IServiceContainer } from '@/domain'
 import type { InjectionToken } from '@/shared'
+import { Guards } from '@/shared'
 
 import type { PipelineConfig } from '../config'
 
@@ -14,26 +15,21 @@ export const CommandUtils = Object.freeze({
     opts: PipelineConfig['commandBus'],
     pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (!opts.isEnabled) return [...pipelines]
-
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    if (opts.idempotency.isEnabled) {
+    if (Guards.isDefined(opts.idempotency)) {
       const { CacheUtils } = await import('./cache.utils')
-      await CacheUtils.addCache(container, {
-        isEnabled: true,
-        redis: { isEnabled: false, config: undefined },
-      })
+      await CacheUtils.addCache(container, { redis: { config: undefined } })
       const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
       container.addSingleton(INJECTION_TOKENS.IDEMPOTENCY_STORE, IdempotencyStore, [
         INJECTION_TOKENS.CACHE,
         INJECTION_TOKENS.REQUEST_CONTEXT,
       ])
-      const { IdempotencyPipeline } = await import('@/application/cqrs')
+      const { IdempotencyPipeline } = await import('@/application')
       container.addSingletonFactory(INJECTION_TOKENS.IDEMPOTENCY_PIPELINE, (c) => {
         const requestContext = c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
         const idempotencyStore = c.resolve(INJECTION_TOKENS.IDEMPOTENCY_STORE)
-        const config = opts.idempotency.config
+        const config = opts.idempotency
         return new IdempotencyPipeline(
           requestContext,
           idempotencyStore,
@@ -44,10 +40,10 @@ export const CommandUtils = Object.freeze({
       pipelines.push(INJECTION_TOKENS.IDEMPOTENCY_PIPELINE)
     }
 
-    if (opts.concurrency.isEnabled) {
-      const { ConcurrencyRetryPipeline } = await import('@/application/cqrs')
+    if (Guards.isDefined(opts.concurrency)) {
+      const { ConcurrencyRetryPipeline } = await import('@/application')
       container.addSingletonFactory(INJECTION_TOKENS.CONCURRENCY_RETRY_PIPELINE, () => {
-        const config = opts.concurrency.config
+        const config = opts.concurrency
         return new ConcurrencyRetryPipeline(config?.maxRetries, config?.delayConfig)
       })
       pipelines.push(INJECTION_TOKENS.CONCURRENCY_RETRY_PIPELINE)
@@ -61,13 +57,10 @@ export const CommandUtils = Object.freeze({
    */
   addQuery: async (
     container: IServiceContainer,
-    opts: PipelineConfig['queryBus'],
     pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (!opts.isEnabled) return [...pipelines]
-
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-    const { QueryCachingPipeline } = await import('@/application/cqrs/pipelines')
+    const { QueryCachingPipeline } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.QUERY_CACHING_PIPELINE, QueryCachingPipeline, [
       INJECTION_TOKENS.CACHE,
       INJECTION_TOKENS.LOGGER,

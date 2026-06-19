@@ -14,15 +14,11 @@ export interface LoggerConfig {
   console: boolean
   /** @description Optional configuration for Sentry logger integration. If provided and enabled, the application will use Sentry as a logging client to capture and report log messages to the Sentry service. The configuration includes specific details for Sentry integration, such as the Data Source Name (DSN) and environment, allowing for flexible and modular logging configuration in the application. */
   sentry: {
-    /** @description Flag to enable or disable Sentry logger integration. If set to true, the application will use Sentry as a logging client to capture and report log messages to the Sentry service. If set to false or not defined, Sentry integration will be disabled, and log messages will not be sent to Sentry. */
-    isEnabled: boolean
     /** @description Optional configuration for Sentry logger integration, including details such as the Data Source Name (DSN) and environment. If provided, this configuration will be used to initialize the Sentry logger client for capturing and reporting log messages to the Sentry service. If not defined, default Sentry configuration settings will be used. */
     config: Optional<SentryLoggerConfig>
   }
   /** @description Optional configuration for Pino logger integration. If provided and enabled, the application will use Pino as a logging client to capture and manage log messages. The configuration includes specific details for Pino integration, such as the destination for log output, allowing for flexible and modular logging configuration in the application. */
   pino: {
-    /** @description Flag to enable or disable Pino logger integration. If set to true, the application will use Pino as a logging client to capture and manage log messages. If set to false or not defined, Pino integration will be disabled, and log messages will not be managed by Pino. */
-    isEnabled: boolean
     /** @description Optional configuration for Pino logger integration, including details such as the destination for log output. If provided, this configuration will be used to initialize the Pino logger client for capturing and managing log messages. If not defined, default Pino configuration settings will be used. */
     config: Optional<PinoLoggerConfig>
   }

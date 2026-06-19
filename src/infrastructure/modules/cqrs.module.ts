@@ -1,4 +1,5 @@
 import type { IModule, IServiceContainer } from '@/domain'
+import { Guards } from '@/shared'
 
 import type { PipelineConfig } from './config/pipeline.config'
 import { LoggerUtils } from './utils/logger.utils'
@@ -10,23 +11,23 @@ export class CqrsModule implements IModule<PipelineConfig> {
   async configure(container: IServiceContainer, opts: PipelineConfig): Promise<void> {
     const { INJECTION_TOKENS } = await import('../di')
 
-    const { Mediator } = await import('@/application/cqrs')
+    const { Mediator } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.MEDIATOR, Mediator, [INJECTION_TOKENS.REQUEST_CONTEXT])
 
-    const { ExceptionPipeline } = await import('@/application/cqrs/pipelines')
+    const { ExceptionPipeline } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.EXCEPTION_PIPELINE, ExceptionPipeline, [])
 
     await LoggerUtils.addLogger(container, undefined)
 
-    const { LoggingPipeline } = await import('@/application/cqrs/pipelines')
+    const { LoggingPipeline } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.LOGGING_PIPELINE, LoggingPipeline, [
       INJECTION_TOKENS.LOGGER,
     ])
 
     const pipelines = [INJECTION_TOKENS.EXCEPTION_PIPELINE, INJECTION_TOKENS.LOGGING_PIPELINE]
 
-    if (opts.performance.isEnabled) {
-      const { PerformancePipeline } = await import('@/application/cqrs/pipelines')
+    if (Guards.isDefined(opts.performance.thresholdMs)) {
+      const { PerformancePipeline } = await import('@/application')
       container.addSingletonFactory(INJECTION_TOKENS.PERFORMANCE_PIPELINE, (c) => {
         const logger = c.resolve(INJECTION_TOKENS.LOGGER)
         const thresholdMs = opts.performance?.thresholdMs
@@ -35,13 +36,13 @@ export class CqrsModule implements IModule<PipelineConfig> {
       pipelines.push(INJECTION_TOKENS.PERFORMANCE_PIPELINE)
     }
 
-    if (opts.authorization.isEnabled) {
+    if (Guards.isDefined(opts.authorization)) {
       const { AuthUtils } = await import('./utils/auth.utils')
       const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization, pipelines)
       pipelines.push(...authPipelines)
     }
 
-    if (opts.validation.isEnabled) {
+    if (Guards.isDefined(opts.validation)) {
       const { ValidationUtils } = await import('./utils/validation.utils')
       const validationPipelines = await ValidationUtils.addValidation(
         container,
@@ -54,7 +55,7 @@ export class CqrsModule implements IModule<PipelineConfig> {
     const commandPipelines = [...pipelines]
     const queryPipelines = [...pipelines]
 
-    if (opts.commandBus.idempotency.isEnabled) {
+    if (Guards.isDefined(opts.commandBus)) {
       const { CommandUtils } = await import('./utils/command.utils')
       const newCommandPipelines = await CommandUtils.addCommand(
         container,
@@ -66,11 +67,11 @@ export class CqrsModule implements IModule<PipelineConfig> {
 
     if (opts.queryBus.isEnabled) {
       const { CommandUtils } = await import('./utils/command.utils')
-      const newQueryPipelines = await CommandUtils.addQuery(container, opts.queryBus, pipelines)
+      const newQueryPipelines = await CommandUtils.addQuery(container, pipelines)
       queryPipelines.push(...newQueryPipelines)
     }
 
-    const { CompositePipeline } = await import('@/application/cqrs/pipelines')
+    const { CompositePipeline } = await import('@/application')
     container.addSingletonFactory(INJECTION_TOKENS.COMMAND_PIPELINES_BEHAVIOR, (resolver) => {
       const resolvedCommandPipelines = commandPipelines.map((token) => resolver.resolve(token))
       return new CompositePipeline(resolvedCommandPipelines)
