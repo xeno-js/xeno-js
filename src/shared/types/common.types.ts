@@ -141,3 +141,9 @@ export type AsyncResolver = <T>(token: symbol) => Promise<T>
  * The format is typically 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
  */
 export type Guid = `${string}-${string}-${string}-${string}-${string}`
+
+/**
+ * @description Represents a function that performs setup or configuration
+ * based on the provided options of type `T`.
+ */
+export type SetupAction<T> = (options: T) => void

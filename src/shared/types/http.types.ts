@@ -1,19 +1,6 @@
 import type { Dictionary, Maybe, Optional } from './common.types'
 
 /**
- * @description Agnostic contract used to execute HTTP calls independently
- * from concrete transport libraries (fetch, axios, undici, etc.).
- */
-export interface HttpClientConfig {
-  /** @description Optional default headers to include in every request made by the HTTP client. */
-  defaultHeaders: Optional<HttpHeaders>
-  /** @description Optional base URL to prepend to all request URLs made by the HTTP client. */
-  baseURL: Optional<string>
-  /** @description Optional timeout in milliseconds for all requests made by the HTTP client. */
-  timeoutMs: Optional<number>
-}
-
-/**
  * @description Supported HTTP methods.
  */
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS'

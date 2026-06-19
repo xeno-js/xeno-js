@@ -1,23 +1,6 @@
 import type { Optional } from './common.types'
 
 /**
- * @description An interface representing a cache client, which provides methods for getting and setting values in a cache storage. This interface abstracts the underlying cache implementation, allowing for flexibility in choosing different caching solutions (e.g., in-memory, Redis) without affecting the rest of the application.
- */
-export interface CacheClientConfig {
-  /**
-   * @description The host address of the cache server (e.g., Redis). Optional for in-memory cache implementations.
-   */
-  host: Optional<string>
-  /**
-   * @description The port number of the cache server (e.g., Redis). Optional for in-memory cache implementations. */
-  port: Optional<number>
-  /**
-   * @description The password for authenticating with the cache server (e.g., Redis). Optional for in-memory cache implementations.
-   */
-  password: Optional<string>
-}
-
-/**
  * @description An interface representing cacheable options, which includes properties for cache key, TTL, and bypass flags. This allows query handlers to determine how to cache the results of the query based on the provided options.
  */
 export interface ICacheableOptions {

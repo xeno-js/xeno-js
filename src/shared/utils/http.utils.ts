@@ -1,4 +1,4 @@
-import { STATUS_CODES } from '../constants/index'
+import { STATUS_CODES } from '../constants/error.constants'
 import type {
   Dictionary,
   ErrorResponseDto,

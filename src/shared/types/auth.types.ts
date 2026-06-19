@@ -1,4 +1,4 @@
-import type { Dictionary, Optional } from './common.types'
+import type { Optional } from './common.types'
 
 /**
  * @file auth.types.ts
@@ -25,22 +25,4 @@ export interface AuthClaims {
    * An array of permissions assigned to the user. This can be used for permission-based access control to determine what specific operations the user is authorized to perform.
    */
   readonly permissions: Optional<string[]>
-}
-
-/**
- * @description An interface representing the configuration required to initialize an authentication client, such as Supabase. This typically includes the URL of the authentication service, the API key for authentication, and any additional options that may be necessary for configuring the client.
- */
-export interface AuthClientConfig {
-  /**
-   * The URL of the authentication service (e.g., Supabase).
-   */
-  url: string
-  /**
-   * The API key used for authenticating with the authentication service.
-   */
-  key: string
-  /**
-   * Additional options for configuring the authentication client, such as connection settings, timeouts, or other client-specific configurations.
-   */
-  options: Optional<Dictionary>
 }
