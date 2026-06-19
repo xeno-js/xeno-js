@@ -1,6 +1,6 @@
 import type { IModule, IServiceContainer } from '@/domain'
 import type { Constructor, InjectionToken, SetupAction } from '@/shared'
-import { Guards } from '@/shared'
+import { Guards, LOG_LEVEL } from '@/shared'
 
 import { ServiceContainer } from '../container/service-container'
 import type {
@@ -91,10 +91,12 @@ export class AppBuilder {
     if (this._isLoggerModuleQueued) return this
     this._isLoggerModuleQueued = true
     const config = {
+      level: LOG_LEVEL.DEBUG,
       console: true,
       sentry: { config: undefined },
       pino: { config: undefined },
-    } as LoggerConfig
+      customLoggers: undefined,
+    }
     setupAction(config)
     this._modules.push({
       name: 'LoggerModule',
@@ -145,7 +147,7 @@ export class AppBuilder {
   public addDb(setupAction: SetupAction<DbConfig>): this {
     if (this._isDbContextModuleQueued) return this
     this._isDbContextModuleQueued = true
-    const config = { isEnabled: false, connectionString: '', tables: {} } as DbConfig
+    const config = { connectionString: '', tables: {} }
     setupAction(config)
     this._modules.push({
       name: 'DbModule',
