@@ -1,5 +1,6 @@
 import type { Delegate, ICommand, IPipelineBehavior, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
+import type { Optional } from '@/shared'
 import {
   DEFAULT_CONCURRENCY,
   Guards,
@@ -33,12 +34,12 @@ export class ConcurrencyRetryPipeline<
    */
   constructor(
     maxRetries: number = DEFAULT_CONCURRENCY.MAX_RETRIES,
-    delayConfig: { baseDelayMs: number; maxJitterMs: number } = {
+    delayConfig: Optional<{ baseDelayMs: number; maxJitterMs: number }> = {
       baseDelayMs: DEFAULT_CONCURRENCY.BASE_DELAY,
       maxJitterMs: DEFAULT_CONCURRENCY.MAX_JITTER,
     },
   ) {
-    const values: number[] = [maxRetries, delayConfig.baseDelayMs, delayConfig.maxJitterMs]
+    const values = [maxRetries, delayConfig?.baseDelayMs, delayConfig?.maxJitterMs]
     const errorMessages = [
       `Invalid maxRetries value: ${maxRetries}. It must be a positive integer.`,
       `Invalid baseDelayMs value: ${delayConfig.baseDelayMs}. It must be a non-negative integer.`,
