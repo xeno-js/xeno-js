@@ -17,7 +17,6 @@ export const AuthUtils = Object.freeze({
   addAuthZ: async (
     container: IServiceContainer,
     opts: PipelineConfig['authorization'],
-    pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
     if (
       !Guards.isDefined(opts.policy.role) &&
@@ -25,11 +24,11 @@ export const AuthUtils = Object.freeze({
       !opts.tenant &&
       Guards.isNullOrEmpty(opts.customAuthorizationStrategy)
     ) {
-      return pipelines
+      return []
     }
 
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-
+    const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
     const strategies = []
 
     const { UserAuthorizationStrategy } = await import('@/application')

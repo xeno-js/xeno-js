@@ -13,9 +13,10 @@ export const CommandUtils = Object.freeze({
   addCommand: async (
     container: IServiceContainer,
     opts: PipelineConfig['commandBus'],
-    pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
+
+    const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
 
     if (Guards.isDefined(opts.idempotency)) {
       const { CacheUtils } = await import('./cache.utils')
@@ -57,8 +58,8 @@ export const CommandUtils = Object.freeze({
    */
   addQuery: async (
     container: IServiceContainer,
-    pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
+    const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
     const { QueryCachingPipeline } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.QUERY_CACHING_PIPELINE, QueryCachingPipeline, [

@@ -38,17 +38,13 @@ export class CqrsModule implements IModule<PipelineConfig> {
 
     if (Guards.isDefined(opts.authorization)) {
       const { AuthUtils } = await import('./utils/auth.utils')
-      const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization, pipelines)
+      const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
       pipelines.push(...authPipelines)
     }
 
     if (Guards.isDefined(opts.validation)) {
       const { ValidationUtils } = await import('./utils/validation.utils')
-      const validationPipelines = await ValidationUtils.addValidation(
-        container,
-        opts.validation,
-        pipelines,
-      )
+      const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)
       pipelines.push(...validationPipelines)
     }
 
@@ -57,17 +53,13 @@ export class CqrsModule implements IModule<PipelineConfig> {
 
     if (Guards.isDefined(opts.commandBus)) {
       const { CommandUtils } = await import('./utils/command.utils')
-      const newCommandPipelines = await CommandUtils.addCommand(
-        container,
-        opts.commandBus,
-        pipelines,
-      )
+      const newCommandPipelines = await CommandUtils.addCommand(container, opts.commandBus)
       commandPipelines.push(...newCommandPipelines)
     }
 
     if (opts.queryBus.isEnabled) {
       const { CommandUtils } = await import('./utils/command.utils')
-      const newQueryPipelines = await CommandUtils.addQuery(container, pipelines)
+      const newQueryPipelines = await CommandUtils.addQuery(container)
       queryPipelines.push(...newQueryPipelines)
     }
 
