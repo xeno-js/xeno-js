@@ -6,24 +6,26 @@ import type { HttpHeaders } from '@/shared'
  */
 export class MiddlewareModule implements IModule {
   async configure(container: IServiceContainer): Promise<void> {
-    const { INJECTION_TOKENS } = await import('@/infrastructure/di')
-    const { NodeRequestContextFactory } = await import('@/infrastructure/factories')
+    const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
+
+    const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
     container.addSingletonFactory(INJECTION_TOKENS.REQUEST_CONTEXT, () => {
       const factory = new NodeRequestContextFactory<ExecutionContext>()
       return factory.create()
     })
 
-    const { NoAuthGateKeeper } = await import('@/application/gate_keepers')
+    const { NoAuthGateKeeper } = await import('@/application/gate_keepers/noauth.gate-keeper')
     container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, NoAuthGateKeeper, [])
 
-    const { BearerTokenExtractor } = await import('@/infrastructure/services/extractors')
+    const { BearerTokenExtractor } = await import('../services/extractors/extract-bearer.extractor')
     container.addSingleton(INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR, BearerTokenExtractor, [])
-    const { HttpHeaderExtractor } = await import('@/infrastructure/services/extractors')
+    const { HttpHeaderExtractor } = await import('../services/extractors/http-header.extractor')
     container.addSingleton(INJECTION_TOKENS.SERVICE_EXTRACTOR, HttpHeaderExtractor, [
       INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR,
     ])
 
-    const { RequestContextMiddleware } = await import('@/presentation/middlewares')
+    const { RequestContextMiddleware } =
+      await import('@/presentation/middlewares/request.middleware')
     container.addSingleton<IMiddleware<HttpHeaders>>(
       INJECTION_TOKENS.MIDDLEWARE,
       RequestContextMiddleware,

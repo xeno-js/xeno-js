@@ -1,8 +1,8 @@
 import type { IPipelineBehavior, IRequest, IServiceContainer } from '@/domain'
-import type { AuthClientConfig, InjectionToken, Optional } from '@/shared'
+import type { InjectionToken } from '@/shared'
 import { Guards } from '@/shared'
 
-import type { PipelineConfig } from '../config'
+import type { AuthClientConfig, PipelineConfig } from '../config'
 
 /**
  *  @description Utility functions for configuring authentication and authorization in the service container.
@@ -19,9 +19,9 @@ export const AuthUtils = Object.freeze({
     opts: PipelineConfig['authorization'],
     pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (!Guards.isDefined(opts)) return [...pipelines]
+    if (!opts.isEnabled) return [...pipelines]
 
-    const { INJECTION_TOKENS } = await import('@/infrastructure/di/injection-tokens.constants')
+    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
     const strategies = []
 
@@ -34,7 +34,7 @@ export const AuthUtils = Object.freeze({
     )
     strategies.push(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
 
-    if (Guards.isDefined(opts.tenant) && opts.tenant) {
+    if (opts.tenant) {
       const { TenantAuthorizationStrategy } =
         await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
       container.addSingleton(
@@ -45,19 +45,14 @@ export const AuthUtils = Object.freeze({
       strategies.push(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
     }
 
-    if (Guards.isDefined(opts.policy) && opts.policy.isEnabled) {
+    if (opts.policy.isEnabled) {
       if (!Guards.isDefined(opts.policy.policyRegistry)) {
         throw new Error(
           'Policy registry must be provided when policy-based authorization is enabled.',
         )
       }
 
-      if (
-        Guards.isDefined(opts.policy.role) &&
-        !opts.policy.role &&
-        Guards.isDefined(opts.policy.permission) &&
-        !opts.policy.permission
-      ) {
+      if (!opts.policy.role && !opts.policy.permission) {
         throw new Error(
           'At least one of role or permission based authorization must be enabled when policy-based authorization is enabled.',
         )
@@ -66,15 +61,13 @@ export const AuthUtils = Object.freeze({
       const { PolicyRegistry } = await import('@/application/policies')
       container.addSingleton(INJECTION_TOKENS.POLICY_REGISTRY, PolicyRegistry, [])
 
-      if (Guards.isDefined(opts.policy.policyRegistry)) {
-        const policyRegistry = opts.policy.policyRegistry
-        const registryInstance = container.resolve(INJECTION_TOKENS.POLICY_REGISTRY)
-        for (const [intent, policy] of Object.entries(policyRegistry)) {
-          registryInstance.addPolicy(intent, policy)
-        }
+      const policyRegistry = opts.policy.policyRegistry
+      const registryInstance = container.resolve(INJECTION_TOKENS.POLICY_REGISTRY)
+      for (const [intent, policy] of Object.entries(policyRegistry)) {
+        registryInstance.addPolicy(intent, policy)
       }
 
-      if (Guards.isDefined(opts.policy.role) && opts.policy.role) {
+      if (opts.policy.role) {
         const { RoleAuthorizationStrategy } =
           await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
         container.addSingleton(
@@ -85,7 +78,7 @@ export const AuthUtils = Object.freeze({
         strategies.push(INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE)
       }
 
-      if (Guards.isDefined(opts.policy.permission) && opts.policy.permission) {
+      if (opts.policy.permission) {
         const { PermissionAuthorizationStrategy } =
           await import('@/application/cqrs/pipelines/pipeline_strategies/auth')
         container.addSingleton(
@@ -118,15 +111,10 @@ export const AuthUtils = Object.freeze({
    * @param container The service container to configure.
    * @param opts The authentication configuration options.
    */
-  addAuthN: async (
-    container: IServiceContainer,
-    opts: Optional<AuthClientConfig>,
-  ): Promise<void> => {
-    if (!Guards.isDefined(opts)) return
+  addAuthN: async (container: IServiceContainer, opts: AuthClientConfig): Promise<void> => {
+    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    const { INJECTION_TOKENS } = await import('@/infrastructure/di/injection-tokens.constants')
-
-    const { SupabaseAuthServiceFactory } = await import('@/infrastructure/factories')
+    const { SupabaseAuthServiceFactory } = await import('../../factories/supabase-auth.factory')
     container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
       const factory = new SupabaseAuthServiceFactory()
       return factory.create(opts)

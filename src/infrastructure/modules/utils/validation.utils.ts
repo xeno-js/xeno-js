@@ -19,15 +19,20 @@ export const ValidationUtils = Object.freeze({
     opts: PipelineConfig['validation'],
     pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (!Guards.isDefined(opts)) return [...pipelines]
+    if (!opts.isEnabled) return [...pipelines]
 
-    const { INJECTION_TOKENS } = await import('@/infrastructure/di')
+    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
     const validationStrategies: InjectionToken<IStrategy<IRequest, boolean>>[] = []
 
-    if (Guards.isDefined(opts.zod)) {
-      const config = opts.zod
-      const { ZodValidatorFactory } = await import('@/infrastructure/factories/')
+    if (!opts.zod.isEnabled) {
+      const config = opts.zod.config
+      if (!Guards.isDefined(config)) {
+        throw new Error(
+          'Zod validator configuration must be provided when Zod validation is enabled.',
+        )
+      }
+      const { ZodValidatorFactory } = await import('../../factories/zod-validator.factory')
       container.addSingletonFactory(INJECTION_TOKENS.ZOD_VALIDATOR, () => {
         return new ZodValidatorFactory().create(config)
       })

@@ -5,9 +5,9 @@ import type { ExecutionContext, IModule, IServiceContainer } from '@/domain'
  */
 export class ContextModule implements IModule {
   async configure(container: IServiceContainer): Promise<void> {
-    const { INJECTION_TOKENS } = await import('@/infrastructure/di')
+    const { INJECTION_TOKENS } = await import('../di')
 
-    const { NodeRequestContextFactory } = await import('@/infrastructure/factories')
+    const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
     container.addSingletonFactory(INJECTION_TOKENS.REQUEST_CONTEXT, () =>
       new NodeRequestContextFactory<ExecutionContext>().create(),
     )
