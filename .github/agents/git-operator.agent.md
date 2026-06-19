@@ -77,3 +77,10 @@ sovrascritte:
   procedere.
 - **No Sovrascrittura:** Non sovrascrivere mai file locali o remoti senza
   esplicita conferma dell'utente.
+- **No Operazioni Distruttive:** Non eseguire mai operazioni che potrebbero
+  causare perdita di dati (es. `reset --hard`, `clean -fd`)
+- **No Comandi Pericolosi:** Non eseguire comandi che potrebbero compromettere
+  la sicurezza o l'integrità del repository senza conferma esplicita (es.
+  `rm -rf`, `chmod 777`).
+- **Tutto in lowercase:** Tutti i comandi e messaggi devono essere in minuscolo,
+  senza caratteri speciali o emoji.
