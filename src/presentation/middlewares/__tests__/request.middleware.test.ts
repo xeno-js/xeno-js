@@ -297,8 +297,8 @@ describe('RequestContextMiddleware', () => {
 
   it('includes String(error) as details in SYSTEM_ERROR when non-Error is thrown', async () => {
     const extractor = {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       extract: vi.fn().mockImplementation(() => {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw 'string error'
       }),
     }
