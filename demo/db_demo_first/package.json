@@ -1,0 +1,24 @@
+{
+  "name": "demo-01-database",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo 01 - Configurazione DB e Inserimento con @gear5/core",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@gear5/core": "file:../../",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.0",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.11.0",
+    "drizzle-kit": "^0.20.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
