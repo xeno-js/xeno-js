@@ -90,7 +90,7 @@ export interface PipelineConfig {
   }
   /** @description Configuration for validation, allowing the enabling of validation based on Zod schemas or custom validation strategies. If enabled, the validation pipeline will validate commands and queries based on the specified criteria, ensuring that input data meets expectations before further processing. The configuration includes the ability to define Zod schemas for structural validation or to use custom strategies via injection tokens, providing flexibility in implementing application-specific validation rules.
    *
-   * @author Mattia Carcione
+   * @author Mattia Carcione LoL
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

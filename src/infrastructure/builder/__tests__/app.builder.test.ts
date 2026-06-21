@@ -18,8 +18,10 @@ describe('AppBuilder Smoke Test', () => {
       .addLogger((config) => {
         config.console = true
         config.level = 0
+        config.sentry.config = { dsn: 'https://dummy-sentry-dsn.local', environment: 'test' }
+        config.pino.config = { destination: 'dummy-pino-destination.log' }
       })
-      .addAuthentication((config) => {
+      .addAuth((config) => {
         config.url = 'https://dummy-auth.local'
         config.key = 'dummy-key'
       })

@@ -36,7 +36,10 @@
     "verify:push": "npm run check",
     "prepare": "husky",
     "prepublishOnly": "npm run check && npm run build",
-    "release": "npm run prepublishOnly && npm publish"
+    "release": "npm run prepublishOnly && npm publish",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate"
   },
   "keywords": [
     "ddd",

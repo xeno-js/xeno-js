@@ -18,7 +18,7 @@ import { Guards } from '@/shared'
 export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
   constructor(
     private readonly _db: NodePgDatabase<Dictionary<unknown>>,
-    private readonly _tables: Dictionary<PgTable>,
+    private readonly _tables: Dictionary<unknown>,
   ) {}
 
   public async select<T>(
@@ -93,7 +93,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     if (!Guards.isDefined(table))
       throw new Error(`[DrizzleDbClient] Table schema '${schemaName}' not found in registry.`)
 
-    return table
+    return table as PgTable
   }
 
   private createQuery(

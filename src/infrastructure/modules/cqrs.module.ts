@@ -42,29 +42,22 @@ export class CqrsModule implements IModule<PipelineConfig> {
       pipelines.push(INJECTION_TOKENS.PERFORMANCE_PIPELINE)
     }
 
-    if (Guards.isDefined(opts.authorization)) {
-      const { AuthUtils } = await import('./utils/auth.utils')
-      const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
-      pipelines.push(...authPipelines)
-    }
+    const { AuthUtils } = await import('./utils/auth.utils')
+    const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
+    pipelines.push(...authPipelines)
 
-    if (Guards.isDefined(opts.validation)) {
-      const { ValidationUtils } = await import('./utils/validation.utils')
-      const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)
-      pipelines.push(...validationPipelines)
-    }
+    const { ValidationUtils } = await import('./utils/validation.utils')
+    const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)
+    pipelines.push(...validationPipelines)
 
     const commandPipelines = [...pipelines]
     const queryPipelines = [...pipelines]
 
-    if (Guards.isDefined(opts.commandBus)) {
-      const { CommandUtils } = await import('./utils/command.utils')
-      const newCommandPipelines = await CommandUtils.addCommand(container, opts.commandBus)
-      commandPipelines.push(...newCommandPipelines)
-    }
+    const { CommandUtils } = await import('./utils/command.utils')
+    const newCommandPipelines = await CommandUtils.addCommand(container, opts.commandBus)
+    commandPipelines.push(...newCommandPipelines)
 
     if (opts.queryBus.isEnabled) {
-      const { CommandUtils } = await import('./utils/command.utils')
       const newQueryPipelines = await CommandUtils.addQuery(container)
       queryPipelines.push(...newQueryPipelines)
     }

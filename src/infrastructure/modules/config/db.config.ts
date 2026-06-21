@@ -1,5 +1,3 @@
-import type { PgTable } from 'drizzle-orm/pg-core'
-
 import type { Dictionary } from '@/shared'
 
 /**
@@ -28,5 +26,5 @@ export interface DbConfig {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  tables: Dictionary<PgTable>
+  tables: Dictionary<unknown>
 }

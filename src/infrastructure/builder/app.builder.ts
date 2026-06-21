@@ -149,7 +149,7 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  public addAuthentication(setupAction: SetupAction<AuthClientConfig>): this {
+  public addAuth(setupAction: SetupAction<AuthClientConfig>): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
     const config = { url: '', key: '', options: undefined }
@@ -161,23 +161,6 @@ export class AppBuilder {
         await AuthUtils.addAuthN(this._container, config)
       },
     })
-    return this
-  }
-
-  /**
-   * @description Configures the authorization settings for the application. This method allows you to set up authorization options such as enabling/disabling authorization, tenant-based access control, policy-based access control, and custom authorization strategies.
-   * @param setupAction A callback function that receives a PipelineConfig['authorization'] object to configure the authorization settings.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addAuthorization(setupAction: SetupAction<PipelineConfig['authorization']>): this {
-    setupAction(this._pipelineConfig.authorization)
-    this._queuePipelineModule()
     return this
   }
 
@@ -213,7 +196,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione #
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -246,7 +229,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione §
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -267,7 +250,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione ''''
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -291,7 +274,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione o.o
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -330,7 +313,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione 0.0
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -367,7 +350,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione - - -
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -389,7 +372,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione ___
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -411,7 +394,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione !23
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
