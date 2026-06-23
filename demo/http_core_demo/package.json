@@ -1,20 +1,22 @@
 {
-  "name": "demo-02-cqrs",
+  "name": "demo-03-http-core",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 02 - CQRS with @gear5/core",
+  "description": "Demo 03 - HTTP Core with @gear5/core",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts"
   },
   "dependencies": {
     "@gear5/core": "file:../../",
-    "dotenv": "^16.4.5",
-    "fastify": "^4.27.0"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "cross-env": "^10.1.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.9.3"
   }
 }

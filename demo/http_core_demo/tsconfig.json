@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      // Diciamo a TypeScript: "Quando vedi @gear5/core, ignora node_modules
+      // e vai a leggere direttamente il codice sorgente TS del framework!"
+      "@gear5/core": ["../../src/index.ts"],
+      "@/*": ["../../src/*"]
+    }
+  },
+  "include": ["**/*.ts"]
+}

@@ -71,7 +71,7 @@ export interface HttpRequest<TBody = unknown> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  readonly query: Optional<Dictionary<HttpQueryValue>>
+  readonly query?: Optional<Dictionary<HttpQueryValue>>
 
   /** @description Optional request body.
    *
@@ -80,7 +80,7 @@ export interface HttpRequest<TBody = unknown> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  readonly body: Optional<TBody>
+  readonly body?: Optional<TBody>
 
   /** @description Optional request headers.
    *
@@ -89,7 +89,7 @@ export interface HttpRequest<TBody = unknown> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  readonly headers: Optional<HttpHeaders>
+  readonly headers?: Optional<HttpHeaders>
 
   /** @description Absolute or relative target URL.
    *
@@ -116,7 +116,7 @@ export interface HttpRequest<TBody = unknown> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  readonly timeoutMs: Optional<number>
+  readonly timeoutMs?: Optional<number>
 }
 
 /**
