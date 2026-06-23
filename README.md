@@ -96,6 +96,7 @@ async function bootstrap() {
     // 5. Configure DB Client (Drizzle)
     .addDb((config) => {
         config.connectionString = 'postgres://dummy:dummy@localhost:5432/dummy'
+        config.tables = { "NAME_TABLE": "NAME_DRIZZLE_PGTABLE" }
     })
 
     // 6. Configure Authentication with supabase

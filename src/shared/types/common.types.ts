@@ -5,7 +5,7 @@
  * Prefer this over `T | null` in all public APIs so intent is self-documenting.
 
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione proot
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export type Nullable<T> = T | null
  * Prefer this over `T | undefined` in all public APIs.
 
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione é*é
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -29,7 +29,7 @@ export type Optional<T> = T | undefined
  * Use when a value is absent regardless of the reason.
 
    * 
-   * @author Mattia Carcione
+   * @author Mattia Carcione °§°
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -21,7 +21,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  buildFindCriteria<TFilter>(filter: TFilter): TQueryConditions
+  buildFindCriteria(filter: unknown): TQueryConditions
   /**
    * Builds a filter object for querying based on the provided filter data.
    * @param filter The filter data to use for building the query filter.
@@ -33,7 +33,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  buildQueryCriteria<TFilter>(filter: TFilter, params?: Dictionary<unknown>): TQueryConditions
+  buildQueryCriteria(filter: unknown, params?: Dictionary<unknown>): TQueryConditions
   /**
    * Builds a filter object for delete operations based on the provided filter data.
    * @param filter The filter data to use for building the delete filter.
@@ -45,7 +45,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  buildDeleteCriteria<TFilter>(filter: TFilter): TQueryConditions
+  buildDeleteCriteria(filter: unknown): TQueryConditions
   /**
    * Builds a filter object for update operations based on the provided filter data.
    * @param filter The filter data to use for building the update filter.
@@ -57,7 +57,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  buildUpdateCriteria<TFilter>(filter: TFilter): TQueryConditions
+  buildUpdateCriteria(filter: unknown): TQueryConditions
 
   /**
    * Builds a projections object based on the provided filter data.
