@@ -32,11 +32,8 @@ async function runDemo() {
         const request: HttpRequest<unknown> = {
           method: 'GET',
           query: Object.fromEntries(url.searchParams.entries()),
-          body: undefined,
-          headers: undefined,
           url: requestUrl,
-          signal: new AbortController().signal,
-          timeoutMs: 5000,
+          signal: new AbortController().signal
         }
         // 4. Use the data source to fetch data from the PokeAPI
         const pokemonData = await dataSource.send(request.url, request)
