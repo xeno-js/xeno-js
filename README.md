@@ -2,6 +2,11 @@
 
 [![Powered by Gear5](https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=for-the-badge)](https://github.com/Mattia-Carcione/gear5)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Version](https://img.shields.io/npm/v/@gear5/core/beta?label=version&color=orange)](https://www.npmjs.com/package/@gear5/core)
+
+> ⚠️ **Beta Status**: `@gear5/core` is currently in **beta**. The API may
+> undergo breaking changes. To install the latest beta version, use:
+> `npm install @gear5/core@beta`
 
 **The production-ready TypeScript accelerator. Multi-tenant CQRS, Drizzle ORM,
 and solid RBAC out of the box in a fluent API.** Build blazing-fast,

@@ -1,6 +1,6 @@
 {
   "name": "@gear5/core",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "gear5 agnostic core — DDD + Clean Architecture npm package",
   "type": "module",
   "main": "./dist/index.js",
