@@ -1,5 +1,5 @@
 import type { IModule, IServiceContainer } from '@/domain'
-import type { Constructor, InjectionToken, SetupAction } from '@/shared'
+import type { InjectionToken, SetupAction } from '@/shared'
 import { Guards, LOG_LEVEL } from '@/shared'
 
 import { ServiceContainer } from '../container/service-container'
@@ -343,128 +343,17 @@ export class AppBuilder {
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * @description Registers a singleton service in the dependency injection container. A singleton service is instantiated once and shared throughout the application.
-   * @param token The injection token used to identify the service.
-   * @param implementation The constructor of the service implementation.
-   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
+   * @description Registers services in the application. This method allows you to add custom services to the dependency injection container, enabling modular and organized configuration of services.
+   * @param setupAction A callback function that receives the IServiceContainer to register services.
    * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
+   *
    * @author Mattia Carcione - - -
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/gear5
    */
-  public addSingleton<T>(
-    token: InjectionToken<T>,
-    implementation: Constructor<T>,
-    dependencies?: readonly InjectionToken<unknown>[],
-  ): this {
-    this._container.addSingleton(token, implementation, dependencies)
-    return this
-  }
-
-  /**
-   * @description Registers a scoped service in the dependency injection container. A scoped service is instantiated once per scope, typically per request in web applications.
-   * @param token The injection token used to identify the service.
-   * @param implementation The constructor of the service implementation.
-   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione ___
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addScoped<T>(
-    token: InjectionToken<T>,
-    implementation: Constructor<T>,
-    dependencies?: readonly InjectionToken<unknown>[],
-  ): this {
-    this._container.addScoped(token, implementation, dependencies)
-    return this
-  }
-
-  /**
-   * @description Registers a transient service in the dependency injection container. A transient service is instantiated every time it is requested.
-   * @param token The injection token used to identify the service.
-   * @param implementation The constructor of the service implementation.
-   * @param dependencies Optional array of injection tokens representing the dependencies of the service.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione !23
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addTransient<T>(
-    token: InjectionToken<T>,
-    implementation: Constructor<T>,
-    dependencies?: readonly InjectionToken<unknown>[],
-  ): this {
-    this._container.addTransient(token, implementation, dependencies)
-    return this
-  }
-
-  /**
-   * @description Registers a singleton service factory in the dependency injection container. A singleton service factory is a function that creates a single instance of the service, which is shared throughout the application.
-   * @param token The injection token used to identify the service.
-   * @param factory The factory function that creates the service instance.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addSingletonFactory<T>(
-    token: InjectionToken<T>,
-    factory: (container: IServiceContainer) => T,
-  ): this {
-    this._container.addSingletonFactory(token, factory)
-    return this
-  }
-
-  /**
-   * @description Registers a scoped service factory in the dependency injection container. A scoped service factory is a function that creates a single instance of the service per scope, typically per request in web applications.
-   * @param token The injection token used to identify the service.
-   * @param factory The factory function that creates the service instance.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addScopedFactory<T>(
-    token: InjectionToken<T>,
-    factory: (container: IServiceContainer) => T,
-  ): this {
-    this._container.addScopedFactory(token, factory)
-    return this
-  }
-
-  /**
-   * @description Registers a transient service factory in the dependency injection container. A transient service factory is a function that creates a new instance of the service every time it is requested.
-   * @param token The injection token used to identify the service.
-   * @param factory The factory function that creates the service instance.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author Mattia Carcione
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
-   */
-  public addTransientFactory<T>(
-    token: InjectionToken<T>,
-    factory: (container: IServiceContainer) => T,
-  ): this {
-    this._container.addTransientFactory(token, factory)
+  public addServices(setupAction: SetupAction<IServiceContainer>): this {
+    setupAction(this._container)
     return this
   }
 
