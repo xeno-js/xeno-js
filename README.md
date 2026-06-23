@@ -3,9 +3,10 @@
 [![Powered by Gear5](https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=for-the-badge)](https://github.com/Mattia-Carcione/gear5)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-**The Agnostic CQRS Kernel for Node.js.** Build blazing-fast, serverless-ready
-APIs with the elegant DX of .NET, without the vendor lock-in of heavy
-frameworks.
+**The production-ready TypeScript accelerator. Multi-tenant CQRS, Drizzle ORM,
+and solid RBAC out of the box in a fluent API.** Build blazing-fast,
+serverless-ready APIs with the elegant DX of .NET, without the vendor lock-in of
+heavy frameworks.
 
 ## 💡 Why Gear5?
 
@@ -73,14 +74,9 @@ async function bootstrap() {
 
     // 3. Configure the CQRS Pipeline
     .addPipeline((config) => {
-        config.performance.thresholdMs = 100
         config.authorization.tenant = true
-        config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
-        config.commandBus.concurrency = {
-          maxRetries: 3,
-          delayConfig: { baseDelayMs: 100, maxJitterMs: 50 },
-        }
-        config.queryBus.isEnabled = true
+        config.commandBus.idempotency = { lockTtlSeconds: 60 }
+        config.commandBus.concurrency = { maxRetries: 3 }
     });
 
     // 4. Configure HTTP Client (Axios) with pattern resilience (Cockatiel)
@@ -129,8 +125,8 @@ const mediator = container.resolve(INJECTION_TOKENS.MEDIATOR)
 const command = new CreateUserCommand({ email: 'test@gear5.dev' })
 const result = await mediator.send(command)
 
-if (result.isFailure) {
-  console.error('Command failed:', result.error)
+if (!result.isOk()) {
+  console.error('Command failed:', result.getErrorOrThrow())
 }
 ```
 
@@ -148,6 +144,22 @@ src/
  ├── infrastructure/ # External Services, DB Adapters (Drizzle), HTTP Clients (Axios)
  └── presentation/   # Your REST/GraphQL Controllers, Edge functions, or CLI
 ```
+
+---
+
+## 🗺️ Roadmap to v1.0.0
+
+Gear5 is currently in Beta. I'm actively working on expanding its enterprise
+capabilities to fully support distributed systems and complex domains.
+
+- [ ] **Distributed CQRS:** Event-driven architecture support with **Kafka** and
+      **RabbitMQ** bindings.
+- [ ] **Transactional Outbox Pattern:** Guaranteed message delivery and reliable
+      domain event dispatching.
+- [ ] **Unit of Work (UoW):** Coordinated, atomic transaction management across
+      repositories and message buses.
+- [ ] **Event Sourcing Kernel:** Native support for Aggregate Roots, Event
+      Streams, and Snapshots.
 
 ---
 
@@ -226,4 +238,4 @@ your README:
 
 ## 📄 License
 
-Copyright (c) 2024 Mattia Carcione. Licensed under the [ISC License](LICENSE).
+Copyright (c) 2026 Mattia Carcione. Licensed under the [ISC License](LICENSE).
