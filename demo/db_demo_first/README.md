@@ -116,7 +116,7 @@ correctly resolve the path aliases defined in the `tsconfig.json`)._
 If everything is configured correctly, you will see this output in the terminal:
 
 ```text
-🚀 Avvio Demo 01: Database e DataSource...
+🚀 Running Demo 01: Database e DataSource...
 
 ✅ Framework configured and modules started.
 🎉 User successfully created in the Database!
@@ -127,7 +127,7 @@ If everything is configured correctly, you will see this output in the terminal:
 
 ## 📂 File Structure
 
-- **`boostrap.ts`** - AppBuilder DI.
+- **`boosttrap.ts`** - AppBuilder DI.
 - **`tokens.ts`** - Tokens configuration for service container.
 - **`index.ts`** - Entry point, and test script.
 - **`schema.ts`** - Definition of the `users` table.

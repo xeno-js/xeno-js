@@ -14,7 +14,7 @@ import { USER_DS_TOKEN } from './tokens'
 // This function demonstrates the usage of the HardDeleteDataSource for performing CRUD operations on a PostgreSQL database using Drizzle ORM. It bootstraps the application, resolves the data source, and performs an insert, find, and delete operation while handling potential errors and providing cancellation support through an AbortController.
 // ─────────────────────────────────────────────────────────────────────────────
 async function runDemo() {
-  console.log('🚀 Run Demo 01: Database e DataSource...\n')
+  console.log('🚀 Running Demo 01: Database e DataSource...\n')
 
   try {
     // A. BOOTSTRAP THE APPLICATION AND GET THE SERVICE CONTAINER
