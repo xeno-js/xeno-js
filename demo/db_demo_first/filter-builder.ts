@@ -10,45 +10,27 @@ import { usersTable, type UserDto } from './schema'
 // This is a simple implementation of the IFilterBuilder interface. It provides methods to build various types of query criteria and projections based on the provided WriteCriteria. The actual logic for building these criteria would depend on the specific requirements of your application and database schema.
 
 /**
- * @description Implementazione custom e fortemente tipizzata di IFilterBuilder per la tabella "users".
- * Invece di usare stringhe grezze, questa classe mappa esplicitamente i campi astratti
- * alle colonne reali di Drizzle ORM (usersTable.nomeColonna), garantendo type-safety.
+ * @description The UserFilterBuilder class is an implementation of the IFilterBuilder interface, specifically designed for building query criteria and projections for the "users" table in a Drizzle ORM context. It translates agnostic WriteCriteria into Drizzle-specific SQL conditions, allowing for flexible querying based on various filter conditions. The class includes methods for building find, update, query, and delete criteria, as well as handling projections for selected columns. 
  */
 export class UserFilterBuilder implements IFilterBuilder<SQL | undefined, string[] | undefined> {
 
-    /**
-     * Scatenato dal metodo dataSource.find()
-     */
     public buildFindCriteria(filter: WriteCriteria): SQL | undefined {
         return this.mapCriteriaToDrizzle(filter)
     }
 
-    /**
-     * Scatenato dal metodo dataSource.update()
-     */
     public buildUpdateCriteria(filter: WriteCriteria): SQL | undefined {
         return this.mapCriteriaToDrizzle(filter)
     }
 
-    /**
-     * Scatenato dal metodo dataSource.findById(id)
-     * Qui "filter" è l'oggetto { id: string } passato dalla classe astratta.
-     */
     public buildQueryCriteria(filter: { id?: string }, _params?: Dictionary<unknown>): SQL | undefined {
         if (filter && filter.id) {
-            // Nota: facciamo il cast a Number perché nel Drizzle schema 'id' è di tipo serial (number)
             return eq(usersTable.id, Number(filter.id))
         }
         return undefined
     }
 
-    /**
-     * Scatenato dal metodo dataSource.delete(dto)
-     * Riceve l'intero oggetto UserDto che si desidera cancellare.
-     */
     public buildDeleteCriteria(dto: UserDto): SQL | undefined {
         if (dto && dto.email) {
-            // In questo esempio, eliminiamo l'utente basandoci sulla sua email univoca
             return eq(usersTable.email, dto.email)
         }
         return undefined
@@ -59,7 +41,9 @@ export class UserFilterBuilder implements IFilterBuilder<SQL | undefined, string
     }
 
     /**
-     * Traduce l'oggetto agnostico WriteCriteria nelle condizioni tipizzate di Drizzle.
+     * @description The mapCriteriaToDrizzle method is a private utility function that translates agnostic WriteCriteria into Drizzle-specific SQL conditions. It maps the provided filter conditions to the corresponding Drizzle ORM column references and operators, allowing for flexible querying based on various filter conditions. This method handles different operators such as 'eq', 'neq', 'gt', 'lt', and 'in', and constructs a combined SQL condition using the AND operator.
+     * @param criteria The WriteCriteria object containing the filter conditions to be translated.
+     * @returns A Drizzle-specific SQL condition that can be used in queries, or undefined if no valid conditions are provided.
      */
     private mapCriteriaToDrizzle(criteria: WriteCriteria): SQL | undefined {
         if (!criteria || !Array.isArray(criteria.where) || criteria.where.length === 0) {
@@ -67,7 +51,6 @@ export class UserFilterBuilder implements IFilterBuilder<SQL | undefined, string
         }
 
         const sqlConditions = criteria.where.map(condition => {
-            // 1. Mappatura esplicita del campo stringa alla VERA colonna Drizzle
             let column
             switch (condition.field) {
                 case 'id': column = usersTable.id; break
@@ -80,7 +63,6 @@ export class UserFilterBuilder implements IFilterBuilder<SQL | undefined, string
 
             const val = condition.value as any
 
-            // 2. Mappatura dell'operatore agnostico (es. 'eq') ai metodi nativi di Drizzle
             switch (condition.operator) {
                 case 'eq': return eq(column, val)
                 case 'neq': return ne(column, val)
@@ -95,7 +77,6 @@ export class UserFilterBuilder implements IFilterBuilder<SQL | undefined, string
             }
         })
 
-        // Unisce tutte le condizioni in una singola clausola AND
         return and(...sqlConditions)
     }
 }

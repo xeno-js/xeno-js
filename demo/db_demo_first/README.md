@@ -59,7 +59,7 @@ create the `users` table in the `gear5_demo` database.
 
 ## 🧠 How does the Demo work? (Architecture)
 
-The demo is divided into 3 fundamental concepts that reflect the `@gear5/core`
+The demo is divided into 5 fundamental concepts that reflect the `@gear5/core`
 approach.
 
 ### 1. The Schema (`schema.ts`)
@@ -77,13 +77,20 @@ typed, secure `WHERE` clauses specific to Drizzle (`eq`, `gt`, `inArray`). In
 this way, we guarantee type-safety and protect ourselves from SQL Injection,
 keeping the framework clean.
 
-### 3. Dependency Injection and Execution (`index.ts`)
+### 3. TOKENS (`tokens.ts`)
+
+Defines the typed tokens necessary for the service container.
+
+### 4. Dependency Injection (`bootstrap.ts`)
 
 The main file uses the framework's `AppBuilder` to assemble the application:
 
 - **Configures the DB module:** Provides the connection string and schema.
 - **Registers the Tokens:** Registers our `UserFilterBuilder` and the
   `HardDeleteDataSource` in the Service Container (IoC).
+
+### 5. EXECUTION (`index.ts`)
+
 - **Executes the test:** Resolves the DataSource from the container and
   sequentially executes an `insert`, a `find` (based on dynamic criteria), and a
   `delete`.
@@ -120,7 +127,9 @@ If everything is configured correctly, you will see this output in the terminal:
 
 ## 📂 File Structure
 
-- **`index.ts`** - Entry point, AppBuilder configuration, and test script.
+- **`boostrap.ts`** - AppBuilder DI.
+- **`tokens.ts`** - Tokens configuration for service container.
+- **`index.ts`** - Entry point, and test script.
 - **`schema.ts`** - Definition of the `users` table.
 - **`filter-builder.ts`** - Custom filter translator (Agnostic -> Drizzle SQL).
 - **`drizzle.config.ts`** - Configuration for Drizzle Kit migrations.
