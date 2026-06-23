@@ -1,6 +1,8 @@
 import type { IServiceContainer, IServiceScope, ServiceDescriptor } from '@/domain'
-import { type Constructor, Guards, type InjectionToken, type Optional } from '@/shared'
+import type { Constructor, InjectionToken, Optional } from '@/shared'
+import { Guards } from '@/shared'
 
+import { INJECTION_TOKENS } from '../di'
 import { ServiceScope } from './service-scope'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -23,6 +25,10 @@ import { ServiceScope } from './service-scope'
 export class ServiceContainer implements IServiceContainer {
   private readonly _descriptors = new Map<symbol, ServiceDescriptor<unknown>>()
   private readonly _singletons = new Map<symbol, unknown>()
+
+  constructor() {
+    this.addSingletonFactory(INJECTION_TOKENS.SERVICE_CONTAINER, () => this)
+  }
 
   /**
    * @inheritdoc

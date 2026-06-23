@@ -1,10 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type {
   ExecutionContext,
+  IFactory,
   IGateKeeper,
   IRequestContext,
-  IServiceContainer,
   IServiceExtractor,
   IServiceScope,
 } from '@/domain'
@@ -24,10 +24,10 @@ function makeScope() {
   return { scope, mocks: { disposeMock, resolveMock } }
 }
 
-function makeContainer(scope: IServiceScope) {
-  const createScopeMock = vi.fn().mockReturnValue(scope)
-  const container = { createScope: createScopeMock } as unknown as IServiceContainer
-  return { container, mocks: { createScopeMock } }
+function makeFactory(scope: IServiceScope) {
+  const createMock = vi.fn().mockReturnValue(scope)
+  const factory = { create: createMock } as unknown as IFactory<void, IServiceScope>
+  return { factory, mocks: { createMock } }
 }
 
 function makeExtractor(meta: Partial<Metadata> = {}): IServiceExtractor<HttpHeaders, Metadata> {
@@ -70,12 +70,12 @@ const headers: HttpHeaders = { authorization: 'Bearer tok' }
 
 describe('RequestContextMiddleware', () => {
   let scopeFactory: ReturnType<typeof makeScope>
-  let containerFactory: ReturnType<typeof makeContainer>
+  let factoryFactory: ReturnType<typeof makeFactory>
   let requestContextFactory: ReturnType<typeof makeRequestContext>
 
   beforeEach(() => {
     scopeFactory = makeScope()
-    containerFactory = makeContainer(scopeFactory.scope)
+    factoryFactory = makeFactory(scopeFactory.scope)
     requestContextFactory = makeRequestContext()
   })
 
@@ -86,7 +86,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
     const next = vi
       .fn()
@@ -111,7 +111,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, next)
@@ -129,7 +129,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, next)
@@ -158,7 +158,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     await middleware.execute(headers, next)
@@ -178,7 +178,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     await middleware.execute(headers, next)
@@ -201,7 +201,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, next)
@@ -227,12 +227,12 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     await middleware.execute(headers, vi.fn())
 
-    expect(containerFactory.mocks.createScopeMock).not.toHaveBeenCalled()
+    expect(factoryFactory.mocks.createMock).not.toHaveBeenCalled()
     expect(scopeFactory.mocks.disposeMock).not.toHaveBeenCalled()
   })
 
@@ -247,7 +247,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, vi.fn())
@@ -265,7 +265,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, vi.fn())
@@ -287,7 +287,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, vi.fn())
@@ -307,7 +307,7 @@ describe('RequestContextMiddleware', () => {
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
-      containerFactory.container,
+      factoryFactory.factory,
     )
 
     const response = await middleware.execute(headers, vi.fn())

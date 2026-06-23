@@ -1,9 +1,9 @@
 import type {
   ExecutionContext,
+  IFactory,
   IGateKeeper,
   IMiddleware,
   IRequestContext,
-  IServiceContainer,
   IServiceExtractor,
   IServiceScope,
   NetworkContext,
@@ -46,7 +46,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
     private readonly _requestContext: IRequestContext<ExecutionContext>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
     private readonly _gateKeeper: IGateKeeper,
-    private readonly _container: IServiceContainer,
+    private readonly _factoryScope: IFactory<void, IServiceScope>,
   ) {}
 
   public async execute<T>(
@@ -89,7 +89,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
 
       const identity = authResult.getValueOrThrow()
 
-      scope = this._container.createScope()
+      scope = this._factoryScope.create()
 
       const executionContext: ExecutionContext = {
         context: {

@@ -7,6 +7,7 @@ import type {
   IConcurrencyService,
   IDbClient,
   Identity,
+  IFactory,
   IGateKeeper,
   IIdempotencyStore,
   ILogger,
@@ -20,6 +21,7 @@ import type {
   IServiceContainer,
   IServiceExtractor,
   IServiceResilience,
+  IServiceScope,
   IValidatorService,
 } from '@/domain'
 import type { AuthClaims, HttpHeaders, Metadata, Optional } from '@/shared'
@@ -336,6 +338,16 @@ export const INJECTION_TOKENS = Object.freeze({
    */
   SERVICE_EXTRACTOR: TokenHelper.createToken<IServiceExtractor<HttpHeaders, Metadata>>(
     TOKENS.SERVICE_EXTRACTOR,
+  ),
+  /** @description Token used to register and resolve the ServiceScopeFactory instance in the dependency injection container.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  SERVICE_SCOPE_FACTORY: TokenHelper.createToken<IFactory<void, IServiceScope>>(
+    TOKENS.SERVICE_SCOPE_FACTORY,
   ),
   /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container.
    *

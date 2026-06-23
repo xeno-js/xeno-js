@@ -1,5 +1,7 @@
 import type { InjectionToken } from '../types/index'
 
+const tokenRegistry = new Map<string, InjectionToken<unknown>>()
+
 /**
  * @fileoverview Utility for creating and managing typed injection tokens.
  * This module defines the `TokenHelper` factory for generating unique, type-safe tokens
@@ -33,6 +35,27 @@ export const TokenHelper = Object.freeze({
    * @link https://github.com/Mattia-Carcione/gear5 
    */
   createToken<T>(description: string): InjectionToken<T> {
-    return { symbol: Symbol(description) } as unknown as InjectionToken<T>
+    if (tokenRegistry.has(description)) {
+      return tokenRegistry.get(description) as InjectionToken<T>
+    }
+
+    const token = { symbol: Symbol(description) } as unknown as InjectionToken<T>
+    tokenRegistry.set(description, token)
+    return token
+  },
+  /**
+   * @description Retrieves an existing {@link InjectionToken} by its description.
+   *
+   * @param description - The human-readable label used when the token was created.
+   * @returns The corresponding {@link InjectionToken} if found, otherwise `undefined`.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
+  get<T>(description: string): InjectionToken<T> | undefined {
+    return tokenRegistry.get(description) as InjectionToken<T> | undefined
   },
 } as const)

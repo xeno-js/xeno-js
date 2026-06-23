@@ -274,6 +274,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/gear5
    */
   SERVICE_EXTRACTOR: 'SERVICE_EXTRACTOR',
+  /** @description Token used to register and resolve the ServiceScopeFactory instance in the dependency injection container.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  SERVICE_SCOPE_FACTORY: 'SERVICE_SCOPE_FACTORY',
   /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container.
    *
    * @author Mattia Carcione

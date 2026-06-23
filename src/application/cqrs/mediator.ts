@@ -96,7 +96,10 @@ export class Mediator implements IMediator {
         }),
       )
 
-    const token = TokenHelper.createToken<IHandler<ICommand<TResponse>, TResponse>>(request.intent)
+    const token = TokenHelper.get<IHandler<ICommand<TResponse>, TResponse>>(request.intent)
+    if (!Guards.isDefined(token))
+      throw new Error(`No handler registered for request intent: ${request.intent}`)
+
     const handler = scope.resolve(token)
 
     const pipelines = scope.resolve(

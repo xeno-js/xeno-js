@@ -16,7 +16,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
   TRequest,
   TResponse
 > {
-  constructor(private readonly _mediator: IMediator) {}
+  constructor(protected readonly _mediator: IMediator) {}
 
   abstract handle(request: TRequest): Promise<ResponseDto<TResponse>>
 

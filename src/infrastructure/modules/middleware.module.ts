@@ -29,6 +29,11 @@ export class MiddlewareModule implements IModule {
     container.addSingleton(INJECTION_TOKENS.SERVICE_EXTRACTOR, HttpHeaderExtractor, [
       INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR,
     ])
+    const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
+    container.addSingletonFactory(INJECTION_TOKENS.SERVICE_SCOPE_FACTORY, () => {
+      const factory = new ServiceScopeFactory(container)
+      return factory
+    })
 
     const { RequestContextMiddleware } = await import('@/presentation')
     container.addSingleton<IMiddleware<HttpHeaders>>(
@@ -38,7 +43,7 @@ export class MiddlewareModule implements IModule {
         INJECTION_TOKENS.REQUEST_CONTEXT,
         INJECTION_TOKENS.SERVICE_EXTRACTOR,
         INJECTION_TOKENS.GATE_KEEPER,
-        INJECTION_TOKENS.SERVICE_CONTAINER,
+        INJECTION_TOKENS.SERVICE_SCOPE_FACTORY,
       ],
     )
   }

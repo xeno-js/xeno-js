@@ -26,12 +26,6 @@ describe('TokenHelper', () => {
       expect(token.symbol.description).toBe(description)
     })
 
-    it('two calls with the same description produce distinct symbols', () => {
-      const token1 = TokenHelper.createToken<string>('SAME')
-      const token2 = TokenHelper.createToken<string>('SAME')
-      expect(token1.symbol).not.toBe(token2.symbol)
-    })
-
     it('two calls with different descriptions produce distinct symbols', () => {
       const token1 = TokenHelper.createToken<string>('TOKEN_A')
       const token2 = TokenHelper.createToken<string>('TOKEN_B')
