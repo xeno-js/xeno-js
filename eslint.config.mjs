@@ -16,6 +16,7 @@ export default tseslint.config(
       'commitlint.config.cjs',
       'vitest.config.ts',
       'demo/**',
+      'packages/**',
     ],
   },
 

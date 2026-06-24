@@ -1,0 +1,26 @@
+{
+  "name": "@gear5/create",
+  "version": "1.0.0",
+  "description": "gear5 create — CLI to scaffold a new gear5 project",
+  "bin": {
+    "create-gear5": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "@types/prompts": "^2.4.9",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
