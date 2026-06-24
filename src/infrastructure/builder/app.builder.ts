@@ -5,6 +5,7 @@ import { Guards, LOG_LEVEL } from '@/shared'
 import { ServiceContainer } from '../container/service-container'
 import type {
   AuthClientConfig,
+  CacheConfig,
   DbConfig,
   HttpConfig,
   HttpCoreConfig,
@@ -45,7 +46,7 @@ export class AppBuilder {
 
   // --- Specific Configurations ---
   private _pipelineConfig: PipelineConfig = {
-    performance: { thresholdMs: undefined },
+    performance: { thresholdMs: 500 },
     authorization: {
       tenant: false,
       policy: { role: false, permission: false, policyRegistry: undefined },
@@ -133,6 +134,30 @@ export class AppBuilder {
       action: async () => {
         const { LoggerUtils } = await import('../modules/utils/logger.utils')
         await LoggerUtils.addLogger(this._container, config)
+      },
+    })
+    return this
+  }
+
+  /**
+   * @description Configures the caching settings for the application. This method allows you to set up caching options such as Redis configuration or in-memory caching.
+   * @param setupAction A callback function that receives a CacheConfig object to configure the caching settings.
+   * @returns The current instance of AppBuilder for method chaining.
+  
+   * 
+   * @author Mattia Carcione §§§
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5 
+   */
+  public addCache(setupAction: SetupAction<CacheConfig>): this {
+    const config = { inMemory: true, redis: undefined }
+    setupAction(config)
+    this._modules.push({
+      name: 'CacheModule',
+      action: async () => {
+        const { CacheUtils } = await import('../modules/utils/cache.utils')
+        await CacheUtils.addCache(this._container, config)
       },
     })
     return this

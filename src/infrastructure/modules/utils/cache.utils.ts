@@ -27,16 +27,16 @@ export const CacheUtils = Object.freeze({
   addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    if (!Guards.isDefined(opts.redis.config)) {
+    if (opts.inMemory) {
       const { InMemoryCache } = await import('../../cache/in-memory.cache')
       container.addSingleton(INJECTION_TOKENS.CACHE, InMemoryCache, [])
       return
     }
 
-    if (Guards.isDefined(opts.redis.config)) {
+    if (Guards.isDefined(opts.redis)) {
       const { RedisCacheFactory } = await import('../../factories/redis-cache.factory')
       container.addSingletonFactory(INJECTION_TOKENS.CACHE, () => {
-        const config = opts.redis?.config
+        const config = opts.redis
         return new RedisCacheFactory().create(config!)
       })
     }

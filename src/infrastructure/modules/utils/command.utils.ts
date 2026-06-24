@@ -26,7 +26,7 @@ export const CommandUtils = Object.freeze({
 
     if (Guards.isDefined(opts.idempotency)) {
       const { CacheUtils } = await import('./cache.utils')
-      await CacheUtils.addCache(container, { redis: { config: undefined } })
+      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
       const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
       container.addSingleton(INJECTION_TOKENS.IDEMPOTENCY_STORE, IdempotencyStore, [
         INJECTION_TOKENS.CACHE,

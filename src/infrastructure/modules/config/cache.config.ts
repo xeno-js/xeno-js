@@ -8,16 +8,22 @@ import type { Optional } from '@/shared'
  * @link https://github.com/Mattia-Carcione/gear5
  */
 export interface CacheConfig {
-  redis: {
-    /** @description Optional configuration for the Redis cache client, including details such as host, port, and credentials. If provided, this configuration will be used to establish a connection to the Redis server for caching purposes. If not defined, default connection settings will be used.
-     *
-     * @author Mattia Carcione
-     * @version 1.0.0
-     * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/gear5
-     */
-    config: Optional<CacheClientConfig>
-  }
+  /** @description Optional configuration for in-memory cache integration. If enabled, the query bus and command bus (in case of idempotency) pipelines will use an in-memory cache system to store and retrieve data efficiently. The configuration includes specific details for in-memory cache integration, providing flexibility in how the cache is implemented and used within the application.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  inMemory: boolean
+  /** @description Optional configuration for Redis integration, including details such as host, port, and credentials. If provided and enabled, the application will use Redis as the cache system to store and retrieve data efficiently. The configuration includes specific details for Redis integration, such as host, port, and credentials, providing flexibility in how the cache is implemented and used within the application.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  redis: Optional<CacheClientConfig>
 }
 
 /**
