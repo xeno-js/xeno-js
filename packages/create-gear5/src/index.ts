@@ -95,7 +95,7 @@ async function init() {
 
     // Map dependencies based on choices and your @gear5/core peerDependencies
     const dependencies: Record<string, string> = {
-        "@gear5/core": "file:C:\\Users\\Mattia\\Desktop\\gear5",
+        "@gear5/core": "latest",
         "zod": "^4.4.3", // Essential peer dependency
     };
 
