@@ -11,5 +11,6 @@ docs/core/logging/
   README.md
   configure-logger.md                 # Architecture, default fallback, and providers
   pino-configuration.md               # Pino configuration and registration
+  sentry-configuration.md             # Sentry configuration and registration
   custom-providers.md                 # Creating and registering custom logging drivers
 ```

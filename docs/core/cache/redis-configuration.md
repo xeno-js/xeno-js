@@ -29,11 +29,13 @@ Your local `.env.example` file is pre-populated with default parameters
 targeting your storage instance:
 
 ```env
-# Database Configuration
-DATABASE_URL=postgres://postgres:password@localhost:5432/gear5_db
 
 # Redis Cache Core Configuration
-REDIS_URL=redis://localhost:6379
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_USERNAME=
+REDIS_PASSWORD=
+REDIS_TLS=false
 
 ```
 
@@ -55,7 +57,10 @@ builder.addCache((opts) => {
   opts.redis = {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: parseInt(process.env.REDIS_PORT || '6379', 10),
+    username: process.env.REDIS_USERNAME || undefined,
     password: process.env.REDIS_PASSWORD || undefined,
+    tls: process.env.REDIS_TLS === 'true',
+    maxRetriesPerRequest: 3,
   }
 })
 ```

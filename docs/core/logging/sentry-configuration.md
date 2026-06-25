@@ -18,6 +18,25 @@ Sentry initialization is triggered by defining options within the
 
 ---
 
+## Environment Template (.env.example)
+
+To securely configure cloud error tracking across multiple environments without
+rebuilding your TypeScript bundle, populate your environment matrix using these
+specific variables:
+
+```env
+# Standard Runtime Environment
+NODE_ENV=development
+
+# Gear5 Sentry Logger Configuration
+SENTRY_DSN=https://your-sentry-dsn@o0.ingest.sentry.io/0
+SENTRY_ENVIRONMENT=development
+SENTRY_RELEASE=app@1.0.0
+
+```
+
+---
+
 ## Under the Hood: Built-in Operational Rules
 
 The `SentryLoggerFactory` encapsulates custom initialization heuristics to
@@ -110,7 +129,10 @@ builder
         dsn:
           process.env.SENTRY_DSN ||
           '[https://examplePublicKey@o0.ingest.sentry.io/0](https://examplePublicKey@o0.ingest.sentry.io/0)',
-        environment: process.env.NODE_ENV || 'production',
+        environment:
+          process.env.SENTRY_ENVIRONMENT ||
+          process.env.NODE_ENV ||
+          'development',
       },
     }
   })

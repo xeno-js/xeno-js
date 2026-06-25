@@ -170,19 +170,45 @@ async function init() {
     fs.writeFileSync(path.join(projectPath, '.gitignore'), 'node_modules\n.env\ndist\n');
 
     // Create .env.example
-    let envExampleContent = `# Environment Variables Configuration\n\n`;
+    let envExampleContent = `# ─────────────────────────────────────────────────────────────────────────────\n`;
+    envExampleContent += `# GEAR5 APPLICATION ENVIRONMENT VARIABLES\n`;
+    envExampleContent += `# ─────────────────────────────────────────────────────────────────────────────\n\n`;
+
+    // Standard Node Env (For Pino and Sentry)
+    envExampleContent += `NODE_ENV=development\n\n`;
     if (options.database) {
-        envExampleContent += `DATABASE_URL=postgres://postgres:password@localhost:5432/gear5_db\n`;
+        envExampleContent += `# --- Database (Drizzle & PG) ---\n`;
+        envExampleContent += `DATABASE_URL=postgres://postgres:password@localhost:5432/gear5_db\n\n`;
     }
+
+    if (options.logging) {
+        envExampleContent += `# --- Logging (Pino) ---\n`;
+        envExampleContent += `LOG_LEVEL=debug\n`;
+        envExampleContent += `LOG_DESTINATION=stdout\n`;
+        envExampleContent += `LOG_FILE_PATH=logs/app.log\n`;
+        envExampleContent += `LOG_PRETTY_PRINT=true\n\n`;
+    }
+
     if (options.redis) {
-        envExampleContent += `REDIS_URL=redis://localhost:6379\n`;
+        envExampleContent += `# --- Cache (Redis) ---\n`;
+        envExampleContent += `REDIS_HOST=localhost\n`;
+        envExampleContent += `REDIS_PORT=6379\n`;
+        envExampleContent += `REDIS_USERNAME=\n`;
+        envExampleContent += `REDIS_PASSWORD=\n`;
+        envExampleContent += `REDIS_TLS=false\n\n`;
     }
+
     if (options.supabase) {
+        envExampleContent += `# --- Authentication (Supabase) ---\n`;
         envExampleContent += `SUPABASE_URL=https://your-project.supabase.co\n`;
-        envExampleContent += `SUPABASE_KEY=your-anon-key\n`;
+        envExampleContent += `SUPABASE_KEY=your-anon-key\n\n`;
     }
+
     if (options.sentry) {
-        envExampleContent += `SENTRY_DSN=your-sentry-dsn\n`;
+        envExampleContent += `# --- Error Tracking (Sentry) ---\n`;
+        envExampleContent += `SENTRY_DSN=https://your-sentry-dsn@o0.ingest.sentry.io/0\n`;
+        envExampleContent += `SENTRY_ENVIRONMENT=development\n`;
+        envExampleContent += `SENTRY_RELEASE=app@1.0.0\n\n`;
     }
     fs.writeFileSync(path.join(projectPath, '.env.example'), envExampleContent);
 

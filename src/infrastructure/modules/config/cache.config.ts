@@ -65,4 +65,29 @@ export interface CacheClientConfig {
    * @link https://github.com/Mattia-Carcione/gear5 
    */
   password: Optional<string>
+  /** @description The username for authenticating with the cache server (e.g., Redis). Optional for in-memory cache implementations.
+  
+   * 
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  username: Optional<string>
+  /** @description A boolean flag indicating whether to use TLS/SSL for the connection to the cache server (e.g., Redis). Optional for in-memory cache implementations.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  tls: boolean
+  /** @description The maximum number of reconnection attempts before declaring failure. Optional for in-memory cache implementations.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  maxRetriesPerRequest: Optional<number>
 }

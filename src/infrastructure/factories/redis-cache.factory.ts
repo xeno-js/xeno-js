@@ -1,6 +1,8 @@
+import type { RedisOptions } from 'ioredis'
 import { Redis } from 'ioredis'
 
 import type { ICache, IFactory } from '@/domain'
+import { Guards } from '@/shared'
 
 import { RedisCache } from '../cache/redis.cache'
 import type { CacheClientConfig } from '../modules/config/cache.config'
@@ -16,12 +18,43 @@ import type { CacheClientConfig } from '../modules/config/cache.config'
    */
 export class RedisCacheFactory implements IFactory<CacheClientConfig, ICache> {
   public create(config: CacheClientConfig): ICache {
-    const redisClient = new Redis({
-      host: config.host,
-      port: config.port,
-      password: config.password,
+    const host = config?.host ?? 'localhost'
+    const port = config?.port ?? 6379
+    const password = config?.password
+    const username = config?.username
+    const useTls = config?.tls ?? false
+    const maxRetries = config?.maxRetriesPerRequest ?? 3
+
+    const redisOptions: RedisOptions = {
+      host,
+      port,
+      maxRetriesPerRequest: maxRetries,
+
+      // Strategia di riconnessione esponenziale per garantire resilienza
+      retryStrategy(times) {
+        const delay = Math.min(times * 50, 2000)
+        return delay
+      },
+    }
+
+    if (Guards.isDefined(password)) {
+      redisOptions.password = password
+    }
+
+    if (Guards.isDefined(username)) {
+      redisOptions.username = username
+    }
+
+    if (useTls) {
+      redisOptions.tls = {}
+    }
+
+    const nativeRedisInstance = new Redis(redisOptions)
+
+    nativeRedisInstance.on('error', (err) => {
+      console.error('❌ [Redis Error]:', err.message)
     })
 
-    return new RedisCache(redisClient)
+    return new RedisCache(nativeRedisInstance)
   }
 }

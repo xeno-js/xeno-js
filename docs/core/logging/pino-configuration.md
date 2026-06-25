@@ -20,6 +20,26 @@ customize the underlying Pino initialization via the `opts.pino.config` block:
 
 ---
 
+## Environment Template (.env.example)
+
+When initializing your application infrastructure, the local environment
+template can be pre-populated with individual variables to decouple runtime
+configuration from your TypeScript compilation layer:
+
+```env
+# Standard Runtime Environment
+NODE_ENV=development
+
+# Gear5 Pino Logger Configuration
+LOG_LEVEL=debug
+LOG_DESTINATION=stdout
+LOG_FILE_PATH=logs/app.log
+LOG_PRETTY_PRINT=true
+
+```
+
+---
+
 ## Under the Hood: Built-in Operational Protections
 
 The `PinoLoggerFactory` enforces production-grade parameters automatically out
