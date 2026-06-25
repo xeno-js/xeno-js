@@ -5,6 +5,8 @@ runtime dependencies.
 
 ## Guides
 
+- [AppBuilder](./app_builder/README.md): what is and how to use AppBuilder
+  container
 - [Injection tokens](./dependency-injection/tokens.md): create stable
   application-level DI tokens with `TokenHelper`.
 - [Modules and dependencies](./modules-and-dependencies.md): map CLI choices to
@@ -17,6 +19,13 @@ runtime dependencies.
 - [Http](./http/README.md): configure axios client and cockatiel service
 - [Pipelines](./pipelines/README.md): understand what is pipeline and how to use
 - [Auth](./auth/README.md): how to configure and use supabase auth
+
+## AppBuilder
+
+- [Services Registration](./app_builder/dependency-injection-lifetimes.md): how
+  to register class with different lifetime
+- [Module Registration](./app_builder/module-service-registration.md): how to
+  register module
 
 ## Cache
 

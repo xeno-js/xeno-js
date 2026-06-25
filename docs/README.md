@@ -15,6 +15,10 @@ docs/
     create-gear5.md
   core/
     README.md
+    app_builder/
+      README.md
+      dependency-injection-lifetime.md
+      module-service-registration.md
     cache/
       README.md
       idempotency-and-ordering.md
@@ -82,12 +86,18 @@ docs/
   tokens with `TokenHelper`.
 - [Modules and dependencies](./core/modules-and-dependencies.md): what each CLI
   option installs and which APIs it enables.
+- [AppBuilder](./core/app_builder/README.md): what is and how to use AppBuilder
+  container
 - [Database](./core/database/README.md): configure Drizzle/PostgreSQL and use
   Gear5 data sources, repositories, and filters.
 - [Cache](./core/cache/README.md): configure Redis or InMemory storage for
   optimized data access and idempotency.
 - [Logging](./core/logging/README.md): configure Console or Pino or Sentry
   logger or custom logger for logging data
+- [Http](./core/http/README.md): configure http client service with cockatiel
+  resilience
+- [Pipelines](./core/pipelines/README.md): define and configure gear5/core
+  pipelines
 - [Auth](./auth/README.md): how to configure and use supabase auth
 - [Local development](./contributing/local-development.md): repository setup,
   build, test, and local publishing workflow.
