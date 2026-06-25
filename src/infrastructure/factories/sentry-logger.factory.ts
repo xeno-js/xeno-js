@@ -19,12 +19,32 @@ export class SentryLoggerFactory implements IFactory<LoggerConfig, ILoggerClient
   public create(config: LoggerConfig): ILoggerClient {
     const level = config.level ?? LOG_LEVEL.WARN
     const sentryConfig = config.sentry?.config
+
+    const env = sentryConfig?.environment ?? process.env.NODE_ENV ?? 'development'
+
     if (!Guards.isDefined(sentryConfig))
       throw new Error('Sentry configuration is required when Sentry logging is enabled.')
+
+    if (!Guards.isDefined(sentryConfig.dsn))
+      throw new Error('Sentry DSN is required when Sentry logging is enabled.')
+
     Sentry.init({
       dsn: sentryConfig.dsn,
-      environment: sentryConfig.environment,
+      environment: env,
+      tracesSampleRate: env === 'production' ? 0.1 : 1.0,
+      sendDefaultPii: false,
+      integrations: [new Sentry.Integrations.Http({ tracing: true })],
+      beforeSend(event, hint) {
+        const error = hint.originalException
+
+        if (error instanceof Error && error.name === 'ZodError') {
+          return null
+        }
+
+        return event
+      },
     })
+
     return new SentryLogger(Sentry, level)
   }
 }

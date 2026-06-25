@@ -13,6 +13,7 @@ runtime dependencies.
   access with Gear5 primitives.
 - [Cache](./cache/README.md): configure Redis or InMemory providers to handle
   application-level caching and idempotency strategies.
+- [Logging](./logging/README.md): configure Pino, Sentry or Console logger
 
 ## Cache
 
@@ -36,3 +37,11 @@ runtime dependencies.
   Drizzle conditions and projections.
 - [Repositories and DAOs](./database/repositories-and-daos.md): compose data
   sources, mappers, repositories, and read DAOs.
+
+## Logging
+
+- [Configuration](./logging/configure-logger.md): configure logger
+- [Pino](./logging/pino-configuration.md): configure Pino logger
+- [Sentry](./logging/sentry-configuration.md): configure Sentry logger
+- [CustomLoggerConfiguration](./logging/custom-providers.md): configure a custom
+  logger
