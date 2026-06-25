@@ -165,6 +165,10 @@ manuals:
   **[Data Defense & Validation Manual](./validation/README.md)** — Covers Zod
   integration matrices, declarative message schema structures, and custom
   `BaseValidationStrategy` rules.
+- **[`authz/`](./authz/README.md)**:
+  **[Identity Access & Authorization Subsystem Manual](./authz/README.md)** —
+  Outlines the multi-layered authorization infrastructure covering Tenant, User,
+  Role-Based (RBAC), and Permission-Based (PBAC) security strategies.
 - **[`idempotency/`](./idempotency/README.md)**:
   **[Idempotent Command Processing Manual](./idempotency/README.md)** — Focuses
   on duplicate transaction filtering using distributed mutex locks.

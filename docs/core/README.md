@@ -64,6 +64,7 @@ runtime dependencies.
 
 ## Pipilines
 
+- [Authorization](./pipelines/authz/README.md): define authorization behavior
 - [Concurrency](./pipelines/concurrency/README.md): define concurrency behavior
 - [Exception](./pipelines/exception/README.md): define exception behavior
 - [Idempotency](./pipelines/idempotency/README.md): define idempotency behavior

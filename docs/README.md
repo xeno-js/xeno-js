@@ -43,6 +43,14 @@ docs/
       sentry-configuration.md
     pipelines/
       README.md
+      authz/
+        README.md
+        configuration.md
+        tenant-strategy.md
+        policies/
+          role-policiy-configuration.md
+          permission-policy-configuration.md
+        custom-strategy-authz.md
       concurrency/
         README.md
       exception/
