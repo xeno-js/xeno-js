@@ -5,6 +5,8 @@ The extraction of raw protocol data is managed by the unified
 `INJECTION_TOKENS.SERVICE_EXTRACTOR`). This component maps incoming HTTP string
 key matrices directly into a normalized `Metadata` transport model.
 
+```
+
 | Metadata Property | Target HTTP Header Key | Fallback Generation Logic | Purpose                                                                                                 |
 | ----------------- | ---------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `correlationId`   | `x-correlation-id`     | `GuidHelper.generate()`   | Global cross-system operational identifier used to stitch distributed microservice trace logs together. |
@@ -12,6 +14,8 @@ key matrices directly into a normalized `Metadata` transport model.
 | `token`           | `authorization`        | `undefined`               | Cryptographic bearer string containing account claim structures.                                        |
 | `clientIp`        | `x-forwarded-for`      | `x-real-ip`               | `undefined`                                                                                             | Network tracking variable capturing the origin IP of the client agent. |
 | `spanId`          | `x-span-id`            | `undefined`               | Granular telemetry span node marker passed directly to tracking collectors (e.g., Sentry).              |
+
+```
 
 ---
 
