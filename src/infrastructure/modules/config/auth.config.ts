@@ -1,4 +1,7 @@
-import type { Dictionary, Optional } from '@/shared'
+import type { SupabaseClientOptions } from '@supabase/supabase-js'
+
+import type { Optional } from '@/shared'
+
 /**
  * @description An interface representing the configuration required to initialize an authentication client, such as Supabase. This typically includes the URL of the authentication service, the API key for authentication, and any additional options that may be necessary for configuring the client.
 
@@ -38,5 +41,6 @@ export interface AuthClientConfig {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  options: Optional<Dictionary>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  options?: Optional<SupabaseClientOptions<any>>
 }

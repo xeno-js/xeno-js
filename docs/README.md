@@ -16,6 +16,9 @@ docs/
   core/
     README.md
     cache/
+      README.md
+      idempotency-and-ordering.md
+      redis-configuration.md
     dependency-injection/
       README.md
       tokens.md
@@ -27,6 +30,12 @@ docs/
       datasources.md
       filter-builder.md
       repositories-and-daos.md
+    logging/
+      README.md
+      configure-logger.md
+      custom-providers.md
+      pino-configuration.md
+      sentry-configuration.md
   contributing/
     README.md
     local-development.md
@@ -48,6 +57,7 @@ docs/
   optimized data access and idempotency.
 - [Logging](./core/logging/README.md): configure Console or Pino or Sentry
   logger or custom logger for logging data
+- [Auth](./auth/README.md): how to configure and use supabase auth
 - [Local development](./contributing/local-development.md): repository setup,
   build, test, and local publishing workflow.
 
