@@ -58,6 +58,14 @@ runtime dependencies.
 - [CustomLoggerConfiguration](./logging/custom-providers.md): configure a custom
   logger
 
+## Middleware
+
+- [Configuration](./middleware/configuration.md): configure middelware
+- [Request Context](./middleware/request-context-execution.md): the execution
+  context composition
+- [Http header extractor](./middleware/http-header-extraction.md):
+  transportation contract metadata
+
 ## Auth
 
 - [Configuration](./auth/supabase-configuration.md): configure supabase auth
