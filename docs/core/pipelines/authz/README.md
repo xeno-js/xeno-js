@@ -24,15 +24,11 @@ strategy maps directly to specific operational requirements:
 
 ```
 
-```
-
 [ Incoming Request ] ──► [ AuthorizationPipeline ] │ ├──► 1.
 UserAuthenticationStrategy │ (Validates User GUID presence) │ ├──► 2.
 TenantAuthorizationStrategy │ (Enforces SaaS context isolation) │ ├──► 3.
 RoleAuthorizationStrategy │ (Checks macro organizational roles) │ └──► 4.
 PermissionAuthorizationStrategy (Verifies micro feature-level claims)
-
-```
 
 ```
 
