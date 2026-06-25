@@ -145,14 +145,33 @@ async function bootstrap() {
 
 ## Documentation Roadmap
 
-To understand the architecture, inner configuration mechanics, and extension
-pathways of each dedicated behavior subsystem, consult the respective module
-directories:
+To understand the internal architecture, configuration parameters, and execution
+workflows of each dedicated behavior subsystem, consult the respective component
+manuals:
 
-- **`validation/`**:
-  **[Data Defense & Validation Subsystem Manual](./validation/README.md)** —
-  Explains the integration of Zod schema validation models, fail-fast exception
-  structures, and custom business rule strategies extending
-  `BaseValidationStrategy`.
-- _(More pipeline behavior documentation modules will be detailed as sections
-  are added)._
+- **[`exception/`](./exception/README.md)**:
+  **[Global Exception Handling Manual](./exception/README.md)** — Outlines the
+  global safety-net middleware that intercepts unhandled failures and strips raw
+  infrastructure stack details.
+- **[`logging/`](./logging/README.md)**:
+  **[Structured Audit Logging Manual](./logging/README.md)** — Details request
+  observability across asynchronous execution scopes using central system
+  loggers.
+- **[`performance/`](./performance/README.md)**:
+  **[Performance Telemetry & Latency Manual](./performance/README.md)** —
+  Explains latency tracking hooks designed to detect application performance
+  regressions early.
+- **[`validation/`](./validation/README.md)**:
+  **[Data Defense & Validation Manual](./validation/README.md)** — Covers Zod
+  integration matrices, declarative message schema structures, and custom
+  `BaseValidationStrategy` rules.
+- **[`idempotency/`](./idempotency/README.md)**:
+  **[Idempotent Command Processing Manual](./idempotency/README.md)** — Focuses
+  on duplicate transaction filtering using distributed mutex locks.
+- **[`concurrency-retry/`](./concurrency-retry/README.md)**:
+  **[Optimistic Concurrency Recovery Manual](./concurrency-retry/README.md)** —
+  Maps runtime backoff behaviors applied to resolve state write collisions
+  automatically.
+- **[`query-caching/`](./query-caching.pipeline.ts)**:
+  **[Distributed Query Cache Manual](./query-caching/README.md)** — Explains
+  read-model performance tuning using high-speed in-memory or Redis caches.

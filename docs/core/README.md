@@ -48,3 +48,27 @@ runtime dependencies.
 - [Sentry](./logging/sentry-configuration.md): configure Sentry logger
 - [CustomLoggerConfiguration](./logging/custom-providers.md): configure a custom
   logger
+
+## Auth
+
+- [Configuration](./auth/supabase-configuration.md): configure supabase auth
+  service
+- [How-to-Use](./auth/how-to-use.md): how to use auth service
+
+## Http
+
+- [Configuration](./http/http-client-configuration.md): configure http axios
+- [Resilience](./http/resilience-configuration.md): configure Cockatiel
+  resilience service
+- [Core](./http/http-core-module.md): configure http core module
+
+## Pipilines
+
+- [Concurrency](./pipelines/concurrency/README.md): define concurrency behavior
+- [Exception](./pipelines/exception/README.md): define exception behavior
+- [Idempotency](./pipelines/idempotency/README.md): define idempotency behavior
+- [Logging](./pipelines/logging/README.md): define logging behavior
+- [Performance](./pipelines/performance/README.md): define performance behavior
+- [QueryCaching](./pipelines/query_caching/README.md): define query caching
+  behavior
+- [Validation](./pipelines/validation/README.md): define validation behavior

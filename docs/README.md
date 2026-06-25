@@ -43,6 +43,18 @@ docs/
       sentry-configuration.md
     pipelines/
       README.md
+      concurrency/
+        README.md
+      exception/
+        README.md
+      idempotency
+        README.md
+      logging/
+        README.md
+      performance/
+        README.md
+      query_caching/
+        README.md
       validation/
         README.md
         zod-configuration.md
