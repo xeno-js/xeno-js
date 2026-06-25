@@ -132,6 +132,7 @@ async function init() {
     }
     if (options.logging) {
         dependencies["pino"] = "^10.3.1";
+        devDependencies["pino-pretty"] = "^11.2.2";
     }
     if (options.sentry) {
         dependencies["@sentry/node"] = "^7.64.0";
@@ -239,10 +240,20 @@ export type UserDto = typeof usersTable.$inferInsert
             bootstrapContent += `  // builder.addCache(opts => {\n  //   opts.inMemory = false;\n  //   opts.redis = { host: 'localhost', port: 6379, password: 'your-password' }; });\n`;
         }
         if (options.logging) {
-            if(options.sentry) {
+            if (options.sentry) {
                 bootstrapContent += `  // builder.addLogger(opts => {\n  //   opts.level = LOG_LEVEL.ERROR;\n  //   opts.console = false;\n  //   opts.sentry = { config: { dsn: process.env.SENTRY_DSN, environment: process.env.NODE_ENV } };\n  // });\n`;
             } else {
-                bootstrapContent += `  // builder.addLogger(opts => {\n  //   opts.level = LOG_LEVEL.INFO;\n  //   opts.console = true; });\n`;
+                bootstrapContent += `  // builder.addLogger(opts => {
+  //   opts.level = LOG_LEVEL.INFO;
+  //   opts.console = false;
+  //   opts.pino = {
+  //     config: {
+  //       env: process.env.NODE_ENV || 'development',
+  //       destination: 'stdout',
+  //       prettyPrint: process.env.NODE_ENV !== 'production'
+  //     }
+  //   };
+  // });\n`;
             }
         }
         if (options.supabase) {

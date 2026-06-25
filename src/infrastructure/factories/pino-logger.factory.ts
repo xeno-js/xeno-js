@@ -57,7 +57,7 @@ export class PinoLoggerFactory implements IFactory<LoggerConfig, ILoggerClient> 
       )
     }
 
-    if (destinationType === 'File') {
+    if (destinationType === 'file') {
       const destination: DestinationStream = pino.destination({ dest: filePath, sync: false })
       return new PinoLogger(pino(options, destination), level)
     } else {
