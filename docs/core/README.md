@@ -15,6 +15,7 @@ runtime dependencies.
   application-level caching and idempotency strategies.
 - [Logging](./logging/README.md): configure Pino, Sentry or Console logger
 - [Http](./http/README.md): configure axios client and cockatiel service
+- [Pipelines](./pipelines/README.md): understand what is pipeline and how to use
 - [Auth](./auth/README.md): how to configure and use supabase auth
 
 ## Cache

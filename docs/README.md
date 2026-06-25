@@ -35,13 +35,18 @@ docs/
       http-client-configuration.md
       http-core-module.md
       resilience.configuration.md
-      README.md
     logging/
       README.md
       configure-logger.md
       custom-providers.md
       pino-configuration.md
       sentry-configuration.md
+    pipelines/
+      README.md
+      validation/
+        README.md
+        zod-configuration.md
+        custom-validation.md
   contributing/
     README.md
     local-development.md
