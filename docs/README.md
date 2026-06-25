@@ -42,10 +42,12 @@ docs/
   tokens with `TokenHelper`.
 - [Modules and dependencies](./core/modules-and-dependencies.md): what each CLI
   option installs and which APIs it enables.
-- [Cache](./core/cache/README.md): configure Redis or InMemory storage for
-  optimized data access and idempotency.
 - [Database](./core/database/README.md): configure Drizzle/PostgreSQL and use
   Gear5 data sources, repositories, and filters.
+- [Cache](./core/cache/README.md): configure Redis or InMemory storage for
+  optimized data access and idempotency.
+- [Logging](./core/logging/README.md): configure Console or Pino or Sentry
+  logger or custom logger for logging data
 - [Local development](./contributing/local-development.md): repository setup,
   build, test, and local publishing workflow.
 

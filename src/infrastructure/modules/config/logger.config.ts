@@ -128,5 +128,31 @@ export interface PinoLoggerConfig {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  destination: Optional<string>
+  destination: Optional<Destination>
+  /** @description Optional environment name for the Pino logger configuration. This can be used to specify the context in which the application is running (e.g., development, production) and can help with categorizing and filtering log messages based on the environment.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  env: Optional<string>
+  /** @description Optional file path for the Pino logger configuration. If specified, log messages will be written to the specified file instead of the default output destination. This allows for flexible log management and storage based on application requirements.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  filePath: Optional<string>
+  /** @description Optional flag to enable pretty printing of log messages. When set to true, log messages will be formatted in a more human-readable way, which can be useful for development and debugging purposes.
+   *
+   * @author Mattia Carcione
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/gear5
+   */
+  prettyPrint: Optional<boolean>
 }
+
+type Destination = 'Stdout' | 'File'

@@ -1,7 +1,8 @@
-import { pino } from 'pino'
+import type { DestinationStream, LoggerOptions } from 'pino'
+import pino from 'pino'
 
 import type { IFactory, ILoggerClient } from '@/domain'
-import { LOG_LEVEL } from '@/shared'
+import { Guards, LOG_LEVEL } from '@/shared'
 
 import { PinoLogger } from '../loggers/pino.logger'
 import type { LoggerConfig } from '../modules/config/logger.config'
@@ -18,6 +19,50 @@ import type { LoggerConfig } from '../modules/config/logger.config'
 export class PinoLoggerFactory implements IFactory<LoggerConfig, ILoggerClient> {
   public create(config: LoggerConfig): ILoggerClient {
     const level = config.level ?? LOG_LEVEL.DEBUG
-    return new PinoLogger(pino(), level)
+
+    const env = config.pino.config?.env ?? process.env.NODE_ENV ?? 'development'
+    const destinationType = config.pino.config?.destination ?? 'stdout'
+    const filePath = config.pino.config?.filePath ?? 'logs/app.log'
+    const prettyPrint = config.pino.config?.prettyPrint ?? env === 'development'
+
+    const options: LoggerOptions = {
+      level: 'trace',
+
+      serializers: {
+        err: pino.stdSerializers.err,
+      },
+
+      timestamp: pino.stdTimeFunctions.isoTime,
+
+      redact: {
+        paths: ['password', 'token', 'secret', 'authorization', 'headers.authorization'],
+        censor: '***',
+      },
+    }
+
+    if (Guards.isDefined(prettyPrint)) {
+      return new PinoLogger(
+        pino({
+          ...options,
+          transport: {
+            target: 'pino-pretty',
+            options: {
+              colorize: true,
+              ignore: 'pid,hostname',
+              translateTime: 'SYS:standard',
+            },
+          },
+        }),
+        level,
+      )
+    }
+
+    if (destinationType === 'File') {
+      const destination: DestinationStream = pino.destination({ dest: filePath, sync: false })
+      return new PinoLogger(pino(options, destination), level)
+    } else {
+      const stream = pino.destination({ dest: 1, sync: false })
+      return new PinoLogger(pino(options, stream), level)
+    }
   }
 }
