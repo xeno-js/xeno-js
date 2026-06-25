@@ -14,6 +14,7 @@ runtime dependencies.
 - [Cache](./cache/README.md): configure Redis or InMemory providers to handle
   application-level caching and idempotency strategies.
 - [Logging](./logging/README.md): configure Pino, Sentry or Console logger
+- [Http](./http/README.md): configure axios client and cockatiel service
 - [Auth](./auth/README.md): how to configure and use supabase auth
 
 ## Cache

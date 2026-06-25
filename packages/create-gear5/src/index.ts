@@ -210,6 +210,18 @@ async function init() {
         envExampleContent += `SENTRY_ENVIRONMENT=development\n`;
         envExampleContent += `SENTRY_RELEASE=app@1.0.0\n\n`;
     }
+
+    if(options.http) {
+        envExampleContent += `# --- HTTP Client (Axios & Cockatiel) ---\n`;
+        envExampleContent += `HTTP_BASE_URL=https://api.example.com\n`;
+        envExampleContent += `HTTP_TIMEOUT_MS=5000\n`;
+        envExampleContent += `HTTP_RETRY_ATTEMPTS=3\n`;
+        envExampleContent += `HTTP_RETRY_BASE_DELAY_MS=100\n`;
+        envExampleContent += `HTTP_RETRY_MAX_DELAY_MS=1000\n`;
+        envExampleContent += `HTTP_CIRCUIT_BREAKER_CONSECUTIVE_FAILURES=5\n`;
+        envExampleContent += `HTTP_CIRCUIT_BREAKER_HALF_OPEN_TIMEOUT_MS=30000\n`;
+        envExampleContent += `HTTP_BULKHEAD_MAX_CONCURRENT_OPERATIONS=10\n\n`;
+    }
     fs.writeFileSync(path.join(projectPath, '.env.example'), envExampleContent);
 
     // If database is selected, generate Drizzle files

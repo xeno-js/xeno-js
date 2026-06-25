@@ -30,6 +30,12 @@ docs/
       datasources.md
       filter-builder.md
       repositories-and-daos.md
+    http/
+      README.md
+      http-client-configuration.md
+      http-core-module.md
+      resilience.configuration.md
+      README.md
     logging/
       README.md
       configure-logger.md
