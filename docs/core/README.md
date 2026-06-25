@@ -11,6 +11,13 @@ runtime dependencies.
   installed packages and enabled Gear5 APIs.
 - [Database](./database/README.md): configure Drizzle/PostgreSQL and build data
   access with Gear5 primitives.
+- [Cache](./cache/README.md): configure Redis or InMemory providers to handle
+  application-level caching and idempotency strategies.
+
+## Cache
+
+- [Configuration](./redis-configuration.m): setup `InMemoryCache` for
+  development or `RedisCache` for production environments.
 
 ## Dependency Injection
 

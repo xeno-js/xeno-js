@@ -15,6 +15,7 @@ docs/
     create-gear5.md
   core/
     README.md
+    cache/
     dependency-injection/
       README.md
       tokens.md
@@ -41,6 +42,8 @@ docs/
   tokens with `TokenHelper`.
 - [Modules and dependencies](./core/modules-and-dependencies.md): what each CLI
   option installs and which APIs it enables.
+- [Cache](./core/cache/README.md): configure Redis or InMemory storage for
+  optimized data access and idempotency.
 - [Database](./core/database/README.md): configure Drizzle/PostgreSQL and use
   Gear5 data sources, repositories, and filters.
 - [Local development](./contributing/local-development.md): repository setup,
