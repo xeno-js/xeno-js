@@ -41,6 +41,5 @@ export interface AuthClientConfig {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: Optional<SupabaseClientOptions<any>>
+  options?: Optional<SupabaseClientOptions<'public'>>
 }
