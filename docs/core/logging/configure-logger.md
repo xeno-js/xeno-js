@@ -1,4 +1,4 @@
-# Logging Architecture & Configuration
+# Logging overview
 
 The Gear5 framework features a powerful, diagnostic-centric logging
 infrastructure designed to capture runtime execution contexts, performance

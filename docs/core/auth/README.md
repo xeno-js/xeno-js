@@ -1,4 +1,4 @@
-## Overview
+# Identity & Access Control
 
 The Gear5 Identity & Access Control subsystem delivers an enterprise-grade,
 decoupling-first architecture for managing authentication (**AuthN**) and

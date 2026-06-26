@@ -1,4 +1,4 @@
-# Overview
+# Performance pipeline behavior
 
 The `PerformancePipeline` implements non-invasive latency tracking and latency
 profiling for all CQRS operations running through the Mediator. By measuring

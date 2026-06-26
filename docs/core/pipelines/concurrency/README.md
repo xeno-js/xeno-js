@@ -1,4 +1,4 @@
-# Overview
+# Concurrency and Retry behavior
 
 The `ConcurrencyRetryPipeline` handles write-collision recovery within the
 Command Track. When an operation triggers an optimistic locking error or state

@@ -19,6 +19,10 @@ docs/
       README.md
       dependency-injection-lifetime.md
       module-service-registration.md
+    auth/
+      README.md
+      how-to-use.md
+      supabase-configuration.md
     cache/
       README.md
       idempotency-and-ordering.md
@@ -71,6 +75,31 @@ docs/
         README.md
         zod-configuration.md
         custom-validation.md
+    domain/
+      README.md
+      entities/
+        README.md
+      functional/
+        README.md
+      value_objects/
+        README.md
+    presentation/
+      README.md
+      middleware/
+        README.md
+        configuration.md
+        http-header-exctraction.md
+        request-context-execution.md
+      controllers/
+        README.md
+    shared/
+      README.md
+      utils/
+        README.md
+        guards.md
+        helpers.md
+  demo/
+    README.md
   contributing/
     README.md
     local-development.md

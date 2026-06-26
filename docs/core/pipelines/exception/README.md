@@ -1,4 +1,4 @@
-# Overview
+# Exception pipeline behavior
 
 The `ExceptionPipeline` acts as the ultimate protective perimeter for the
 application host. Placed at the very beginning of the Mediator's decoration

@@ -1,4 +1,4 @@
-# Overview
+# Query caching pipeline behavior
 
 The `QueryCachingPipeline` provides high-performance response caching across the
 Query Track. It intercepts read requests that implement the framework's

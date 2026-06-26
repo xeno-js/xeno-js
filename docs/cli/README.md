@@ -1,4 +1,4 @@
-# CLI
+# Gear5 CLI
 
 Documentation for Gear5 command-line tooling.
 

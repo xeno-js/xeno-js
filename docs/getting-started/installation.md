@@ -1,4 +1,9 @@
-# Getting Started
+---
+id: installation
+sidebar_position: 2
+---
+
+# Installation
 
 Gear5 is an agnostic TypeScript core for applications based on DDD, Clean
 Architecture, CQRS, and dependency injection. The fastest way to start is the

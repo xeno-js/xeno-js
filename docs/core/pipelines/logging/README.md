@@ -1,4 +1,4 @@
-# Overview
+# Logging pipeline behavior
 
 The `LoggingPipeline` provides automated observability for request execution.
 Positioned near the perimeter of the CQRS execution sequence, it hooks into the

@@ -1,4 +1,4 @@
-# Overview
+# Validation pipeline behavior
 
 The Gear5 Validation Subsystem enforces data integrity and structural safety
 before any command or query reaches its corresponding domain handler within the

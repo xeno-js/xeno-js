@@ -19,6 +19,8 @@ runtime dependencies.
 - [Http](./http/README.md): configure axios client and cockatiel service
 - [Pipelines](./pipelines/README.md): understand what is pipeline and how to use
 - [Auth](./auth/README.md): how to configure and use supabase auth
+- [Presentation](./presentation/README.md): Overview middleware and Controllers
+- [Shared](./shared/README.md): Overview utils, constants and types
 
 ## AppBuilder
 
@@ -58,13 +60,16 @@ runtime dependencies.
 - [CustomLoggerConfiguration](./logging/custom-providers.md): configure a custom
   logger
 
-## Middleware
+## Presentation
 
-- [Configuration](./middleware/configuration.md): configure middelware
-- [Request Context](./middleware/request-context-execution.md): the execution
-  context composition
-- [Http header extractor](./middleware/http-header-extraction.md):
+- [Configuration](./presentation/middleware/configuration.md): configure
+  middelware
+- [Request Context](./presentation/middleware/request-context-execution.md): the
+  execution context composition
+- [Http header extractor](./presentation/middleware/http-header-extraction.md):
   transportation contract metadata
+- [BaseController](./presentation/controllers/README.md): how to extends
+  BaseController
 
 ## Auth
 
@@ -79,7 +84,7 @@ runtime dependencies.
   resilience service
 - [Core](./http/http-core-module.md): configure http core module
 
-## Pipilines
+## Pipelines
 
 - [Authorization](./pipelines/authz/README.md): define authorization behavior
 - [Concurrency](./pipelines/concurrency/README.md): define concurrency behavior
@@ -90,3 +95,8 @@ runtime dependencies.
 - [QueryCaching](./pipelines/query_caching/README.md): define query caching
   behavior
 - [Validation](./pipelines/validation/README.md): define validation behavior
+
+## Shared
+
+- [Guards](./shared/utils/guards.md): Defensive Type Guards
+- [Helpers](./shared/utils/helpers.md): Core Framework Helpers

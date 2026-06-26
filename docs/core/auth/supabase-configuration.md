@@ -1,4 +1,4 @@
-## Infrastructure Provisioning
+# Infrastructure Provisioning
 
 Integrating Supabase as the underlying identity provider can be fully automated
 during the initialization of a brand new project via the `@gear5/create`

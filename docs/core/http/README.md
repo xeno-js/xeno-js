@@ -1,4 +1,4 @@
-# Overview
+# HTTP Request and Resilience
 
 The Gear5 HTTP & Fault-Tolerance subsystem delivers an isolated, resilient, and
 contract-agnostic communication architecture for distributed integrations. By

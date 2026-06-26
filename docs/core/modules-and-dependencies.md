@@ -59,6 +59,16 @@ Dev dependencies:
 }
 ```
 
+Scripts:
+
+```json
+scripts: {
+  "db:generate": "drizzle-kit generate",
+  "db:push": "drizzle-kit push",
+  "db:migrate": "drizzle-kit migrate"
+}
+```
+
 Added files:
 
 - `drizzle.config.ts`
@@ -129,6 +139,14 @@ Dependency:
 ```json
 {
   "pino": "^10.3.1"
+}
+```
+
+DevDependencies:
+
+```json
+{
+  "pino-pretty": "^11.2.2"
 }
 ```
 

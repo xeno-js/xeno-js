@@ -1,4 +1,4 @@
-# Overview
+# Idempotency pipeline behavior
 
 The `IdempotencyPipeline` shields the application use-case boundaries from
 duplicate command processing. Operating exclusively along the **Command Track**,

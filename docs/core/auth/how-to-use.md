@@ -1,4 +1,4 @@
-## The Request-Identity Lifecycle
+# The Request-Identity Lifecycle
 
 When an incoming execution context triggers the presentation layer, identity
 validation is executed deterministically across an asynchronous pipeline managed

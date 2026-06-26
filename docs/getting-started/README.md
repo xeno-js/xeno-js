@@ -1,3 +1,8 @@
+---
+id: getting-started-intro
+sidebar_position: 1
+---
+
 # Getting Started
 
 Start here when you are creating or bootstrapping a Gear5 application for the
