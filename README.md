@@ -1,4 +1,4 @@
-<div aling=center>
+<div aling="center">
   <img src="website/static/img/logo.png" alt="Gear5 Logo" width="140" />
   <h1>Gear5/core</h1>
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
