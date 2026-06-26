@@ -1,12 +1,15 @@
 # ⚙️ @gear5/core
 
 [![Powered by Gear5](https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=for-the-badge)](https://github.com/Mattia-Carcione/gear5)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![Version](https://img.shields.io/npm/v/@gear5/core/beta?label=version&color=orange)](https://www.npmjs.com/package/@gear5/core)
+[![License: ISC](https://img.shields.io/npm/l/@gear5/core?style=flat-square)](LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/@gear5/core?style=flat-square)](https://www.npmjs.com/package/@gear5/core)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/YOUR_USERNAME)
 
 > ⚠️ **Beta Status**: `@gear5/core` is currently in **beta**. The API may
 > undergo breaking changes. To install the latest beta version, use:
 > `npm install @gear5/core@beta`
+
+---
 
 **The production-ready TypeScript accelerator. Multi-tenant CQRS, Drizzle ORM,
 and solid RBAC out of the box in a fluent API.** Build blazing-fast,
@@ -31,6 +34,45 @@ Architecture**.
   your DI container seamlessly.
 - 🛡️ **Enterprise Ready:** Native support for CQRS pipelines (Logging,
   Validation, Idempotency, Concurrency Retries) out of the box.
+
+---
+
+## 📖 Documentation & Getting Started
+
+To explore the architecture, programmatic configurations, and extension
+workflows of Gear5, read our full technical manuals located inside the main
+documentation hub:
+
+- 👉 **[Framework Documentation Repository](./docs/README.md)**
+
+Inside, you will find exhaustive, step-by-step assembly guides covering core
+host building (`AppBuilder`), isolated request middleware lifecycles, functional
+`Result` monads, and zero-trust authorization pipeline behavior tracks.
+
+---
+
+## 🚀 Live Executable Demos
+
+Before writing your first corporate use-case, inspect our fully operational
+reference environments designed to showcase decoupled enterprise topologies in
+action. Read the main entry point documentation at:
+
+- 👉 **[Live Demos Directory Overview](./demo/README.md)**
+
+You can dive straight into the explicit source code modules of our specialized
+sandbox environments:
+
+- **[`pipelines_middleware_demo/`](./demo/pipelines_middleware_demo/)**: Traces
+  an execution thread from the raw HTTP transport presentation layer, executing
+  automated header extraction and anchoring metadata variables into
+  `AsyncLocalStorage` thread boundaries.
+- **[`http_core_demo/`](./demo/http_core_demo/)**: Examines the architectural
+  configuration of fault-tolerant external data sources orchestrated
+  concurrently via sandboxed Axios instances and Cockatiel policy rings.
+- **[`database_drizzle_demo/`](./demo/database_drizzle_demo/)**: Reviews
+  automated data mapper isolation, strongly-typed repository components,
+  transactional units of work, and Fluent Filter compilation grids interfacing
+  with PostgreSQL.
 
 ---
 
@@ -233,6 +275,24 @@ repository:
   Conventional Commits).
 - **`pre-push`**: Runs type checking, linting, and testing before code leaves
   your machine.
+
+---
+
+## 🌱 Support & Appreciation
+
+Building, benchmarking, and maintaining a progressive, enterprise-ready
+open-source framework requires a massive amount of continuous dedication and
+architectural engineering.
+
+If Gear5 has brought value to your development workflows, helped decouple your
+core business logic, or simplified your system infrastructure layout, consider
+supporting its open-source lifecycle. Your backing directly accelerates our
+strategic roadmap for new out-of-the-box transport integrations (such as gRPC,
+RabbitMQ, and GraphQL) and keeps the documentation pristine.
+
+Thank you for being part of this decoupled open-source journey!
+
+[![Buy Me A Coffee Button](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/YOUR_USERNAME)
 
 ---
 
