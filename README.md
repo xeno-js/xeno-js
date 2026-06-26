@@ -1,5 +1,5 @@
 <div aling=center>
-  <img src="website/static/img/logo.svg" alt="Gear5 Logo" width="140" />
+  <img src="website/static/img/logo.png" alt="Gear5 Logo" width="140" />
   <h1>Gear5/core</h1>
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
 <a href="https://github.com/Mattia-Carcione/gear5">
