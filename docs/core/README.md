@@ -19,6 +19,8 @@ runtime dependencies.
 - [Http](./http/README.md): configure axios client and cockatiel service
 - [Pipelines](./pipelines/README.md): understand what is pipeline and how to use
 - [Auth](./auth/README.md): how to configure and use supabase auth
+- [Domain](./core/domain/README.md): Entities, Result monade, Application Error
+  and Value Object overview
 - [Presentation](./presentation/README.md): Overview middleware and Controllers
 - [Shared](./shared/README.md): Overview utils, constants and types
 

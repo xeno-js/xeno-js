@@ -128,8 +128,15 @@ docs/
 - [Pipelines](./core/pipelines/README.md): define and configure gear5/core
   pipelines
 - [Auth](./auth/README.md): how to configure and use supabase auth
+- [Domain](./core/domain/README.md): Entities, Result monade, Application Error
+  and Value Object overview
+- [Presentation Core](./core/presentation/README.md): BaseController and
+  Middleware overview
+- [Shared Core](./core/presentation/README.md): Utilis, types and constants
+  overview
 - [Local development](./contributing/local-development.md): repository setup,
   build, test, and local publishing workflow.
+- [Demo](./demo/README.md): Executable demo
 
 ## Where to Add New Docs
 
