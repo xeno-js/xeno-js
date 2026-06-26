@@ -3,7 +3,7 @@
 [![Powered by Gear5](https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=for-the-badge)](https://github.com/Mattia-Carcione/gear5)
 [![License: ISC](https://img.shields.io/npm/l/@gear5/core?style=flat-square)](LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@gear5/core?style=flat-square)](https://www.npmjs.com/package/@gear5/core)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/YOUR_USERNAME)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/gear5.core)
 
 > ⚠️ **Beta Status**: `@gear5/core` is currently in **beta**. The API may
 > undergo breaking changes. To install the latest beta version, use:
@@ -292,7 +292,7 @@ RabbitMQ, and GraphQL) and keeps the documentation pristine.
 
 Thank you for being part of this decoupled open-source journey!
 
-[![Buy Me A Coffee Button](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/YOUR_USERNAME)
+[![Buy Me A Coffee Button](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/gear5.core)
 
 ---
 
