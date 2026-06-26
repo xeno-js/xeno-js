@@ -1,19 +1,24 @@
-<div aling="center">
+<div align="center">
   <img src="website/static/img/logo.png" alt="Gear5 Logo" width="140" />
+  
   <h1>Gear5/core</h1>
+  
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
-<a href="https://github.com/Mattia-Carcione/gear5">
-    <img src="https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=for-the-badge" alt="Powered by Gear5" />
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/npm/l/@gear5/core?style=flat-square" alt="License: ISC" />
-  </a>
-  <a href="https://www.npmjs.com/package/@gear5/core">
-    <img src="https://img.shields.io/npm/v/@gear5/core?style=flat-square" alt="NPM Version" />
-  </a>
-  <a href="https://buymeacoffee.com/gear5.core">
-    <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
-  </a>
+  
+  <p>
+    <a href="https://github.com/Mattia-Carcione/gear5">
+      <img src="https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=flat-square" alt="Powered by Gear5" />
+    </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/npm/l/@gear5/core?style=flat-square" alt="License: ISC" />
+    </a>
+    <a href="https://www.npmjs.com/package/@gear5/core">
+      <img src="https://img.shields.io/npm/v/@gear5/core?style=flat-square" alt="NPM Version" />
+    </a>
+    <a href="https://buymeacoffee.com/gear5.core">
+      <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
+    </a>
+  </p>
 </div>
 
 ---
