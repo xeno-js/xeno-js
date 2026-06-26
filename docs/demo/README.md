@@ -47,7 +47,7 @@ into its root directory inside the framework core repository and hydrate its
 local node module ecosystem:
 
 ```bash
-cd demo/cqrs_demo
+cd demo/http_core_demo
 npm install
 npm run dev
 ```
