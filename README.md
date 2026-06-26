@@ -292,7 +292,10 @@ RabbitMQ, and GraphQL) and keeps the documentation pristine.
 
 Thank you for being part of this decoupled open-source journey!
 
-[![Buy Me A Coffee Button](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/gear5.core)
+<amp-bounce></amp-bounce>
+<a href="https://www.buymeacoffee.com/gear5.core" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="42" style="height: 42px !important;" />
+</a>
 
 ---
 
@@ -300,6 +303,19 @@ Thank you for being part of this decoupled open-source journey!
 
 If you are using Gear5 in your project, let the world know! Add this badge to
 your README:
+
+```html
+<a
+  href="[https://github.com/Mattia-Carcione/gear5](https://github.com/Mattia-Carcione/gear5)"
+  target="_blank"
+>
+  <img
+    src="[https://img.shields.io/badge/Powered%20by-Gear5-black?style=flat-square](https://img.shields.io/badge/Powered%20by-Gear5-black?style=flat-square)"
+    alt="Powered by Gear5"
+    height="20"
+  />
+</a>
+```
 
 ## 📄 License
 
