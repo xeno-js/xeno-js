@@ -4,14 +4,7 @@ import { ScaffoldingEngine } from './core/scaffolding.engine';
 import { ScaffoldingOptions } from './core/generator.interface';
 
 // Importa tutti i generatori
-import { BootstrapGenerator } from './generators/bootstrap.generator';
-import { DrizzleGenerator } from './generators/drizzle.generator';
-import { EnvGenerator } from './generators/env.generator';
-import { GitIgnoreGenerator } from './generators/git-ignore.generator';
-import { MainGenerator } from './generators/main.generator';
-import { PackageJsonGenerator } from './generators/package-json.generator';
-import { TokensGenerator } from './generators/tokens.generator';
-import { TsconfigGenerator } from './generators/tsconfig.generator';
+import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, TokensGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
 
 async function init() {
   console.log(pc.cyan('\n🚀 Welcome to @gear5/core Scaffolding!'));
@@ -65,6 +58,7 @@ async function init() {
     new DrizzleGenerator(),
     new BootstrapGenerator(),
     new MainGenerator(),
+    new ReadmeGenerator(),
   ]);
 
   try {
