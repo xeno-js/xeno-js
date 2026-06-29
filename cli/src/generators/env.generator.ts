@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class EnvGenerator implements IGenerator {
   shouldGenerate(_options: ScaffoldingOptions): boolean {
@@ -10,7 +11,7 @@ export class EnvGenerator implements IGenerator {
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeEnvContent(options);
     const filePath = path.join(projectPath, '.env.example');
-    await fs.writeFile(filePath, content);
+    await FileUtils.writeFileRecursive(filePath, content);
   }
 
   private composeEnvContent(options: ScaffoldingOptions): string {

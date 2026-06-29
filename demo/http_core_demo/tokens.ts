@@ -1,4 +1,4 @@
-import { IHttpClient, RemoteDataSource, TokenHelper } from '@graviton5'
+import { IHttpClient, RemoteDataSource, TokenHelper } from '@graviton5/core'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS

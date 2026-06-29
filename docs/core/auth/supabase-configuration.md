@@ -61,8 +61,8 @@ The connection is registered via the `.addAuth()` method exposed by the
 contract, allowing full customization of the client options:
 
 ```ts
-import { AppBuilder } from '@graviton5'
-import { LOG_LEVEL } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
+import { LOG_LEVEL } from '@graviton5/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

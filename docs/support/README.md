@@ -41,8 +41,7 @@ sponsorship, buys the most precious resource: **time**.
   keep me fueled during late-night coding sessions.
 - **Direct Contact & Enterprise Support**: If you are a company interested in
   dedicated support, feature prioritization, or specialized consulting for your
-  infrastructure, please reach out to me directly at mattia.carcione01@gmail.com
-  .
+  infrastructure, please reach out to me directly at graviton5@outlook.it .
 
 ### Join our Contributors
 

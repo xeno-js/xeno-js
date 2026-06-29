@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class TokensGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -10,11 +10,11 @@ export class TokensGenerator implements IGenerator {
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeTokensContent();
     const filePath = path.join(projectPath, 'src', 'tokens.ts');
-    await fs.writeFile(filePath, content);
+    await FileUtils.writeFileRecursive(filePath, content);
   }
 
   private composeTokensContent(): string {
-    return `import { TokenHelper } from '@graviton5';
+    return `import { TokenHelper } from '@graviton5/core';
     
 /**
  * @file tokens.ts

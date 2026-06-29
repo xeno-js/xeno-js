@@ -43,13 +43,13 @@ This command runs checks and builds the package.
 The creator lives in:
 
 ```text
-packages/create-graviton5
+cli/
 ```
 
 Setup:
 
 ```bash
-cd packages/create-graviton5
+cd cli
 npm install
 npm run build
 ```

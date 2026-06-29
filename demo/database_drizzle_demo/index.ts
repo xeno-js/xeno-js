@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { SQL } from 'drizzle-orm'
 
-import { HardDeleteDataSource, Guards } from '@graviton5'
+import { HardDeleteDataSource, Guards } from '@graviton5/core'
 
 import { UserDto } from './schema'
 import { bootstrap } from './bootstrap'

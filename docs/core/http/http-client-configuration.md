@@ -70,7 +70,7 @@ directly inside the fluent `AppBuilder` orchestration pipeline using the
 `.addHttp()` bootstrap endpoint:
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 import { INJECTION_TOKENS } from './di/injection-tokens.constants'
 
 async function bootstrap() {

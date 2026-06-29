@@ -5,7 +5,7 @@ service container during the bootstrap phase by calling the
 **`.addMiddlewares()`** method exposed by `AppBuilder`.
 
 ```typescript
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 async function bootstrap() {
   const hostBuilder = new AppBuilder()

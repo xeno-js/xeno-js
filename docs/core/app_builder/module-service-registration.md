@@ -22,7 +22,7 @@ reference as the targeted payload context, allowing developers to inject custom
 dependencies directly into the host:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@graviton5'
+import { AppBuilder, TokenHelper } from '@graviton5/core'
 import { InvoiceRepository } from './repositories/invoice.repository.js'
 import { ProcessInvoiceHandler } from './handlers/process-invoice.handler.js'
 
@@ -74,8 +74,8 @@ contract interface. The module encapsulates its internal infrastructure, keeping
 the global configuration footprint clean:
 
 ```typescript
-import type { IModule, IServiceContainer } from '@graviton5'
-import { TokenHelper } from '@graviton5'
+import type { IModule, IServiceContainer } from '@graviton5/core'
+import { TokenHelper } from '@graviton5/core'
 import { PostgresBillingDao } from './infra/postgres-billing.dao.js'
 
 export interface BillingModuleOptions {

@@ -17,7 +17,11 @@ builds projections from `criteria.cols`, and calls `IDbClient.select` or
 `IDbClient.selectOne`.
 
 ```ts
-import { ReadDataSource, type IDbClient, type IFilterBuilder } from '@graviton5'
+import {
+  ReadDataSource,
+  type IDbClient,
+  type IFilterBuilder,
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -53,7 +57,7 @@ import {
   HardDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -88,7 +92,7 @@ import {
   SoftDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -138,7 +142,7 @@ import {
   HardDeleteDataSource,
   INJECTION_TOKENS,
   type IDbClient,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 
 import { USER_FILTER_BUILDER, USER_WRITE_DATASOURCE } from './tokens.js'

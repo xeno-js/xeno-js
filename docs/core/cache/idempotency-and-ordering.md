@@ -57,7 +57,7 @@ and transaction locks are written directly to your shared Redis infrastructure
 instead of local worker memory:
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 const builder = new AppBuilder()
 

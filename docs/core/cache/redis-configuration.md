@@ -47,7 +47,7 @@ live Redis cluster or isolated instance, map the values from your process
 environment:
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 builder.addCache((opts) => {
   // Deactivate single-process volatile memory storage

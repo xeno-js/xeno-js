@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { HttpRequest } from '@graviton5';
+import { HttpRequest } from '@graviton5/core';
 import { bootstrap } from './bootstrap';
 import { DATA_SOURCE_TOKEN } from './tokens';
 

@@ -81,7 +81,7 @@ Below is an explicit blueprint demonstrating how to declare a concrete domain
 Entity aggregate inside your use-case modules:
 
 ```typescript
-import { Entity, UniqueId } from '@graviton5'
+import { Entity, UniqueId } from '@graviton5/core'
 import type { Optional } from '@Graviton5/shared'
 
 export interface CustomerProps {

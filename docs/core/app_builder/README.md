@@ -47,7 +47,7 @@ caching, database connections, and logging boundaries).
 
 ```typescript
 // Architectural Blueprint of src/bootstrap.ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()

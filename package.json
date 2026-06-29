@@ -1,5 +1,5 @@
 {
-  "name": "@graviton5",
+  "name": "@graviton5/core",
   "version": "1.0.0-beta.0",
   "description": "Graviton5 agnostic core — DDD + Clean Architecture npm package",
   "type": "module",

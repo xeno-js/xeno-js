@@ -105,7 +105,7 @@ using the declarative `.addPipeline()` method exposed by the fluent
 block to calibrate global thresholds and toggle specific tracking engines:
 
 ```typescript
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

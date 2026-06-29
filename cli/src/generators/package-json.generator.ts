@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class PackageJsonGenerator implements IGenerator {
   shouldGenerate(_options: ScaffoldingOptions): boolean {
@@ -19,12 +20,12 @@ export class PackageJsonGenerator implements IGenerator {
     };
 
     const filePath = path.join(projectPath, 'package.json');
-    await fs.promises.writeFile(filePath, JSON.stringify(packageJson, null, 2));
+    await FileUtils.writeFileRecursive(filePath, JSON.stringify(packageJson, null, 2));
   }
 
   private getDependencies(options: ScaffoldingOptions): Record<string, string> {
     const deps: Record<string, string> = {
-      "@graviton5": "latest",
+      "@graviton5/core": "latest",
       "zod": "^4.4.3",
     };
 

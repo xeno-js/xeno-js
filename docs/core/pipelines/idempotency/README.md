@@ -34,7 +34,7 @@ To activate idempotency, declare the parameters inside the `commandBus` config
 block:
 
 ```typescript
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 builder.addPipeline((opts) => {
   opts.commandBus.idempotency = {

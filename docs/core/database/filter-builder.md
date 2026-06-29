@@ -10,7 +10,7 @@ soft-delete rules. You implement a builder per table or per aggregate.
 ## Contract
 
 ```ts
-import type { IFilterBuilder } from '@graviton5'
+import type { IFilterBuilder } from '@graviton5/core'
 
 export interface IFilterBuilder<
   TQueryConditions = unknown,
@@ -68,7 +68,11 @@ application allows, which prevents accidentally exposing arbitrary columns
 through API input.
 
 ```ts
-import type { IFilterBuilder, ReadCriteria, WriteCriteria } from '@graviton5'
+import type {
+  IFilterBuilder,
+  ReadCriteria,
+  WriteCriteria,
+} from '@graviton5/core'
 import { and, eq, gt, inArray, lt, ne, type SQL } from 'drizzle-orm'
 import type { AnyPgColumn, SelectedFields } from 'drizzle-orm/pg-core'
 

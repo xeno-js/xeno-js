@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class ReadmeGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -10,7 +10,7 @@ export class ReadmeGenerator implements IGenerator {
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeReadme(options);
     const filePath = path.join(projectPath, 'README.md');
-    await fs.writeFile(filePath, content);
+    await FileUtils.writeFileRecursive(filePath, content);
   }
 
   private composeReadme(options: ScaffoldingOptions): string {

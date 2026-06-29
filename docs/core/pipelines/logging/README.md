@@ -35,8 +35,8 @@ targets, adjust the global `level` attribute inside the `.addLogger()` block of
 your bootstrap file:
 
 ```typescript
-import { AppBuilder } from '@graviton5'
-import { LOG_LEVEL } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
+import { LOG_LEVEL } from '@graviton5/core'
 
 builder.addLogger((config) => {
   // Sets the baseline log filter tier across all pipeline tracking layers

@@ -52,7 +52,7 @@ The behavior maps under **`INJECTION_TOKENS.VALIDATION_PIPELINE`**. It evaluates
 data contracts sequentially across two main validation tracks:
 
 ```typescript
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 import { z } from 'zod'
 
 export const ResetPasswordSchema = z.object({

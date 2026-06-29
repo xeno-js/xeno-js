@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class DrizzleGenerator implements IGenerator {
   shouldGenerate(options: ScaffoldingOptions): boolean {
@@ -9,10 +10,11 @@ export class DrizzleGenerator implements IGenerator {
 
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const configContent = this.composeDrizzleConfig();
-    await fs.writeFile(path.join(projectPath, 'drizzle.config.ts'), configContent);
+    const filePath = path.join(projectPath, 'drizzle.config.ts');
+    await FileUtils.writeFileRecursive(filePath, configContent);
 
     const schemaContent = this.composeSchema();
-    await fs.writeFile(path.join(projectPath, 'src', 'schema.ts'), schemaContent);
+    await FileUtils.writeFileRecursive(path.join(projectPath, 'src', 'schema.ts'), schemaContent);
   }
 
   private composeDrizzleConfig(): string {

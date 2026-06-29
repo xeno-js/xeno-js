@@ -25,7 +25,7 @@ The `schemas` record uses the exact `intent` identifier string of your CQRS
 request as the lookup key:
 
 ```typescript
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 import { z } from 'zod'
 
 // 1. Declare your strongly-typed Zod runtime schema

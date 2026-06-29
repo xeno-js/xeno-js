@@ -46,7 +46,7 @@ Import the table and register it through `AppBuilder.addDb`:
 ```ts
 import 'dotenv/config'
 
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 import { usersTable } from './schema.js'
 
@@ -81,7 +81,7 @@ import {
   ReadDataSource,
   Repository,
   SoftDeleteDataSource,
-} from '@graviton5'
+} from '@graviton5/core'
 ```
 
 You will usually import only the pieces you need. `AppBuilder` configures the
@@ -96,7 +96,7 @@ repeatedly inside each registration file.
 After `builder.build()`, the container can resolve the database client:
 
 ```ts
-import { type IDbClient, INJECTION_TOKENS } from '@graviton5'
+import { type IDbClient, INJECTION_TOKENS } from '@graviton5/core'
 
 const container = await bootstrap()
 const dbClient = container.resolve<IDbClient>(INJECTION_TOKENS.DB_CLIENT)

@@ -7,9 +7,9 @@ sidebar_position: 2
 
 Graviton5 is an agnostic TypeScript core for applications based on DDD, Clean
 Architecture, CQRS, and dependency injection. The fastest way to start is the
-CLI in `packages/create-graviton5`, which generates a TypeScript project with
-`AppBuilder`, `bootstrap.ts`, `main.ts`, `tsconfig.json`, `.env.example`, and
-the optional dependencies you choose.
+CLI in `cli/`, which generates a TypeScript project with `AppBuilder`,
+`bootstrap.ts`, `main.ts`, `tsconfig.json`, `.env.example`, and the optional
+dependencies you choose.
 
 ## Prerequisites
 
@@ -50,11 +50,11 @@ npm exec @graviton5/create@latest -- my-graviton5-app empty
 `bootstrap.ts`, and `main.ts`.
 
 ```bash
-npm exec @graviton5/create@latest -- my-graviton5-app complete
+npm exec @graviton5/create@latest -- my-graviton5-app full
 ```
 
-`complete` enables all available modules: database, HTTP, Supabase auth,
-logging, Sentry, and Redis.
+`full` enables all available modules: database, HTTP, Supabase auth, logging,
+Sentry, and Redis.
 
 Without a mode, the CLI enters interactive mode and asks which modules to
 install.
@@ -64,7 +64,7 @@ install.
 While developing the monorepo, you can run the creator directly:
 
 ```bash
-cd packages/create-graviton5
+cd cli
 npm install
 npm run build
 node dist/index.js ../../demo/my-graviton5-app empty
@@ -125,7 +125,7 @@ tsx src/main.ts
 The creator generates `src/bootstrap.ts` based on `AppBuilder`:
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()
@@ -137,7 +137,7 @@ export async function bootstrap() {
 You can enable modules incrementally:
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@graviton5'
+import { AppBuilder, LOG_LEVEL } from '@graviton5/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()

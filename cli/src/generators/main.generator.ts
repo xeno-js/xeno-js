@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class MainGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -10,7 +11,7 @@ export class MainGenerator implements IGenerator {
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeMain();
     const filePath = path.join(projectPath, 'src', 'main.ts');
-    await fs.writeFile(filePath, content);
+    await FileUtils.writeFileRecursive(filePath, content);
   }
 
   private composeMain(): string {

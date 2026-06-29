@@ -170,7 +170,7 @@ Forget writing hundreds of lines of boilerplate. Instantiate the `AppBuilder`,
 configure your architecture using the fluent API, and build your container.
 
 ```typescript
-import { AppBuilder } from '@graviton5';
+import { AppBuilder } from '@graviton5/core';
 
 async function bootstrap() {
   const builder = new AppBuilder();

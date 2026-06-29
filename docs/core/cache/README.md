@@ -33,7 +33,7 @@ The cache system is configured through the fluent `AppBuilder` instance during
 your application bootstrap cycle (`src/bootstrap.ts`):
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 const builder = new AppBuilder()
 

@@ -62,7 +62,7 @@ receives the active `IServiceContainer` instance as an execution argument,
 giving you complete manual control over construction mechanics:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@graviton5'
+import { AppBuilder, TokenHelper } from '@graviton5/core'
 import { CryptoService } from './services/crypto.service.js'
 
 export const CRYPTO_CLIENT_TOKEN =

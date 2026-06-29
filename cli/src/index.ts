@@ -1,9 +1,11 @@
+#!/usr/bin/env node
 import prompts from 'prompts';
 import pc from 'picocolors';
 import { ScaffoldingEngine } from './core/scaffolding.engine';
 import { ScaffoldingOptions } from './core/generator.interface';
 
 import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, TokensGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
+import { CommandUtils } from './utils/command.utils';
 
 async function init() {
   console.log(pc.cyan('\n🚀 Welcome to @graviton5 Scaffolding!'));
@@ -59,7 +61,14 @@ async function init() {
 
   try {
     await engine.run(targetDir, options);
-    console.log(pc.white(`\nNext steps:\n  cd ${targetDir}\n  npm install\n  npm run dev\n`));
+
+    console.log(pc.cyan('\n📦 Installing dependencies...'));
+    await CommandUtils.runCommand('npm', ['install'], targetDir);
+
+    console.log(pc.cyan('\n🚀 Starting development server...'));
+    await CommandUtils.runCommand('npm', ['run', 'dev'], targetDir);
+
+    console.log(pc.white(`\nNext steps:\n  cd ${targetDir}\n  npm run dev\n`));
   } catch (error) {
     console.error(pc.red('\n❌ Scaffolding failed.'), error);
     process.exit(1);

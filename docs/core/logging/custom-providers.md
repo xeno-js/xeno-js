@@ -12,7 +12,7 @@ structural interface or extend the abstract operational primitives. This forces
 a stable runtime signature across your domain execution boundaries:
 
 ```ts
-import { ILogger, LOG_LEVEL } from '@graviton5'
+import { ILogger, LOG_LEVEL } from '@graviton5/core'
 
 export class CustomEnterpriseLogger implements ILoggerClient {
   private currentLevel: LOG_LEVEL = LOG_LEVEL.DEBUG
@@ -51,7 +51,7 @@ multiplexer pipeline using the `customLoggers` array parameter inside the
 > your custom driver configuration.
 
 ```ts
-import { AppBuilder, LOG_LEVEL, TokenHelper } from '@graviton5'
+import { AppBuilder, LOG_LEVEL, TokenHelper } from '@graviton5/core'
 import { CustomEnterpriseLogger } from './infrastructure/logging/custom-enterprise.logger'
 
 // Create injection token for the custom logger

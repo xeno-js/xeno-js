@@ -13,7 +13,7 @@ The mapper translates between domain entities and database DTOs.
 Create an `IMapper` for each persisted model.
 
 ```ts
-import type { IMapper } from '@graviton5'
+import type { IMapper } from '@graviton5/core'
 
 import type { UserDto } from '../schema.js'
 import { User } from './user.entity.js'
@@ -64,7 +64,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 
 import {
@@ -138,7 +138,7 @@ import {
   ReadDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 

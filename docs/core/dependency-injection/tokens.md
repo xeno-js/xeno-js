@@ -40,7 +40,7 @@ import {
   type IMapper,
   type IReadDao,
   type IRepository,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -82,7 +82,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@graviton5'
+} from '@graviton5/core'
 import type { SQL } from 'drizzle-orm'
 
 import {

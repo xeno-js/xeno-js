@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class TsconfigGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -23,7 +24,7 @@ export class TsconfigGenerator implements IGenerator {
     };
 
     const filePath = path.join(projectPath, 'tsconfig.json');
-    await fs.writeFile(filePath, JSON.stringify(tsconfig, null, 2));
+    await FileUtils.writeFileRecursive(filePath, JSON.stringify(tsconfig, null, 2));
   }
 
   private getIncludeFiles(options: ScaffoldingOptions): string[] {

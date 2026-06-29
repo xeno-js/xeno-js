@@ -108,7 +108,7 @@ To attach Sentry to your active `BaseLogger` multiplexer framework engine,
 expose the keys inside your initialization file (`src/bootstrap.ts`):
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@graviton5'
+import { AppBuilder, LOG_LEVEL } from '@graviton5/core'
 
 const builder = new AppBuilder()
 

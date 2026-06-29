@@ -77,8 +77,8 @@ public static throwIfAborted(signal: Maybe<AbortSignal>, name: string): void {
 ## Enterprise Operational Integration Blueprint
 
 ```typescript
-import { Result, AppError } from '@graviton5'
-import type { ResultType } from '@graviton5'
+import { Result, AppError } from '@graviton5/core'
+import type { ResultType } from '@graviton5/core'
 
 export class AccountService {
   public async withdrawFunds(

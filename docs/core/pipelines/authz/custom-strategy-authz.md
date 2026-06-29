@@ -12,8 +12,8 @@ To implement a custom security strategy, extend the abstract
 and override its internal `performAuthorizationCheck` lifecycle method:
 
 ```typescript
-import { BaseAuthorizationStrategy, Result } from '@graviton5'
-import type { IRequest, Identity, AppError } from '@graviton5'
+import { BaseAuthorizationStrategy, Result } from '@graviton5/core'
+import type { IRequest, Identity, AppError } from '@graviton5/core'
 
 interface UpdateProjectRepositoryRequest extends IRequest {
   intent: 'UpdateProjectRepositoryCommand'
@@ -67,8 +67,8 @@ class inside the `addServices` block, and attach the token to the
 `customAuthorizationStrategy` options array inside `.addPipeline()`:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@graviton5'
-import type { IStrategy, IRequest } from '@graviton5'
+import { AppBuilder, TokenHelper } from '@graviton5/core'
+import type { IStrategy, IRequest } from '@graviton5/core'
 import { ResourceOwnershipAuthorizationStrategy } from './strategies/resource-ownership.authorization'
 
 // 1. Provision a uniquely branded, strongly-typed injection token via TokenHelper

@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import { INJECTION_TOKENS } from '@graviton5'
+import { INJECTION_TOKENS } from '@graviton5/core'
 import { bootstrap } from './bootstrap'
 import { PING_CONTROLLER_TOKEN, STATUS_CONTROLLER_TOKEN } from './tokens'
 

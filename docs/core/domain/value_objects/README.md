@@ -59,7 +59,7 @@ The following blueprint outlines how to structure a Value Object to encapsulate
 complex business attributes safely:
 
 ```typescript
-import { ValueObject } from '@graviton5'
+import { ValueObject } from '@graviton5/core'
 
 export interface MoneyProps {
   amount: number

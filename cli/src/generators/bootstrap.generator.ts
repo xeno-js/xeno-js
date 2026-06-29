@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class BootstrapGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -10,13 +11,13 @@ export class BootstrapGenerator implements IGenerator {
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeBootstrap(options);
     const filePath = path.join(projectPath, 'src', 'bootstrap.ts');
-    await fs.writeFile(filePath, content);
+    await FileUtils.writeFileRecursive(filePath, content);
   }
 
   private composeBootstrap(options: ScaffoldingOptions): string {
     const imports = [
-      "import { AppBuilder } from '@graviton5';",
-      options.logging ? "import { LOG_LEVEL } from '@graviton5';" : ""
+      "import { AppBuilder } from '@graviton5/core';",
+      options.logging ? "import { LOG_LEVEL } from '@graviton5/core';" : ""
     ].filter(Boolean).join('\n');
 
     const snippets = this.composeModules(options);

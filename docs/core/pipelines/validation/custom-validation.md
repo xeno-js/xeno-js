@@ -10,8 +10,8 @@ To author a custom validation checkpoint, extend the abstract
 the required `execute` loop:
 
 ```typescript
-import { BaseValidationStrategy, Result, AppError } from '@graviton5'
-import type { IRequest, ResultType } from '@graviton5'
+import { BaseValidationStrategy, Result, AppError } from '@graviton5/core'
+import type { IRequest, ResultType } from '@graviton5/core'
 
 interface ProcessPayoutRequest extends IRequest {
   intent: 'ProcessPayoutCommand'
@@ -64,8 +64,8 @@ append custom rules alongside them, register your module within the
 `addServices` block of the container host:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@graviton5'
-import type { IStrategy, IRequest } from '@graviton5'
+import { AppBuilder, TokenHelper } from '@graviton5/core'
+import type { IStrategy, IRequest } from '@graviton5/core'
 import { PayoutAllowanceValidationStrategy } from './strategies/payout-allowance.validation'
 
 // 1. Provision a uniquely branded, strongly-typed injection token via TokenHelper

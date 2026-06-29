@@ -111,36 +111,36 @@ docs/
 
 ## Recommended Paths
 
-- [Getting started](./getting-started/installation.md): framework installation
+- [Getting started](../getting-started/installation.md): framework installation
   and first project setup.
-- [CLI create-graviton5](./cli/create-graviton5.md): how to use the
+- [CLI create-graviton5](../cli/create-graviton5.md): how to use the
   `@graviton5/create` package and its scaffolding modes.
-- [Injection tokens](./core/dependency-injection/tokens.md): define application
+- [Injection tokens](../core/dependency-injection/tokens.md): define application
   tokens with `TokenHelper`.
-- [Modules and dependencies](./core/modules-and-dependencies.md): what each CLI
+- [Modules and dependencies](../core/modules-and-dependencies.md): what each CLI
   option installs and which APIs it enables.
-- [AppBuilder](./core/app_builder/README.md): what is and how to use AppBuilder
+- [AppBuilder](../core/app_builder/README.md): what is and how to use AppBuilder
   container
-- [Database](./core/database/README.md): configure Drizzle/PostgreSQL and use
+- [Database](../core/database/README.md): configure Drizzle/PostgreSQL and use
   Graviton5 data sources, repositories, and filters.
-- [Cache](./core/cache/README.md): configure Redis or InMemory storage for
+- [Cache](../core/cache/README.md): configure Redis or InMemory storage for
   optimized data access and idempotency.
-- [Logging](./core/logging/README.md): configure Console or Pino or Sentry
+- [Logging](../core/logging/README.md): configure Console or Pino or Sentry
   logger or custom logger for logging data
-- [Http](./core/http/README.md): configure http client service with cockatiel
+- [Http](../core/http/README.md): configure http client service with cockatiel
   resilience
-- [Pipelines](./core/pipelines/README.md): define and configure graviton5
+- [Pipelines](../core/pipelines/README.md): define and configure graviton5
   pipelines
-- [Auth](./auth/README.md): how to configure and use supabase auth
-- [Domain](./core/domain/README.md): Entities, Result monade, Application Error
+- [Auth](../auth/README.md): how to configure and use supabase auth
+- [Domain](../core/domain/README.md): Entities, Result monade, Application Error
   and Value Object overview
-- [Presentation Core](./core/presentation/README.md): BaseController and
+- [Presentation Core](../core/presentation/README.md): BaseController and
   Middleware overview
-- [Shared Core](./core/presentation/README.md): Utilis, types and constants
+- [Shared Core](../core/presentation/README.md): Utilis, types and constants
   overview
-- [Local development](./contributing/local-development.md): repository setup,
+- [Local development](../contributing/local-development.md): repository setup,
   build, test, and local publishing workflow.
-- [Demo](./demo/README.md): Executable demo
+- [Demo](../demo/README.md): Executable demo
 
 ## Where to Add New Docs
 

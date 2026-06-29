@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
+import { FileUtils } from '../utils/file.utils';
 
 export class GitIgnoreGenerator implements IGenerator {
   shouldGenerate(): boolean {
@@ -9,7 +10,7 @@ export class GitIgnoreGenerator implements IGenerator {
 
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {
     const content = this.composeGitIgnore();
-    await fs.writeFile(path.join(projectPath, '.gitignore'), content);
+    await FileUtils.writeFileRecursive(path.join(projectPath, '.gitignore'), content);
   }
 
   private composeGitIgnore(): string {

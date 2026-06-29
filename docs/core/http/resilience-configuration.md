@@ -32,7 +32,7 @@ instantiating a full HTTP core bundle, register the pipeline module directly
 using the `.addResilience()` method exposed by the `AppBuilder` host:
 
 ```ts
-import { AppBuilder } from '@graviton5'
+import { AppBuilder } from '@graviton5/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

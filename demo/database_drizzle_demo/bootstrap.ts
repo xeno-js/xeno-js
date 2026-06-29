@@ -1,6 +1,6 @@
 import { UserFilterBuilder } from './filter-builder'
-import { AppBuilder, INJECTION_TOKENS, HardDeleteDataSource } from '@graviton5'
-import type { DbConfig, IServiceContainer } from '@graviton5'
+import { AppBuilder, INJECTION_TOKENS, HardDeleteDataSource } from '@graviton5/core'
+import type { DbConfig, IServiceContainer } from '@graviton5/core'
 import { usersTable, UserDto } from './schema'
 import { SQL } from 'drizzle-orm'
 import { USER_DS_TOKEN, FILTER_BUILDER_TOKEN } from './tokens'

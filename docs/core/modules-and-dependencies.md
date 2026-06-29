@@ -153,7 +153,7 @@ DevDependencies:
 Related Graviton5 API:
 
 ```ts
-import { LOG_LEVEL } from '@graviton5'
+import { LOG_LEVEL } from '@graviton5/core'
 
 builder.addLogger((opts) => {
   opts.level = LOG_LEVEL.INFO

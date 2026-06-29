@@ -82,7 +82,7 @@ gracefully overrides the core baseline.
 ### Correct Chaining Blueprint
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@graviton5'
+import { AppBuilder, LOG_LEVEL } from '@graviton5/core'
 
 const builder = new AppBuilder()
 
