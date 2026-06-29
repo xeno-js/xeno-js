@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `domain/` layer constitutes the absolute heart of a Gear5 application
+The `domain/` layer constitutes the absolute heart of a Graviton5 application
 architecture. Adhering strictly to pure Domain-Driven Design (DDD) principles
 and Clean Architecture guardrails, this directory is isolated from external
 frameworks, presentation concerns, database ORMs, or concrete execution

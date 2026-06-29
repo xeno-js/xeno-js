@@ -8,10 +8,10 @@ import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES }
  * @description Implementation of the IValidatorService interface using Zod schemas for validation. This service maintains a registry of Zod schemas identified by unique keys and provides methods to check for the existence of a schema and to validate data against a specified schema. The validate method returns a ResultType indicating success or failure, with detailed error information in case of validation failure, including formatted error messages from Zod.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class ZodValidatorService implements IValidatorService {
   /**
@@ -19,10 +19,10 @@ export class ZodValidatorService implements IValidatorService {
    * @param _cache An instance of ICache used to store and retrieve Zod schemas. This cache is essential for the operation of the validator service, as it allows it to look up and apply the correct schema for validating incoming data.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   constructor(private readonly _cache: Map<string, ZodType> = new Map()) {}
 

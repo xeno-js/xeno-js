@@ -6,10 +6,10 @@ import type { ResultType } from '../../results/result.types'
  * @description Contract for a remote data source that defines the method for fetching data from a remote endpoint. This interface abstracts the details of how the data is fetched, allowing for different implementations (e.g., using different HTTP clients or protocols) while providing a consistent method signature for fetching data.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IRemoteDataSource {
   /**
@@ -19,10 +19,10 @@ export interface IRemoteDataSource {
    * @returns A Promise that resolves to a ResultType containing either the successful response data or an error if the request fails.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   send<TResponse, TBody = unknown>(
     endpoint: string,

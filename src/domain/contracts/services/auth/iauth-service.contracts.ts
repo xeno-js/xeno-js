@@ -7,10 +7,10 @@ import type { ResultType } from '../../../results/result.types'
  * It provides methods to check if a user is authenticated and to retrieve the user's claims.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IAuthService {
   /**
@@ -18,10 +18,10 @@ export interface IAuthService {
    * @returns A promise that resolves to true if the user is authenticated, false otherwise.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   isAuthenticated(): Promise<boolean>
   /**
@@ -30,10 +30,10 @@ export interface IAuthService {
    * @returns A promise that resolves to the user's claims, or null if not authenticated.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   authenticate(token: string): Promise<ResultType<AuthClaims>>
 }

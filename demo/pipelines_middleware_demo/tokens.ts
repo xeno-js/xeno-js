@@ -1,5 +1,5 @@
-import { TokenHelper } from '@gear5/core'
-import type { BaseController } from '@gear5/core'
+import { TokenHelper } from '@graviton5'
+import type { BaseController } from '@graviton5'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS

@@ -1,16 +1,16 @@
 {
-  "name": "@gear5/create",
+  "name": "@graviton5/create",
   "version": "1.0.0",
-  "description": "gear5 create — CLI to scaffold a new gear5 project",
+  "description": "Graviton5 create — CLI to scaffold a new Graviton5 project",
   "bin": {
-    "create-gear5": "./dist/index.js"
+    "create-graviton5": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts"
   },
   "keywords": [],
-  "author": "Gear5",
+  "author": "Graviton5",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

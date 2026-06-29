@@ -1,6 +1,6 @@
 # Idempotency and Cache Configuration Ordering
 
-The Gear5 CQRS middleware core ships with an advanced engine to guarantee
+The Graviton5 CQRS middleware core ships with an advanced engine to guarantee
 request idempotency across your mutation pipeline
 (`commandBus.idempotency`)[cite: 2, 4]. This behavior intercepts incoming
 messages to prevent double execution of sensitive operations due to clients
@@ -26,7 +26,7 @@ builder.addPipeline((opts) => {
   }
 })
 // Without an explicit cache block defined,
-// Gear5 implicitly configures an InMemoryCache fallback.
+// Graviton5 implicitly configures an InMemoryCache fallback.
 ```
 
 ## Strict Builder Chaining Architecture Rule
@@ -57,7 +57,7 @@ and transaction locks are written directly to your shared Redis infrastructure
 instead of local worker memory:
 
 ```ts
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 const builder = new AppBuilder()
 

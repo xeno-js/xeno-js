@@ -4,111 +4,111 @@
  * without relying on human-readable strings.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const ERROR_CODES = Object.freeze({
   // ── Generic / System ─────────────────────────────────────────────────────
 
   /** @description Unclassified or unexpected infrastructure-level failure.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   SYSTEM_ERROR: 'SYSTEM_ERROR',
 
   /** @description An operation that has not yet been implemented was invoked.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   NOT_IMPLEMENTED: 'NOT_IMPLEMENTED',
 
   /** @description An external API call failed due to network issues or a 5xx response.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   EXTERNAL_SERVICE_ERROR: 'EXTERNAL_SERVICE_ERROR',
 
   /** @description One or more input fields failed invariant or schema validation.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   VALIDATION_FAILED: 'VALIDATION_FAILED',
 
   /** @description Authentication failed due to invalid credentials or token.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   AUTHENTICATION_FAILED: 'AUTHENTICATION_FAILED',
 
   /** @description The caller is not authenticated.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   UNAUTHORIZED: 'UNAUTHORIZED',
 
   /** @description The caller is authenticated but lacks the required permissions.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   FORBIDDEN: 'FORBIDDEN',
 
   /** @description The request was well-formed but semantically invalid.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   BAD_REQUEST: 'BAD_REQUEST',
 
   /** @description The request was aborted before it could be processed.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   ABORTED: 'ABORTED',
 
   /** @description Required service scope is not available in the request context.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   SCOPE_NOT_AVAILABLE: 'SCOPE_NOT_AVAILABLE',
 } as const)
 
 /** @description Inferred union of every valid ERROR_CODES value.
  *
- * @author Gear5
+ * @author Graviton5
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/gear5
+ * @link https://github.com/Mattia-Carcione/Graviton5
  */
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
 
@@ -120,38 +120,38 @@ export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
  * consistent semantics between the AppError, Result and ApiResponse contracts.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const STATUS_CODES = Object.freeze({
   // ── 2xx Success ───────────────────────────────────────────────────────────
 
   /** @description The request succeeded and a response body is present.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   OK: 200,
 
   /** @description A new resource has been successfully created.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   CREATED: 201,
 
   /** @description The request succeeded but there is no response body (e.g. DELETE).
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   NO_CONTENT: 204,
 
@@ -159,73 +159,73 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The request payload is malformed or contains invalid parameters.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   BAD_REQUEST: 400,
 
   /** @description Authentication credentials are missing or invalid.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   UNAUTHORIZED: 401,
 
   /** @description The caller lacks permission to perform the requested operation.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   FORBIDDEN: 403,
 
   /** @description The requested resource does not exist.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   NOT_FOUND: 404,
 
   /** @description The request conflicts with the current state of the resource.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   CONFLICT: 409,
 
   /** @description The payload is syntactically valid but semantically unprocessable.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   UNPROCESSABLE_ENTITY: 422,
 
   /** @description The caller has exceeded its allowed rate limit.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   TOO_MANY_REQUESTS: 429,
 
   /** @description The client closed the connection before the server finished responding.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   ABORTED: 499,
 
@@ -233,29 +233,29 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description An unexpected condition was encountered by the server.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   INTERNAL_SERVER_ERROR: 500,
 
   /** @description A downstream dependency is temporarily unavailable.
    *
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   SERVICE_UNAVAILABLE: 503,
 } as const)
 
 /** @description Inferred union of every valid STATUS_CODES value.
  *
- * @author Gear5
+ * @author Graviton5
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/gear5
+ * @link https://github.com/Mattia-Carcione/Graviton5
  */
 export type StatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES]
 
@@ -263,10 +263,10 @@ export type StatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES]
  * @description A mapping of ERROR_CODES to human-readable messages, used for logging and user feedback when an AppError is created with a specific error code. This allows for consistent and centralized management of error messages across the application, ensuring that each error code corresponds to a clear and descriptive message that can be easily maintained and localized if necessary.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
   [ERROR_CODES.SYSTEM_ERROR]: 'errors.system_error',

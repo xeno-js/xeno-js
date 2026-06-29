@@ -1,6 +1,6 @@
 # Logging Architecture & Configuration
 
-The Gear5 framework features a powerful, diagnostic-centric logging
+The Graviton5 framework features a powerful, diagnostic-centric logging
 infrastructure designed to capture runtime execution contexts, performance
 metrics, and unhandled exceptions across your application layer.
 

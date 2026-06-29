@@ -5,7 +5,7 @@ service container during the bootstrap phase by calling the
 **`.addMiddlewares()`** method exposed by `AppBuilder`.
 
 ```typescript
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 async function bootstrap() {
   const hostBuilder = new AppBuilder()
@@ -28,7 +28,7 @@ immutable framework key **`INJECTION_TOKENS.MIDDLEWARE`**.
 
 ## The Zero-Auth Default Guardrail
 
-A core design requirement of the Gear5 framework is to guarantee **fail-safe
+A core design requirement of the Graviton5 framework is to guarantee **fail-safe
 operational security**. If an application layout includes `.addMiddlewares()`
 but completely omits an identity provider configuration (i.e., skipping
 `.addAuth()`), the application will not fail during the container compilation

@@ -1,8 +1,8 @@
 # Data Sources
 
-Gear5 data sources sit between the low-level `IDbClient` and your repositories.
-They know which table they operate on and ask an `IFilterBuilder` to translate
-criteria into database-specific query conditions.
+Graviton5 data sources sit between the low-level `IDbClient` and your
+repositories. They know which table they operate on and ask an `IFilterBuilder`
+to translate criteria into database-specific query conditions.
 
 The framework provides three database data sources:
 
@@ -17,11 +17,7 @@ builds projections from `criteria.cols`, and calls `IDbClient.select` or
 `IDbClient.selectOne`.
 
 ```ts
-import {
-  ReadDataSource,
-  type IDbClient,
-  type IFilterBuilder,
-} from '@gear5/core'
+import { ReadDataSource, type IDbClient, type IFilterBuilder } from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -57,7 +53,7 @@ import {
   HardDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@gear5/core'
+} from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -92,7 +88,7 @@ import {
   SoftDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@gear5/core'
+} from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -142,7 +138,7 @@ import {
   HardDeleteDataSource,
   INJECTION_TOKENS,
   type IDbClient,
-} from '@gear5/core'
+} from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 
 import { USER_FILTER_BUILDER, USER_WRITE_DATASOURCE } from './tokens.js'

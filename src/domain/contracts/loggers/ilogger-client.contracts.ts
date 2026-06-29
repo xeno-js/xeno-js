@@ -4,10 +4,10 @@ import type { LogLevel, Optional } from '@/shared'
  * @description Interface for a logger client that provides a method for tracking log messages with a specified log level, message, optional context, and optional error.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface ILoggerClient {
   /**
@@ -18,10 +18,10 @@ export interface ILoggerClient {
    * @param error An optional Error object associated with the log message.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   track<T>(level: LogLevel, message: string, context: Optional<T>, error: Optional<Error>): void
 }

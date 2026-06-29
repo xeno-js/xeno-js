@@ -1,6 +1,6 @@
 # Repositories and DAOs
 
-Gear5 provides two higher-level persistence helpers:
+Graviton5 provides two higher-level persistence helpers:
 
 - `Repository<T, TDto>` for write models and CRUD-style flows.
 - `ReadDao<T, TDto>` for read models and query-only flows.
@@ -13,7 +13,7 @@ The mapper translates between domain entities and database DTOs.
 Create an `IMapper` for each persisted model.
 
 ```ts
-import type { IMapper } from '@gear5/core'
+import type { IMapper } from '@graviton5'
 
 import type { UserDto } from '../schema.js'
 import { User } from './user.entity.js'
@@ -52,7 +52,7 @@ export class UserMapper implements IMapper<User, UserDto> {
 }
 ```
 
-The exact entity API is yours. Gear5 only needs the mapper contract.
+The exact entity API is yours. Graviton5 only needs the mapper contract.
 
 ## Register a Repository
 
@@ -64,7 +64,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@gear5/core'
+} from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 
 import {
@@ -114,8 +114,8 @@ await usersRepository.update(partialUser, criteria, signal)
 await usersRepository.delete(user, signal)
 ```
 
-Every method returns a Gear5 `ResultType`, so application code should inspect
-the result before reading the value.
+Every method returns a Graviton5 `ResultType`, so application code should
+inspect the result before reading the value.
 
 ```ts
 const result = await usersRepository.findById('1', undefined)
@@ -138,7 +138,7 @@ import {
   ReadDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@gear5/core'
+} from '@graviton5'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 

@@ -23,10 +23,10 @@ import {
  * @description The RequestContextMiddleware class is responsible for extracting metadata from incoming HTTP requests, performing authentication using the provided authentication middleware, and composing an ExecutionContext that includes identity, network, and tracing information. It implements the IMiddleware interface, allowing it to be used as part of a middleware chain in the request processing pipeline. The middleware ensures that the ExecutionContext is properly set up for downstream handlers, controllers, or use cases to access necessary contextual information for processing the request.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   /**
@@ -37,10 +37,10 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    * @param _container An instance of IServiceContainer used to manage service scopes and dependencies. This container allows the middleware to create a new scope for each request, ensuring that services are properly scoped and disposed of after the request is processed.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,

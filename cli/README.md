@@ -1,15 +1,15 @@
-# @gear5/create
+# @graviton5/create
 
-The official scaffolding tool for **Gear5**. This CLI allows you to quickly
-bootstrap a production-ready Node.js application based on Gear5, following
+The official scaffolding tool for **Graviton5**. This CLI allows you to quickly
+bootstrap a production-ready Node.js application based on Graviton5, following
 Domain-Driven Design (DDD) and Clean Architecture principles.
 
 ## 🚀 Quick Start
 
-To create a new Gear5 project, simply run:
+To create a new Graviton5 project, simply run:
 
 ```bash
-npx @gear5/create my-gear5-app
+npx @graviton5/create my-graviton5-app
 
 ```
 
@@ -25,7 +25,7 @@ need (Database, HTTP, Auth, Logging, etc.).
 You can specify the project directory directly:
 
 ```bash
-npx @gear5/create <project-name>
+npx @graviton5/create <project-name>
 
 ```
 
@@ -35,7 +35,7 @@ The CLI supports optional flags to bypass the interactive prompt:
 
 - **`--full`**: Scaffolds a project with all enterprise features enabled
   (Drizzle ORM, Axios, Supabase, Logging, etc.).
-- **`--empty`**: Scaffolds a minimal Gear5 project without additional
+- **`--empty`**: Scaffolds a minimal Graviton5 project without additional
   infrastructure plugins.
 
 ---

@@ -4,10 +4,10 @@ import type { Dictionary, Optional } from '@/shared'
  * Interface for building filter objects based on specifications.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = unknown> {
   /**
@@ -16,10 +16,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in queries.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   buildFindCriteria(filter: unknown): TQueryConditions
   /**
@@ -28,10 +28,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in query operations.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   buildQueryCriteria(filter: unknown, params?: Dictionary<unknown>): TQueryConditions
   /**
@@ -40,10 +40,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in delete operations.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   buildDeleteCriteria(filter: unknown): TQueryConditions
   /**
@@ -52,10 +52,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in update operations.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   buildUpdateCriteria(filter: unknown): TQueryConditions
 
@@ -65,10 +65,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A projections object that can be used in query operations to specify which fields to return.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   buildProjections(cols: Optional<string[]>): TQueryProjections
 }

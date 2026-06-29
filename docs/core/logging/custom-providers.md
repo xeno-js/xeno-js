@@ -2,8 +2,8 @@
 
 When your enterprise ecosystem demands integration with custom log
 transportation networks (e.g., specialized internal REST sinks, cloud-native
-vendor APIs, or custom formatting aggregators), Gear5 allows you to build and
-register proprietary logging drivers seamlessly.
+vendor APIs, or custom formatting aggregators), Graviton5 allows you to build
+and register proprietary logging drivers seamlessly.
 
 ## 1. Implement the Contract
 
@@ -12,7 +12,7 @@ structural interface or extend the abstract operational primitives. This forces
 a stable runtime signature across your domain execution boundaries:
 
 ```ts
-import { ILogger, LOG_LEVEL } from '@gear5/core'
+import { ILogger, LOG_LEVEL } from '@graviton5'
 
 export class CustomEnterpriseLogger implements ILoggerClient {
   private currentLevel: LOG_LEVEL = LOG_LEVEL.DEBUG
@@ -51,7 +51,7 @@ multiplexer pipeline using the `customLoggers` array parameter inside the
 > your custom driver configuration.
 
 ```ts
-import { AppBuilder, LOG_LEVEL, TokenHelper } from '@gear5/core'
+import { AppBuilder, LOG_LEVEL, TokenHelper } from '@graviton5'
 import { CustomEnterpriseLogger } from './infrastructure/logging/custom-enterprise.logger'
 
 // Create injection token for the custom logger

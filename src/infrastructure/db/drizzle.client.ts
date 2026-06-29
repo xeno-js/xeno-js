@@ -10,10 +10,10 @@ import { Guards } from '@/shared'
  * @description The DrizzleDbClient class is an implementation of the IDbClient interface that utilizes the Drizzle ORM to perform database operations. This class provides methods for selecting multiple records, selecting a single record, inserting new records, updating existing records, and deleting records from a PostgreSQL database. The DrizzleDbClient class abstracts away the complexities of interacting with the database directly, allowing for cleaner and more maintainable code when performing database operations. It also includes error handling to ensure that any issues during database interactions are properly managed and communicated.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
   constructor(

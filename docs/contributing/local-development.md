@@ -1,6 +1,6 @@
 # Local Development
 
-This guide is for developers working on the Gear5 repository.
+This guide is for developers working on the Graviton5 repository.
 
 ## Repository Install
 
@@ -24,7 +24,7 @@ npm run check
 
 ## Develop the Core
 
-The root package is `@gear5/core`. Public exports are defined in:
+The root package is `@graviton5`. Public exports are defined in:
 
 ```text
 src/index.ts
@@ -43,13 +43,13 @@ This command runs checks and builds the package.
 The creator lives in:
 
 ```text
-packages/create-gear5
+packages/create-graviton5
 ```
 
 Setup:
 
 ```bash
-cd packages/create-gear5
+cd packages/create-graviton5
 npm install
 npm run build
 ```
@@ -57,13 +57,13 @@ npm run build
 Local execution:
 
 ```bash
-node dist/index.js ../../demo/my-gear5-app empty
+node dist/index.js ../../demo/my-graviton5-app empty
 ```
 
 Or in TypeScript development mode:
 
 ```bash
-npm run dev -- ../../demo/my-gear5-app empty
+npm run dev -- ../../demo/my-graviton5-app empty
 ```
 
 ## Verify the Scaffold
@@ -71,7 +71,7 @@ npm run dev -- ../../demo/my-gear5-app empty
 After generating a project:
 
 ```bash
-cd demo/my-gear5-app
+cd demo/my-graviton5-app
 npm run dev
 ```
 

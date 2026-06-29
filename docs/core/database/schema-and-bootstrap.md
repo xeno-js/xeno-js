@@ -1,11 +1,11 @@
 # Schema and Bootstrap
 
-Gear5 needs two things to enable database access:
+Graviton5 needs two things to enable database access:
 
 - a PostgreSQL connection string
 - a table registry that maps logical table names to Drizzle table definitions
 
-The table registry matters because Gear5 data sources pass table names as
+The table registry matters because Graviton5 data sources pass table names as
 strings. The registered `DrizzleDbClient` uses those names to find the actual
 Drizzle `PgTable`.
 
@@ -46,7 +46,7 @@ Import the table and register it through `AppBuilder.addDb`:
 ```ts
 import 'dotenv/config'
 
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 import { usersTable } from './schema.js'
 
@@ -81,7 +81,7 @@ import {
   ReadDataSource,
   Repository,
   SoftDeleteDataSource,
-} from '@gear5/core'
+} from '@graviton5'
 ```
 
 You will usually import only the pieces you need. `AppBuilder` configures the
@@ -96,7 +96,7 @@ repeatedly inside each registration file.
 After `builder.build()`, the container can resolve the database client:
 
 ```ts
-import { type IDbClient, INJECTION_TOKENS } from '@gear5/core'
+import { type IDbClient, INJECTION_TOKENS } from '@graviton5'
 
 const container = await bootstrap()
 const dbClient = container.resolve<IDbClient>(INJECTION_TOKENS.DB_CLIENT)

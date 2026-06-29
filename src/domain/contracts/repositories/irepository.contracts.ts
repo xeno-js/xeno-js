@@ -6,10 +6,10 @@ import type { ResultType } from '../../results/result.types'
  * @fileoverview Defines the IRepository interface for generic data access operations.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 
 /**
@@ -18,10 +18,10 @@ import type { ResultType } from '../../results/result.types'
  * @template T - The type of the entity that the repository will manage.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IRepository<T> {
   /**
@@ -31,10 +31,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   findById(id: string, signal: Optional<AbortSignal>): Promise<ResultType<Optional<T>>>
 
@@ -45,10 +45,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves to an array of entities that match the criteria.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   find(criteria: WriteCriteria, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 
@@ -60,10 +60,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the update operation is complete.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   update(
     entity: Partial<T>,
@@ -78,10 +78,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been saved.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   save(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 
@@ -93,10 +93,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been deleted.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   delete(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 }

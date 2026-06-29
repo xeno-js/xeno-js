@@ -1,6 +1,6 @@
 # Logging overview
 
-The Gear5 framework features a powerful, diagnostic-centric logging
+The Graviton5 framework features a powerful, diagnostic-centric logging
 infrastructure designed to capture runtime execution contexts, performance
 metrics, and unhandled exceptions across your application layer.
 
@@ -16,8 +16,8 @@ docs/core/logging/
 
 ## How It Works Under the Hood
 
-Gear5 decouples the application logging interface from the underlying concrete
-transportation layers using a specialized driver aggregation pattern.
+Graviton5 decouples the application logging interface from the underlying
+concrete transportation layers using a specialized driver aggregation pattern.
 
 ```text
 [Application Pipeline] ──> ILogger Interface ──> BaseLogger (Multiplexer)
@@ -46,7 +46,7 @@ polluting your core domain logic.
 
 ## The Default Pipeline Fallback
 
-To prevent application bootstrap crashes, Gear5 enforces a strict defensive
+To prevent application bootstrap crashes, Graviton5 enforces a strict defensive
 design pattern. When you activate your CQRS bus using
 `builder.addPipeline(...)`, the internal `CqrsModule` implicitly triggers a
 baseline registration:
@@ -82,7 +82,7 @@ gracefully overrides the core baseline.
 ### Correct Chaining Blueprint
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@gear5/core'
+import { AppBuilder, LOG_LEVEL } from '@graviton5'
 
 const builder = new AppBuilder()
 
@@ -103,7 +103,7 @@ builder
 
 ## Built-in Production Drivers
 
-Gear5 provides built-in enterprise abstraction drivers that can be mixed and
+Graviton5 provides built-in enterprise abstraction drivers that can be mixed and
 matched inside your setup action:
 
 ### 1. Pino Logger (High-Performance Structured JSON)

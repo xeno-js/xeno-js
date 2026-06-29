@@ -1,6 +1,6 @@
 # Contributing
 
-Documentation for developers working directly on the Gear5 repository.
+Documentation for developers working directly on the Graviton5 repository.
 
 ## Guides
 

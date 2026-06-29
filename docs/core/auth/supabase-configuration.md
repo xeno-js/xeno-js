@@ -1,7 +1,7 @@
 # Infrastructure Provisioning
 
 Integrating Supabase as the underlying identity provider can be fully automated
-during the initialization of a brand new project via the `@gear5/create`
+during the initialization of a brand new project via the `@Graviton5/create`
 scaffolding CLI tool.
 
 When prompted by the interactive CLI engine:
@@ -61,8 +61,8 @@ The connection is registered via the `.addAuth()` method exposed by the
 contract, allowing full customization of the client options:
 
 ```ts
-import { AppBuilder } from '@gear5/core'
-import { LOG_LEVEL } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
+import { LOG_LEVEL } from '@graviton5'
 
 async function bootstrap() {
   const builder = new AppBuilder()

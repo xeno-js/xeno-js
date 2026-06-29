@@ -16,7 +16,7 @@ export class EnvGenerator implements IGenerator {
   private composeEnvContent(options: ScaffoldingOptions): string {
     const sections: string[] = [
       '# ─────────────────────────────────────────────────────────────────────────────',
-      '# GEAR5 APPLICATION ENVIRONMENT VARIABLES',
+      '# Graviton5 APPLICATION ENVIRONMENT VARIABLES',
       '# ─────────────────────────────────────────────────────────────────────────────',
       'NODE_ENV=development',
     ];
@@ -32,7 +32,7 @@ export class EnvGenerator implements IGenerator {
   }
 
   private getDatabaseSection(): string {
-    return `# --- Database (Drizzle & PG) ---\nDATABASE_URL=postgres://postgres:password@localhost:5432/gear5_db`;
+    return `# --- Database (Drizzle & PG) ---\nDATABASE_URL=postgres://postgres:password@localhost:5432/graviton5_db`;
   }
 
   private getHttpSection(): string {

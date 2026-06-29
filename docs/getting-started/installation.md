@@ -5,9 +5,9 @@ sidebar_position: 2
 
 # Installation
 
-Gear5 is an agnostic TypeScript core for applications based on DDD, Clean
+Graviton5 is an agnostic TypeScript core for applications based on DDD, Clean
 Architecture, CQRS, and dependency injection. The fastest way to start is the
-CLI in `packages/create-gear5`, which generates a TypeScript project with
+CLI in `packages/create-graviton5`, which generates a TypeScript project with
 `AppBuilder`, `bootstrap.ts`, `main.ts`, `tsconfig.json`, `.env.example`, and
 the optional dependencies you choose.
 
@@ -19,38 +19,38 @@ the optional dependencies you choose.
 
 ## Create a New Project
 
-Once `@gear5/create` is published, the recommended flow will be:
+Once `@graviton5/create` is published, the recommended flow will be:
 
 ```bash
-npm create @gear5@latest my-gear5-app
-cd my-gear5-app
+npm create @graviton5@latest my-graviton5-app
+cd my-graviton5-app
 npm run dev
 ```
 
 Alternatively, you can use `npm exec`:
 
 ```bash
-npm exec @gear5/create@latest -- my-gear5-app
-cd my-gear5-app
+npm exec @graviton5/create@latest -- my-graviton5-app
+cd my-graviton5-app
 npm run dev
 ```
 
 The CLI accepts the project name as the first argument. If you do not pass one,
-it creates `my-gear5-app`.
+it creates `my-graviton5-app`.
 
 ## Available Modes
 
 The second argument controls the scaffold type:
 
 ```bash
-npm exec @gear5/create@latest -- my-gear5-app empty
+npm exec @graviton5/create@latest -- my-graviton5-app empty
 ```
 
-`empty` generates the minimum project: `@gear5/core`, `zod`, TypeScript, `tsx`,
+`empty` generates the minimum project: `@graviton5`, `zod`, TypeScript, `tsx`,
 `bootstrap.ts`, and `main.ts`.
 
 ```bash
-npm exec @gear5/create@latest -- my-gear5-app complete
+npm exec @graviton5/create@latest -- my-graviton5-app complete
 ```
 
 `complete` enables all available modules: database, HTTP, Supabase auth,
@@ -64,16 +64,16 @@ install.
 While developing the monorepo, you can run the creator directly:
 
 ```bash
-cd packages/create-gear5
+cd packages/create-graviton5
 npm install
 npm run build
-node dist/index.js ../../demo/my-gear5-app empty
+node dist/index.js ../../demo/my-graviton5-app empty
 ```
 
 To install the beta channel directly:
 
 ```bash
-npm install @gear5/core@beta
+npm install @graviton5@beta
 ```
 
 ## What Gets Generated
@@ -81,7 +81,7 @@ npm install @gear5/core@beta
 A scaffolded project contains:
 
 ```text
-my-gear5-app/
+my-graviton5-app/
   package.json
   tsconfig.json
   .gitignore
@@ -104,7 +104,7 @@ src/schema.ts
 After scaffolding:
 
 ```bash
-cd my-gear5-app
+cd my-graviton5-app
 npm run dev
 ```
 
@@ -125,7 +125,7 @@ tsx src/main.ts
 The creator generates `src/bootstrap.ts` based on `AppBuilder`:
 
 ```ts
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 export async function bootstrap() {
   const builder = new AppBuilder()
@@ -137,7 +137,7 @@ export async function bootstrap() {
 You can enable modules incrementally:
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@gear5/core'
+import { AppBuilder, LOG_LEVEL } from '@graviton5'
 
 export async function bootstrap() {
   const builder = new AppBuilder()

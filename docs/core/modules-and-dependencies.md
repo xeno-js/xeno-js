@@ -1,9 +1,9 @@
 # Modules and Dependencies
 
-Gear5 uses optional peer dependencies: you install only the libraries required
-by the modules you enable. The `@gear5/create` CLI translates your initial
-choices into dependencies, dev dependencies, files, and commented snippets in
-`src/bootstrap.ts`.
+Graviton5 uses optional peer dependencies: you install only the libraries
+required by the modules you enable. The `@graviton5/create` CLI translates your
+initial choices into dependencies, dev dependencies, files, and commented
+snippets in `src/bootstrap.ts`.
 
 ## Minimal Core
 
@@ -11,7 +11,7 @@ Always installed:
 
 ```json
 {
-  "@gear5/core": "^1.0.0-beta.0",
+  "@graviton5": "^1.0.0-beta.0",
   "zod": "^4.4.3"
 }
 ```
@@ -74,7 +74,7 @@ Added files:
 - `drizzle.config.ts`
 - `src/schema.ts`
 
-Related Gear5 API:
+Related Graviton5 API:
 
 ```ts
 builder.addDb((opts) => {
@@ -96,7 +96,7 @@ Dependencies:
 }
 ```
 
-Related Gear5 API:
+Related Graviton5 API:
 
 ```ts
 builder.addHttpCore((opts) => {
@@ -121,7 +121,7 @@ Dependency:
 }
 ```
 
-Related Gear5 API:
+Related Graviton5 API:
 
 ```ts
 builder.addAuth((opts) => {
@@ -150,10 +150,10 @@ DevDependencies:
 }
 ```
 
-Related Gear5 API:
+Related Graviton5 API:
 
 ```ts
-import { LOG_LEVEL } from '@gear5/core'
+import { LOG_LEVEL } from '@graviton5'
 
 builder.addLogger((opts) => {
   opts.level = LOG_LEVEL.INFO
@@ -200,7 +200,7 @@ Dependency:
 }
 ```
 
-Related Gear5 API:
+Related Graviton5 API:
 
 ```ts
 builder.addCache((opts) => {

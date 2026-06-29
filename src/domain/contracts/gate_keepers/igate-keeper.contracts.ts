@@ -7,10 +7,10 @@ import type { ResultType } from '../../results/result.types'
  * @description IGateKeeper defines the contract for gatekeeper services responsible for authorizing users based on their identity and permissions. It provides a method to check if a user has a specific permission, taking into account their roles and permissions. The authorize method checks if the user's permissions include the required permission or if they have a role that grants them access (e.g., SUPER_ADMIN or ADMIN). If the user does not have the necessary permissions, it returns false.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IGateKeeper {
   /**
@@ -19,10 +19,10 @@ export interface IGateKeeper {
    * @returns A promise that resolves to the user's identity if authentication is successful, or an error if it fails.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   authenticate(token: Optional<string>): Promise<ResultType<Identity>>
 }

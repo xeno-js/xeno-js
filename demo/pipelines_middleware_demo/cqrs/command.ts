@@ -1,4 +1,4 @@
-import { REQUEST_TYPE, type ICommand } from '@gear5/core'
+import { REQUEST_TYPE, type ICommand } from '@graviton5'
 
 export class PingCommand implements ICommand<{ echoed: string }> {
     public readonly intent = 'PingCommand'

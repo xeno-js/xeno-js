@@ -8,10 +8,10 @@ import type { LoggerConfig } from '../config'
  * @description LoggerUtils is a utility object that provides helper functions for the CoreModule. It includes the addLogger function, which is responsible for configuring and registering the logging services in the dependency injection container based on the provided LoggerConfig options. This function dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const LoggerUtils = Object.freeze({
   /**
@@ -21,10 +21,10 @@ export const LoggerUtils = Object.freeze({
    * @param opts - The LoggerConfig options to determine which loggers to enable and their configurations.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addLogger: async (container: IServiceContainer, opts: Optional<LoggerConfig>): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

@@ -1,4 +1,4 @@
-import { REQUEST_TYPE, type IQuery } from '@gear5/core'
+import { REQUEST_TYPE, type IQuery } from '@graviton5'
 
 export class GetStatusQuery implements IQuery<{ status: string; uptime: number }> {
     public readonly intent = 'GetStatusQuery'

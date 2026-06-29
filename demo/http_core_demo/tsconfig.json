@@ -8,9 +8,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      // Diciamo a TypeScript: "Quando vedi @gear5/core, ignora node_modules
+      // Diciamo a TypeScript: "Quando vedi @graviton5, ignora node_modules
       // e vai a leggere direttamente il codice sorgente TS del framework!"
-      "@gear5/core": ["../../src/index.ts"],
+      "@graviton5": ["../../src/index.ts"],
       "@/*": ["../../src/*"]
     }
   },

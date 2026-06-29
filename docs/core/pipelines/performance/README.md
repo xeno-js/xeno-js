@@ -30,7 +30,7 @@ Unlike basic global trackers, this module allocates its tracking conditional
 dynamically based on options passed into the `AppBuilder` pipeline host:
 
 ```typescript
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 builder.addPipeline((opts) => {
   // If thresholdMs is unassigned or set to undefined, the pipeline bypasses registration

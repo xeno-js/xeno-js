@@ -6,10 +6,10 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * @fileoverview Defines the IServiceContainer interface for a dependency injection container.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 
 /**
@@ -21,10 +21,10 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * that the container will resolve and inject into the constructor.
 
    * 
-   * @author Gear5 HH
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IServiceContainer {
   /**
@@ -39,10 +39,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 e.e
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addSingleton<T>(
     token: InjectionToken<T>,
@@ -61,10 +61,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 °§ç
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addTransient<T>(
     token: InjectionToken<T>,
@@ -85,10 +85,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 €
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addScoped<T>(
     token: InjectionToken<T>,
@@ -106,10 +106,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 $
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -125,10 +125,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 SNOOP DOOOOOG
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -146,10 +146,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Gear5 ee
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceContainer) => T): this
 
@@ -164,10 +164,10 @@ export interface IServiceContainer {
    * @throws An error if the token is registered with scoped lifetime.
   
    * 
-   * @author Gear5 hehe
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   resolve<T>(token: InjectionToken<T>): T
 
@@ -181,10 +181,10 @@ export interface IServiceContainer {
    * @returns A new scope instance.
   
    * 
-   * @author Gear5 ,.,
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   createScope(): IServiceScope
 }

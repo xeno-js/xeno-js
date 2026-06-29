@@ -18,10 +18,10 @@ import type {
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 interface QueuedModule {
   name: string
@@ -33,10 +33,10 @@ interface QueuedModule {
  * It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class AppBuilder {
   private readonly _container: IServiceContainer = new ServiceContainer()
@@ -82,10 +82,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addMiddlewares(): this {
     this._queueMiddlewareModule()
@@ -97,10 +97,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addContext(): this {
     this._queueContextModule()
@@ -113,10 +113,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addLogger(setupAction: SetupAction<LoggerConfig>): this {
     if (this._isLoggerModuleQueued) return this
@@ -145,10 +145,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 §§§
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addCache(setupAction: SetupAction<CacheConfig>): this {
     const config = { inMemory: true, redis: undefined }
@@ -169,10 +169,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addAuth(setupAction: SetupAction<AuthClientConfig>): this {
     if (this._isAuthModuleQueued) return this
@@ -195,10 +195,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addDb(setupAction: SetupAction<DbConfig>): this {
     if (this._isDbContextModuleQueued) return this
@@ -221,10 +221,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 #
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addConcurrencyService(): this {
     if (this._isConcurrencyServiceQueued) return this
@@ -254,10 +254,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 §
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addPipeline(setupAction: SetupAction<PipelineConfig>): this {
     setupAction(this._pipelineConfig)
@@ -275,10 +275,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 ''''
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addHttp(setupAction: SetupAction<HttpConfig>): this {
     const config = { token: undefined, client: {} } as unknown as HttpConfig
@@ -299,10 +299,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 o.o
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addResilience(setupAction: SetupAction<ResilienceConfig>): this {
     if (this._isResilienceModuleQueued) return this
@@ -338,10 +338,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5 0.0
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
     const config = {
@@ -372,10 +372,10 @@ export class AppBuilder {
    * @param setupAction A callback function that receives the IServiceContainer to register services.
    * @returns The current instance of AppBuilder for method chaining.
    *
-   * @author Gear5 - - -
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5
+   * @link https://github.com/Mattia-Carcione/Graviton5
    */
   public addServices(setupAction: SetupAction<IServiceContainer>): this {
     setupAction(this._container)
@@ -389,10 +389,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public addModule<T>(name: string, factory: () => Promise<IModule<T>>, opts?: T): this {
     this._modules.push({
@@ -411,10 +411,10 @@ export class AppBuilder {
    * @returns The resolved service instance.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     return this._container.resolve(token)
@@ -429,10 +429,10 @@ export class AppBuilder {
    * @returns The fully configured ServiceContainer.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public async build(): Promise<IServiceContainer> {
     for (const queued of this._modules) {
@@ -471,10 +471,10 @@ export class AppBuilder {
    * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   private _queuePipelineModule(): void {
     if (this._isPipelineModuleQueued) return
@@ -496,10 +496,10 @@ export class AppBuilder {
    * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return
@@ -521,10 +521,10 @@ export class AppBuilder {
    * @description Queues the configuration of the context module if it has not already been queued. This method ensures that the context module is only added once, even if multiple context-related configurations are made.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   private _queueContextModule(): void {
     if (this._isContextModuleQueued) return

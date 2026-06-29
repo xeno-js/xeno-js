@@ -16,9 +16,9 @@ export class ReadmeGenerator implements IGenerator {
   private composeReadme(options: ScaffoldingOptions): string {
     return `# ${options.targetDir}
 
-Enterprise application built with [Gear5](https://github.com/Mattia-Carcione/gear5).
+Enterprise application built with [Graviton5](https://github.com/Mattia-Carcione/graviton5).
 
-[![Powered by Gear5](https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=flat-square)](https://github.com/Mattia-Carcione/gear5)
+[![Powered by Graviton5](https://img.shields.io/badge/Powered%20by-Graviton5-blueviolet?style=flat-square)](https://github.com/Mattia-Carcione/graviton5)
 
 ## 🚀 Quick Start
 
@@ -29,12 +29,12 @@ npm run dev
 \`\`\`
 
 ## 📖 Documentation
-For a deep dive into Gear5 concepts, CQRS pipelines, and Domain-Driven Design principles, visit the [official Gear5 documentation](https://github.com/Mattia-Carcione/gear5/tree/main/docs).
+For a deep dive into Graviton5 concepts, CQRS pipelines, and Domain-Driven Design principles, visit the [official Graviton5 documentation](https://github.com/Mattia-Carcione/graviton5/tree/main/docs).
 
 ## 🛡️ Architecture
-This project leverages Gear5's decoupled architecture:
+This project leverages Graviton5's decoupled architecture:
 - **CQRS:** Command Query Responsibility Segregation.
-- **Dependency Injection:** Powered by Gear5 IoC container.
+- **Dependency Injection:** Powered by Graviton5 IoC container.
 - **Resilience:** Built-in fault tolerance via ${options.http ? 'Cockatiel' : 'infrastructure'} patterns.
 ${options.database ? '- **Persistence:** Drizzle ORM integrated.' : ''}
 

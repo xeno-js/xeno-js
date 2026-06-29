@@ -1,7 +1,7 @@
-# CQRS Implementation Guide - Gear5 Framework
+# CQRS Implementation Guide - Graviton5 Framework
 
 This project demonstrates the implementation of the **CQRS (Command Query
-Responsibility Segregation)** pattern using the `gear5` framework. The
+Responsibility Segregation)** pattern using the `graviton5` framework. The
 architecture focuses on decoupling write operations (Commands) from read
 operations (Queries), ensuring a clean, maintainable, and scalable codebase.
 
@@ -24,7 +24,7 @@ The system follows a strict flow to handle requests:
 ### 1. Prerequisites
 
 - Node.js (v20+)
-- `gear5` framework (linked via file path in `package.json`)
+- `graviton5` framework (linked via file path in `package.json`)
 
 ### 2. Implementation Steps
 

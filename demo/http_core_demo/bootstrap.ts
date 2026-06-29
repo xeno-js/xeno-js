@@ -1,5 +1,5 @@
-import { AppBuilder } from '@gear5/core'
-import type { IServiceContainer } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
+import type { IServiceContainer } from '@graviton5'
 import { DATA_SOURCE_TOKEN, HTTP_CLIENT_TOKEN } from './tokens'
 
 // ─────────────────────────────────────────────────────────────────────────────

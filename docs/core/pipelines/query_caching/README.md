@@ -34,7 +34,7 @@ To activate query caching, toggle the `queryBus` option inside the application
 pipeline configuration block:
 
 ```typescript
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 builder.addPipeline((opts) => {
   opts.queryBus.isEnabled = true // Enables the query behavior stack allocation
@@ -47,7 +47,7 @@ Queries must declare their caching rules by implementing the `ICachedQuery`
 protocol:
 
 ```typescript
-import type { ICachedQuery } from '@gear5/core'
+import type { ICachedQuery } from '@graviton5'
 
 export class GetProjectMetricsQuery implements ICachedQuery<ProjectMetricsDto> {
   public readonly intent = 'GetProjectMetricsQuery'

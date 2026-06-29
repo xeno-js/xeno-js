@@ -21,9 +21,9 @@ to the network layer introduces severe architectural liabilities:
   message brokers) expect predictable contractual responses. Raw engine failures
   degrade contract uniformity.
 - **Data Flow Unification**: By translating standard JavaScript errors into the
-  framework’s custom domain representation (`AppError`), Gear5 handles failure
-  tracking deterministically using clean functional programming semantics
-  (`Result.fail`) instead of throwing chaotic exceptions.
+  framework’s custom domain representation (`AppError`), Graviton5 handles
+  failure tracking deterministically using clean functional programming
+  semantics (`Result.fail`) instead of throwing chaotic exceptions.
 
 ---
 
@@ -51,7 +51,7 @@ evaluation phase of the framework's internal `CqrsModule`.
   `500 Internal Server Error` status profile.
 
 ```typescript
-// Core implementation summary of Gear5 exception isolation
+// Core implementation summary of Graviton5 exception isolation
 try {
   return await next()
 } catch (error: unknown) {

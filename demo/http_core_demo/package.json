@@ -2,13 +2,13 @@
   "name": "demo-03-http-core",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 03 - HTTP Core with @gear5/core",
+  "description": "Demo 03 - HTTP Core with @graviton5",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@gear5/core": "file:../../",
+    "@graviton5": "file:../../",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {

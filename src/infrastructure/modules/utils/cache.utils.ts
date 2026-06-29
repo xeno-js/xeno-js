@@ -7,10 +7,10 @@ import type { CacheConfig } from '../config'
  * @description Utility functions for configuring caching in the service container.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const CacheUtils = Object.freeze({
   /**
@@ -19,10 +19,10 @@ export const CacheUtils = Object.freeze({
    * @returns True if any cache strategies are required, false otherwise.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

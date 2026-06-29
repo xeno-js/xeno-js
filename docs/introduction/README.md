@@ -1,18 +1,20 @@
-# Gear5 Developer Docs
+# Graviton5 Developer Docs
 
-This directory contains the operational documentation for building with Gear5.
+This directory contains the operational documentation for building with
+Graviton5.
 
 ## Documentation Tree
 
 ```text
 docs/
-  README.md
+  introduction/
+    README.md
   getting-started/
     README.md
     installation.md
   cli/
     README.md
-    create-gear5.md
+    create-graviton5.md
   core/
     README.md
     app_builder/
@@ -103,14 +105,16 @@ docs/
   contributing/
     README.md
     local-development.md
+  support/
+    README.md
 ```
 
 ## Recommended Paths
 
 - [Getting started](./getting-started/installation.md): framework installation
   and first project setup.
-- [CLI create-gear5](./cli/create-gear5.md): how to use the `@gear5/create`
-  package and its scaffolding modes.
+- [CLI create-graviton5](./cli/create-graviton5.md): how to use the
+  `@graviton5/create` package and its scaffolding modes.
 - [Injection tokens](./core/dependency-injection/tokens.md): define application
   tokens with `TokenHelper`.
 - [Modules and dependencies](./core/modules-and-dependencies.md): what each CLI
@@ -118,14 +122,14 @@ docs/
 - [AppBuilder](./core/app_builder/README.md): what is and how to use AppBuilder
   container
 - [Database](./core/database/README.md): configure Drizzle/PostgreSQL and use
-  Gear5 data sources, repositories, and filters.
+  Graviton5 data sources, repositories, and filters.
 - [Cache](./core/cache/README.md): configure Redis or InMemory storage for
   optimized data access and idempotency.
 - [Logging](./core/logging/README.md): configure Console or Pino or Sentry
   logger or custom logger for logging data
 - [Http](./core/http/README.md): configure http client service with cockatiel
   resilience
-- [Pipelines](./core/pipelines/README.md): define and configure gear5/core
+- [Pipelines](./core/pipelines/README.md): define and configure graviton5
   pipelines
 - [Auth](./auth/README.md): how to configure and use supabase auth
 - [Domain](./core/domain/README.md): Entities, Result monade, Application Error
@@ -142,7 +146,7 @@ docs/
 
 - Use `getting-started/` for first-run guides, installation flows, and
   onboarding tutorials.
-- Use `cli/` for documentation about `@gear5/create` and future command-line
+- Use `cli/` for documentation about `@graviton5/create` and future command-line
   tools.
 - Use `core/` for framework concepts, modules, APIs, dependency behavior, and
   runtime architecture.
@@ -153,6 +157,6 @@ docs/
 
 These documents describe the current repository behavior:
 
-- core package: `@gear5/core`
-- create package: `@gear5/create`
+- core package: `@graviton5`
+- create package: `@graviton5/create`
 - Node.js required by the core package: `>=20.0.0`

@@ -1,7 +1,7 @@
 import { sql, and, eq, gt, lt, ne, inArray } from 'drizzle-orm'
 import { SQL } from 'drizzle-orm'
 
-import type { Dictionary, IFilterBuilder, Optional, WriteCriteria } from '@gear5/core'
+import type { Dictionary, IFilterBuilder, Optional, WriteCriteria } from '@graviton5'
 import { usersTable, type UserDto } from './schema'
 
 // ─────────────────────────────────────────────────────────────────────────────

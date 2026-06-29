@@ -5,10 +5,10 @@ import { PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@
 /**
  * @description Abstract base class for validation strategies in the CQRS pipeline. This class implements the IStrategy interface and provides a common structure for performing validation checks based on the input request. It defines an abstract method performValidationCheck that must be implemented by concrete validation strategies to specify the logic for checking if the request meets the necessary validation criteria. The execute method retrieves the input request and ensures that it is valid before delegating to the performValidationCheck method for further validation. If the request is not valid, it returns a failed Result with an appropriate AppError indicating that validation is required.
  *
- * @author Gear5 *
+ * @author Graviton5
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/gear5
+ * @link https://github.com/Mattia-Carcione/Graviton5
  */
 export abstract class BaseValidationStrategy implements IStrategy<IRequest, boolean> {
   public abstract execute(request: IRequest): Promise<ResultType<boolean>>
@@ -20,10 +20,10 @@ export abstract class BaseValidationStrategy implements IStrategy<IRequest, bool
    * @returns A Result containing an AppError with the appropriate error code, message, status, and cause.
   
    * 
-   * @author Gear5 &
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   protected createValidationError(request: IRequest, message: string): ResultType<boolean> {
     return Result.fail(

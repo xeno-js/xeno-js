@@ -1,6 +1,6 @@
 # Validation pipeline behavior
 
-The Gear5 Validation Subsystem enforces data integrity and structural safety
+The Graviton5 Validation Subsystem enforces data integrity and structural safety
 before any command or query reaches its corresponding domain handler within the
 CQRS mediator loop. Built upon the _Pipe and Filter_ architectural pattern, the
 core pipeline leverages a dedicated `ValidationPipeline` to intercept requests,
@@ -52,7 +52,7 @@ The behavior maps under **`INJECTION_TOKENS.VALIDATION_PIPELINE`**. It evaluates
 data contracts sequentially across two main validation tracks:
 
 ```typescript
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 import { z } from 'zod'
 
 export const ResetPasswordSchema = z.object({
@@ -94,7 +94,7 @@ builder.addPipeline((opts) => {
 
 ## Documentation Roadmap
 
-To implement, customize, and orchestrate validation layers within a Gear5
+To implement, customize, and orchestrate validation layers within a Graviton5
 enterprise application, consult the following dedicated technical manuals:
 
 - **[Zod Schema Configuration Guide](./zod-configuration.md)**: Outlines

@@ -88,8 +88,8 @@ can be attached manually right before invoking the final `.build()` phase using
 `.addServices()`:
 
 ```ts
-import type { IAuthService, ResultType } from '@gear5/core'
-import { AppBuilder, Result } from '@gear5/core'
+import type { IAuthService, ResultType } from '@graviton5'
+import { AppBuilder, Result } from '@graviton5'
 import { INJECTION_TOKENS } from './di/injection-tokens.constants' // Path to framework registry tokens
 
 // 1. Create your custom, decoupled Authentication Adapter

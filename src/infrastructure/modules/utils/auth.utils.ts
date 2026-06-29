@@ -8,10 +8,10 @@ import type { AuthClientConfig, PipelineConfig } from '../config'
  *  @description Utility functions for configuring authentication and authorization in the service container.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export const AuthUtils = Object.freeze({
   /**
@@ -20,10 +20,10 @@ export const AuthUtils = Object.freeze({
    * @returns True if any authorization strategies are required, false otherwise.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 
   addAuthZ: async (
@@ -120,10 +120,10 @@ export const AuthUtils = Object.freeze({
    * @param opts The authentication configuration options.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   addAuthN: async (container: IServiceContainer, opts: AuthClientConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

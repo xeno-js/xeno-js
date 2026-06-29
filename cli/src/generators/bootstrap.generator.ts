@@ -15,8 +15,8 @@ export class BootstrapGenerator implements IGenerator {
 
   private composeBootstrap(options: ScaffoldingOptions): string {
     const imports = [
-      "import { AppBuilder } from '@gear5/core';",
-      options.logging ? "import { LOG_LEVEL } from '@gear5/core';" : ""
+      "import { AppBuilder } from '@graviton5';",
+      options.logging ? "import { LOG_LEVEL } from '@graviton5';" : ""
     ].filter(Boolean).join('\n');
 
     const snippets = this.composeModules(options);

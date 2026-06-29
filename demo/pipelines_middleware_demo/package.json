@@ -2,13 +2,13 @@
   "name": "demo-02-cqrs",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 02 - CQRS with @gear5/core",
+  "description": "Demo 02 - CQRS with @graviton5",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@gear5/core": "file:../../",
+    "@graviton5": "file:../../",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0"
   },

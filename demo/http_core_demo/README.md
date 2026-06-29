@@ -1,13 +1,13 @@
-# 🚀 Gear5 Core Demo: HTTP Integration
+# 🚀 Graviton5 Core Demo: HTTP Integration
 
-Welcome to the **Gear5 Core** demo. This project demonstrates how to build a
-production-ready HTTP infrastructure using the Gear5 Core framework, focusing on
-clean architecture, dependency injection, and resilient service-to-service
-communication.
+Welcome to the **Graviton5 Core** demo. This project demonstrates how to build a
+production-ready HTTP infrastructure using the Graviton5 Core framework,
+focusing on clean architecture, dependency injection, and resilient
+service-to-service communication.
 
 ## 🎯 Objective
 
-This demo showcases how Gear5 Core simplifies external service calls (e.g.,
+This demo showcases how Graviton5 Core simplifies external service calls (e.g.,
 PokeAPI) through a `RemoteDataSource`. It implements robust resilience patterns
 to handle network volatility, ensuring your business logic remains decoupled
 from infrastructure concerns.
@@ -23,7 +23,7 @@ To replicate this setup, you must integrate the following core packages:
 
 ```bash
 # Core framework
-npm install @gear5/core
+npm install @graviton5
 
 # Required infrastructure dependencies
 npm install axios cockatiel
@@ -61,7 +61,7 @@ with: `GET http://localhost:3000/pokemon/pikachu`
 
 ## 🧠 Core Architecture
 
-Gear5 Core is built on the principles of **Dependency Inversion**. The
+Graviton5 Core is built on the principles of **Dependency Inversion**. The
 infrastructure is assembled via the `AppBuilder` in `bootstrap.ts`.
 
 ### Resilience Patterns

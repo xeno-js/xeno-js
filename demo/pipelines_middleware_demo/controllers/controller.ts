@@ -1,4 +1,4 @@
-import { BaseController, ResponseDto } from '@gear5/core'
+import { BaseController, ResponseDto } from '@graviton5'
 import { PingCommand } from '../cqrs/command'
 import { GetStatusQuery } from '../cqrs/query'
 

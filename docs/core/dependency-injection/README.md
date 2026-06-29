@@ -1,7 +1,7 @@
 # Dependency Injection
 
-Gear5 uses explicit injection tokens to register and resolve services from the
-application container. Tokens keep infrastructure wiring type-safe and avoid
+Graviton5 uses explicit injection tokens to register and resolve services from
+the application container. Tokens keep infrastructure wiring type-safe and avoid
 coupling your code to concrete classes.
 
 ## Guides

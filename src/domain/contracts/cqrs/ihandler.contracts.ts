@@ -7,10 +7,10 @@ import type { ResultType } from '../../results/result.types'
  * @template TResponse - The type of the response that the handler will return after processing the request.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IHandler<TRequest, TResponse> {
   /**
@@ -19,10 +19,10 @@ export interface IHandler<TRequest, TResponse> {
    * @returns A Promise that resolves to a response of type TResponse.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   handle(request: TRequest): Promise<ResultType<TResponse>>
 }

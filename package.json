@@ -1,7 +1,7 @@
 {
-  "name": "@gear5/core",
+  "name": "@graviton5",
   "version": "1.0.0-beta.0",
-  "description": "gear5 agnostic core — DDD + Clean Architecture npm package",
+  "description": "Graviton5 agnostic core — DDD + Clean Architecture npm package",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -54,7 +54,7 @@
     "supabase",
     "zod"
   ],
-  "author": "Gear5",
+  "author": "Graviton5",
   "license": "ISC",
   "engines": {
     "node": ">=20.0.0"

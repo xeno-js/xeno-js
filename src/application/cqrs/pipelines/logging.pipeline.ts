@@ -8,10 +8,10 @@ import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from 
  * @template TResult - The type of the result returned by the request handler.
 
    * 
-   * @author Gear5 §
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
@@ -22,10 +22,10 @@ export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipel
    * @param _logger An instance of ILogger used for logging informational messages and errors related to the handling of requests.
   
    * 
-   * @author Gear5 ()
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   constructor(private readonly _logger: ILogger) {}
 

@@ -2,7 +2,7 @@
 
 ## Extending the Core Application Workspace
 
-The Gear5 core framework remains agnostically uncoupled from your explicit
+The Graviton5 core framework remains agnostically uncoupled from your explicit
 business use-cases or enterprise features. To register domain logic, repository
 persistence layers, or external communication adapters into the shared IoC
 engine, `AppBuilder` provides two extension mechanisms: direct service
@@ -22,7 +22,7 @@ reference as the targeted payload context, allowing developers to inject custom
 dependencies directly into the host:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@gear5/core'
+import { AppBuilder, TokenHelper } from '@graviton5'
 import { InvoiceRepository } from './repositories/invoice.repository.js'
 import { ProcessInvoiceHandler } from './handlers/process-invoice.handler.js'
 
@@ -74,8 +74,8 @@ contract interface. The module encapsulates its internal infrastructure, keeping
 the global configuration footprint clean:
 
 ```typescript
-import type { IModule, IServiceContainer } from '@gear5/core'
-import { TokenHelper } from '@gear5/core'
+import type { IModule, IServiceContainer } from '@graviton5'
+import { TokenHelper } from '@graviton5'
 import { PostgresBillingDao } from './infra/postgres-billing.dao.js'
 
 export interface BillingModuleOptions {

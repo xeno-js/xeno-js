@@ -3,20 +3,20 @@ import type { Optional } from '@/shared'
 /**
  * @fileoverview Defines the ICache interface for caching mechanisms within the application.
  *
- * @author Gear5 - ICache
+ * @author Graviton5
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/gear5
+ * @link https://github.com/Mattia-Carcione/Graviton5
  */
 
 /**
  * An interface representing a caching mechanism within the application. This interface provides methods for retrieving and storing values in the cache, as well as clearing the cache when necessary. The get method allows for retrieving values from the cache based on a specified key, while the set method enables storing values in the cache with an optional time-to-live (TTL) parameter to specify how long the value should remain in the cache before it expires. The clear method provides a way to remove all entries from the cache when needed.
 
    * 
-   * @author Gear5 - GG
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface ICache {
   /**
@@ -25,10 +25,10 @@ export interface ICache {
    * @returns The value associated with the specified key if it exists and has not expired; otherwise, returns undefined.
   
    * 
-   * @author Gear5 - ?^?
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   get<T>(key: string): Promise<Optional<T>>
 
@@ -39,10 +39,10 @@ export interface ICache {
    * @param ttl Optional time-to-live (TTL) in milliseconds, indicating how long the value should remain in the cache before it expires. If not provided, the value will be stored indefinitely.
   
    * 
-   * @author Gear5 ^.^
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   set<T>(key: string, value: T, ttl: Optional<number>): Promise<void>
 
@@ -54,10 +54,10 @@ export interface ICache {
    * @returns True if the value was successfully stored in the cache because the key did not already exist; otherwise, returns false if the key already exists in the cache and the value was not set.
   
    * 
-   * @author Gear5 ^^
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   setIfAbsent<T>(key: string, value: T, ttl: Optional<number>): Promise<boolean>
 
@@ -66,10 +66,10 @@ export interface ICache {
    * @param key The unique identifier for the cached value to be removed. This key is used to identify which entry in the cache should be invalidated.
   
    * 
-   * @author Gear5 ^=^
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   remove(key: string): Promise<void>
 
@@ -79,10 +79,10 @@ export interface ICache {
    * @returns True if the key exists in the cache and has not expired; otherwise, returns false.
   
    * 
-   * @author Gear5 ^p^
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   has(key: string): Promise<boolean>
 
@@ -90,10 +90,10 @@ export interface ICache {
    * Clears all entries from the cache, effectively removing all stored values. This method can be used when there is a need to invalidate the entire cache, such as when significant changes occur in the underlying data or when the cache needs to be reset for any reason. After calling this method, subsequent calls to the get method will return undefined until new values are stored in the cache using the set method.
   
    * 
-   * @author Gear5 ^_^
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   clear(): Promise<void>
 }

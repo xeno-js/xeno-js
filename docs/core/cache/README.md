@@ -1,9 +1,9 @@
 # Cache Module
 
-The Gear5 Cache module provides a unified and pluggable abstraction for handling
-transient states, caching query results, and managing distributed idempotency
-locks. It natively supports both in-memory storage and multi-node distributions
-via Redis[cite: 2].
+The Graviton5 Cache module provides a unified and pluggable abstraction for
+handling transient states, caching query results, and managing distributed
+idempotency locks. It natively supports both in-memory storage and multi-node
+distributions via Redis[cite: 2].
 
 ## Documentation Tree
 
@@ -33,7 +33,7 @@ The cache system is configured through the fluent `AppBuilder` instance during
 your application bootstrap cycle (`src/bootstrap.ts`):
 
 ```ts
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 
 const builder = new AppBuilder()
 

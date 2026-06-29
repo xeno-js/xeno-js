@@ -1,8 +1,8 @@
 # Automated Infrastructure Scaffolding
 
 Declarative schema validation using Zod is integrated out of the box during the
-structural workspace generation phase managed by the `@gear5/create` interactive
-CLI engine.
+structural workspace generation phase managed by the `@Graviton5/create`
+interactive CLI engine.
 
 Confirming the pipeline or core telemetry infrastructure modules during
 execution, or selecting the `complete` bootstrap mode, automatically configures
@@ -25,7 +25,7 @@ The `schemas` record uses the exact `intent` identifier string of your CQRS
 request as the lookup key:
 
 ```typescript
-import { AppBuilder } from '@gear5/core'
+import { AppBuilder } from '@graviton5'
 import { z } from 'zod'
 
 // 1. Declare your strongly-typed Zod runtime schema
@@ -85,7 +85,7 @@ map using the request's `intent` attribute. If a schema matches, it runs a
 non-throwing execution via `safeParse`:
 
 ```typescript
-// Abstract of Gear5's structural error-packing runtime behavior
+// Abstract of Graviton5's structural error-packing runtime behavior
 if (!zodResult.success) {
   const errorMessage = zodResult.error.issues
     .map((issue) => `[${issue.path.join('.')}] ${issue.message}`)

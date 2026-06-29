@@ -1,5 +1,5 @@
-import { AppBuilder, INJECTION_TOKENS, TokenHelper } from '@gear5/core'
-import type { IServiceContainer, ICommand, IHandler, IQuery } from '@gear5/core'
+import { AppBuilder, INJECTION_TOKENS, TokenHelper } from '@graviton5'
+import type { IServiceContainer, ICommand, IHandler, IQuery } from '@graviton5'
 import { PING_CONTROLLER_TOKEN, STATUS_CONTROLLER_TOKEN } from './tokens'
 import { PingCommandHandler } from './cqrs/command.handler'
 import { GetStatusQueryHandler } from './cqrs/query.handler'

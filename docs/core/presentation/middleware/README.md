@@ -1,6 +1,6 @@
 # Middleware Overview
 
-The Presentation Layer Middleware inside Gear5 serves as the secure entry
+The Presentation Layer Middleware inside Graviton5 serves as the secure entry
 gateway and execution perimeter for all incoming external transactions.
 Orchestrated primarily by the **`RequestContextMiddleware`**, this layer is
 responsible for translating raw protocol-specific transportation inputs (such as

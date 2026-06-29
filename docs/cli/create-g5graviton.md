@@ -1,24 +1,24 @@
-# CLI create-gear5
+# Create Graviton5 Project
 
-The `packages/create-gear5` package contains the scaffolding CLI for new Gear5
-projects.
+The `packages/create-graviton5` package contains the scaffolding CLI for new
+Graviton5 projects.
 
 ## Package Metadata
 
-- package name: `@gear5/create`
-- bin: `create-gear5`
+- package name: `@graviton5/create`
+- bin: `create-graviton5`
 - compiled entrypoint: `dist/index.js`
-- source: `packages/create-gear5/src/index.ts`
+- source: `packages/create-graviton5/src/index.ts`
 
 ## Syntax
 
 ```bash
-create-gear5 [targetDir] [mode]
+create-graviton5 [targetDir] [mode]
 ```
 
 Arguments:
 
-- `targetDir`: project folder name or path. Default: `my-gear5-app`.
+- `targetDir`: project folder name or path. Default: `my-graviton5-app`.
 - `mode`: optional. Supported values: `empty`, `complete`.
 
 If `mode` is not provided, the CLI interactively asks which modules to install.
@@ -26,12 +26,12 @@ If `mode` is not provided, the CLI interactively asks which modules to install.
 ## Empty Mode
 
 ```bash
-create-gear5 my-app empty
+create-graviton5 my-app empty
 ```
 
 Generates a minimal app with:
 
-- `@gear5/core`
+- `@graviton5`
 - `zod`
 - `typescript`
 - `tsx`
@@ -44,7 +44,7 @@ This mode is useful when you want to add infrastructure manually.
 ## Complete Mode
 
 ```bash
-create-gear5 my-app complete
+create-graviton5 my-app complete
 ```
 
 Enables every option:
@@ -69,7 +69,7 @@ The generated project also includes database scripts:
 ## Interactive Mode
 
 ```bash
-create-gear5 my-app
+create-graviton5 my-app
 ```
 
 The CLI asks for confirmation for:

@@ -28,7 +28,6 @@ describe('AppBuilder Smoke Test', () => {
       .addDb((config) => {
         config.connectionString = 'postgres://dummy:dummy@localhost:5432/dummy'
       })
-      .addConcurrencyService()
       .addPipeline((config) => {
         config.performance.thresholdMs = 100
         config.authorization.tenant = true

@@ -6,10 +6,10 @@ import type { UniqueId } from '../unique_id/unique-id'
  * @template T - The type of the properties of the entity.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IEntity<T> {
   /**
@@ -17,10 +17,10 @@ export interface IEntity<T> {
    * @see UniqueId for more details on the unique identifier.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   readonly id: UniqueId
 
@@ -30,10 +30,10 @@ export interface IEntity<T> {
    * @throws An error if the entity is in an invalid state or if the properties cannot be retrieved.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   getProps(): T
 }

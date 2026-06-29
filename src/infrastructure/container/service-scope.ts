@@ -11,10 +11,10 @@ import { Guards, type InjectionToken } from '@/shared'
  * resolved by delegating to the root container resolver.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export class ServiceScope implements IServiceScope {
   private readonly _scopedInstances = new Map<symbol, unknown>()
@@ -26,10 +26,10 @@ export class ServiceScope implements IServiceScope {
    *   singleton and transient services.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public constructor(
     private readonly _descriptors: ReadonlyMap<symbol, ServiceDescriptor<unknown>>,
@@ -40,10 +40,10 @@ export class ServiceScope implements IServiceScope {
    * @inheritdoc
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     if (this._disposed) {
@@ -84,10 +84,10 @@ export class ServiceScope implements IServiceScope {
    * @inheritdoc
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   public dispose(): void {
     this._scopedInstances.clear()

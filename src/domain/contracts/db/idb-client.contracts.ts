@@ -4,10 +4,10 @@ import type { Optional } from '@/shared'
  * @description This file defines the IDbClient interface, which serves as an abstraction layer for database operations within the application. The IDbClient interface specifies methods for executing common database queries, including selecting multiple records, selecting a single record, inserting new records, updating existing records, and deleting records. Each method accepts a SQL query string and an optional array of parameters to safely parameterize the queries and prevent SQL injection attacks. By defining this interface, the application can implement various database clients (e.g., PostgreSQL, MySQL, SQLite) that adhere to this contract, allowing for flexibility and ease of maintenance when interacting with different database systems.
 
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
 export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unknown> {
   /**
@@ -18,10 +18,10 @@ export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unkno
    * @returns A promise that resolves to an array of results.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   select<T>(
     schema: string,
@@ -38,10 +38,10 @@ export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unkno
    * @returns A promise that resolves to a single result or null if no result is found.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   selectOne<T>(
     schema: string,
@@ -59,10 +59,10 @@ export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unkno
    * @returns A promise that resolves when the operation is complete.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   insert<T extends object>(dto: T, schema: string, signal: Optional<AbortSignal>): Promise<void>
 
@@ -75,10 +75,10 @@ export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unkno
    * @returns A promise that resolves when the operation is complete.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   update<T>(
     dto: Partial<T>,
@@ -95,10 +95,10 @@ export interface IDbClient<TQueryConditions = unknown, TQueryProjections = unkno
    * @returns A promise that resolves when the operation is complete.
   
    * 
-   * @author Gear5
+   * @author Graviton5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/gear5 
+   * @link https://github.com/Mattia-Carcione/Graviton5 
    */
   delete(
     schema: string,
