@@ -6,7 +6,7 @@ import { Guards } from './guards.utils'
  * This module provides a simple interface for working with GUIDs, including generation and validation.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export const GuidHelper = Object.freeze({
    * @returns Lowercase UUID v4 string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -32,7 +32,7 @@ export const GuidHelper = Object.freeze({
    * @returns True if the value is a valid and non-empty GUID, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -48,7 +48,7 @@ export const GuidHelper = Object.freeze({
    * @returns True if the string is a valid UUID v4, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -64,7 +64,7 @@ export const GuidHelper = Object.freeze({
    * @returns The GUID if the string is valid, otherwise undefined.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -82,7 +82,7 @@ export const GuidHelper = Object.freeze({
    * @returns True if the GUID is the empty GUID, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

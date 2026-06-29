@@ -35,7 +35,7 @@ import type { LoggerConfig } from '../modules/config'
  * They can be symbols, strings, or classes, but using symbols is a common practice to avoid naming collisions.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -43,7 +43,7 @@ import type { LoggerConfig } from '../modules/config'
 export const INJECTION_TOKENS = Object.freeze({
   /** @description Token used to register and resolve the AuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -53,7 +53,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the AuthService instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -61,7 +61,7 @@ export const INJECTION_TOKENS = Object.freeze({
   AUTH_SERVICE: TokenHelper.createToken<IAuthService>(TOKENS.AUTH_SERVICE),
   /** @description Token used to register and resolve the BearerTokenExtractor instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -71,7 +71,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the InMemoryCache instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -79,7 +79,7 @@ export const INJECTION_TOKENS = Object.freeze({
   CACHE: TokenHelper.createToken<ICache>(TOKENS.CACHE),
   /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -89,7 +89,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the CommandPipeline behaviors in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -99,7 +99,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the CompositePipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -109,7 +109,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the ConcurrencyRetryPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -119,7 +119,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the ConcurrencyService instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -127,7 +127,7 @@ export const INJECTION_TOKENS = Object.freeze({
   CONCURRENCY_SERVICE: TokenHelper.createToken<IConcurrencyService>(TOKENS.CONCURRENCY_SERVICE),
   /** @description Token used to register and resolve the ConsoleLogger instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -135,7 +135,7 @@ export const INJECTION_TOKENS = Object.freeze({
   CONSOLE_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.CONSOLE_LOGGER),
   /** @description Token used to register and resolve the DbClient instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -143,7 +143,7 @@ export const INJECTION_TOKENS = Object.freeze({
   DB_CLIENT: TokenHelper.createToken<IDbClient>(TOKENS.DB_CLIENT),
   /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -153,7 +153,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the GateKeeper instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -161,7 +161,7 @@ export const INJECTION_TOKENS = Object.freeze({
   GATE_KEEPER: TokenHelper.createToken<IGateKeeper>(TOKENS.GATE_KEEPER),
   /** @description Token used to register and resolve the IdempotencyPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -171,7 +171,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -179,7 +179,7 @@ export const INJECTION_TOKENS = Object.freeze({
   IDEMPOTENCY_STORE: TokenHelper.createToken<IIdempotencyStore>(TOKENS.IDEMPOTENCY_STORE),
   /** @description Token used to register and resolve the Logger instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -187,7 +187,7 @@ export const INJECTION_TOKENS = Object.freeze({
   LOGGER: TokenHelper.createToken<ILogger>(TOKENS.LOGGER),
   /** @description Token used to register and resolve the LoggerConfig instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -195,7 +195,7 @@ export const INJECTION_TOKENS = Object.freeze({
   LOGGER_CONFIG: TokenHelper.createToken<LoggerConfig>(TOKENS.LOGGER_CONFIG),
   /** @description Token used to register and resolve the LoggingPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -205,7 +205,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the Mediator instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -213,7 +213,7 @@ export const INJECTION_TOKENS = Object.freeze({
   MEDIATOR: TokenHelper.createToken<IMediator>(TOKENS.MEDIATOR),
   /** @description Token used to register and resolve the RequestContextMiddleware in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -221,7 +221,7 @@ export const INJECTION_TOKENS = Object.freeze({
   MIDDLEWARE: TokenHelper.createToken<IMiddleware<HttpHeaders>>(TOKENS.REQUEST_CONTEXT_MIDDLEWARE),
   /** @description Token used to register and resolve the PerformancePipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -231,7 +231,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the PermissionAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -241,7 +241,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the PinoLogger instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -249,7 +249,7 @@ export const INJECTION_TOKENS = Object.freeze({
   PINO_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.PINO_LOGGER),
   /** @description Token used to register and resolve the PolicyRegistry instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -257,7 +257,7 @@ export const INJECTION_TOKENS = Object.freeze({
   POLICY_REGISTRY: TokenHelper.createToken<IPolicyRegistry>(TOKENS.POLICY_REGISTRY),
   /** @description Token used to register and resolve the QueryCachingPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -267,7 +267,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -277,7 +277,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the RequestContext instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -287,7 +287,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the IServiceResilience instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -295,7 +295,7 @@ export const INJECTION_TOKENS = Object.freeze({
   RESILIENCE_CLIENT: TokenHelper.createToken<IServiceResilience>(TOKENS.RESILIENCE_CLIENT),
   /** @description Token used to register and resolve the RoleAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -305,7 +305,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the SchemaValidationStrategy instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -315,7 +315,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the SentryLogger instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -323,7 +323,7 @@ export const INJECTION_TOKENS = Object.freeze({
   SENTRY_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.SENTRY_LOGGER),
   /** @description Token used to register and resolve the ServiceContainer instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -331,7 +331,7 @@ export const INJECTION_TOKENS = Object.freeze({
   SERVICE_CONTAINER: TokenHelper.createToken<IServiceContainer>(TOKENS.SERVICE_CONTAINER),
   /** @description Token used to register and resolve the ServiceExtractor instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -341,7 +341,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the ServiceScopeFactory instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -351,7 +351,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -361,7 +361,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -371,7 +371,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the ValidationPipeline instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -381,7 +381,7 @@ export const INJECTION_TOKENS = Object.freeze({
   ),
   /** @description Token used to register and resolve the ZodValidator instance in the dependency injection container.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

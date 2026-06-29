@@ -5,7 +5,7 @@ import type { IConcurrencyService } from '@/domain'
  * This service ensures that no matter how many tasks are submitted, only the specified 'concurrencyLimit' number of tasks will be in a pending state simultaneously.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

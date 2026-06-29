@@ -6,7 +6,7 @@ import type { UniqueId } from '../unique_id/unique-id'
  * @template T - The type of the properties of the entity.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export interface IEntity<T> {
    * @see UniqueId for more details on the unique identifier.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -30,7 +30,7 @@ export interface IEntity<T> {
    * @throws An error if the entity is in an invalid state or if the properties cannot be retrieved.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

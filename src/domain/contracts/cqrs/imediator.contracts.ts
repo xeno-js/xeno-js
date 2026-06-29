@@ -6,7 +6,7 @@ import type { IQuery } from './cqrs_types/iquery.types'
  * An interface representing a mediator in the CQRS (Command Query Responsibility Segregation) pattern. The mediator is responsible for sending commands and executing queries by delegating them to the appropriate handlers.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export interface IMediator {
    * @returns A promise that resolves to the response from the handler.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -31,7 +31,7 @@ export interface IMediator {
    * @returns A promise that resolves to the result of the query.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

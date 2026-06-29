@@ -15,7 +15,7 @@ declare const _phantom: unique symbol
  * Tokens must be created exclusively through {@link createToken}.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -23,7 +23,7 @@ declare const _phantom: unique symbol
 export interface InjectionToken<T> {
   /** @description The unique symbol that identifies this token at runtime.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -31,7 +31,7 @@ export interface InjectionToken<T> {
   readonly symbol: symbol
   /** @description Phantom property to bind the generic type `T` to this token.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

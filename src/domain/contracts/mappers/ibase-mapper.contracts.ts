@@ -11,7 +11,7 @@
  *  }
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -23,7 +23,7 @@ export interface IBaseMapper<TSource, TDestination> {
    * @returns An object of type TDestination that is the result of mapping the source object. The returned object should be a new instance that represents the transformed data according to the mapping logic defined in the implementation of this method.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -5,7 +5,7 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared
  * It includes additional properties such as an error code and an HTTP status code.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -13,7 +13,7 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared
 interface ErrorPayload {
   /** The error message describing the error.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -21,7 +21,7 @@ interface ErrorPayload {
   message: string
   /** The error code representing the type of error.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -29,7 +29,7 @@ interface ErrorPayload {
   code: string
   /** The HTTP status code associated with the error.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -37,7 +37,7 @@ interface ErrorPayload {
   status: number
   /** The name of the error, typically the class name.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -45,7 +45,7 @@ interface ErrorPayload {
   name: string
   /** An optional property to hold the original error or any additional context.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -58,7 +58,7 @@ interface ErrorPayload {
  * It includes additional properties such as an error code and an HTTP status code.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -68,7 +68,7 @@ export class AppError extends Error {
    * The error code representing the type of error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -78,7 +78,7 @@ export class AppError extends Error {
    * The HTTP status code associated with the error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -91,7 +91,7 @@ export class AppError extends Error {
    * @param payload - The payload containing error details.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -111,7 +111,7 @@ export class AppError extends Error {
    * @returns An AppError instance representing the error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -126,7 +126,7 @@ export class AppError extends Error {
    * @throws An AppError instance representing the error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -141,7 +141,7 @@ export class AppError extends Error {
    * @returns An AppError instance representing the aborted request error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -162,7 +162,7 @@ export class AppError extends Error {
    * @param name - The name of the error, typically the class name or context where the error occurred.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

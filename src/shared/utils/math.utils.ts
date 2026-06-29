@@ -2,7 +2,7 @@
  * @description Namespace for safe mathematical operations.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export const MathHelper = Object.freeze({
    * @returns Clamped value.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -32,7 +32,7 @@ export const MathHelper = Object.freeze({
    * @returns Rounded value.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -50,7 +50,7 @@ export const MathHelper = Object.freeze({
    * @returns Division result or fallback.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -67,7 +67,7 @@ export const MathHelper = Object.freeze({
    * @returns Percentage or 0 when total is zero.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

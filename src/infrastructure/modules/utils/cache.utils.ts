@@ -7,7 +7,7 @@ import type { CacheConfig } from '../config'
  * @description Utility functions for configuring caching in the service container.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ export const CacheUtils = Object.freeze({
    * @returns True if any cache strategies are required, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -2,7 +2,7 @@
  *  Log levels for the logger.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -11,7 +11,7 @@ export const LOG_LEVEL = Object.freeze({
   /** * Debug level for detailed debugging information. This level is typically used during development and should be turned off in production to avoid verbose logging.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -20,7 +20,7 @@ export const LOG_LEVEL = Object.freeze({
   /** * Info level for general informational messages that highlight the progress of the application at a coarse-grained level. This level is suitable for production environments to track the normal operation of the application.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -29,7 +29,7 @@ export const LOG_LEVEL = Object.freeze({
   /** * Warn level for potentially harmful situations that are not necessarily errors but may require attention. This level is useful for identifying issues that could lead to errors if not addressed.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -38,7 +38,7 @@ export const LOG_LEVEL = Object.freeze({
   /** * Error level for serious issues that have caused or are likely to cause the application to fail. This level is critical for identifying and addressing problems that need immediate attention.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -48,7 +48,7 @@ export const LOG_LEVEL = Object.freeze({
 
 /** @description Inferred union of valid log level values.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -57,7 +57,7 @@ export type LogLevel = (typeof LOG_LEVEL)[keyof typeof LOG_LEVEL]
 
 /** @description Mapping of log level values to their corresponding string representations for easier readability in log outputs.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -65,7 +65,7 @@ export type LogLevel = (typeof LOG_LEVEL)[keyof typeof LOG_LEVEL]
 export const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
   /** Debug level for detailed debugging information. This level is typically used during development and should be turned off in production to avoid verbose logging.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -73,7 +73,7 @@ export const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
   [LOG_LEVEL.DEBUG]: 'DEBUG',
   /** Info level for general informational messages that highlight the progress of the application at a coarse-grained level. This level is suitable for production environments to track the normal operation of the application.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -81,7 +81,7 @@ export const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
   [LOG_LEVEL.INFO]: 'INFO',
   /** Warn level for potentially harmful situations that are not necessarily errors but may require attention. This level is useful for identifying issues that could lead to errors if not addressed.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -89,7 +89,7 @@ export const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
   [LOG_LEVEL.WARN]: 'WARN',
   /** Error level for serious issues that have caused or are likely to cause the application to fail. This level is critical for identifying and addressing problems that need immediate attention.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

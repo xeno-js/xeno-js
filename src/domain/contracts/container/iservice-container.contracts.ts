@@ -6,7 +6,7 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * @fileoverview Defines the IServiceContainer interface for a dependency injection container.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -21,7 +21,7 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * that the container will resolve and inject into the constructor.
 
    * 
-   * @author Mattia Carcione HH
+   * @author Gear5 HH
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -39,7 +39,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione e.e
+   * @author Gear5 e.e
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -61,7 +61,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione °§ç
+   * @author Gear5 °§ç
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -85,7 +85,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione €
+   * @author Gear5 €
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -106,7 +106,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione $
+   * @author Gear5 $
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -125,7 +125,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione SNOOP DOOOOOG
+   * @author Gear5 SNOOP DOOOOOG
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -146,7 +146,7 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author Mattia Carcione ee
+   * @author Gear5 ee
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -164,7 +164,7 @@ export interface IServiceContainer {
    * @throws An error if the token is registered with scoped lifetime.
   
    * 
-   * @author Mattia Carcione hehe
+   * @author Gear5 hehe
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -181,7 +181,7 @@ export interface IServiceContainer {
    * @returns A new scope instance.
   
    * 
-   * @author Mattia Carcione ,.,
+   * @author Gear5 ,.,
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -7,7 +7,7 @@ import type { ResultType } from '../../results/result.types'
  * @template TResponse - The type of the response that the handler will return after processing the request.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ export interface IHandler<TRequest, TResponse> {
    * @returns A Promise that resolves to a response of type TResponse.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

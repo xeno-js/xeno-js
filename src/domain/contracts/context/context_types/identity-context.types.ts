@@ -4,7 +4,7 @@ import type { Guid, Optional } from '@/shared'
  * @fileoverview Defines the Identity interface representing the authenticated user's identity in the system.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -14,7 +14,7 @@ import type { Guid, Optional } from '@/shared'
  * An interface representing the authenticated user's identity in the system. This interface includes properties such as the user's unique identifier, email address, and assigned roles, which can be used for authentication and authorization purposes throughout the application.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -22,7 +22,7 @@ import type { Guid, Optional } from '@/shared'
 export interface Identity {
   /** @description The unique identifier of the user.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -31,7 +31,7 @@ export interface Identity {
 
   /** @description The tenant ID associated with the user.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -40,7 +40,7 @@ export interface Identity {
 
   /** @description The roles assigned to the user, which can be used for authorization purposes.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -49,7 +49,7 @@ export interface Identity {
 
   /** @description The permissions assigned to the user, which can be used for fine-grained authorization checks.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

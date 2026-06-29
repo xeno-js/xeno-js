@@ -6,7 +6,7 @@
  * @template T - Il tipo dell'oggetto da convalidare.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export interface ISpecification<T> {
    * @returns Booleano: true se i criteri sono soddisfatti.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -28,7 +28,7 @@ export interface ISpecification<T> {
    * Combina questa specifica con un'altra tramite l'operatore logico AND.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -39,7 +39,7 @@ export interface ISpecification<T> {
    * Combina questa specifica con un'altra tramite l'operatore logico OR.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -50,7 +50,7 @@ export interface ISpecification<T> {
    * Inverte il risultato di questa specifica tramite l'operatore logico NOT.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

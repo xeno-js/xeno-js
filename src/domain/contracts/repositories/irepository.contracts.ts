@@ -6,7 +6,7 @@ import type { ResultType } from '../../results/result.types'
  * @fileoverview Defines the IRepository interface for generic data access operations.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ import type { ResultType } from '../../results/result.types'
  * @template T - The type of the entity that the repository will manage.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -31,7 +31,7 @@ export interface IRepository<T> {
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -45,7 +45,7 @@ export interface IRepository<T> {
    * @returns A promise that resolves to an array of entities that match the criteria.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -60,7 +60,7 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the update operation is complete.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -78,7 +78,7 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been saved.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -93,7 +93,7 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been deleted.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

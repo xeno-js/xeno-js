@@ -4,7 +4,7 @@ import type { InjectionToken } from '@/shared'
  * @fileoverview Defines the IServiceScope interface for scoped dependency injection.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -22,7 +22,7 @@ import type { InjectionToken } from '@/shared'
  * scoped instances and invalidate the scope.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -40,7 +40,7 @@ export interface IServiceScope {
    * @throws An error if the scope has already been disposed.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -54,7 +54,7 @@ export interface IServiceScope {
    * Any subsequent call to {@link resolve} on a disposed scope will throw.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

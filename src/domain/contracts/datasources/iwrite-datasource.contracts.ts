@@ -4,7 +4,7 @@ import type { Optional, WriteCriteria } from '@/shared'
  * @description Interface representing a data source for performing database operations. This interface defines the contract for executing SQL queries and commands against a database, including methods for finding records based on filters and unique identifiers, as well as inserting and deleting records. The IWriteDataSource interface is designed to be implemented by classes that provide specific data access logic, allowing for separation of concerns and easier testing. It extends the IReadDataSource interface, which includes basic read operations, and adds methods for write operations such as insert and delete.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves to an array of objects representing the rows returned by the query.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -31,7 +31,7 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves to an object representing the row returned by the query.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -45,7 +45,7 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -59,7 +59,7 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -74,7 +74,7 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

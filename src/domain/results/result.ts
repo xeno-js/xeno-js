@@ -8,7 +8,7 @@ import type { Optional } from '@/shared'
  * @template TError - The type of the error in case of a failed operation (default is never).
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export class Result<TValue, TError = never> {
    * Indicates whether the operation was successful or not.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -28,7 +28,7 @@ export class Result<TValue, TError = never> {
    * The error of the operation in case it failed.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -38,7 +38,7 @@ export class Result<TValue, TError = never> {
    * The value of the operation in case it succeeded.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -53,7 +53,7 @@ export class Result<TValue, TError = never> {
    * @param value - The value of the operation in case it succeeded (optional).
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -71,7 +71,7 @@ export class Result<TValue, TError = never> {
    * @returns A Result instance representing a successful operation.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -87,7 +87,7 @@ export class Result<TValue, TError = never> {
    * @returns A Result instance representing a failed operation.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -102,7 +102,7 @@ export class Result<TValue, TError = never> {
    * @returns True if the result is a success, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -118,7 +118,7 @@ export class Result<TValue, TError = never> {
    * @throws An error if the result is a failure.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -137,7 +137,7 @@ export class Result<TValue, TError = never> {
    * @throws An error if the result is a success.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

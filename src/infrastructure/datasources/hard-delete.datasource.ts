@@ -9,7 +9,7 @@ import { AbstractWriteDataSource } from './abstract-write.datasource'
  * @template T - The type of the records that the data source will handle.
 
    * 
-   * @author Mattia Carcione "£$L"
+   * @author Gear5 "£$L"
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -24,7 +24,7 @@ export class HardDeleteDataSource<
    * @param _schemaRegistry - A record that maps table names (strings) to their corresponding PgTable schemas. This registry is crucial for the data source to understand the structure of the database tables it interacts with, allowing it to construct valid SQL queries based on the defined schemas. The schema registry helps ensure that the data source can correctly reference columns and tables when building queries, and it also provides a layer of abstraction that allows for easier maintenance and updates to the database schema without needing to change the core logic of the data source.
   
    * 
-   * @author Mattia Carcione 1.2.3
+   * @author Gear5 1.2.3
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

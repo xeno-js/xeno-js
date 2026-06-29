@@ -4,7 +4,7 @@ import type { Dictionary, Optional } from '@/shared'
  * Interface for building filter objects based on specifications.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in queries.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -28,7 +28,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in query operations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -40,7 +40,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in delete operations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -52,7 +52,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in update operations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -65,7 +65,7 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A projections object that can be used in query operations to specify which fields to return.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

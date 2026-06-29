@@ -6,7 +6,7 @@ import type { ResultType } from '../../results/result.types'
  * An interface representing a context for managing transactions in a data access layer. This interface defines methods for beginning a transaction, committing it, and rolling it back in case of errors.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface IDbContext {
    * Begins a new transaction. This method should be called before performing any operations that need to be part of the transaction.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -27,7 +27,7 @@ export interface IDbContext {
    * Commits the current transaction. This method should be called after all operations in the transaction have been successfully completed.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -38,7 +38,7 @@ export interface IDbContext {
    * Rolls back the current transaction. This method should be called if any operation in the transaction fails, to ensure that all changes made during the transaction are undone.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -51,7 +51,7 @@ export interface IDbContext {
    * @returns A promise that resolves to a ResultType containing the result of the operation, or an error if the operation fails.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

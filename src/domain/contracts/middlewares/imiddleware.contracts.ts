@@ -4,7 +4,7 @@ import type { ResponseDto } from '@/shared'
  * @description The IMiddleware interface defines the contract for middleware components that process incoming HTTP requests. Implementing classes must provide an execute method that takes an HttpRequest as input and returns a Promise of a ResponseDto, which can either be a successful response or an error response. This design allows for flexible middleware implementations that can perform various tasks such as authentication, logging, request transformation, or response generation.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface IMiddleware<TRequest = unknown> {
    * @returns A Promise that resolves to a ResponseDto containing either a successful response or an error response. The ResponseDto allows for handling both success and error cases in a consistent manner.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

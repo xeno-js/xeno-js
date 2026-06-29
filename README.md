@@ -9,7 +9,7 @@
     <a href="https://github.com/Mattia-Carcione/gear5">
       <img src="https://img.shields.io/badge/Powered%20by-Gear5-blueviolet?style=flat-square" alt="Powered by Gear5" />
     </a>
-    <a href="LICENSE">
+    <a href="https://github.com/Mattia-Carcione/gear5/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/@gear5/core?style=flat-square" alt="License: ISC" />
     </a>
     <a href="https://www.npmjs.com/package/@gear5/core">
@@ -34,24 +34,69 @@ and solid RBAC out of the box in a fluent API.** Build blazing-fast,
 serverless-ready APIs with the elegant DX of .NET, without the vendor lock-in of
 heavy frameworks.
 
+---
+
 ## 💡 Why Gear5?
 
-Modern Node.js frameworks (like NestJS) provide great structures but come with
-heavy costs: massive boilerplate, vendor lock-in, and slow cold-starts due to
-decorators and reflection magic.
+Most modern Node.js frameworks rely on heavy abstractions through decorators and
+reflection. While they offer rapid setup, these approaches often lead to:
 
-**Gear5** takes a different approach. It provides a lightweight,
-highly-engineered Kernel based on **Domain-Driven Design (DDD)** and **Clean
-Architecture**.
+- **"Hidden Magic"**: Debugging and tracing the execution flow becomes
+  difficult.
+- **Heavy Cold-Starts**: The computational cost of reflection drastically
+  reduces performance in serverless environments.
+- **Lock-in**: You become tightly coupled to the framework’s opinionated
+  architecture and toolset.
 
-- 🚀 **Zero Magic, Zero Decorators:** Ultra-fast cold starts, making it perfect
-  for Serverless (AWS Lambda, Cloudflare Workers, Vercel Edge).
-- 🧩 **100% Agnostic:** Bring your own framework (Express, Hono, Fastify). Gear5
-  handles the logic, you handle the transport.
-- 🏗️ **.NET-Style Builder:** A fluent, strongly-typed `AppBuilder` to configure
-  your DI container seamlessly.
-- 🛡️ **Enterprise Ready:** Native support for CQRS pipelines (Logging,
-  Validation, Idempotency, Concurrency Retries) out of the box.
+**Gear5** inverts this paradigm. It is not a "cage," but an architectural
+accelerator that restores full control over your TypeScript stack.
+
+### Why choose Gear5?
+
+- **Zero Magic, Zero Decorators & Cloud Optimized**: Gear5 avoids "magic"
+  meta-programming in favor of explicit, strongly-typed configuration. The
+  result is lightning-fast cold starts and a codebase that is straightforward to
+  debug because the code is exactly what you see. Its lightweight footprint
+  makes it perfect for serverless and edge computing environments (AWS Lambda,
+  Cloudflare Workers, Vercel Edge), allowing you to leverage highly
+  cost-effective cloud infrastructure without compromising performance.
+- **Transparent & DDD-First Architecture**: Gear5 enforces a native "Clean
+  Architecture" (`domain`, `application`, `infrastructure`, `presentation`).
+  Every component is isolated, and the data flow (CQRS) is fully traceable,
+  eliminating the "black box" effect common in traditional frameworks.
+- **100% Agnostic**: Gear5 acts as a Kernel. It doesn't force you into a
+  specific web server; it provides the business logic and execution pipelines,
+  leaving you free to choose your preferred transport layer (Express, Hono,
+  Fastify, or CLI).
+- **Install Only What You Need**: Gear5 utilizes **Optional Peer Dependencies**.
+  You only install the external libraries you actually require. The framework is
+  designed to strictly lazy-load only the modules you enable in your
+  configuration, keeping your node_modules lean, preventing dependency bloat,
+  and reducing build sizes.
+- **Precision Engineering (.NET-Style Builder)**: Configuration is handled via a
+  fluent, type-safe `AppBuilder`. Dependency management uses `TokenHelper` with
+  nominal branding, preventing cross-token resolution errors and ensuring the DI
+  container remains consistent and predictable.
+- **Enterprise-Ready Out of the Box**: Stop reinventing the wheel for complex
+  requirements. Gear5 integrates native enterprise patterns:
+
+- **CQRS Pipelines**: Ready-to-use logic for Logging, Validation (Zod),
+  Idempotency, and Concurrency.
+- **Resilience**: Fault handling via configured `cockatiel` policies (Retry,
+  Circuit Breaker, Bulkhead).
+- **Database**: Powerful, typed abstraction via `Drizzle ORM`, ensuring
+  transactional integrity and performance.
+
+### An "Open" Framework
+
+Gear5 hides nothing. Need a custom authorization strategy or a specific log
+driver? The modular approach via `IModule` allows you to extend the framework
+without fighting its conventions. It is designed for developers who understand
+their code and want a robust "backbone" framework that doesn't obstruct
+architectural choices.
+
+Gear5 doesn't dictate how to write your business logic; it provides the
+enterprise-grade infrastructure to run it at peak performance.
 
 ---
 
@@ -197,6 +242,19 @@ if (!result.isOk()) {
 
 ---
 
+## 🛠 Scaffold your project with CLI
+
+Gear5 includes an official CLI tool, `@gear5/create`, designed to bootstrap your
+new application in seconds. It offers an interactive setup to select exactly the
+modules you need (Database, HTTP, Auth, Logging, etc.), ensuring you start with
+a clean, pre-configured architecture tailored to your specific requirements.
+
+If you want to learn how to use it, see the full options available, or
+understand how the scaffolding engine works, check the
+**[CLI Documentation](./cli/README.md)**.
+
+---
+
 ## 🏗️ Architecture Structure
 
 The framework strictly follows Clean Architecture principles. When using Gear5,
@@ -337,4 +395,4 @@ your README:
 
 ## 📄 License
 
-Copyright (c) 2026 Mattia Carcione. Licensed under the [ISC License](LICENSE).
+Copyright (c) 2026 Gear5. Licensed under the [ISC License](LICENSE).

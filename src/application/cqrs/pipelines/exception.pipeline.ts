@@ -7,7 +7,7 @@ import { PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@
  * @template TInput - The type of the input request, which must extend IRequest.
  * @template TResult - The type of the result returned by the pipeline, which can be any type.
  *
- * @author Mattia Carcione -.-
+ * @author Gear5 -.-
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5

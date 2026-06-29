@@ -3,7 +3,6 @@ import pc from 'picocolors';
 import { ScaffoldingEngine } from './core/scaffolding.engine';
 import { ScaffoldingOptions } from './core/generator.interface';
 
-// Importa tutti i generatori
 import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, TokensGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
 
 async function init() {
@@ -26,7 +25,6 @@ async function init() {
     redis: isFull,
   };
 
-  // Se non è né full né empty, avviamo il modo interattivo
   if (!isFull && !isEmpty) {
     const response = await prompts([
       { type: 'confirm', name: 'database', message: 'Install Drizzle ORM & Postgres?', initial: true },
@@ -37,7 +35,6 @@ async function init() {
       { type: 'confirm', name: 'redis', message: 'Install ioredis?', initial: false },
     ]);
 
-    // Uscita se l'utente preme Ctrl+C
     if (Object.keys(response).length === 0) {
       console.log(pc.red('❌ Scaffolding cancelled.'));
       process.exit(1);
@@ -48,7 +45,6 @@ async function init() {
     console.log(pc.cyan(`📦 ${mode} mode selected.`));
   }
 
-  // Composizione dell'Engine con tutti i generatori
   const engine = new ScaffoldingEngine([
     new PackageJsonGenerator(),
     new TsconfigGenerator(),

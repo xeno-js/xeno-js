@@ -4,7 +4,7 @@ import type { Optional } from '@/shared'
  * @description Interface for a logger that provides methods for logging messages at different levels (info, warn, error, debug) and tracking exceptions. Each logging method accepts a message and an optional context, while the error method also accepts an optional Error object.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -28,7 +28,7 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -41,7 +41,7 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -53,7 +53,7 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

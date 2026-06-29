@@ -4,7 +4,7 @@ import type { Dictionary, Maybe, Optional } from './common.types'
  * @description Supported HTTP methods.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -15,7 +15,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 
  * @description Header map used by agnostic HTTP clients.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -26,7 +26,7 @@ export type HttpHeaders = Dictionary<string | string[]>
  * @description Query string value accepted by the HTTP contract.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -38,7 +38,7 @@ export type HttpQueryValue = Maybe<string | number | boolean>
  * from concrete transport libraries (fetch, axios, undici, etc.).
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -49,7 +49,7 @@ export type HttpOptions = 'url' | 'method' | 'body'
  * @description Request options accepted by the agnostic HTTP client.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -57,7 +57,7 @@ export type HttpOptions = 'url' | 'method' | 'body'
 export interface HttpRequest<TBody = unknown> {
   /** @description HTTP method used for the outgoing call.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -66,7 +66,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Optional query string parameters.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -75,7 +75,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Optional request body.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -84,7 +84,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Optional request headers.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -93,7 +93,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Absolute or relative target URL.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -102,7 +102,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Optional abort signal used to cancel the request.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -111,7 +111,7 @@ export interface HttpRequest<TBody = unknown> {
 
   /** @description Optional request timeout in milliseconds.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -123,7 +123,7 @@ export interface HttpRequest<TBody = unknown> {
  * @description Normalized response returned by an agnostic HTTP client.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -131,7 +131,7 @@ export interface HttpRequest<TBody = unknown> {
 export interface HttpResponse<TData = unknown> {
   /** @description HTTP status code returned by the server.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -140,7 +140,7 @@ export interface HttpResponse<TData = unknown> {
 
   /** @description Indicates if the response status is in the 2xx range.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -149,7 +149,7 @@ export interface HttpResponse<TData = unknown> {
 
   /** @description Response headers normalized as a dictionary.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -158,7 +158,7 @@ export interface HttpResponse<TData = unknown> {
 
   /** @description Parsed response payload.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

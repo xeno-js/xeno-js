@@ -2,7 +2,7 @@
  * The IValueObject interface defines the contract for value objects in the domain. A value object is an immutable type that represents a concept or measurement in the domain, and its equality is based on its properties rather than its identity. The IValueObject interface includes methods for retrieving the underlying value, comparing value objects for equality, and providing a string representation of the value object.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -13,7 +13,7 @@ export interface IValueObject<T extends object> {
    * @returns The underlying value of the value object.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -26,7 +26,7 @@ export interface IValueObject<T extends object> {
    * @returns True if the underlying values of both value objects are equal; otherwise, returns false.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -38,7 +38,7 @@ export interface IValueObject<T extends object> {
    * @returns A string representation of the value object.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

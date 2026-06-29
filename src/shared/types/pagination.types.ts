@@ -9,7 +9,7 @@
  * @template T  The type of each item in the page.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ export interface IPaginatedResult<T> {
    * @description Immutable slice of items for the requested page.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -30,7 +30,7 @@ export interface IPaginatedResult<T> {
    * @description Total number of items matching the query across all pages.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -41,7 +41,7 @@ export interface IPaginatedResult<T> {
    * @description Current 1-based page index.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -52,7 +52,7 @@ export interface IPaginatedResult<T> {
    * @description Number of items per page used for this result.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -64,7 +64,7 @@ export interface IPaginatedResult<T> {
    * Computed as `Math.ceil(total / pageSize)`.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -75,7 +75,7 @@ export interface IPaginatedResult<T> {
    * @description `true` when a next page exists (i.e. `page < totalPages`).
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -86,7 +86,7 @@ export interface IPaginatedResult<T> {
    * @description `true` when a previous page exists (i.e. `page > 1`).
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

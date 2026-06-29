@@ -10,7 +10,7 @@ import type { IServiceContainer } from '../container/iservice-container.contract
  * @template TOptions - The type of configuration options for the module.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -23,7 +23,7 @@ export interface IModule<TOptions = unknown> {
    * @param opts - The configuration options for the module.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

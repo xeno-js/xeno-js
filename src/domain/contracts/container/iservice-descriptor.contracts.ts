@@ -6,7 +6,7 @@ import type { IServiceContainer } from './iservice-container.contracts'
  * @fileoverview Defines the ServiceDescriptor type for service registrations.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ import type { IServiceContainer } from './iservice-container.contracts'
  * how instances are managed and cached by the container.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -29,7 +29,7 @@ export type Lifetime = 'singleton' | 'transient' | 'scoped'
  * the implementation constructor, its dependencies, and its lifetime.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -39,7 +39,7 @@ export interface ServiceDescriptor<T> {
    * @description The concrete class to instantiate for this service.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -50,7 +50,7 @@ export interface ServiceDescriptor<T> {
    * as constructor arguments when instantiating the service.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -61,7 +61,7 @@ export interface ServiceDescriptor<T> {
    * managed and cached by the container.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -72,7 +72,7 @@ export interface ServiceDescriptor<T> {
    * If provided, this factory will be used instead of the constructor.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

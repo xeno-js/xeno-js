@@ -8,7 +8,7 @@ import type { Factory } from '@/shared'
  * @template TOutput The type of the output produced by the factory method.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -20,7 +20,7 @@ export interface IFactory<TInput, TOutput> {
    * @returns An instance of type `Output`.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

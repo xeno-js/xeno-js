@@ -6,7 +6,7 @@ const MS_PER_DAY = 86_400_000
  * @description Namespace for timezone-agnostic date utilities.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export const DateHelper = Object.freeze({
    * @returns ISO 8601 UTC string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -34,7 +34,7 @@ export const DateHelper = Object.freeze({
    * @returns New Date instance.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -50,7 +50,7 @@ export const DateHelper = Object.freeze({
    * @returns True when expiresAt is in the past.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -67,7 +67,7 @@ export const DateHelper = Object.freeze({
    * @returns True when after is after before.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -82,7 +82,7 @@ export const DateHelper = Object.freeze({
    * @returns True when date is in the future.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

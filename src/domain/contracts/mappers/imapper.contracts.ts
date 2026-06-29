@@ -5,7 +5,7 @@
  * @template TDto - Il tipo del Data Transfer Object (DTO).
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export interface IMapper<TE, TDto> {
    * @returns A DTO representation of the given entity.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -32,7 +32,7 @@ export interface IMapper<TE, TDto> {
    * @returns An entity representation of the given DTO.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -45,7 +45,7 @@ export interface IMapper<TE, TDto> {
    * @returns A partial DTO representation of the given partial entity.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

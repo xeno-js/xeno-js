@@ -2,7 +2,7 @@ import type { Optional } from '@/shared'
 
 /** @description Configuration for Redis integration, including details such as host, port, and credentials. If enabled, the query bus and command bus (in case of idempotency) pipelines will use Redis as the cache system to store and retrieve data efficiently. The configuration includes specific details for Redis integration, such as host, port, and credentials, providing flexibility in how the cache is implemented and used within the application.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -10,7 +10,7 @@ import type { Optional } from '@/shared'
 export interface CacheConfig {
   /** @description Optional configuration for in-memory cache integration. If enabled, the query bus and command bus (in case of idempotency) pipelines will use an in-memory cache system to store and retrieve data efficiently. The configuration includes specific details for in-memory cache integration, providing flexibility in how the cache is implemented and used within the application.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -18,7 +18,7 @@ export interface CacheConfig {
   inMemory: boolean
   /** @description Optional configuration for Redis integration, including details such as host, port, and credentials. If provided and enabled, the application will use Redis as the cache system to store and retrieve data efficiently. The configuration includes specific details for Redis integration, such as host, port, and credentials, providing flexibility in how the cache is implemented and used within the application.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -30,7 +30,7 @@ export interface CacheConfig {
  * @description An interface representing a cache client, which provides methods for getting and setting values in a cache storage. This interface abstracts the underlying cache implementation, allowing for flexibility in choosing different caching solutions (e.g., in-memory, Redis) without affecting the rest of the application.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -40,7 +40,7 @@ export interface CacheClientConfig {
    * @description The host address of the cache server (e.g., Redis). Optional for in-memory cache implementations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -49,7 +49,7 @@ export interface CacheClientConfig {
   /**
    * @description The port number of the cache server (e.g., Redis). Optional for in-memory cache implementations.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -59,7 +59,7 @@ export interface CacheClientConfig {
    * @description The password for authenticating with the cache server (e.g., Redis). Optional for in-memory cache implementations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -68,7 +68,7 @@ export interface CacheClientConfig {
   /** @description The username for authenticating with the cache server (e.g., Redis). Optional for in-memory cache implementations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -76,7 +76,7 @@ export interface CacheClientConfig {
   username: Optional<string>
   /** @description A boolean flag indicating whether to use TLS/SSL for the connection to the cache server (e.g., Redis). Optional for in-memory cache implementations.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -84,7 +84,7 @@ export interface CacheClientConfig {
   tls: boolean
   /** @description The maximum number of reconnection attempts before declaring failure. Optional for in-memory cache implementations.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5

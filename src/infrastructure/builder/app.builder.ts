@@ -18,7 +18,7 @@ import type {
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -33,7 +33,7 @@ interface QueuedModule {
  * It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -82,7 +82,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -97,7 +97,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -113,7 +113,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -145,7 +145,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione §§§
+   * @author Gear5 §§§
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -169,7 +169,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -195,7 +195,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -221,7 +221,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione #
+   * @author Gear5 #
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -254,7 +254,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione §
+   * @author Gear5 §
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -275,7 +275,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione ''''
+   * @author Gear5 ''''
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -299,7 +299,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione o.o
+   * @author Gear5 o.o
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -338,7 +338,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione 0.0
+   * @author Gear5 0.0
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -372,7 +372,7 @@ export class AppBuilder {
    * @param setupAction A callback function that receives the IServiceContainer to register services.
    * @returns The current instance of AppBuilder for method chaining.
    *
-   * @author Mattia Carcione - - -
+   * @author Gear5 - - -
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -389,7 +389,7 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -411,7 +411,7 @@ export class AppBuilder {
    * @returns The resolved service instance.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -429,7 +429,7 @@ export class AppBuilder {
    * @returns The fully configured ServiceContainer.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -471,7 +471,7 @@ export class AppBuilder {
    * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -496,7 +496,7 @@ export class AppBuilder {
    * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -521,7 +521,7 @@ export class AppBuilder {
    * @description Queues the configuration of the context module if it has not already been queued. This method ensures that the context module is only added once, even if multiple context-related configurations are made.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

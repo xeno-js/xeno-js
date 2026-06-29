@@ -4,7 +4,7 @@
  * and bulkhead settings.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -12,7 +12,7 @@
 export const RESILIENCE_DEFAULTS = Object.freeze({
   /** @description Default retry policy values.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -20,7 +20,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
   RETRY: Object.freeze({
     /** @description Default number of retry attempts.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5
@@ -29,7 +29,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
 
     /** @description Default base delay in milliseconds for retry backoff.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5
@@ -38,7 +38,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
 
     /** @description Default maximum delay in milliseconds for retry backoff.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5
@@ -48,7 +48,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
 
   /** @description Default circuit breaker policy values.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -56,7 +56,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
   CIRCUIT_BREAKER: Object.freeze({
     /** @description Default number of consecutive failures before opening the circuit.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5
@@ -65,7 +65,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
 
     /** @description Default half-open timeout in milliseconds.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5
@@ -75,7 +75,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
 
   /** @description Default bulkhead policy values.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -83,7 +83,7 @@ export const RESILIENCE_DEFAULTS = Object.freeze({
   BULKHEAD: Object.freeze({
     /** @description Default maximum number of concurrent operations.
      *
-     * @author Mattia Carcione
+     * @author Gear5
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/gear5

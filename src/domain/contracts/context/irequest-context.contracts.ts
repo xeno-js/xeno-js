@@ -4,7 +4,7 @@ import type { Optional } from '@/shared'
  * @fileoverview Defines the IRequestContext interface for managing user identity context within the application.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -14,7 +14,7 @@ import type { Optional } from '@/shared'
  * An interface for managing user identity context within the application. This interface provides methods for executing asynchronous functions with the current user's identity context and retrieving the current user's identity information. It allows for seamless integration of identity management into various parts of the application, ensuring that identity-related data is properly propagated and accessible when needed.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -27,19 +27,19 @@ export interface IRequestContext<TCtx> {
    * @returns A promise that resolves to the result of the provided function, allowing the caller to handle the outcome of the operation performed within the identity context.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
    */
-  runAsync<T>(ctx: TCtx, fn: () => Promise<T>): Promise<T>
+  runAsync<T = unknown>(ctx: TCtx, fn: () => Promise<T>): Promise<T>
 
   /**
    * Retrieves the current user's identity information, including user ID, roles, and correlation ID. This method can be used to access identity data outside of the context of an asynchronous function, allowing for synchronous access to identity information when needed.
    * @returns An object representing the current user's identity, containing properties such as user ID, roles, and correlation ID. This information can be used for authentication and authorization purposes throughout the application.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

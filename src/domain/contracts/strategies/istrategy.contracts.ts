@@ -4,7 +4,7 @@ import type { ResultType } from '../../results/result.types'
  * @description Interface that defines the contract for a strategy used in the authorization pipeline. Each strategy must implement the isApplicable method to determine if it should be applied to a given request, and the execute method to perform the necessary authorization checks. The execute method returns a ResultType indicating whether the authorization was successful or if it failed, allowing the pipeline to handle the outcome accordingly.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface IStrategy<TInput, TResult = void> {
    * @returns A Promise that resolves to a ResultType indicating the outcome of the strategy's execution. The ResultType should indicate success if the authorization checks pass, or contain an error if the checks fail, allowing the pipeline to handle the result accordingly.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

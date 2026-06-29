@@ -6,7 +6,7 @@ import type { HttpConfig, ResilienceConfig } from '../config'
  * @description Utility functions for configuring HTTP clients and resilience features in the service container.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export const HttpUtils = Object.freeze({
    * @returns A string representing the encoded query string that can be appended to a URL for making HTTP requests.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -36,7 +36,7 @@ export const HttpUtils = Object.freeze({
    * @param opts - The ResilienceConfig options that determine whether resilience features are enabled and provide the necessary settings for implementing resilience strategies.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

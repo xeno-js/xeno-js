@@ -8,7 +8,7 @@ import type { AuthClientConfig, PipelineConfig } from '../config'
  *  @description Utility functions for configuring authentication and authorization in the service container.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -20,7 +20,7 @@ export const AuthUtils = Object.freeze({
    * @returns True if any authorization strategies are required, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -120,7 +120,7 @@ export const AuthUtils = Object.freeze({
    * @param opts The authentication configuration options.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

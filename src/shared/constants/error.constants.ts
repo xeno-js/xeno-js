@@ -4,7 +4,7 @@
  * without relying on human-readable strings.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -14,7 +14,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description Unclassified or unexpected infrastructure-level failure.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -23,7 +23,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description An operation that has not yet been implemented was invoked.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -32,7 +32,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description An external API call failed due to network issues or a 5xx response.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -41,7 +41,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description One or more input fields failed invariant or schema validation.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -50,7 +50,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description Authentication failed due to invalid credentials or token.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -59,7 +59,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The caller is not authenticated.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -68,7 +68,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The caller is authenticated but lacks the required permissions.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -77,7 +77,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The request was well-formed but semantically invalid.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -86,7 +86,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description The request was aborted before it could be processed.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -95,7 +95,7 @@ export const ERROR_CODES = Object.freeze({
 
   /** @description Required service scope is not available in the request context.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -105,7 +105,7 @@ export const ERROR_CODES = Object.freeze({
 
 /** @description Inferred union of every valid ERROR_CODES value.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -120,7 +120,7 @@ export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
  * consistent semantics between the AppError, Result and ApiResponse contracts.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -130,7 +130,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The request succeeded and a response body is present.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -139,7 +139,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description A new resource has been successfully created.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -148,7 +148,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The request succeeded but there is no response body (e.g. DELETE).
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -159,7 +159,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The request payload is malformed or contains invalid parameters.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -168,7 +168,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description Authentication credentials are missing or invalid.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -177,7 +177,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The caller lacks permission to perform the requested operation.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -186,7 +186,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The requested resource does not exist.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -195,7 +195,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The request conflicts with the current state of the resource.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -204,7 +204,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The payload is syntactically valid but semantically unprocessable.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -213,7 +213,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The caller has exceeded its allowed rate limit.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -222,7 +222,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description The client closed the connection before the server finished responding.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -233,7 +233,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description An unexpected condition was encountered by the server.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -242,7 +242,7 @@ export const STATUS_CODES = Object.freeze({
 
   /** @description A downstream dependency is temporarily unavailable.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -252,7 +252,7 @@ export const STATUS_CODES = Object.freeze({
 
 /** @description Inferred union of every valid STATUS_CODES value.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -263,7 +263,7 @@ export type StatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES]
  * @description A mapping of ERROR_CODES to human-readable messages, used for logging and user feedback when an AppError is created with a specific error code. This allows for consistent and centralized management of error messages across the application, ensuring that each error code corresponds to a clear and descriptive message that can be easily maintained and localized if necessary.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

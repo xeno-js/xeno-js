@@ -5,7 +5,7 @@
  * Prefer this over `T | null` in all public APIs so intent is self-documenting.
 
    * 
-   * @author Mattia Carcione proot
+   * @author Gear5 proot
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export type Nullable<T> = T | null
  * Prefer this over `T | undefined` in all public APIs.
 
    * 
-   * @author Mattia Carcione é*é
+   * @author Gear5 é*é
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -29,7 +29,7 @@ export type Optional<T> = T | undefined
  * Use when a value is absent regardless of the reason.
 
    * 
-   * @author Mattia Carcione °§°
+   * @author Gear5 °§°
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -45,7 +45,7 @@ export type Maybe<T> = T | null | undefined
  * @template TArgs  Constructor parameter tuple; defaults to `any[]`.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -61,7 +61,7 @@ export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) =
  * @template T  The instance type produced by subclasses.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -76,7 +76,7 @@ export type AbstractConstructor<T> = abstract new (...args: any[]) => T
  * Prefer over `{ [key: string]: V }` for self-documenting intent.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -88,7 +88,7 @@ export type Dictionary<V = unknown> = Record<string, V>
  * all other keys retain their original optionality.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -100,7 +100,7 @@ export type RequireKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>
  * Useful for narrowing a property inside a generic base type.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -115,7 +115,7 @@ export type Override<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>
  * // => 'a' | 'c'
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -145,7 +145,7 @@ export type KeysOfType<T, V> = {
  *   (tx) => new DrizzleRepository(tx);
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -160,7 +160,7 @@ export type Factory<T, TArgs extends unknown[] = []> = (...args: TArgs) => T
  * @template TArgs Tuple of factory argument types.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -191,7 +191,7 @@ export type AsyncFactory<T, TArgs extends unknown[] = []> = (...args: TArgs) => 
  * }
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -205,7 +205,7 @@ export type Resolver<T = unknown> = (token: symbol) => T
  * @template T  Narrows the resolved type at each call site.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -219,7 +219,7 @@ export type AsyncResolver = <T>(token: symbol) => Promise<T>
  * The format is typically 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -231,7 +231,7 @@ export type Guid = `${string}-${string}-${string}-${string}-${string}`
  * based on the provided options of type `T`.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

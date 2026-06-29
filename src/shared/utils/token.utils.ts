@@ -11,7 +11,7 @@ const tokenRegistry = new Map<string, InjectionToken<unknown>>()
  * accidental cross-token resolution.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -29,7 +29,7 @@ export const TokenHelper = Object.freeze({
    * @returns A new {@link InjectionToken} typed as `T`.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -50,7 +50,7 @@ export const TokenHelper = Object.freeze({
    * @returns The corresponding {@link InjectionToken} if found, otherwise `undefined`.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -17,7 +17,7 @@ import { GuidHelper } from './guid.utils'
  * @description This module provides utility functions for handling HTTP-related tasks, such as normalizing HTTP headers. It includes a single function, `normalizeHeaders`, which takes an input of unknown type and returns an object with normalized header values. The function ensures that all header values are converted to strings, and if a header value is an array, it joins the elements into a single string separated by commas. This utility is useful for ensuring consistent header formats when working with various HTTP client libraries.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -27,7 +27,7 @@ import { GuidHelper } from './guid.utils'
  * @description A helper object that provides utility functions for HTTP-related tasks. Currently, it includes a method for normalizing HTTP headers, which ensures that all header values are strings and handles cases where header values may be arrays. This helper can be extended in the future to include additional HTTP-related utilities as needed.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -39,7 +39,7 @@ export const HttpHelper = Object.freeze({
    * @returns An object containing the normalized headers, where each header value is a string. If the input headers were not valid, it returns an empty object.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -69,7 +69,7 @@ export const HttpHelper = Object.freeze({
    * @returns A ResponseDto object representing the successful HTTP response, containing the status code, success flag, headers, and data payload structured as a SuccessResponseDto.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -110,7 +110,7 @@ export const HttpHelper = Object.freeze({
    * @returns A ResponseDto object representing the error HTTP response, containing the status code, success flag, headers, and data payload structured as an ErrorResponseDto.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

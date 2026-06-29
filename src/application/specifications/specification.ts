@@ -6,7 +6,7 @@ import type { ISpecification } from '@/domain'
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Mattia Carcione - Specification
+   * @author Gear5 - Specification
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -19,7 +19,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A boolean indicating whether the candidate satisfies the specification.
   
    * 
-   * @author Mattia Carcione - Specification SatisfiedBy
+   * @author Gear5 - Specification SatisfiedBy
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -33,7 +33,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical AND of this and the other specification.
   
    * 
-   * @author Mattia Carcione - AND
+   * @author Gear5 - AND
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -49,7 +49,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical OR of this and the other specification.
   
    * 
-   * @author Mattia Carcione - OR
+   * @author Gear5 - OR
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -64,7 +64,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical NOT of this specification.
   
    * 
-   * @author Mattia Carcione - NOT
+   * @author Gear5 - NOT
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -80,7 +80,7 @@ export abstract class Specification<T> implements ISpecification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Mattia Carcione - JJ
+   * @author Gear5 - JJ
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -103,7 +103,7 @@ class AndSpecification<T> extends Specification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Mattia Carcione - GG
+   * @author Gear5 - GG
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -126,7 +126,7 @@ class OrSpecification<T> extends Specification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Mattia Carcione lol
+   * @author Gear5 lol
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -7,7 +7,7 @@ import type { Optional, WriteCriteria } from '@/shared'
  * @template TQueryConditions - The type of the query conditions object that is built using the IFilterBuilder to specify the criteria for writing data to the database.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -58,7 +58,7 @@ export abstract class AbstractWriteDataSource<
    * @returns A promise that resolves when the delete operation has been executed successfully.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

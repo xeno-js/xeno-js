@@ -7,7 +7,7 @@ const DATE_TAG = '[object Date]'
  * @description Centralized type guards and runtime predicates.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ export const Guards = Object.freeze({
    * @returns True when value is defined.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -34,7 +34,7 @@ export const Guards = Object.freeze({
    * @returns True when value is null, undefined, empty string, or false.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -54,7 +54,7 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is null, undefined, empty string, or false.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -72,7 +72,7 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not a positive integer.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -90,7 +90,7 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not an integer.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -108,7 +108,7 @@ export const Guards = Object.freeze({
    * @returns True when obj has a function property named methodName.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -126,7 +126,7 @@ export const Guards = Object.freeze({
    * @returns True when value is string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -141,7 +141,7 @@ export const Guards = Object.freeze({
    * @returns True when value is finite number.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -156,7 +156,7 @@ export const Guards = Object.freeze({
    * @returns True when value is integer number.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -171,7 +171,7 @@ export const Guards = Object.freeze({
    * @returns True when value is boolean.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -186,7 +186,7 @@ export const Guards = Object.freeze({
    * @returns True when value is bigint.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -201,7 +201,7 @@ export const Guards = Object.freeze({
    * @returns True when value is symbol.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -216,7 +216,7 @@ export const Guards = Object.freeze({
    * @returns True when value is function.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -231,7 +231,7 @@ export const Guards = Object.freeze({
    * @returns True when value is array.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -246,7 +246,7 @@ export const Guards = Object.freeze({
    * @returns True when value is valid Date.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -265,7 +265,7 @@ export const Guards = Object.freeze({
    * @returns True when value is Error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -280,7 +280,7 @@ export const Guards = Object.freeze({
    * @returns True when value is object record.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -299,7 +299,7 @@ export const Guards = Object.freeze({
    * @returns True when value is object.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -314,7 +314,7 @@ export const Guards = Object.freeze({
    * @returns True when value has then function.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -5,7 +5,7 @@ import { Guards } from '@/shared'
  * @description Default threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value can be overridden by providing a different thresholdMs value when constructing the PerformancePipeline instance.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ const defaultThresholdMs = 500
  * @template TResult - The type of the result returned by the request handler.
 
    * 
-   * @author Mattia Carcione - Hello
+   * @author Gear5 - Hello
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -32,7 +32,7 @@ export class PerformancePipeline<TInput extends IRequest, TResult> implements IP
    * @description Threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value is set through the constructor and must be a positive integer.
   
    * 
-   * @author Mattia Carcione - Hola
+   * @author Gear5 - Hola
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -46,7 +46,7 @@ export class PerformancePipeline<TInput extends IRequest, TResult> implements IP
    * @throws Will throw an error if the provided thresholdMs value is not a positive integer.
   
    * 
-   * @author Mattia Carcione *§*
+   * @author Gear5 *§*
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

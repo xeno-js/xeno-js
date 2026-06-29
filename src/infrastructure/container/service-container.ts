@@ -17,7 +17,7 @@ import { ServiceScope } from './service-scope'
  *   through a scope obtained via {@link createScope}.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -34,7 +34,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -56,7 +56,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -78,7 +78,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -100,7 +100,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -120,7 +120,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -140,7 +140,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -160,7 +160,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -183,7 +183,7 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

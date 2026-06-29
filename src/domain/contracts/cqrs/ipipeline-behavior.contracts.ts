@@ -6,7 +6,7 @@ import type { ResultType } from '../../results/result.types'
  * @template TResult - The type of the result that the delegate will return when invoked. This allows for flexibility in defining the expected output of the next step in the pipeline, which can be tailored to the specific needs of the request being processed.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -20,7 +20,7 @@ export type Delegate<TResult> = () => Promise<ResultType<TResult>>
  * @template TResult - The type of the result that the pipeline behavior will return after processing the request. This allows for flexibility in defining the expected output of the behavior, which can be tailored to the specific requirements of the request being handled.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -33,7 +33,7 @@ export interface IPipelineBehavior<TInput, TResult> {
    * @returns A promise that resolves to a ResultType, which can be either a successful result or an error.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

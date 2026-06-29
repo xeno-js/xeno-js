@@ -5,7 +5,7 @@ import { Guards } from './guards.utils'
  * @description Namespace for string manipulation utilities.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -17,7 +17,7 @@ export const StringHelper = Object.freeze({
    * @returns A JSON string representation of the value, or a fallback string if serialization fails.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -37,7 +37,7 @@ export const StringHelper = Object.freeze({
    * @returns The parsed value, or the fallback value if parsing fails.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -56,7 +56,7 @@ export const StringHelper = Object.freeze({
    * @returns camelCase string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -75,7 +75,7 @@ export const StringHelper = Object.freeze({
    * @returns Interpolated string with resolved placeholders.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -95,7 +95,7 @@ export const StringHelper = Object.freeze({
    * @returns Truncated string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -112,7 +112,7 @@ export const StringHelper = Object.freeze({
    * @returns Formatted reference code string.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -133,7 +133,7 @@ export const StringHelper = Object.freeze({
    * @returns The first string value if it's an array, the string itself if it's a string, or undefined if it's empty or not defined.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -4,7 +4,7 @@ import type { Optional } from '@/shared'
  * @description Interface for an idempotency store that provides methods for acquiring locks, checking if a command has been processed, marking commands as processed with associated payloads, retrieving stored payloads, and releasing locks. This interface is designed to support idempotent command processing in a distributed system, ensuring that duplicate commands are not processed multiple times and that the results of previously processed commands can be retrieved when necessary.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -16,7 +16,7 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to true if the lock was successfully acquired, or false if the lock is currently held by another instance of the command.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -28,7 +28,7 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to true if the command has already been processed, or false if it has not been processed yet.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -42,7 +42,7 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves when the command has been marked as processed and the payload has been stored successfully in the idempotency store.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -54,7 +54,7 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to the payload associated with the processed command if it exists, or null if there is no stored result for the specified commandId.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -66,7 +66,7 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves when the lock has been successfully released.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

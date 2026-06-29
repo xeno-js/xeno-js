@@ -1,6 +1,6 @@
 /** @description Constants related to request handling in the application.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -8,7 +8,7 @@
 export const REQUEST_TYPE = Object.freeze({
   /** @description A request that intends to modify state (e.g. create, update, delete).
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -16,7 +16,7 @@ export const REQUEST_TYPE = Object.freeze({
   COMMAND: 'COMMAND',
   /** @description A request that intends to retrieve data without modifying state.
    *
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -26,7 +26,7 @@ export const REQUEST_TYPE = Object.freeze({
 
 /** @description Inferred union of every valid REQUEST_TYPE value.
  *
- * @author Mattia Carcione
+ * @author Gear5
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5

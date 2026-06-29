@@ -7,7 +7,7 @@ import type { Result } from './result'
  * @template T - The type of the Result instance.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

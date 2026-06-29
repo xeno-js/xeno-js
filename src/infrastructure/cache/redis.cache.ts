@@ -8,7 +8,7 @@ import { Guards, StringHelper } from '@/shared'
  * @description The RedisCache class provides an implementation of the ICache interface using Redis as the underlying caching mechanism. This class allows for storing, retrieving, and managing cached values in a Redis database, supporting features such as time-to-live (TTL) for cache entries and atomic operations for setting values only if they do not already exist. The RedisCache class abstracts away the details of interacting with Redis, providing a simple and consistent interface for caching operations within the application.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -19,7 +19,7 @@ export class RedisCache implements ICache {
    * @param _redisClient An instance of the Redis client from the ioredis library, used to perform caching operations in the Redis database.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

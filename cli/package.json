@@ -10,7 +10,7 @@
     "dev": "tsx src/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gear5",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

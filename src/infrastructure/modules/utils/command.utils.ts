@@ -11,7 +11,7 @@ export const CommandUtils = Object.freeze({
    * @returns True if any command strategies are required, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -63,7 +63,7 @@ export const CommandUtils = Object.freeze({
    * @returns True if any query strategies are required, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

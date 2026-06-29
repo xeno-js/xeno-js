@@ -7,7 +7,7 @@ import { HttpHelper } from '@/shared'
  * @template TRequest - The type of the request object that the controller will handle.
  * @template TResponse - The type of the response object that the controller will return.
  *
- * @author Mattia Carcione DDD
+ * @author Gear5 DDD
  * @version 1.0.0
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/gear5
@@ -26,7 +26,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @param status - The HTTP status code (default is 200).
    * @returns A ResponseDto containing the data and status.
    *
-   * @author Mattia Carcione MCU
+   * @author Gear5 MCU
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
@@ -42,12 +42,12 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @param details - Optional additional details about the error.
    * @returns A ResponseDto representing the error response.
    *
-   * @author Mattia Carcione DC'
+   * @author Gear5 DC'
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5
    */
-  protected fail(error: AppError, details: Optional<string>): ResponseDto<never> {
+  protected fail(error: AppError, details: Optional<string>): ResponseDto {
     return HttpHelper.error({
       code: error.code,
       message: error.message,

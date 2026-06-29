@@ -8,7 +8,7 @@ import type { LoggerConfig } from '../config'
  * @description LoggerUtils is a utility object that provides helper functions for the CoreModule. It includes the addLogger function, which is responsible for configuring and registering the logging services in the dependency injection container based on the provided LoggerConfig options. This function dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -21,7 +21,7 @@ export const LoggerUtils = Object.freeze({
    * @param opts - The LoggerConfig options to determine which loggers to enable and their configurations.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -71,7 +71,7 @@ export const LoggerUtils = Object.freeze({
     container.addSingletonFactory(INJECTION_TOKENS.LOGGER, (resolver) => {
       const context = resolver.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
       const resolvedDependencies = loggerDependencies.map((token) => resolver.resolve(token))
-      return new BaseLogger(context, opts?.level ?? LOG_LEVEL.DEBUG, ...resolvedDependencies)
+      return new BaseLogger(context, opts?.level ?? LOG_LEVEL.DEBUG, resolvedDependencies)
     })
   },
 } as const)

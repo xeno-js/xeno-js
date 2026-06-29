@@ -9,7 +9,7 @@ import { Guards } from '@/shared'
  * @template TDto - The type of the Data Transfer Object (DTO) used for data access.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -21,7 +21,7 @@ export class ReadDao<T, TDto> implements IReadDao<T> {
    * @param _mapper An instance of IMapper used to convert between entities and DTOs.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 

@@ -6,7 +6,7 @@ import { GuidHelper } from '@/shared'
  * This class encapsulates the generation and representation of unique identifiers.
 
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -18,7 +18,7 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -32,7 +32,7 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -47,7 +47,7 @@ export class UniqueId {
    * @returns The string representation of the unique identifier (UUID v4).
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -61,7 +61,7 @@ export class UniqueId {
    * @returns The GUID value of the UniqueId instance.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
@@ -76,7 +76,7 @@ export class UniqueId {
    * @returns True if both UniqueIds have the same string value, false otherwise.
   
    * 
-   * @author Mattia Carcione
+   * @author Gear5
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/gear5 
