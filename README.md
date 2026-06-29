@@ -64,10 +64,14 @@ accelerator that restores full control over your TypeScript stack.
   Architecture" (`domain`, `application`, `infrastructure`, `presentation`).
   Every component is isolated, and the data flow (CQRS) is fully traceable,
   eliminating the "black box" effect common in traditional frameworks.
-- **100% Agnostic**: Gear5 acts as a Kernel. It doesn't force you into a
-  specific web server; it provides the business logic and execution pipelines,
-  leaving you free to choose your preferred transport layer (Express, Hono,
-  Fastify, or CLI).
+- **100% Agnostic & Decoupled**: Gear5 acts as a Kernel. It doesn't force you
+  into a specific web server; it provides the business logic and execution
+  pipelines, leaving you free to choose your preferred transport layer (Express,
+  Hono, Fastify, or CLI). By strictly decoupling your business logic from
+  infrastructure, external libraries, and frameworks, Gear5 ensures your core
+  domain remains highly testable, maintainable, and scalable. This isolation
+  allows you to swap, upgrade, or mock external components without ever
+  impacting your primary business logic.
 - **Install Only What You Need**: Gear5 utilizes **Optional Peer Dependencies**.
   You only install the external libraries you actually require. The framework is
   designed to strictly lazy-load only the modules you enable in your
