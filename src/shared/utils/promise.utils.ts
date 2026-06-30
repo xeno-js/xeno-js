@@ -3,10 +3,10 @@
  * Astrae le logiche di timing per renderle facilmente testabili e riutilizzabili.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export const PromiseHelper = Object.freeze({
   /**
@@ -15,10 +15,10 @@ export const PromiseHelper = Object.freeze({
    * @returns Una Promise che si risolve al termine del tempo.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -33,10 +33,10 @@ export const PromiseHelper = Object.freeze({
    * @returns Una Promise che si risolve al termine del calcolo.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   delayWithJitter(baseDelayMs: number, maxJitterMs: number): Promise<void> {
     const jitter = Math.floor(Math.random() * maxJitterMs)

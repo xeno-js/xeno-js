@@ -2,10 +2,10 @@
  * The IValueObject interface defines the contract for value objects in the domain. A value object is an immutable type that represents a concept or measurement in the domain, and its equality is based on its properties rather than its identity. The IValueObject interface includes methods for retrieving the underlying value, comparing value objects for equality, and providing a string representation of the value object.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IValueObject<T extends object> {
   /**
@@ -13,10 +13,10 @@ export interface IValueObject<T extends object> {
    * @returns The underlying value of the value object.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   getValue(): T
 
@@ -26,10 +26,10 @@ export interface IValueObject<T extends object> {
    * @returns True if the underlying values of both value objects are equal; otherwise, returns false.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   equals(other: IValueObject<T>): boolean
 
@@ -38,10 +38,10 @@ export interface IValueObject<T extends object> {
    * @returns A string representation of the value object.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   toString(): string
 }

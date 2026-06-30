@@ -12,10 +12,10 @@ import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES }
 /**
  * @description Abstract base class for authorization strategies in the CQRS pipeline. This class implements the IStrategy interface and provides a common structure for performing authorization checks based on the identity of the authenticated user. It defines an abstract method performAuthorizationCheck that must be implemented by concrete authorization strategies to specify the logic for checking if the user has the necessary permissions to execute a given request. The execute method retrieves the user's identity from the request context and ensures that the user is authenticated before delegating to the performAuthorizationCheck method for further authorization validation. If the user is not authenticated, it returns a failed Result with an appropriate AppError indicating that authentication is required.
  *
- * @author Graviton5
+ * @author Gantry5
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/Graviton5
+ * @link https://github.com/Mattia-Carcione/Gantry5
  */
 export abstract class BaseAuthorizationStrategy<
   TInput extends IRequest,
@@ -24,10 +24,10 @@ export abstract class BaseAuthorizationStrategy<
    * @description Constructs a new instance of the BaseAuthorizationStrategy class, which serves as an abstract base for specific authorization strategies in the CQRS pipeline. It takes an IRequestContext as a parameter, which is used to retrieve the identity of the currently authenticated user during the authorization process. This context is essential for performing the authorization checks based on the user's identity when executing requests that require specific permissions.
    * @param requestContext An instance of IRequestContext used to access the identity of the currently authenticated user. This context is essential for performing the authorization checks based on the user's identity when executing requests that require specific permissions.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
 
@@ -46,10 +46,10 @@ export abstract class BaseAuthorizationStrategy<
    * @param auth The identity of the currently authenticated user, which includes information such as the user's ID, tenant ID, and roles. This context is used to determine if the user has the necessary permissions to execute the request.
    * @returns A Result indicating the outcome of the authorization check. If the check passes, it should return a successful Result with a void value. If the check fails, it should return a failed Result with an appropriate AppError describing the reason for the failure.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   protected abstract performAuthorizationCheck(
     request: IRequest,
@@ -62,10 +62,10 @@ export abstract class BaseAuthorizationStrategy<
    * @param message A custom message describing the reason for the authorization failure. This message is included in the AppError's cause for detailed error reporting.
    * @returns A Result containing an AppError with the appropriate error code, message, status, and cause.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   protected createAuthError(request: IRequest, message: string): ResultType<void> {
     return Result.fail(

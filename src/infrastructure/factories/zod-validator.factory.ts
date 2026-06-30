@@ -6,10 +6,10 @@ import { ZodValidatorService } from '../services/validators/zod.validator'
  * @description Factory class responsible for creating instances of ZodValidatorService based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, including the initialization of the underlying ZodValidatorService instance with the specified configuration options such as URL and API key. This design promotes separation of concerns and allows for flexibility in managing ZodValidatorService instances across the application.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class ZodValidatorFactory implements IFactory<ZodConfig, IValidatorService> {
   public create(opts: ZodConfig): IValidatorService {

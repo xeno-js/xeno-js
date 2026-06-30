@@ -6,10 +6,10 @@ import { GuidHelper } from '@/shared'
  * This class encapsulates the generation and representation of unique identifiers.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class UniqueId {
   /**
@@ -18,10 +18,10 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   private constructor(private readonly _value: Guid) {
     Object.freeze(this)
@@ -32,10 +32,10 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public static create(): UniqueId {
     const uniqueId = GuidHelper.generate()
@@ -47,10 +47,10 @@ export class UniqueId {
    * @returns The string representation of the unique identifier (UUID v4).
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public toString(): string {
     return this._value.toString()
@@ -61,10 +61,10 @@ export class UniqueId {
    * @returns The GUID value of the UniqueId instance.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public getValue(): Guid {
     return this._value
@@ -76,10 +76,10 @@ export class UniqueId {
    * @returns True if both UniqueIds have the same string value, false otherwise.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public equals(other: UniqueId): boolean {
     if (!(other instanceof UniqueId)) {

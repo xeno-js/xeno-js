@@ -5,10 +5,10 @@ import { Guards, type HttpHeaders, type Optional, StringHelper } from '@/shared'
  * @description The BearerTokenExtractor class implements the IExtractor interface, providing a concrete implementation for extracting Bearer tokens from the Authorization header of an incoming HTTP request. The extract method checks for the presence of the Authorization header, verifies that it starts with the "Bearer " prefix, and returns the token value if valid. If the header is missing or does not conform to the expected format, it returns undefined, allowing for consistent handling of authentication tokens in the application.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class BearerTokenExtractor implements IServiceExtractor<HttpHeaders, Optional<string>> {
   extract(headers: HttpHeaders): Optional<string> {

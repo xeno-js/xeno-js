@@ -10,10 +10,10 @@ import type { LoggerConfig } from '../modules/config/logger.config'
  * @description Factory class responsible for creating instances of SentryLogger based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the SentryLogger, including the initialization of the underlying Sentry instance with the specified configuration options such as DSN and environment. This design promotes separation of concerns and allows for flexibility in managing SentryLogger instances across the application.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class SentryLoggerFactory implements IFactory<LoggerConfig, ILoggerClient> {
   public create(config: LoggerConfig): ILoggerClient {

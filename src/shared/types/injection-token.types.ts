@@ -15,26 +15,26 @@ declare const _phantom: unique symbol
  * Tokens must be created exclusively through {@link createToken}.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface InjectionToken<T> {
   /** @description The unique symbol that identifies this token at runtime.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   readonly symbol: symbol
   /** @description Phantom property to bind the generic type `T` to this token.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   readonly [_phantom]: T
 }

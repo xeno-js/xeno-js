@@ -2,11 +2,11 @@
 
 ## Overview
 
-The `shared/` layer operates as the **Shared Kernel** of the Graviton5
-ecosystem. Positioned at the very baseline of the architectural dependency
-graph, this module is strictly pure and decoupled. It contains zero awareness of
-upper-level application layers, domain aggregates, write repositories, or
-presentation controllers.
+The `shared/` layer operates as the **Shared Kernel** of the Gantry5 ecosystem.
+Positioned at the very baseline of the architectural dependency graph, this
+module is strictly pure and decoupled. It contains zero awareness of upper-level
+application layers, domain aggregates, write repositories, or presentation
+controllers.
 
 By maintaining absolute isolation, the Shared Kernel provides a single source of
 truth for primitive types, cross-cutting constants, and deterministic

@@ -1,16 +1,16 @@
 {
-  "name": "@graviton5/create",
+  "name": "@gantry5/create",
   "version": "1.0.0",
-  "description": "Graviton5 create — CLI to scaffold a new Graviton5 project",
+  "description": "Gantry5 create — CLI to scaffold a new Gantry5 project",
   "bin": {
-    "create-graviton5": "./dist/index.js"
+    "create-gantry5": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts"
   },
   "keywords": [],
-  "author": "Graviton5",
+  "author": "Gantry5",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

@@ -24,20 +24,20 @@ import {
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class Mediator implements IMediator {
   /**
    * @param _requestContext An instance of IRequestContext used to manage the execution context for commands and queries.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
 
@@ -45,10 +45,10 @@ export class Mediator implements IMediator {
    * @inheritdoc
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   async send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR)
@@ -57,10 +57,10 @@ export class Mediator implements IMediator {
   /**
    * @inheritdoc
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   async query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.QUERY_PIPELINES_BEHAVIOR)
@@ -72,10 +72,10 @@ export class Mediator implements IMediator {
    * @returns A promise that resolves to the result of processing the request.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   private async process<TResponse>(
     request: IRequest<TResponse>,

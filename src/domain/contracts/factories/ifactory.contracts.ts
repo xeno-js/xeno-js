@@ -8,10 +8,10 @@ import type { Factory } from '@/shared'
  * @template TOutput The type of the output produced by the factory method.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IFactory<TInput, TOutput> {
   /**
@@ -20,10 +20,10 @@ export interface IFactory<TInput, TOutput> {
    * @returns An instance of type `Output`.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   create: Factory<TOutput, [TInput]>
 }

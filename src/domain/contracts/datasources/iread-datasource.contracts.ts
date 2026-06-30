@@ -4,10 +4,10 @@ import type { Optional, ReadCriteria } from '@/shared'
  * @description Interface representing a data source for performing database operations. This interface defines the contract for executing SQL queries against a database, including methods for finding records based on filters and unique identifiers. The IReadDataSource interface is designed to be implemented by classes that provide specific data access logic, allowing for separation of concerns and easier testing.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IReadDataSource<TDto> {
   /**
@@ -17,10 +17,10 @@ export interface IReadDataSource<TDto> {
    * @returns A promise that resolves to an array of objects representing the rows returned by the query.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   find(criteria: ReadCriteria, signal: Optional<AbortSignal>): Promise<TDto[]>
 
@@ -31,10 +31,10 @@ export interface IReadDataSource<TDto> {
    * @returns A promise that resolves to an object representing the row returned by the query.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   findById(
     id: string,

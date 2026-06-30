@@ -6,10 +6,10 @@ import type { ISpecification } from '@/domain'
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
 export abstract class Specification<T> implements ISpecification<T> {
   /**
@@ -19,10 +19,10 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A boolean indicating whether the candidate satisfies the specification.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public abstract isSatisfiedBy(candidate: T): boolean
 
@@ -33,10 +33,10 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical AND of this and the other specification.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public and(other: ISpecification<T>): ISpecification<T> {
     return new AndSpecification<T>(this, other)
@@ -49,10 +49,10 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical OR of this and the other specification.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public or(other: ISpecification<T>): ISpecification<T> {
     return new OrSpecification<T>(this, other)
@@ -64,10 +64,10 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @returns A new specification that represents the logical NOT of this specification.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public not(): ISpecification<T> {
     return new NotSpecification<T>(this)
@@ -80,10 +80,10 @@ export abstract class Specification<T> implements ISpecification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 class AndSpecification<T> extends Specification<T> {
   constructor(
@@ -103,10 +103,10 @@ class AndSpecification<T> extends Specification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 class OrSpecification<T> extends Specification<T> {
   constructor(
@@ -126,10 +126,10 @@ class OrSpecification<T> extends Specification<T> {
  * @template T - The type of the candidate object that the specification will evaluate.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 class NotSpecification<T> extends Specification<T> {
   constructor(private _spec: ISpecification<T>) {

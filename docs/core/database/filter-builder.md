@@ -1,6 +1,6 @@
 # Filter Builder
 
-Graviton5 criteria are framework-level objects. Drizzle expects SQL expressions
+Gantry5 criteria are framework-level objects. Drizzle expects SQL expressions
 and selected fields. `IFilterBuilder` is the adapter between those two worlds.
 
 The framework does not ship one universal Drizzle filter builder because every
@@ -10,7 +10,7 @@ soft-delete rules. You implement a builder per table or per aggregate.
 ## Contract
 
 ```ts
-import type { IFilterBuilder } from '@graviton5/core'
+import type { IFilterBuilder } from '@gantry5/core'
 
 export interface IFilterBuilder<
   TQueryConditions = unknown,
@@ -53,7 +53,7 @@ const criteria = {
 }
 ```
 
-The supported operators in Graviton5 criteria are:
+The supported operators in Gantry5 criteria are:
 
 - `eq`
 - `neq`
@@ -68,11 +68,7 @@ application allows, which prevents accidentally exposing arbitrary columns
 through API input.
 
 ```ts
-import type {
-  IFilterBuilder,
-  ReadCriteria,
-  WriteCriteria,
-} from '@graviton5/core'
+import type { IFilterBuilder, ReadCriteria, WriteCriteria } from '@gantry5/core'
 import { and, eq, gt, inArray, lt, ne, type SQL } from 'drizzle-orm'
 import type { AnyPgColumn, SelectedFields } from 'drizzle-orm/pg-core'
 

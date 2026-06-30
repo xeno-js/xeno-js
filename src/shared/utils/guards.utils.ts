@@ -7,10 +7,10 @@ const DATE_TAG = '[object Date]'
  * @description Centralized type guards and runtime predicates.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export const Guards = Object.freeze({
   /**
@@ -19,10 +19,10 @@ export const Guards = Object.freeze({
    * @returns True when value is defined.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isDefined<TValue>(value: Maybe<TValue>): value is TValue {
     return value !== null && value !== undefined && value !== '' && !Number.isNaN(value)
@@ -34,10 +34,10 @@ export const Guards = Object.freeze({
    * @returns True when value is null, undefined, empty string, or false.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isNullOrEmpty<TValue>(value: Maybe<TValue>): value is null | undefined {
     return (
@@ -54,10 +54,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is null, undefined, empty string, or false.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   throwIfNullOrEmpty<TValue>(value: Maybe<TValue>, errorMessage: string): void {
     if (Guards.isNullOrEmpty(value)) {
@@ -72,10 +72,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not a positive integer.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   throwIfNegative(value: number, errorMessage: string): void {
     if (Guards.isInteger(value) && value < 0) {
@@ -90,10 +90,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not an integer.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   throwIfNotInteger(value: number, errorMessage: string): void {
     if (!Guards.isInteger(value)) {
@@ -108,10 +108,10 @@ export const Guards = Object.freeze({
    * @returns True when obj has a function property named methodName.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   hasMethod(obj: unknown, methodName: string): boolean {
     if (!this.isDefined(obj)) return false
@@ -126,10 +126,10 @@ export const Guards = Object.freeze({
    * @returns True when value is string.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isString(value: unknown): value is string {
     return typeof value === 'string'
@@ -141,10 +141,10 @@ export const Guards = Object.freeze({
    * @returns True when value is finite number.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isNumber(value: unknown): value is number {
     return typeof value === 'number' && Number.isFinite(value)
@@ -156,10 +156,10 @@ export const Guards = Object.freeze({
    * @returns True when value is integer number.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isInteger(value: unknown): value is number {
     return Guards.isNumber(value) && Number.isInteger(value)
@@ -171,10 +171,10 @@ export const Guards = Object.freeze({
    * @returns True when value is boolean.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isBoolean(value: unknown): value is boolean {
     return typeof value === 'boolean'
@@ -186,10 +186,10 @@ export const Guards = Object.freeze({
    * @returns True when value is bigint.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isBigInt(value: unknown): value is bigint {
     return typeof value === 'bigint'
@@ -201,10 +201,10 @@ export const Guards = Object.freeze({
    * @returns True when value is symbol.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isSymbol(value: unknown): value is symbol {
     return typeof value === 'symbol'
@@ -216,10 +216,10 @@ export const Guards = Object.freeze({
    * @returns True when value is function.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isFunction(value: unknown): value is (...args: readonly unknown[]) => unknown {
     return typeof value === 'function'
@@ -231,10 +231,10 @@ export const Guards = Object.freeze({
    * @returns True when value is array.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isArray<TValue>(value: unknown): value is TValue[] {
     return Array.isArray(value)
@@ -246,10 +246,10 @@ export const Guards = Object.freeze({
    * @returns True when value is valid Date.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isDate(value: unknown): value is Date {
     if (Object.prototype.toString.call(value) !== DATE_TAG) {
@@ -265,10 +265,10 @@ export const Guards = Object.freeze({
    * @returns True when value is Error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isError(value: unknown): value is Error {
     return value instanceof Error
@@ -280,10 +280,10 @@ export const Guards = Object.freeze({
    * @returns True when value is object record.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isObjectRecord(value: unknown): value is Readonly<Dictionary<unknown>> {
     if (!Guards.isDefined(value)) {
@@ -299,10 +299,10 @@ export const Guards = Object.freeze({
    * @returns True when value is object.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isObject(value: unknown): value is object {
     return typeof value === 'object' && Guards.isDefined(value)
@@ -314,10 +314,10 @@ export const Guards = Object.freeze({
    * @returns True when value has then function.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isPromiseLike<TValue>(value: unknown): value is PromiseLike<TValue> {
     if (!Guards.isDefined(value)) {

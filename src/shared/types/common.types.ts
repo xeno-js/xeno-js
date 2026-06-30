@@ -5,10 +5,10 @@
  * Prefer this over `T | null` in all public APIs so intent is self-documenting.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Nullable<T> = T | null
 
@@ -17,10 +17,10 @@ export type Nullable<T> = T | null
  * Prefer this over `T | undefined` in all public APIs.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Optional<T> = T | undefined
 
@@ -29,10 +29,10 @@ export type Optional<T> = T | undefined
  * Use when a value is absent regardless of the reason.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Maybe<T> = T | null | undefined
 
@@ -45,10 +45,10 @@ export type Maybe<T> = T | null | undefined
  * @template TArgs  Constructor parameter tuple; defaults to `any[]`.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) => T
@@ -61,10 +61,10 @@ export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) =
  * @template T  The instance type produced by subclasses.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AbstractConstructor<T> = abstract new (...args: any[]) => T
@@ -76,10 +76,10 @@ export type AbstractConstructor<T> = abstract new (...args: any[]) => T
  * Prefer over `{ [key: string]: V }` for self-documenting intent.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Dictionary<V = unknown> = Record<string, V>
 
@@ -88,10 +88,10 @@ export type Dictionary<V = unknown> = Record<string, V>
  * all other keys retain their original optionality.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type RequireKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 
@@ -100,10 +100,10 @@ export type RequireKeys<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>
  * Useful for narrowing a property inside a generic base type.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Override<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>
 
@@ -115,10 +115,10 @@ export type Override<T, K extends keyof T, V> = Omit<T, K> & Record<K, V>
  * // => 'a' | 'c'
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type KeysOfType<T, V> = {
   [K in keyof T]: T[K] extends V ? K : never
@@ -145,10 +145,10 @@ export type KeysOfType<T, V> = {
  *   (tx) => new DrizzleRepository(tx);
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Factory<T, TArgs extends unknown[] = []> = (...args: TArgs) => T
 
@@ -160,10 +160,10 @@ export type Factory<T, TArgs extends unknown[] = []> = (...args: TArgs) => T
  * @template TArgs Tuple of factory argument types.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type AsyncFactory<T, TArgs extends unknown[] = []> = (...args: TArgs) => Promise<T>
 
@@ -191,10 +191,10 @@ export type AsyncFactory<T, TArgs extends unknown[] = []> = (...args: TArgs) => 
  * }
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Resolver<T = unknown> = (token: symbol) => T
 
@@ -205,10 +205,10 @@ export type Resolver<T = unknown> = (token: symbol) => T
  * @template T  Narrows the resolved type at each call site.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type AsyncResolver = <T>(token: symbol) => Promise<T>
 
@@ -219,10 +219,10 @@ export type AsyncResolver = <T>(token: symbol) => Promise<T>
  * The format is typically 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type Guid = `${string}-${string}-${string}-${string}-${string}`
 
@@ -231,9 +231,9 @@ export type Guid = `${string}-${string}-${string}-${string}-${string}`
  * based on the provided options of type `T`.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type SetupAction<T> = (options: T) => void

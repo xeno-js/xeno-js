@@ -1,8 +1,8 @@
 # Resilience & Fault Tolerance Configuration
 
 The `CockatielResilienceFactory` handles the execution protection architecture
-inside Graviton5. Instead of evaluating faults inside separate, isolated hooks,
-it orchestrates a layered structural wrapper
+inside Gantry5. Instead of evaluating faults inside separate, isolated hooks, it
+orchestrates a layered structural wrapper
 (`wrap(bulkheadPolicy, circuitBreakerPolicy, retryPolicy)`) that intercepts
 failures before they can cascade downstream and saturate local system resources.
 
@@ -32,7 +32,7 @@ instantiating a full HTTP core bundle, register the pipeline module directly
 using the `.addResilience()` method exposed by the `AppBuilder` host:
 
 ```ts
-import { AppBuilder } from '@graviton5/core'
+import { AppBuilder } from '@gantry5/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

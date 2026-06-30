@@ -30,7 +30,7 @@ configures its backoff boundaries dynamically using properties provided to
 `AppBuilder`:
 
 ```typescript
-import { AppBuilder } from '@graviton5/core'
+import { AppBuilder } from '@gantry5/core'
 
 builder.addPipeline((opts) => {
   opts.commandBus.concurrency = {

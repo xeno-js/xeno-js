@@ -7,7 +7,7 @@ concept, measurement, or metric within the business boundary. Unlike Entities,
 Value Objects possess no identity lineage or persistent ID reference.
 
 Two Value Objects are considered identical if all their structural attributes
-intersect completely. Within Graviton5, this contract is implemented by the
+intersect completely. Within Gantry5, this contract is implemented by the
 **`ValueObject<T>`** abstract base class.
 
 ---
@@ -36,10 +36,10 @@ across parallel application tracks.
 
 ### 2. Structural Value-Based Equality
 
-Value Objects cannot use standard reference comparisons (`vo1 === vo2`).
-Graviton5 overrides the **`.equals()`** routine, implementing deep value
-comparison by serializing the properties into a deterministic JSON string matrix
-via `StringHelper.safeStringify`:
+Value Objects cannot use standard reference comparisons (`vo1 === vo2`). Gantry5
+overrides the **`.equals()`** routine, implementing deep value comparison by
+serializing the properties into a deterministic JSON string matrix via
+`StringHelper.safeStringify`:
 
 ```typescript
 public equals(vo: Optional<IValueObject<T>> = undefined): boolean {
@@ -59,7 +59,7 @@ The following blueprint outlines how to structure a Value Object to encapsulate
 complex business attributes safely:
 
 ```typescript
-import { ValueObject } from '@graviton5/core'
+import { ValueObject } from '@gantry5/core'
 
 export interface MoneyProps {
   amount: number

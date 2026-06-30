@@ -1,18 +1,18 @@
-# Graviton5 Demos
+# Gantry5 Demos
 
-Welcome to the **Graviton5** demo suite. This directory contains a set of
+Welcome to the **Gantry5** demo suite. This directory contains a set of
 operational, sandbox environments designed to showcase specific architectural
-patterns and decoupled enterprise topologies using the Graviton5 framework.
+patterns and decoupled enterprise topologies using the Gantry5 framework.
 
 These demos serve as practical "labs" to help you understand how to assemble
-your application using the `AppBuilder` and various Graviton5 modules.
+your application using the `AppBuilder` and various Gantry5 modules.
 
 ---
 
 ## ⚡ Scaffolding New Projects
 
 If you are looking to start a new architecture from scratch, we highly recommend
-using the official Graviton5 scaffolding CLI. It automates project setup and
+using the official Gantry5 scaffolding CLI. It automates project setup and
 handles the configuration of modules for you.
 
 - 👉 **[See how to use the CLI](../cli/README.md)**

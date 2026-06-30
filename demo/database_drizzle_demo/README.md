@@ -1,6 +1,6 @@
 # Demo 01: Database, DataSource and Clean Architecture 🚀
 
-This project is a practical demo illustrating how to use the `@graviton5`
+This project is a practical demo illustrating how to use the `@gantry5`
 framework to interact with a PostgreSQL database.
 
 The goal of this demo is to showcase the power of Clean Architecture and
@@ -19,7 +19,7 @@ To run this demo, ensure you have the following installed on your system:
 
 ### 1. Installing dependencies
 
-This demo is configured to read the source code of the `@graviton5` framework
+This demo is configured to read the source code of the `@gantry5` framework
 directly from the parent directory, allowing a real-time development experience
 without having to recompile the core.
 
@@ -37,11 +37,11 @@ insert your PostgreSQL connection string.
 
 ```env
 # Example of local connection. Replace "your_password" with the actual password.
-DATABASE_URL=postgres://postgres:your_password@localhost:5432/graviton5_demo
+DATABASE_URL=postgres://postgres:your_password@localhost:5432/gantry5_demo
 
 ```
 
-_(Make sure you have first created an empty database named `graviton5_demo` in
+_(Make sure you have first created an empty database named `gantry5_demo` in
 your Postgres server using a client like TablePlus, DBeaver, or psql)._
 
 ### 3. Schema Synchronization (Migration)
@@ -55,11 +55,11 @@ npm run db:push
 ```
 
 This command will read the `drizzle.config.ts` file, analyze `schema.ts`, and
-create the `users` table in the `graviton5_demo` database.
+create the `users` table in the `gantry5_demo` database.
 
 ## 🧠 How does the Demo work? (Architecture)
 
-The demo is divided into 5 fundamental concepts that reflect the `@graviton5`
+The demo is divided into 5 fundamental concepts that reflect the `@gantry5`
 approach.
 
 ### 1. The Schema (`schema.ts`)
@@ -70,7 +70,7 @@ traveling between the framework and the database.
 
 ### 2. The Filter Builder (`filter-builder.ts`)
 
-This is the bridge between abstraction and implementation. The `@graviton5`
+This is the bridge between abstraction and implementation. The `@gantry5`
 framework uses abstract search criteria (e.g., `WriteCriteria`). The
 `UserFilterBuilder` class takes these agnostic requests and translates them into
 typed, secure `WHERE` clauses specific to Drizzle (`eq`, `gt`, `inArray`). In

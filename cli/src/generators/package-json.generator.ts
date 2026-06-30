@@ -25,7 +25,7 @@ export class PackageJsonGenerator implements IGenerator {
 
   private getDependencies(options: ScaffoldingOptions): Record<string, string> {
     const deps: Record<string, string> = {
-      "@graviton5/core": "latest",
+      "@gantry5/core": "latest",
       "zod": "^4.4.3",
     };
 

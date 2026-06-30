@@ -6,10 +6,10 @@ import type { IQuery } from './cqrs_types/iquery.types'
  * An interface representing a mediator in the CQRS (Command Query Responsibility Segregation) pattern. The mediator is responsible for sending commands and executing queries by delegating them to the appropriate handlers.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IMediator {
   /**
@@ -18,10 +18,10 @@ export interface IMediator {
    * @returns A promise that resolves to the response from the handler.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   send<TResponse>(request: ICommand<TResponse>): Promise<ResultType<TResponse>>
 
@@ -31,10 +31,10 @@ export interface IMediator {
    * @returns A promise that resolves to the result of the query.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   query<TResponse>(request: IQuery<TResponse>): Promise<ResultType<TResponse>>
 }

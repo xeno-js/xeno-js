@@ -1,6 +1,6 @@
 # Redis Configuration & CLI Integration
 
-When initializing a brand new project via the `@Graviton5/create` CLI—either
+When initializing a brand new project via the `@Gantry5/create` CLI—either
 through interactive step-by-step choices or by supplying the `complete` mode
 argument—selecting the `redis` option automatically initializes your application
 shell to orchestrate distributed caching layers[cite: 2, 5].
@@ -47,7 +47,7 @@ live Redis cluster or isolated instance, map the values from your process
 environment:
 
 ```ts
-import { AppBuilder } from '@graviton5/core'
+import { AppBuilder } from '@gantry5/core'
 
 builder.addCache((opts) => {
   // Deactivate single-process volatile memory storage

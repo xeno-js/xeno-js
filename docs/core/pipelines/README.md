@@ -2,7 +2,7 @@
 
 ## Overview
 
-In the Graviton5 framework, **Pipeline Behaviors** implement a highly scalable
+In the Gantry5 framework, **Pipeline Behaviors** implement a highly scalable
 combination of the _Decorator_ and _Chain of Responsibility_ design patterns
 wrapped around the centralized CQRS Mediator engine. Heavily inspired by
 enterprise architecture standards (such as MediatR in the .NET ecosystem), a
@@ -48,7 +48,7 @@ domain logic.
 
 ## The Dual-Track Execution Model
 
-The Graviton5 Mediator orchestrates execution across two strictly segregated
+The Gantry5 Mediator orchestrates execution across two strictly segregated
 tracks based on the intent and architectural side-effects of the incoming
 request. While both tracks pass through global cross-cutting filters, their
 operational goals and specific behavioral stacks differ fundamentally:
@@ -80,7 +80,7 @@ modify the application state or produce structural side-effects.
 
 ## Exposed Pipeline Framework Matrix
 
-The core kernel of Graviton5 provisions and manages specific behavioral layers
+The core kernel of Gantry5 provisions and manages specific behavioral layers
 registered as unique symbols via the central `INJECTION_TOKENS` constants. These
 pipelines compose the structural backbone of the container host:
 
@@ -105,7 +105,7 @@ using the declarative `.addPipeline()` method exposed by the fluent
 block to calibrate global thresholds and toggle specific tracking engines:
 
 ```typescript
-import { AppBuilder } from '@graviton5/core'
+import { AppBuilder } from '@gantry5/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

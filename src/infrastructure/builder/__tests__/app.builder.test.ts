@@ -38,20 +38,9 @@ describe('AppBuilder Smoke Test', () => {
         }
         config.queryBus.isEnabled = true
       })
-      .addHttp((config) => {
-        config.token = TokenHelper.createToken<IHttpClient>('DUMMY_HTTP_TOKEN')
-        config.client.baseURL = 'https://dummy-http.local'
-        config.client.timeoutMs = 3000
-        config.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
-      })
-      .addResilience((config) => {
-        config.retry = { attempts: 3, baseDelayMs: 100, maxDelayMs: 1000 }
-        config.circuitBreaker = { consecutiveFailures: 5, halfOpenTimeoutMs: 10000 }
-        config.bulkhead = { maxConcurrent: 10 }
-      })
       .addHttpCore((config) => {
         config.dataSourceToken = TokenHelper.createToken<IRemoteDataSource>('DUMMY_HTTP_CORE_TOKEN')
-        config.http.token = TokenHelper.createToken<IHttpClient>('DUMMY_HTTP_TOKEN2')
+        config.http.token = TokenHelper.createToken<IHttpClient>('DUMMY_HTTP_TOKEN')
         config.http.client.baseURL = 'https://dummy-http-core.local'
         config.http.client.timeoutMs = 5000
         config.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }

@@ -1,12 +1,12 @@
 # Injection Tokens
 
-An injection token is the stable key used by the Graviton5 service container to
+An injection token is the stable key used by the Gantry5 service container to
 register and resolve a dependency. Instead of resolving services by class name
 or string literals scattered across the codebase, you create a token once and
 use that token everywhere.
 
-Graviton5 exposes framework tokens through `INJECTION_TOKENS`. For example, when
-you call `builder.addDb(...)`, Graviton5 registers the database client under:
+Gantry5 exposes framework tokens through `INJECTION_TOKENS`. For example, when
+you call `builder.addDb(...)`, Gantry5 registers the database client under:
 
 ```ts
 INJECTION_TOKENS.DB_CLIENT
@@ -40,7 +40,7 @@ import {
   type IMapper,
   type IReadDao,
   type IRepository,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -82,7 +82,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 
 import {

@@ -2,9 +2,9 @@
 
 ## Overview
 
-The Graviton5 Authorization Subsystem provides a robust, zero-trust
-infrastructure designed to secure CQRS message flows before execution context
-segments cross into the application core. Managed by the centralized
+The Gantry5 Authorization Subsystem provides a robust, zero-trust infrastructure
+designed to secure CQRS message flows before execution context segments cross
+into the application core. Managed by the centralized
 **`AuthorizationPipeline`**, this architecture encapsulates security rules into
 decoupled, single-responsibility structural components known as Authorization
 Strategies (`IStrategy<TInput>`).
@@ -19,8 +19,8 @@ resources and ensure data isolation.
 ## The Authorization Layer Stack
 
 Instead of handling authentication and authorization inside unified blocks,
-Graviton5 divides identity inspection across four distinct security pillars.
-Each strategy maps directly to specific operational requirements:
+Gantry5 divides identity inspection across four distinct security pillars. Each
+strategy maps directly to specific operational requirements:
 
 ```
 

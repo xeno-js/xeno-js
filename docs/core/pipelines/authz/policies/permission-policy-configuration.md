@@ -3,7 +3,7 @@
 ## Overview
 
 The `PermissionAuthorizationStrategy` implements granular, feature-level
-capability verification inside the Graviton5 pipeline behavior stack. Operating
+capability verification inside the Gantry5 pipeline behavior stack. Operating
 under a least-privilege security model, it enforces fine-grained authorization
 rules by checking that an authenticated user possesses the explicit permissions
 required to execute a given request.

@@ -1,8 +1,8 @@
 # Sentry Production Logger Configuration
 
-The Sentry integration in Graviton5 handles production exception tracking, alert
+The Sentry integration in Gantry5 handles production exception tracking, alert
 monitoring, and real-time error telemetry. Managed internally by the
-`SentryLoggerFactory`, this provider integrates natively with Graviton5's
+`SentryLoggerFactory`, this provider integrates natively with Gantry5's
 dependency container to capture framework anomalies while proactively filtering
 operational noise.
 
@@ -28,7 +28,7 @@ specific variables:
 # Standard Runtime Environment
 NODE_ENV=development
 
-# Graviton5 Sentry Logger Configuration
+# Gantry5 Sentry Logger Configuration
 SENTRY_DSN=https://your-sentry-dsn@o0.ingest.sentry.io/0
 SENTRY_ENVIRONMENT=development
 SENTRY_RELEASE=app@1.0.0
@@ -108,7 +108,7 @@ To attach Sentry to your active `BaseLogger` multiplexer framework engine,
 expose the keys inside your initialization file (`src/bootstrap.ts`):
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@graviton5/core'
+import { AppBuilder, LOG_LEVEL } from '@gantry5/core'
 
 const builder = new AppBuilder()
 
@@ -142,7 +142,7 @@ builder
 
 ## ⚠️ Critical Rule: Builder Execution Order
 
-As with all Graviton5 logging extensions, you must chain `.addLogger(...)`
+As with all Gantry5 logging extensions, you must chain `.addLogger(...)`
 **after** `.addPipeline(...)`.
 
 Enabling the CQRS pipelines automatically mounts a default fallback system

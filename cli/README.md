@@ -1,15 +1,15 @@
-# @graviton5/create
+# @gantry5/create
 
-The official scaffolding tool for **Graviton5**. This CLI allows you to quickly
-bootstrap a production-ready Node.js application based on Graviton5, following
+The official scaffolding tool for **Gantry5**. This CLI allows you to quickly
+bootstrap a production-ready Node.js application based on Gantry5, following
 Domain-Driven Design (DDD) and Clean Architecture principles.
 
 ## 🚀 Quick Start
 
-To create a new Graviton5 project, simply run:
+To create a new Gantry5 project, simply run:
 
 ```bash
-npx @graviton5/create my-graviton5-app
+npx @gantry5/create my-gantry5-app
 
 ```
 
@@ -25,7 +25,7 @@ need (Database, HTTP, Auth, Logging, etc.).
 You can specify the project directory directly:
 
 ```bash
-npx @graviton5/create <project-name>
+npx @gantry5/create <project-name>
 
 ```
 
@@ -35,7 +35,7 @@ The CLI supports optional flags to bypass the interactive prompt:
 
 - **`--full`**: Scaffolds a project with all enterprise features enabled
   (Drizzle ORM, Axios, Supabase, Logging, etc.).
-- **`--empty`**: Scaffolds a minimal Graviton5 project without additional
+- **`--empty`**: Scaffolds a minimal Gantry5 project without additional
   infrastructure plugins.
 
 ---

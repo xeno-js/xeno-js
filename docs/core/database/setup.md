@@ -9,7 +9,7 @@ Drizzle ORM and PostgreSQL drivers. Answer `yes`.
 Run the creator without a mode:
 
 ```bash
-npm exec @Graviton5/create@latest -- my-Graviton5-app
+npm exec @Gantry5/create@latest -- my-Gantry5-app
 ```
 
 When prompted:
@@ -45,7 +45,7 @@ It also installs database dev tooling:
 If you want every optional module, including the database, use `complete`:
 
 ```bash
-npm exec @Graviton5/create@latest -- my-Graviton5-app complete
+npm exec @Gantry5/create@latest -- my-Gantry5-app complete
 ```
 
 ## Generated Database Files
@@ -61,7 +61,7 @@ src/schema.ts
 The generated `.env.example` includes:
 
 ```bash
-DATABASE_URL=postgres://postgres:password@localhost:5432/Graviton5_db
+DATABASE_URL=postgres://postgres:password@localhost:5432/Gantry5_db
 ```
 
 Create your real `.env` file:

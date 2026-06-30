@@ -1,6 +1,6 @@
 # Identity & Access Control
 
-The Graviton5 Identity & Access Control subsystem delivers an enterprise-grade,
+The Gantry5 Identity & Access Control subsystem delivers an enterprise-grade,
 decoupling-first architecture for managing authentication (**AuthN**) and
 authorization (**AuthZ**) in high-performance TypeScript applications. Designed
 around Domain-Driven Design (DDD) principles and Clean Architecture, it cleanly
@@ -32,7 +32,7 @@ following modules:
 
 - **[Supabase Configuration Manual](https://www.google.com/search?q=supabase-configuration.md)**:
   Details the automated initialization of the infrastructure through the
-  `@Graviton5/create` scaffolding CLI tool, environment variables, and the
+  `@Gantry5/create` scaffolding CLI tool, environment variables, and the
   programmatic runtime properties of the `SupabaseAuthServiceFactory`.
 - **[How-To-Use & Architecture Guide](https://www.google.com/search?q=how-to-use.md)**:
   Explains the internal request-identity lifecycle, the critical ordering rules

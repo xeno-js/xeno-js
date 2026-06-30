@@ -1,6 +1,6 @@
 # HTTP Request and Resilience
 
-The Graviton5 HTTP & Fault-Tolerance subsystem delivers an isolated, resilient,
+The Gantry5 HTTP & Fault-Tolerance subsystem delivers an isolated, resilient,
 and contract-agnostic communication architecture for distributed integrations.
 By utilizing the _Bridge Pattern_, the framework completely decouples the
 low-level transportation concerns (handled by Axios) from the resilience and
@@ -37,8 +37,8 @@ modules:
 
 - **[HTTP Client Configuration](./http-client-configuration.md)**: Outlines the
   granular properties of the core transport layer, the `AxiosFactory` engine,
-  and the automated setup routines provided by the `@Graviton5/create`
-  scaffolding engine.
+  and the automated setup routines provided by the `@Gantry5/create` scaffolding
+  engine.
 - **[Resilience & Fault Tolerance Configuration](./resilience-configuration.md)**:
   Explains the architectural composition of the Cockatiel-backed sandbox,
   covering exponential backoff retry parameters, consecutive circuit-breaking

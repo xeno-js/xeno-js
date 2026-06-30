@@ -9,10 +9,10 @@ import { Guards } from '@/shared'
  * @template TDto - The type of the Data Transfer Object (DTO) used for data access.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class Repository<T, TDto> implements IRepository<T> {
   /**
@@ -21,10 +21,10 @@ export class Repository<T, TDto> implements IRepository<T> {
    * @param _mapper An instance of IMapper used to convert between entities and DTOs.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   constructor(
     private readonly _dataSource: IWriteDataSource<TDto>,

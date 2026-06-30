@@ -19,12 +19,12 @@ export class MainGenerator implements IGenerator {
 
 /**
  * Main application entry point.
- * This is the orchestrator that initializes the Graviton5 container
+ * This is the orchestrator that initializes the Gantry5 container
  * and starts your transport layers (HTTP servers, message brokers, etc.).
  */
 async function main() {
   try {
-    console.log('⏳ Bootstrapping @graviton5 application...');
+    console.log('⏳ Bootstrapping @gantry5 application...');
     
     // Initialize the dependency injection container and infrastructure modules
     const container = await bootstrap();

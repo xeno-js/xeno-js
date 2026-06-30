@@ -1,6 +1,6 @@
 # Local Development
 
-This guide is for developers working on the Graviton5 repository.
+This guide is for developers working on the Gantry5 repository.
 
 ## Repository Install
 
@@ -24,7 +24,7 @@ npm run check
 
 ## Develop the Core
 
-The root package is `@graviton5`. Public exports are defined in:
+The root package is `@gantry5`. Public exports are defined in:
 
 ```text
 src/index.ts
@@ -57,13 +57,13 @@ npm run build
 Local execution:
 
 ```bash
-node dist/index.js ../../demo/my-graviton5-app empty
+node dist/index.js ../../demo/my-gantry5-app empty
 ```
 
 Or in TypeScript development mode:
 
 ```bash
-npm run dev -- ../../demo/my-graviton5-app empty
+npm run dev -- ../../demo/my-gantry5-app empty
 ```
 
 ## Verify the Scaffold
@@ -71,7 +71,7 @@ npm run dev -- ../../demo/my-graviton5-app empty
 After generating a project:
 
 ```bash
-cd demo/my-graviton5-app
+cd demo/my-gantry5-app
 npm run dev
 ```
 

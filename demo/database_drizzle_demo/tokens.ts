@@ -1,5 +1,5 @@
-import { HardDeleteDataSource, TokenHelper } from '@graviton5/core'
-import type { IFilterBuilder } from '@graviton5/core'
+import { HardDeleteDataSource, TokenHelper } from '@gantry5/core'
+import type { IFilterBuilder } from '@gantry5/core'
 import { SQL } from 'drizzle-orm'
 import { UserDto } from './schema'
 

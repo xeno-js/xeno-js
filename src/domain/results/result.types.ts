@@ -7,9 +7,9 @@ import type { Result } from './result'
  * @template T - The type of the Result instance.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export type ResultType<T, E = AppError> = Result<T, E>

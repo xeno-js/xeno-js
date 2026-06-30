@@ -10,10 +10,10 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } fr
  * @description Axios-based implementation of the agnostic IHttpClient contract.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class AxiosHttpClient implements IHttpClient {
   /**
@@ -21,10 +21,10 @@ export class AxiosHttpClient implements IHttpClient {
    * @param config Optional HTTP client config used to initialize the internal client instance.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   constructor(private readonly _client: AxiosInstance) {}
 

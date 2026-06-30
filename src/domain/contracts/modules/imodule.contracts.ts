@@ -10,10 +10,10 @@ import type { IServiceContainer } from '../container/iservice-container.contract
  * @template TOptions - The type of configuration options for the module.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IModule<TOptions = unknown> {
   /**
@@ -23,10 +23,10 @@ export interface IModule<TOptions = unknown> {
    * @param opts - The configuration options for the module.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   configure(container: IServiceContainer, opts?: Optional<TOptions>): Promise<void>
 }

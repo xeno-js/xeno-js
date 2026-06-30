@@ -5,10 +5,10 @@
  * @template TDto - Il tipo del Data Transfer Object (DTO).
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export interface IMapper<TE, TDto> {
   /**
@@ -18,10 +18,10 @@ export interface IMapper<TE, TDto> {
    * @returns A DTO representation of the given entity.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   toDto(entity: TE): TDto
 
@@ -32,10 +32,10 @@ export interface IMapper<TE, TDto> {
    * @returns An entity representation of the given DTO.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   toEntity(dto: TDto): TE
 
@@ -45,10 +45,10 @@ export interface IMapper<TE, TDto> {
    * @returns A partial DTO representation of the given partial entity.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   toPartialDto(entity: Partial<TE>): Partial<TDto>
 }

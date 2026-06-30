@@ -5,50 +5,50 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES } from '@/shared
  * It includes additional properties such as an error code and an HTTP status code.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 interface ErrorPayload {
   /** The error message describing the error.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   message: string
   /** The error code representing the type of error.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   code: string
   /** The HTTP status code associated with the error.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   status: number
   /** The name of the error, typically the class name.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   name: string
   /** An optional property to hold the original error or any additional context.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   cause: Optional<unknown>
 }
@@ -58,30 +58,30 @@ interface ErrorPayload {
  * It includes additional properties such as an error code and an HTTP status code.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export class AppError extends Error {
   /**
    * The error code representing the type of error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public readonly code: string
   /**
    * The HTTP status code associated with the error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public readonly status: number
 
@@ -91,10 +91,10 @@ export class AppError extends Error {
    * @param payload - The payload containing error details.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   private constructor(payload: ErrorPayload) {
     super(payload.message)
@@ -111,10 +111,10 @@ export class AppError extends Error {
    * @returns An AppError instance representing the error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public static create(payload: ErrorPayload): AppError {
     return new AppError(payload)
@@ -126,10 +126,10 @@ export class AppError extends Error {
    * @throws An AppError instance representing the error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public static throw(payload: ErrorPayload): never {
     throw new AppError(payload)
@@ -141,10 +141,10 @@ export class AppError extends Error {
    * @returns An AppError instance representing the aborted request error.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public static aborted(name: string): AppError {
     return new AppError({
@@ -162,10 +162,10 @@ export class AppError extends Error {
    * @param name - The name of the error, typically the class name or context where the error occurred.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   public static throwIfAborted(signal: Maybe<AbortSignal>, name: string): void {
     if (Guards.isDefined(signal) && signal.aborted) {

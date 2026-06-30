@@ -6,10 +6,10 @@ import { Guards } from './guards.utils'
  * This module provides a simple interface for working with GUIDs, including generation and validation.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export const GuidHelper = Object.freeze({
   /**
@@ -17,10 +17,10 @@ export const GuidHelper = Object.freeze({
    * @returns Lowercase UUID v4 string.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   generate(): Guid {
     return crypto.randomUUID()
@@ -32,10 +32,10 @@ export const GuidHelper = Object.freeze({
    * @returns True if the value is a valid and non-empty GUID, false otherwise.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isValidGuid(value: Guid): boolean {
     const guid = value.toString()
@@ -48,10 +48,10 @@ export const GuidHelper = Object.freeze({
    * @returns True if the string is a valid UUID v4, false otherwise.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isValid(value: string): value is Guid {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -64,10 +64,10 @@ export const GuidHelper = Object.freeze({
    * @returns The GUID if the string is valid, otherwise undefined.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   parse(value: Optional<string>): Optional<Guid> {
     if (!Guards.isNullOrEmpty(value) && this.isValid(value) && !this.isEmpty(value)) {
@@ -82,10 +82,10 @@ export const GuidHelper = Object.freeze({
    * @returns True if the GUID is the empty GUID, false otherwise.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isEmpty(value: string): boolean {
     const emptyGuid = '00000000-0000-0000-0000-000000000000'

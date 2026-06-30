@@ -21,8 +21,8 @@ behavior stack alongside required policy records using the `AppBuilder`
 pipeline:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@graviton5/core'
-import type { AuthPolicy } from '@Graviton5/shared'
+import { AppBuilder, TokenHelper } from '@gantry5/core'
+import type { AuthPolicy } from '@Gantry5/shared'
 
 // 1. Declare the unified security policy mapping request intents to required claims
 const applicationPolicyRegistry: Record<string, AuthPolicy> = {

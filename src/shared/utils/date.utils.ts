@@ -6,10 +6,10 @@ const MS_PER_DAY = 86_400_000
  * @description Namespace for timezone-agnostic date utilities.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export const DateHelper = Object.freeze({
   /**
@@ -18,10 +18,10 @@ export const DateHelper = Object.freeze({
    * @returns ISO 8601 UTC string.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   toISOString(date: Date): string {
     return date.toISOString()
@@ -34,10 +34,10 @@ export const DateHelper = Object.freeze({
    * @returns New Date instance.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   addDays(date: Date, days: number): Date {
     return new Date(date.getTime() + days * MS_PER_DAY)
@@ -50,10 +50,10 @@ export const DateHelper = Object.freeze({
    * @returns True when expiresAt is in the past.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isExpired(expiresAt: Date, nowMs?: number): boolean {
     const now = nowMs ?? Date.now()
@@ -67,10 +67,10 @@ export const DateHelper = Object.freeze({
    * @returns True when after is after before.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isAfter(after: Date, before: Date): boolean {
     return Guards.isDate(after) && Guards.isDate(before) && after.getTime() > before.getTime()
@@ -82,10 +82,10 @@ export const DateHelper = Object.freeze({
    * @returns True when date is in the future.
   
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
   isFuture(date: Date): boolean {
     return Guards.isDate(date) && date.getTime() > Date.now()

@@ -1,6 +1,6 @@
 # Data Sources
 
-Graviton5 data sources sit between the low-level `IDbClient` and your
+Gantry5 data sources sit between the low-level `IDbClient` and your
 repositories. They know which table they operate on and ask an `IFilterBuilder`
 to translate criteria into database-specific query conditions.
 
@@ -21,7 +21,7 @@ import {
   ReadDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -57,7 +57,7 @@ import {
   HardDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -92,7 +92,7 @@ import {
   SoftDeleteDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 
 import type { UserDto } from './schema.js'
@@ -142,7 +142,7 @@ import {
   HardDeleteDataSource,
   INJECTION_TOKENS,
   type IDbClient,
-} from '@graviton5/core'
+} from '@gantry5/core'
 import type { SQL } from 'drizzle-orm'
 
 import { USER_FILTER_BUILDER, USER_WRITE_DATASOURCE } from './tokens.js'

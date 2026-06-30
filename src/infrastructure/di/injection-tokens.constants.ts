@@ -35,356 +35,356 @@ import type { LoggerConfig } from '../modules/config'
  * They can be symbols, strings, or classes, but using symbols is a common practice to avoid naming collisions.
 
    * 
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5 
+   * @link https://github.com/Mattia-Carcione/Gantry5 
    */
 export const INJECTION_TOKENS = Object.freeze({
   /** @description Token used to register and resolve the AuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   AUTHORIZATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the AuthService instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   AUTH_SERVICE: TokenHelper.createToken<IAuthService>(TOKENS.AUTH_SERVICE),
   /** @description Token used to register and resolve the BearerTokenExtractor instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   BEARER_TOKEN_EXTRACTOR: TokenHelper.createToken<IServiceExtractor<HttpHeaders, Optional<string>>>(
     TOKENS.BEARER_TOKEN_EXTRACTOR,
   ),
   /** @description Token used to register and resolve the InMemoryCache instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   CACHE: TokenHelper.createToken<ICache>(TOKENS.CACHE),
   /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   CLAIMS_IDENTITY_MAPPER: TokenHelper.createToken<IBaseMapper<AuthClaims, Identity>>(
     TOKENS.CLAIMS_IDENTITY_MAPPER,
   ),
   /** @description Token used to register and resolve the CommandPipeline behaviors in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   COMMAND_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.COMMAND_PIPELINES_BEHAVIOR,
   ),
   /** @description Token used to register and resolve the CompositePipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   COMPOSITE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.COMPOSITE_PIPELINE,
   ),
   /** @description Token used to register and resolve the ConcurrencyRetryPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   CONCURRENCY_RETRY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.CONCURRENCY_RETRY_PIPELINE,
   ),
   /** @description Token used to register and resolve the ConcurrencyService instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   CONCURRENCY_SERVICE: TokenHelper.createToken<IConcurrencyService>(TOKENS.CONCURRENCY_SERVICE),
   /** @description Token used to register and resolve the ConsoleLogger instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   CONSOLE_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.CONSOLE_LOGGER),
   /** @description Token used to register and resolve the DbClient instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   DB_CLIENT: TokenHelper.createToken<IDbClient>(TOKENS.DB_CLIENT),
   /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   EXCEPTION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.EXCEPTION_PIPELINE,
   ),
   /** @description Token used to register and resolve the GateKeeper instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   GATE_KEEPER: TokenHelper.createToken<IGateKeeper>(TOKENS.GATE_KEEPER),
   /** @description Token used to register and resolve the IdempotencyPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   IDEMPOTENCY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.IDEMPOTENCY_PIPELINE,
   ),
   /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   IDEMPOTENCY_STORE: TokenHelper.createToken<IIdempotencyStore>(TOKENS.IDEMPOTENCY_STORE),
   /** @description Token used to register and resolve the Logger instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   LOGGER: TokenHelper.createToken<ILogger>(TOKENS.LOGGER),
   /** @description Token used to register and resolve the LoggerConfig instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   LOGGER_CONFIG: TokenHelper.createToken<LoggerConfig>(TOKENS.LOGGER_CONFIG),
   /** @description Token used to register and resolve the LoggingPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   LOGGING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.LOGGING_PIPELINE,
   ),
   /** @description Token used to register and resolve the Mediator instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   MEDIATOR: TokenHelper.createToken<IMediator>(TOKENS.MEDIATOR),
   /** @description Token used to register and resolve the RequestContextMiddleware in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   MIDDLEWARE: TokenHelper.createToken<IMiddleware<HttpHeaders>>(TOKENS.REQUEST_CONTEXT_MIDDLEWARE),
   /** @description Token used to register and resolve the PerformancePipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   PERFORMANCE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.PERFORMANCE_PIPELINE,
   ),
   /** @description Token used to register and resolve the PermissionAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   PERMISSION_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the PinoLogger instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   PINO_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.PINO_LOGGER),
   /** @description Token used to register and resolve the PolicyRegistry instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   POLICY_REGISTRY: TokenHelper.createToken<IPolicyRegistry>(TOKENS.POLICY_REGISTRY),
   /** @description Token used to register and resolve the QueryCachingPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   QUERY_CACHING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.QUERY_CACHING_PIPELINE,
   ),
   /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   QUERY_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.QUERY_PIPELINES_BEHAVIOR,
   ),
   /** @description Token used to register and resolve the RequestContext instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   REQUEST_CONTEXT: TokenHelper.createToken<IRequestContext<ExecutionContext>>(
     TOKENS.REQUEST_CONTEXT,
   ),
   /** @description Token used to register and resolve the IServiceResilience instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   RESILIENCE_CLIENT: TokenHelper.createToken<IServiceResilience>(TOKENS.RESILIENCE_CLIENT),
   /** @description Token used to register and resolve the RoleAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   ROLE_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.ROLE_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the SchemaValidationStrategy instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   SCHEMA_VALIDATION_STRATEGY: TokenHelper.createToken<BaseValidationStrategy>(
     TOKENS.SCHEMA_VALIDATION_STRATEGY,
   ),
   /** @description Token used to register and resolve the SentryLogger instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   SENTRY_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.SENTRY_LOGGER),
   /** @description Token used to register and resolve the ServiceContainer instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   SERVICE_CONTAINER: TokenHelper.createToken<IServiceContainer>(TOKENS.SERVICE_CONTAINER),
   /** @description Token used to register and resolve the ServiceExtractor instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   SERVICE_EXTRACTOR: TokenHelper.createToken<IServiceExtractor<HttpHeaders, Metadata>>(
     TOKENS.SERVICE_EXTRACTOR,
   ),
   /** @description Token used to register and resolve the ServiceScopeFactory instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   SERVICE_SCOPE_FACTORY: TokenHelper.createToken<IFactory<void, IServiceScope>>(
     TOKENS.SERVICE_SCOPE_FACTORY,
   ),
   /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   TENANT_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.TENANT_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   USER_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.USER_AUTHORIZATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the ValidationPipeline instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   VALIDATION_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
     TOKENS.VALIDATION_PIPELINE,
   ),
   /** @description Token used to register and resolve the ZodValidator instance in the dependency injection container.
    *
-   * @author Graviton5
+   * @author Gantry5
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Graviton5
+   * @link https://github.com/Mattia-Carcione/Gantry5
    */
   ZOD_VALIDATOR: TokenHelper.createToken<IValidatorService>(TOKENS.ZOD_VALIDATOR),
 } as const)

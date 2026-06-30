@@ -13,7 +13,7 @@ glues them together inside an instances of the **`RemoteDataSource`** engine.
 
 ## Automated CLI Scaffolding & Environmental Variables
 
-When scaffolding a workspace with the interactive `@Graviton5/create` CLI tool,
+When scaffolding a workspace with the interactive `@Gantry5/create` CLI tool,
 selecting the `http` option automatically prepares your runtime environment
 matrix. The CLI appends a granular blueprint block directly to your project's
 local `.env.example` file:
@@ -49,7 +49,7 @@ import {
   IRemoteDataSource,
   IHttpClient,
   TokenHelper,
-} from '@graviton5/core'
+} from '@gantry5/core'
 
 // Define the injection identifier token used by your domain repositories
 export const DISPATCH_DATA_SOURCE_TOKEN =
@@ -113,7 +113,7 @@ application repository extracts the configured `IRemoteDataSource` from the IoC
 container to dispatch highly resilient, strongly typed transaction requests:
 
 ```typescript
-import type { IServiceContainer, IRemoteDataSource } from '@graviton5/core'
+import type { IServiceContainer, IRemoteDataSource } from '@gantry5/core'
 import { DISPATCH_DATA_SOURCE_TOKEN } from './bootstrap'
 
 // 1. Define strongly typed interfaces for data contracts
