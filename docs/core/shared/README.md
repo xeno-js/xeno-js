@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `shared/` layer operates as the **Shared Kernel** of the Gantry5 ecosystem.
+The `shared/` layer operates as the **Shared Kernel** of the XenoJS ecosystem.
 Positioned at the very baseline of the architectural dependency graph, this
 module is strictly pure and decoupled. It contains zero awareness of upper-level
 application layers, domain aggregates, write repositories, or presentation

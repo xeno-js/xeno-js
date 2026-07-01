@@ -8,10 +8,10 @@ import { Guards, LOG_LEVEL } from '@/shared'
  * @description Class that implements the ILoggerClient interface using the Pino logging library. This class serves as an adapter between the ILoggerClient interface and the Pino logging library, allowing the use of Pino as a logging provider within the application's architecture without directly coupling the code to the specific logging framework.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export class PinoLogger implements ILoggerClient {
   /**
@@ -20,10 +20,10 @@ export class PinoLogger implements ILoggerClient {
    * @param _minLevel The minimum log level for logging messages. Messages with a log level below this threshold will not be logged. Default is LOG_LEVEL.DEBUG.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   constructor(
     private readonly _logger: Logger,

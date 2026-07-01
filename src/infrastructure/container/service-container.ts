@@ -17,10 +17,10 @@ import { ServiceScope } from './service-scope'
  *   through a scope obtained via {@link createScope}.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export class ServiceContainer implements IServiceContainer {
   private readonly _descriptors = new Map<symbol, ServiceDescriptor<unknown>>()
@@ -34,10 +34,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addSingleton<T>(
     token: InjectionToken<T>,
@@ -56,10 +56,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addTransient<T>(
     token: InjectionToken<T>,
@@ -78,10 +78,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addScoped<T>(
     token: InjectionToken<T>,
@@ -100,10 +100,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -120,10 +120,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addScopedFactory<T>(
     token: InjectionToken<T>,
@@ -140,10 +140,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -160,10 +160,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     const descriptor = this._descriptors.get(token.symbol)
@@ -183,10 +183,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   public createScope(): IServiceScope {
     return new ServiceScope(this._descriptors, this)

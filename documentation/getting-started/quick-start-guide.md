@@ -2,8 +2,8 @@
 title: Quick Start Guide
 sidebar_position: 5
 description:
-  Bootstrap your first enterprise-grade, decorator-free Gantry5 application
-  using AppBuilder and the CQRS Mediator.
+  Bootstrap your first enterprise-grade, decorator-free XenoJS application using
+  AppBuilder and the CQRS Mediator.
 keywords:
   - appbuilder
   - bootstrap
@@ -18,7 +18,7 @@ keywords:
 ## Introduction
 
 This guide provides an end-to-end walkthrough for spinning up a production-ready
-application using the Gantry5 kernel engine [cite: 9]. You will configure a
+application using the XenoJS kernel engine [cite: 9]. You will configure a
 highly decoupled, multi-tenant capable host from scratch using the explicit,
 fluent `AppBuilder` API, resolve the central pipeline mediator, and dispatch
 your first transaction command safely [cite: 1, 9].
@@ -31,7 +31,7 @@ You can instantly generate the necessary Clean Architecture directory topology
 and configurations by employing the official scaffolding tool [cite: 9]:
 
 ```bash
-npx @gantry5/create my-gantry5-app
+npx @xeno/create my-xeno-app
 
 ```
 
@@ -48,7 +48,7 @@ targeted modules (`Drizzle ORM`, `Axios`, `Pino`, `Sentry`, `ioredis`, or
 
 ## Structural Assembly Blueprint
 
-A standard Gantry5 execution host splits its initialization lifecycle across two
+A standard XenoJS execution host splits its initialization lifecycle across two
 main modules inside the `src/` ring: `src/bootstrap.ts` and `src/main.ts` .
 
 ```text
@@ -72,7 +72,7 @@ import {
   LOG_LEVEL,
   TokenHelper,
   INJECTION_TOKENS,
-} from '@gantry5/core'
+} from '@xeno/core'
 
 /**
  * @description Assembles the application runtime container and configures
@@ -128,7 +128,7 @@ export async function bootstrap() {
 }
 ```
 
-:::info Gantry5 operates with strict **Optional Peer Dependencies** . If you
+:::info XenoJS operates with strict **Optional Peer Dependencies** . If you
 activate a component block within the builder (e.g., `.addDb()` or
 `.addLogger()`), you must ensure that your package layer holds the required
 underlying provider libraries (`drizzle-orm`, `pino`, `pg`, `axios`) . :::
@@ -144,14 +144,14 @@ handlers) .
 
 ```typescript
 import { bootstrap } from './bootstrap.js'
-import { INJECTION_TOKENS } from '@gantry5/core'
+import { INJECTION_TOKENS } from '@xeno/core'
 
 /**
  * @description Application kernel runtime initialization coordinator.
  */
 async function main() {
   try {
-    console.log('  Bootstrapping Gantry5 execution container...')
+    console.log('  Bootstrapping XenoJS execution container...')
 
     // Resolve compiled dependency graph container
     const container = await bootstrap()
@@ -191,7 +191,7 @@ Here is how you execute an action scenario securely inside your presentation
 delivery ring:
 
 ```typescript
-import { INJECTION_TOKENS } from '@gantry5/core'
+import { INJECTION_TOKENS } from '@xeno/core'
 
 async function handleIncomingWebRequest(container: any, rawPayload: any) {
   // 1. Resolve the decoupled Mediator engine
@@ -235,7 +235,7 @@ async function handleIncomingWebRequest(container: any, rawPayload: any) {
 
 ### ❌ Relying on Automated Implicit Wire Registration
 
-Gantry5 prioritizes absolute clarity and execution speed over implicit
+XenoJS prioritizes absolute clarity and execution speed over implicit
 configuration scanning . It does not parse file structures at startup . If you
 generate a new Command Handler, Query Handler, or custom infrastructure data
 service, it **will not be discovered automatically** by the kernel. You must
@@ -254,7 +254,7 @@ state parameters directly into inner service constructor methods . Let
 ## Next Steps
 
 With your baseline application host constructed and operational, deepen your
-technical understanding of how Gantry5 controls system execution internally:
+technical understanding of how XenoJS controls system execution internally:
 
 - **[Type-Safe Dependency Injection](https://www.google.com/search?q=../core-runtime-mechanics/type-safe-dependency-injection.md)**:
   Explore token nominal branding mechanisms and phantom type compile guarantees

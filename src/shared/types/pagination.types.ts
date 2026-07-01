@@ -9,20 +9,20 @@
  * @template T  The type of each item in the page.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IPaginatedResult<T> {
   /**
    * @description Immutable slice of items for the requested page.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly items: readonly T[]
 
@@ -30,10 +30,10 @@ export interface IPaginatedResult<T> {
    * @description Total number of items matching the query across all pages.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly total: number
 
@@ -41,10 +41,10 @@ export interface IPaginatedResult<T> {
    * @description Current 1-based page index.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly page: number
 
@@ -52,10 +52,10 @@ export interface IPaginatedResult<T> {
    * @description Number of items per page used for this result.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly pageSize: number
 
@@ -64,10 +64,10 @@ export interface IPaginatedResult<T> {
    * Computed as `Math.ceil(total / pageSize)`.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly totalPages: number
 
@@ -75,10 +75,10 @@ export interface IPaginatedResult<T> {
    * @description `true` when a next page exists (i.e. `page < totalPages`).
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly hasNextPage: boolean
 
@@ -86,10 +86,10 @@ export interface IPaginatedResult<T> {
    * @description `true` when a previous page exists (i.e. `page > 1`).
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly hasPreviousPage: boolean
 }

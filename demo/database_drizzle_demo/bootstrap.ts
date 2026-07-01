@@ -1,6 +1,6 @@
 import { UserFilterBuilder } from './filter-builder'
-import { AppBuilder, INJECTION_TOKENS, HardDeleteDataSource } from '@gantry5/core'
-import type { DbConfig, IServiceContainer } from '@gantry5/core'
+import { AppBuilder, INJECTION_TOKENS, HardDeleteDataSource } from '@xeno/core'
+import type { DbConfig, IServiceContainer } from '@xeno/core'
 import { usersTable, UserDto } from './schema'
 import { SQL } from 'drizzle-orm'
 import { USER_DS_TOKEN, FILTER_BUILDER_TOKEN } from './tokens'

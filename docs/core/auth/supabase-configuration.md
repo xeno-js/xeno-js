@@ -1,7 +1,7 @@
 # Infrastructure Provisioning
 
 Integrating Supabase as the underlying identity provider can be fully automated
-during the initialization of a brand new project via the `@Gantry5/create`
+during the initialization of a brand new project via the `@XenoJS/create`
 scaffolding CLI tool.
 
 When prompted by the interactive CLI engine:
@@ -61,8 +61,8 @@ The connection is registered via the `.addAuth()` method exposed by the
 contract, allowing full customization of the client options:
 
 ```ts
-import { AppBuilder } from '@gantry5/core'
-import { LOG_LEVEL } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
+import { LOG_LEVEL } from '@xeno/core'
 
 async function bootstrap() {
   const builder = new AppBuilder()

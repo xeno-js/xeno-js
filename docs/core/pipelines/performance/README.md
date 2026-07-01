@@ -30,7 +30,7 @@ Unlike basic global trackers, this module allocates its tracking conditional
 dynamically based on options passed into the `AppBuilder` pipeline host:
 
 ```typescript
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 
 builder.addPipeline((opts) => {
   // If thresholdMs is unassigned or set to undefined, the pipeline bypasses registration

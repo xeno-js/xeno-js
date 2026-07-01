@@ -2,10 +2,10 @@
  * @description Namespace for safe mathematical operations.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const MathHelper = Object.freeze({
   /**
@@ -16,10 +16,10 @@ export const MathHelper = Object.freeze({
    * @returns Clamped value.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max)
@@ -32,10 +32,10 @@ export const MathHelper = Object.freeze({
    * @returns Rounded value.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   roundTo(value: number, decimals: number): number {
     const factor = 10 ** decimals
@@ -50,10 +50,10 @@ export const MathHelper = Object.freeze({
    * @returns Division result or fallback.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   safeDivide(numerator: number, denominator: number, fallback = 0): number {
     if (denominator === 0) return fallback
@@ -67,10 +67,10 @@ export const MathHelper = Object.freeze({
    * @returns Percentage or 0 when total is zero.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   toPercentage(part: number, total: number): number {
     if (total === 0) return 0

@@ -11,10 +11,10 @@ const tokenRegistry = new Map<string, InjectionToken<unknown>>()
  * accidental cross-token resolution.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const TokenHelper = Object.freeze({
   /**
@@ -29,10 +29,10 @@ export const TokenHelper = Object.freeze({
    * @returns A new {@link InjectionToken} typed as `T`.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   createToken<T>(description: string): InjectionToken<T> {
     if (tokenRegistry.has(description)) {
@@ -50,10 +50,10 @@ export const TokenHelper = Object.freeze({
    * @returns The corresponding {@link InjectionToken} if found, otherwise `undefined`.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   get<T>(description: string): InjectionToken<T> | undefined {
     return tokenRegistry.get(description) as InjectionToken<T> | undefined

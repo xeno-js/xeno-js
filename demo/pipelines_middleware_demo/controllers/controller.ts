@@ -1,4 +1,4 @@
-import { BaseController, ResponseDto } from '@gantry5/core'
+import { BaseController, ResponseDto } from '@xeno/core'
 import { PingCommand } from '../cqrs/command'
 import { GetStatusQuery } from '../cqrs/query'
 

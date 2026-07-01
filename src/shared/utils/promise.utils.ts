@@ -3,10 +3,10 @@
  * Astrae le logiche di timing per renderle facilmente testabili e riutilizzabili.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const PromiseHelper = Object.freeze({
   /**
@@ -15,10 +15,10 @@ export const PromiseHelper = Object.freeze({
    * @returns Una Promise che si risolve al termine del tempo.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
@@ -33,10 +33,10 @@ export const PromiseHelper = Object.freeze({
    * @returns Una Promise che si risolve al termine del calcolo.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   delayWithJitter(baseDelayMs: number, maxJitterMs: number): Promise<void> {
     const jitter = Math.floor(Math.random() * maxJitterMs)

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Gantry5 initialization ecosystem relies on the **`AppBuilder`** pattern to
+The XenoJS initialization ecosystem relies on the **`AppBuilder`** pattern to
 coordinate application configuration, module compilation, and service
 registration. Drawing inspiration from modern enterprise application hosting
 models (such as the .NET `WebApplicationBuilder`), `AppBuilder` exposes a
@@ -30,7 +30,7 @@ single, unified Inversion of Control (IoC) repository.
 
 ## The Bootstrap Lifecycle Architecture
 
-When creating a brand-new project layout via the `@Gantry5/create` CLI
+When creating a brand-new project layout via the `@XenoJS/create` CLI
 scaffolding engine, the workspace architecture separates configuration mechanics
 from application runtime loops across two specific structural layers:
 
@@ -47,7 +47,7 @@ caching, database connections, and logging boundaries).
 
 ```typescript
 // Architectural Blueprint of src/bootstrap.ts
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()
@@ -78,7 +78,7 @@ import { bootstrap } from './bootstrap.js'
 
 async function main() {
   try {
-    console.log('⏳ Bootstrapping @gantry5 application...')
+    console.log('⏳ Bootstrapping @xeno application...')
 
     // 1. Compile the framework infrastructure layers
     const container = await bootstrap()

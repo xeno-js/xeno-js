@@ -4,10 +4,10 @@ import type { Optional } from '@/shared'
  * @description Interface for a logger that provides methods for logging messages at different levels (info, warn, error, debug) and tracking exceptions. Each logging method accepts a message and an optional context, while the error method also accepts an optional Error object.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface ILogger {
   /**
@@ -16,10 +16,10 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   info(message: string): void
   /**
@@ -28,10 +28,10 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   warn(message: string): void
   /**
@@ -41,10 +41,10 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   error(message: string, error: Optional<Error>): void
   /**
@@ -53,10 +53,10 @@ export interface ILogger {
    * @param context An optional dictionary containing additional context for the log message.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   debug(message: string): void
 }

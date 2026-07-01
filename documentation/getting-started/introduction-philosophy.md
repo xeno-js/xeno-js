@@ -5,7 +5,7 @@ description:
   Enterprise-grade agnostic DDD and CQRS kernel accelerator for high-performance
   TypeScript applications.
 keywords:
-  - gantry5
+  - xeno
   - ddd
   - cqrs
   - clean architecture
@@ -17,18 +17,18 @@ keywords:
 
 ## Overview
 
-**Gantry5** is an enterprise-grade architectural accelerator and agnostically
+**XenoJS** is an enterprise-grade architectural accelerator and agnostically
 decoupled kernel for Node.js and TypeScript. It is built natively from the
 ground up to enforce the strict paradigms of **Domain-Driven Design (DDD)**,
 **Command Query Responsibility Segregation (CQRS)**, and **Clean Architecture**.
 
 Unlike traditional framework structures that govern the ecosystem through heavy
 runtime abstractions, metadata reflection, and ambient "magic" decorators,
-Gantry5 introduces a transparent, compile-time-safe design language. Every
+XenoJS introduces a transparent, compile-time-safe design language. Every
 execution thread is explicit, fully traceable, and decoupled from external
 transport or delivery mechanisms.
 
-## Why Gantry5 Exists: Inverting the Framework Paradigm
+## Why XenoJS Exists: Inverting the Framework Paradigm
 
 Most modern Node.js and TypeScript frameworks adopt a heavy, highly opinionated
 approach inspired by legacy Java or .NET patterns, embedding complex reflection
@@ -48,21 +48,21 @@ liabilities for enterprise systems:
   third-party dependencies, trapping the enterprise domain inside a rigid
   architectural cage.
 
-**Gantry5 completely inverts this paradigm.** It is designed not as a
-restrictive cage, but as an open architectural backbone that restores complete
-engineering control over your TypeScript stack. By swapping runtime
-meta-programming with explicit, strongly-typed fluent configurations, Gantry5
-delivers extreme execution clarity and lightning-fast cloud performance.
+**XenoJS completely inverts this paradigm.** It is designed not as a restrictive
+cage, but as an open architectural backbone that restores complete engineering
+control over your TypeScript stack. By swapping runtime meta-programming with
+explicit, strongly-typed fluent configurations, XenoJS delivers extreme
+execution clarity and lightning-fast cloud performance.
 
 ## Core Engineering Principles
 
 ### 1. Zero Magic, Zero Decorators & Cloud Optimized
 
-Gantry5 entirely rejects runtime reflection and decorator-driven
+XenoJS entirely rejects runtime reflection and decorator-driven
 meta-programming. The code written by the software engineer is exactly the code
 that executes, allowing developers to trace stack frames naturally. Without a
 reflection-scanning boot sequence, applications achieve near-instantaneous cold
-starts. This lightweight footprint makes Gantry5 exceptionally optimized for
+starts. This lightweight footprint makes XenoJS exceptionally optimized for
 cost-effective serverless and edge environments (such as AWS Lambda, Cloudflare
 Workers, and Vercel Edge).
 
@@ -86,7 +86,7 @@ logic from external infrastructure disruptions.
 
 ### 3. 100% Agnostic & Fully Decoupled
 
-Gantry5 operates strictly as an independent execution kernel. It is completely
+XenoJS operates strictly as an independent execution kernel. It is completely
 decoupled from any embedded web server wrapper. It delivers business logic
 orchestration pipelines, a reliable dependency injection layer, and request
 context boundaries while remaining agnostic to the transport medium. Software
@@ -96,7 +96,7 @@ domain logic.
 
 ### 4. Optional Peer Dependencies & Lazy-Loading
 
-To combat package bloat and maintain a lean footprint, Gantry5 utilizes an
+To combat package bloat and maintain a lean footprint, XenoJS utilizes an
 intentional **Optional Peer Dependencies** model. External operational
 dependencies (such as `drizzle-orm`, `zod`, `cockatiel`, or `pino`) are
 lazy-loaded by Node.js only when explicitly activated through the fluent
@@ -113,7 +113,7 @@ interfaces are backed by absolute runtime container guarantees.
 
 ## Enterprise Out-of-the-Box Pipelines
 
-Gantry5 eliminates the necessity of writing repetitive middleware for standard
+XenoJS eliminates the necessity of writing repetitive middleware for standard
 enterprise application cross-cutting concerns:
 
 - **CQRS Pipeline Behaviors:** Ready-made, configurable execution layers
@@ -129,7 +129,7 @@ enterprise application cross-cutting concerns:
 ## Runtime Pipeline Architecture
 
 The following diagram illustrates how a command or query propagates through the
-Gantry5 kernel pipeline when triggered by an external delivery interface:
+XenoJS kernel pipeline when triggered by an external delivery interface:
 
 ````
 
@@ -152,22 +152,22 @@ graph TD
 
 ## Architectural Trade-offs & Limitations
 
-Architects evaluating Gantry5 must consider the following explicit trade-offs:
+Architects evaluating XenoJS must consider the following explicit trade-offs:
 
-- **Explicit Configuration Over Automation:** Because Gantry5 rejects magical
+- **Explicit Configuration Over Automation:** Because XenoJS rejects magical
   automated directory scanning, every command handler, query handler, and
   dependency token must be registered manually via the fluent `AppBuilder`. This
   results in slightly more verbose setup scripts compared to decorator-heavy
   frameworks.
 - **Beta Lifecycle Status:** The framework is currently positioned in a public
-  **Beta release cycle** (`@gantry5/core@1.0.0-beta.0`). While the core Clean
+  **Beta release cycle** (`@xeno/core@1.0.0-beta.0`). While the core Clean
   Architecture engine and pipeline topologies are fully stable and
   performance-tested, public contracts may undergo structural refinements ahead
   of the official production-ready `v1.0.0` launch.
 
 ## Next Steps
 
-To continue setting up or reviewing Gantry5, move forward to the following
+To continue setting up or reviewing XenoJS, move forward to the following
 architectural topics:
 
 - **[Installation & Setup](./installation.md)**: Explore scaffolding apps via

@@ -11,10 +11,10 @@ export const CommandUtils = Object.freeze({
    * @returns True if any command strategies are required, false otherwise.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   addCommand: async (
     container: IServiceContainer,
@@ -63,10 +63,10 @@ export const CommandUtils = Object.freeze({
    * @returns True if any query strategies are required, false otherwise.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   addQuery: async (
     container: IServiceContainer,

@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Installation
 
-Gantry5 is an agnostic TypeScript core for applications based on DDD, Clean
+XenoJS is an agnostic TypeScript core for applications based on DDD, Clean
 Architecture, CQRS, and dependency injection. The fastest way to start is the
 CLI in `cli/`, which generates a TypeScript project with `AppBuilder`,
 `bootstrap.ts`, `main.ts`, `tsconfig.json`, `.env.example`, and the optional
@@ -19,38 +19,38 @@ dependencies you choose.
 
 ## Create a New Project
 
-Once `@gantry5/create` is published, the recommended flow will be:
+Once `@xeno/create` is published, the recommended flow will be:
 
 ```bash
-npm create @gantry5@latest my-gantry5-app
-cd my-gantry5-app
+npm create @xeno@latest my-xeno-app
+cd my-xeno-app
 npm run dev
 ```
 
 Alternatively, you can use `npm exec`:
 
 ```bash
-npm exec @gantry5/create@latest -- my-gantry5-app
-cd my-gantry5-app
+npm exec @xeno/create@latest -- my-xeno-app
+cd my-xeno-app
 npm run dev
 ```
 
 The CLI accepts the project name as the first argument. If you do not pass one,
-it creates `my-gantry5-app`.
+it creates `my-xeno-app`.
 
 ## Available Modes
 
 The second argument controls the scaffold type:
 
 ```bash
-npm exec @gantry5/create@latest -- my-gantry5-app empty
+npm exec @xeno/create@latest -- my-xeno-app empty
 ```
 
-`empty` generates the minimum project: `@gantry5`, `zod`, TypeScript, `tsx`,
+`empty` generates the minimum project: `@xeno`, `zod`, TypeScript, `tsx`,
 `bootstrap.ts`, and `main.ts`.
 
 ```bash
-npm exec @gantry5/create@latest -- my-gantry5-app full
+npm exec @xeno/create@latest -- my-xeno-app full
 ```
 
 `full` enables all available modules: database, HTTP, Supabase auth, logging,
@@ -67,13 +67,13 @@ While developing the monorepo, you can run the creator directly:
 cd cli
 npm install
 npm run build
-node dist/index.js ../../demo/my-gantry5-app empty
+node dist/index.js ../../demo/my-xeno-app empty
 ```
 
 To install the beta channel directly:
 
 ```bash
-npm install @gantry5@beta
+npm install @xeno@beta
 ```
 
 ## What Gets Generated
@@ -81,7 +81,7 @@ npm install @gantry5@beta
 A scaffolded project contains:
 
 ```text
-my-gantry5-app/
+my-xeno-app/
   package.json
   tsconfig.json
   .gitignore
@@ -104,7 +104,7 @@ src/schema.ts
 After scaffolding:
 
 ```bash
-cd my-gantry5-app
+cd my-xeno-app
 npm run dev
 ```
 
@@ -125,7 +125,7 @@ tsx src/main.ts
 The creator generates `src/bootstrap.ts` based on `AppBuilder`:
 
 ```ts
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()
@@ -137,7 +137,7 @@ export async function bootstrap() {
 You can enable modules incrementally:
 
 ```ts
-import { AppBuilder, LOG_LEVEL } from '@gantry5/core'
+import { AppBuilder, LOG_LEVEL } from '@xeno/core'
 
 export async function bootstrap() {
   const builder = new AppBuilder()

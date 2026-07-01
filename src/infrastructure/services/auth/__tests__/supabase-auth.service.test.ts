@@ -95,7 +95,7 @@ describe('SupabaseAuthService', () => {
 
     it('should map the user to claims and return a successful Result when authentication succeeds', async () => {
       // Arrange
-      const fakeUser = { id: 'usr-456', email: 'user@Gantry5.it' } as User
+      const fakeUser = { id: 'usr-456', email: 'user@XenoJS.it' } as User
       const expectedClaims: AuthClaims = {
         sub: 'usr-456',
         tenantId: 'tenant-789',

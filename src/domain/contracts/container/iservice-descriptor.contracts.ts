@@ -6,10 +6,10 @@ import type { IServiceContainer } from './iservice-container.contracts'
  * @fileoverview Defines the ServiceDescriptor type for service registrations.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 
 /**
@@ -17,10 +17,10 @@ import type { IServiceContainer } from './iservice-container.contracts'
  * how instances are managed and cached by the container.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export type Lifetime = 'singleton' | 'transient' | 'scoped'
 
@@ -29,20 +29,20 @@ export type Lifetime = 'singleton' | 'transient' | 'scoped'
  * the implementation constructor, its dependencies, and its lifetime.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface ServiceDescriptor<T> {
   /**
    * @description The concrete class to instantiate for this service.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly implementation?: Constructor<T>
   /**
@@ -50,10 +50,10 @@ export interface ServiceDescriptor<T> {
    * as constructor arguments when instantiating the service.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly dependencies?: readonly InjectionToken<unknown>[]
   /**
@@ -61,10 +61,10 @@ export interface ServiceDescriptor<T> {
    * managed and cached by the container.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly lifetime: Lifetime
   /**
@@ -72,10 +72,10 @@ export interface ServiceDescriptor<T> {
    * If provided, this factory will be used instead of the constructor.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   readonly factory?: Optional<(container: IServiceContainer) => T>
 }

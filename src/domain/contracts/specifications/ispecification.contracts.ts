@@ -6,10 +6,10 @@
  * @template T - Il tipo dell'oggetto da convalidare.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface ISpecification<T> {
   /**
@@ -18,20 +18,20 @@ export interface ISpecification<T> {
    * @returns Booleano: true se i criteri sono soddisfatti.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isSatisfiedBy(candidate: T): boolean
   /**
    * Combina questa specifica con un'altra tramite l'operatore logico AND.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   and(other: ISpecification<T>): ISpecification<T>
 
@@ -39,10 +39,10 @@ export interface ISpecification<T> {
    * Combina questa specifica con un'altra tramite l'operatore logico OR.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   or(other: ISpecification<T>): ISpecification<T>
 
@@ -50,10 +50,10 @@ export interface ISpecification<T> {
    * Inverte il risultato di questa specifica tramite l'operatore logico NOT.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   not(): ISpecification<T>
 }

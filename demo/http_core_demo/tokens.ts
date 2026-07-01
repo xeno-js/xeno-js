@@ -1,4 +1,4 @@
-import { IHttpClient, RemoteDataSource, TokenHelper } from '@gantry5/core'
+import { IHttpClient, RemoteDataSource, TokenHelper } from '@xeno/core'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS

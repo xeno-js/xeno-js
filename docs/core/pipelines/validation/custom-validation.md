@@ -10,8 +10,8 @@ To author a custom validation checkpoint, extend the abstract
 the required `execute` loop:
 
 ```typescript
-import { BaseValidationStrategy, Result, AppError } from '@gantry5/core'
-import type { IRequest, ResultType } from '@gantry5/core'
+import { BaseValidationStrategy, Result, AppError } from '@xeno/core'
+import type { IRequest, ResultType } from '@xeno/core'
 
 interface ProcessPayoutRequest extends IRequest {
   intent: 'ProcessPayoutCommand'
@@ -52,7 +52,7 @@ export class PayoutAllowanceValidationStrategy extends BaseValidationStrategy {
 
 > 🛡️ **ARCHITECTURAL CRITICAL STANDARD**: To maintain compile-time type
 > boundaries and absolute structural isolation, the use of raw strings or native
-> global `Symbol.for` allocations is forbidden within the Gantry5 workspace
+> global `Symbol.for` allocations is forbidden within the XenoJS workspace
 > ecosystem. All custom extensions must generate uniquely branded tracking
 > identifiers utilizing the framework's **`TokenHelper.createToken<T>()`**
 > utility.
@@ -64,8 +64,8 @@ append custom rules alongside them, register your module within the
 `addServices` block of the container host:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@gantry5/core'
-import type { IStrategy, IRequest } from '@gantry5/core'
+import { AppBuilder, TokenHelper } from '@xeno/core'
+import type { IStrategy, IRequest } from '@xeno/core'
 import { PayoutAllowanceValidationStrategy } from './strategies/payout-allowance.validation'
 
 // 1. Provision a uniquely branded, strongly-typed injection token via TokenHelper

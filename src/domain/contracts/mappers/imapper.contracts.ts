@@ -5,10 +5,10 @@
  * @template TDto - Il tipo del Data Transfer Object (DTO).
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IMapper<TE, TDto> {
   /**
@@ -18,10 +18,10 @@ export interface IMapper<TE, TDto> {
    * @returns A DTO representation of the given entity.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   toDto(entity: TE): TDto
 
@@ -32,10 +32,10 @@ export interface IMapper<TE, TDto> {
    * @returns An entity representation of the given DTO.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   toEntity(dto: TDto): TE
 
@@ -45,10 +45,10 @@ export interface IMapper<TE, TDto> {
    * @returns A partial DTO representation of the given partial entity.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   toPartialDto(entity: Partial<TE>): Partial<TDto>
 }

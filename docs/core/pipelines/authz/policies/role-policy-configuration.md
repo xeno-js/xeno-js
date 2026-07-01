@@ -3,9 +3,9 @@
 ## Overview
 
 The `RoleAuthorizationStrategy` handles high-level organizational access control
-within the Gantry5 pipeline behavior stack. It matches macro organizational
-roles assigned to a user's identity against the minimum role permissions
-required to execute a specific command or query intent.
+within the XenoJS pipeline behavior stack. It matches macro organizational roles
+assigned to a user's identity against the minimum role permissions required to
+execute a specific command or query intent.
 
 ---
 

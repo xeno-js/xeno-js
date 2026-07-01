@@ -8,10 +8,10 @@ import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, 
 import { CommandUtils } from './utils/command.utils';
 
 async function init() {
-  console.log(pc.cyan('\n🚀 Welcome to @gantry5 Scaffolding!'));
+  console.log(pc.cyan('\n🚀 Welcome to @xeno Scaffolding!'));
 
   const args = process.argv.slice(2);
-  const targetDir = args[0] || 'my-gantry5-app';
+  const targetDir = args[0] || 'my-xeno-app';
   const flags = args.slice(1);
 
   const isFull = flags.includes('--full');

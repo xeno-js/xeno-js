@@ -1,4 +1,4 @@
-import { REQUEST_TYPE, type ICommand } from '@gantry5/core'
+import { REQUEST_TYPE, type ICommand } from '@xeno/core'
 
 export class PingCommand implements ICommand<{ echoed: string }> {
     public readonly intent = 'PingCommand'

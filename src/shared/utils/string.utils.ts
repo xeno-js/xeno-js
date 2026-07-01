@@ -5,10 +5,10 @@ import { Guards } from './guards.utils'
  * @description Namespace for string manipulation utilities.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const StringHelper = Object.freeze({
   /**
@@ -17,10 +17,10 @@ export const StringHelper = Object.freeze({
    * @returns A JSON string representation of the value, or a fallback string if serialization fails.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   safeStringify<T>(value: T): string {
     try {
@@ -37,10 +37,10 @@ export const StringHelper = Object.freeze({
    * @returns The parsed value, or the fallback value if parsing fails.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   safeParse<T = unknown>(input: string, fallback: Optional<T> = undefined): T | Optional<string> {
     try {
@@ -56,10 +56,10 @@ export const StringHelper = Object.freeze({
    * @returns camelCase string.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   camelCase(input: string): string {
     const segments = input.split(/[-_\s]+/)
@@ -75,10 +75,10 @@ export const StringHelper = Object.freeze({
    * @returns Interpolated string with resolved placeholders.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   interpolate(template: string, vars: Readonly<Dictionary<string | number>>): string {
     return template.replace(/\{\{(\w+)\}\}/g, (_match, key: string) => {
@@ -95,10 +95,10 @@ export const StringHelper = Object.freeze({
    * @returns Truncated string.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   truncate(input: string, maxLength: number, suffix = '…'): string {
     if (input.length <= maxLength) return input
@@ -112,10 +112,10 @@ export const StringHelper = Object.freeze({
    * @returns Formatted reference code string.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   generateReferenceCode(prefix: string): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -133,10 +133,10 @@ export const StringHelper = Object.freeze({
    * @returns The first string value if it's an array, the string itself if it's a string, or undefined if it's empty or not defined.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   getSingleValue(value: string | string[]): Optional<string> {
     if (Guards.isArray(value)) {

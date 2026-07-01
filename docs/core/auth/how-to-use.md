@@ -88,8 +88,8 @@ can be attached manually right before invoking the final `.build()` phase using
 `.addServices()`:
 
 ```ts
-import type { IAuthService, ResultType } from '@gantry5/core'
-import { AppBuilder, Result } from '@gantry5/core'
+import type { IAuthService, ResultType } from '@xeno/core'
+import { AppBuilder, Result } from '@xeno/core'
 import { INJECTION_TOKENS } from './di/injection-tokens.constants' // Path to framework registry tokens
 
 // 1. Create your custom, decoupled Authentication Adapter

@@ -2,7 +2,7 @@
 title: The IoC Container & Service Lifetimes
 sidebar_position: 2
 description:
-  Master Gantry5 Inversion of Control (IoC) instance management, including
+  Master XenoJS Inversion of Control (IoC) instance management, including
   Singleton, Scoped, and Transient lifetimes, scope factories, and deterministic
   resource disposal.
 keywords:
@@ -21,7 +21,7 @@ keywords:
 
 The **Inversion of Control (IoC) Container** is the architectural engine that
 controls object instantiation, dependency resolution, and memory lifecycles
-throughout the Gantry5 framework execution lifecycle. By organizing component
+throughout the XenoJS framework execution lifecycle. By organizing component
 dependencies explicitly into three native service lifetimes—**Singleton**,
 **Scoped**, and **Transient**—the container manages memory boundaries cleanly,
 maintaining thread safety and preventing execution memory leaks.
@@ -46,7 +46,7 @@ sharing request-specific state across separate incoming connection threads.
 
 ## Service Lifetime Classifications
 
-Gantry5 supports three deterministic instance tracking lifecycles:
+XenoJS supports three deterministic instance tracking lifecycles:
 
 | Lifetime        | Cardinality & Resolution Boundary                                                        | Architectural Target Use Case                                                            |
 | --------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |

@@ -1,4 +1,4 @@
-import { REQUEST_TYPE, type IQuery } from '@gantry5/core'
+import { REQUEST_TYPE, type IQuery } from '@xeno/core'
 
 export class GetStatusQuery implements IQuery<{ status: string; uptime: number }> {
     public readonly intent = 'GetStatusQuery'

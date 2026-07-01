@@ -1,5 +1,5 @@
-import { TokenHelper } from '@gantry5/core'
-import type { BaseController } from '@gantry5/core'
+import { TokenHelper } from '@xeno/core'
+import type { BaseController } from '@xeno/core'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS

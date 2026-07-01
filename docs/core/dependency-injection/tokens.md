@@ -1,12 +1,12 @@
 # Injection Tokens
 
-An injection token is the stable key used by the Gantry5 service container to
+An injection token is the stable key used by the XenoJS service container to
 register and resolve a dependency. Instead of resolving services by class name
 or string literals scattered across the codebase, you create a token once and
 use that token everywhere.
 
-Gantry5 exposes framework tokens through `INJECTION_TOKENS`. For example, when
-you call `builder.addDb(...)`, Gantry5 registers the database client under:
+XenoJS exposes framework tokens through `INJECTION_TOKENS`. For example, when
+you call `builder.addDb(...)`, XenoJS registers the database client under:
 
 ```ts
 INJECTION_TOKENS.DB_CLIENT
@@ -40,7 +40,7 @@ import {
   type IMapper,
   type IReadDao,
   type IRepository,
-} from '@gantry5/core'
+} from '@xeno/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 
@@ -82,7 +82,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@gantry5/core'
+} from '@xeno/core'
 import type { SQL } from 'drizzle-orm'
 
 import {

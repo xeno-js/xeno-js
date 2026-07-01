@@ -6,10 +6,10 @@ import type { HttpConfig, ResilienceConfig } from '../config'
  * @description Utility functions for configuring HTTP clients and resilience features in the service container.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const HttpUtils = Object.freeze({
   /**
@@ -18,10 +18,10 @@ export const HttpUtils = Object.freeze({
    * @returns A string representing the encoded query string that can be appended to a URL for making HTTP requests.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   addAxios: async (container: IServiceContainer, opts: HttpConfig): Promise<void> => {
     const { AxiosFactory } = await import('@/infrastructure')
@@ -36,10 +36,10 @@ export const HttpUtils = Object.freeze({
    * @param opts - The ResilienceConfig options that determine whether resilience features are enabled and provide the necessary settings for implementing resilience strategies.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   addResilience: async (container: IServiceContainer, opts: ResilienceConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

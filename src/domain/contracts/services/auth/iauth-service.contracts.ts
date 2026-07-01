@@ -7,10 +7,10 @@ import type { ResultType } from '../../../results/result.types'
  * It provides methods to check if a user is authenticated and to retrieve the user's claims.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IAuthService {
   /**
@@ -18,10 +18,10 @@ export interface IAuthService {
    * @returns A promise that resolves to true if the user is authenticated, false otherwise.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isAuthenticated(): Promise<boolean>
   /**
@@ -30,10 +30,10 @@ export interface IAuthService {
    * @returns A promise that resolves to the user's claims, or null if not authenticated.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   authenticate(token: string): Promise<ResultType<AuthClaims>>
 }

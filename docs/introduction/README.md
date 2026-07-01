@@ -1,6 +1,6 @@
-# Gantry5 Developer Docs
+# XenoJS Developer Docs
 
-This directory contains the operational documentation for building with Gantry5.
+This directory contains the operational documentation for building with XenoJS.
 
 ## Documentation Tree
 
@@ -13,7 +13,7 @@ docs/
     installation.md
   cli/
     README.md
-    create-gantry5.md
+    create-xeno.md
   core/
     README.md
     app_builder/
@@ -112,8 +112,8 @@ docs/
 
 - [Getting started](../getting-started/installation.md): framework installation
   and first project setup.
-- [CLI create-gantry5](../cli/create-gantry5.md): how to use the
-  `@gantry5/create` package and its scaffolding modes.
+- [CLI create-xeno](../cli/create-xeno.md): how to use the `@xeno/create`
+  package and its scaffolding modes.
 - [Injection tokens](../core/dependency-injection/tokens.md): define application
   tokens with `TokenHelper`.
 - [Modules and dependencies](../core/modules-and-dependencies.md): what each CLI
@@ -121,15 +121,14 @@ docs/
 - [AppBuilder](../core/app_builder/README.md): what is and how to use AppBuilder
   container
 - [Database](../core/database/README.md): configure Drizzle/PostgreSQL and use
-  Gantry5 data sources, repositories, and filters.
+  XenoJS data sources, repositories, and filters.
 - [Cache](../core/cache/README.md): configure Redis or InMemory storage for
   optimized data access and idempotency.
 - [Logging](../core/logging/README.md): configure Console or Pino or Sentry
   logger or custom logger for logging data
 - [Http](../core/http/README.md): configure http client service with cockatiel
   resilience
-- [Pipelines](../core/pipelines/README.md): define and configure gantry5
-  pipelines
+- [Pipelines](../core/pipelines/README.md): define and configure xeno pipelines
 - [Auth](../auth/README.md): how to configure and use supabase auth
 - [Domain](../core/domain/README.md): Entities, Result monade, Application Error
   and Value Object overview
@@ -145,7 +144,7 @@ docs/
 
 - Use `getting-started/` for first-run guides, installation flows, and
   onboarding tutorials.
-- Use `cli/` for documentation about `@gantry5/create` and future command-line
+- Use `cli/` for documentation about `@xeno/create` and future command-line
   tools.
 - Use `core/` for framework concepts, modules, APIs, dependency behavior, and
   runtime architecture.
@@ -156,6 +155,6 @@ docs/
 
 These documents describe the current repository behavior:
 
-- core package: `@gantry5`
-- create package: `@gantry5/create`
+- core package: `@xeno`
+- create package: `@xeno/create`
 - Node.js required by the core package: `>=20.0.0`

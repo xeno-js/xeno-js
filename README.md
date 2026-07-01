@@ -1,21 +1,21 @@
 <div align="center">
-  <img src="website/static/img/logo.png" alt="Gantry5 Logo" width="140" />
+  <img src="website/static/img/logo.png" alt="XenoJS Logo" width="140" />
   
-  <h1>Gantry5</h1>
+  <h1>XenoJS</h1>
   
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
   
   <p>
-    <a href="https://github.com/Mattia-Carcione/gantry5">
-      <img src="https://img.shields.io/badge/Powered%20by-Gantry5-blueviolet?style=flat-square" alt="Powered by Gantry5" />
+    <a href="https://github.com/Mattia-Carcione/xeno">
+      <img src="https://img.shields.io/badge/Powered%20by-XenoJS-blueviolet?style=flat-square" alt="Powered by XenoJS" />
     </a>
-    <a href="https://github.com/Mattia-Carcione/Gantry5/blob/main/LICENSE">
-      <img src="https://img.shields.io/npm/l/@gantry5?style=flat-square" alt="License: ISC" />
+    <a href="https://github.com/Mattia-Carcione/XenoJS/blob/main/LICENSE">
+      <img src="https://img.shields.io/npm/l/@xeno?style=flat-square" alt="License: ISC" />
     </a>
-    <a href="https://www.npmjs.com/package/@gantry5">
-      <img src="https://img.shields.io/npm/v/@gantry5?style=flat-square" alt="NPM Version" />
+    <a href="https://www.npmjs.com/package/@xeno">
+      <img src="https://img.shields.io/npm/v/@xeno?style=flat-square" alt="NPM Version" />
     </a>
-    <a href="https://buymeacoffee.com/gantry5">
+    <a href="https://buymeacoffee.com/xeno">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
     </a>
   </p>
@@ -23,9 +23,9 @@
 
 ---
 
-> ⚠️ **Beta Status**: `@gantry5` is currently in **beta**. The API may undergo
+> ⚠️ **Beta Status**: `@xeno` is currently in **beta**. The API may undergo
 > breaking changes. To install the latest beta version, use:
-> `npm install @gantry5@beta`
+> `npm install @xeno@beta`
 
 ---
 
@@ -36,7 +36,7 @@ heavy frameworks.
 
 ---
 
-## 💡 Why Gantry5?
+## 💡 Why XenoJS?
 
 Most modern Node.js frameworks rely on heavy abstractions through decorators and
 reflection. While they offer rapid setup, these approaches often lead to:
@@ -48,31 +48,31 @@ reflection. While they offer rapid setup, these approaches often lead to:
 - **Lock-in**: You become tightly coupled to the framework’s opinionated
   architecture and toolset.
 
-**Gantry5** inverts this paradigm. It is not a "cage," but an architectural
+**XenoJS** inverts this paradigm. It is not a "cage," but an architectural
 accelerator that restores full control over your TypeScript stack.
 
-### Why choose Gantry5?
+### Why choose XenoJS?
 
-- **Zero Magic, Zero Decorators & Cloud Optimized**: Gantry5 avoids "magic"
+- **Zero Magic, Zero Decorators & Cloud Optimized**: XenoJS avoids "magic"
   meta-programming in favor of explicit, strongly-typed configuration. The
   result is lightning-fast cold starts and a codebase that is straightforward to
   debug because the code is exactly what you see. Its lightweight footprint
   makes it perfect for serverless and edge computing environments (AWS Lambda,
   Cloudflare Workers, Vercel Edge), allowing you to leverage highly
   cost-effective cloud infrastructure without compromising performance.
-- **Transparent & DDD-First Architecture**: Gantry5 enforces a native "Clean
+- **Transparent & DDD-First Architecture**: XenoJS enforces a native "Clean
   Architecture" (`domain`, `application`, `infrastructure`, `presentation`).
   Every component is isolated, and the data flow (CQRS) is fully traceable,
   eliminating the "black box" effect common in traditional frameworks.
-- **100% Agnostic & Decoupled**: Gantry5 acts as a Kernel. It doesn't force you
+- **100% Agnostic & Decoupled**: XenoJS acts as a Kernel. It doesn't force you
   into a specific web server; it provides the business logic and execution
   pipelines, leaving you free to choose your preferred transport layer (Express,
   Hono, Fastify, or CLI). By strictly decoupling your business logic from
-  infrastructure, external libraries, and frameworks, Gantry5 ensures your core
+  infrastructure, external libraries, and frameworks, XenoJS ensures your core
   domain remains highly testable, maintainable, and scalable. This isolation
   allows you to swap, upgrade, or mock external components without ever
   impacting your primary business logic.
-- **Install Only What You Need**: Gantry5 utilizes **Optional Peer
+- **Install Only What You Need**: XenoJS utilizes **Optional Peer
   Dependencies**. You only install the external libraries you actually require.
   The framework is designed to strictly lazy-load only the modules you enable in
   your configuration, keeping your node_modules lean, preventing dependency
@@ -82,7 +82,7 @@ accelerator that restores full control over your TypeScript stack.
   preventing cross-token resolution errors and ensuring the DI container remains
   consistent and predictable.
 - **Enterprise-Ready Out of the Box**: Stop reinventing the wheel for complex
-  requirements. Gantry5 integrates native enterprise patterns:
+  requirements. XenoJS integrates native enterprise patterns:
 
 - **CQRS Pipelines**: Ready-to-use logic for Logging, Validation (Zod),
   Idempotency, and Concurrency.
@@ -93,13 +93,13 @@ accelerator that restores full control over your TypeScript stack.
 
 ### An "Open" Framework
 
-Gantry5 hides nothing. Need a custom authorization strategy or a specific log
+XenoJS hides nothing. Need a custom authorization strategy or a specific log
 driver? The modular approach via `IModule` allows you to extend the framework
 without fighting its conventions. It is designed for developers who understand
 their code and want a robust "backbone" framework that doesn't obstruct
 architectural choices.
 
-Gantry5 doesn't dictate how to write your business logic; it provides the
+XenoJS doesn't dictate how to write your business logic; it provides the
 enterprise-grade infrastructure to run it at peak performance.
 
 ---
@@ -107,7 +107,7 @@ enterprise-grade infrastructure to run it at peak performance.
 ## 📖 Documentation & Getting Started
 
 To explore the architecture, programmatic configurations, and extension
-workflows of Gantry5, read our full technical manuals located inside the main
+workflows of XenoJS, read our full technical manuals located inside the main
 documentation hub:
 
 - 👉 **[Framework Documentation Repository](./docs/README.md)**
@@ -148,11 +148,11 @@ sandbox environments:
 Install the core package:
 
 ```bash
-npm install @gantry5
+npm install @xeno
 
 ```
 
-Gantry5 uses **Optional Peer Dependencies**. You only install the external
+XenoJS uses **Optional Peer Dependencies**. You only install the external
 libraries you actually need. Node.js will strictly lazy-load only the modules
 you enable in the configuration.
 
@@ -170,7 +170,7 @@ Forget writing hundreds of lines of boilerplate. Instantiate the `AppBuilder`,
 configure your architecture using the fluent API, and build your container.
 
 ```typescript
-import { AppBuilder } from '@gantry5/core';
+import { AppBuilder } from '@xeno/core';
 
 async function bootstrap() {
   const builder = new AppBuilder();
@@ -236,7 +236,7 @@ automatically runs it through your configured pipelines (Validation -> Logging
 const mediator = container.resolve(INJECTION_TOKENS.MEDIATOR)
 
 // Dispatch a command
-const command = new CreateUserCommand({ email: 'test@gantry5.dev' })
+const command = new CreateUserCommand({ email: 'test@xeno.dev' })
 const result = await mediator.send(command)
 
 if (!result.isOk()) {
@@ -248,11 +248,10 @@ if (!result.isOk()) {
 
 ## 🛠 Scaffold your project with CLI
 
-Gantry5 includes an official CLI tool, `@gantry5/create`, designed to bootstrap
-your new application in seconds. It offers an interactive setup to select
-exactly the modules you need (Database, HTTP, Auth, Logging, etc.), ensuring you
-start with a clean, pre-configured architecture tailored to your specific
-requirements.
+XenoJS includes an official CLI tool, `@xeno/create`, designed to bootstrap your
+new application in seconds. It offers an interactive setup to select exactly the
+modules you need (Database, HTTP, Auth, Logging, etc.), ensuring you start with
+a clean, pre-configured architecture tailored to your specific requirements.
 
 If you want to learn how to use it, see the full options available, or
 understand how the scaffolding engine works, check the
@@ -262,8 +261,8 @@ understand how the scaffolding engine works, check the
 
 ## 🏗️ Architecture Structure
 
-The framework strictly follows Clean Architecture principles. When using
-Gantry5, we recommend structuring your application as follows:
+The framework strictly follows Clean Architecture principles. When using XenoJS,
+we recommend structuring your application as follows:
 
 ```text
 src/
@@ -277,8 +276,8 @@ src/
 
 ## 🗺️ Release Roadmap & Lifecycle
 
-Gantry5 is currently in **Beta**. We are actively stabilizing the architecture
-of the core engine while incrementally expanding our developer tooling and
+XenoJS is currently in **Beta**. We are actively stabilizing the architecture of
+the core engine while incrementally expanding our developer tooling and
 distributed systems primitives.
 
 ### 🟢 Current Phase: v1.0.0-beta.x (Core Architecture)
@@ -309,8 +308,8 @@ development:
   pre-configured HTTP servers (Express, Fastify, Hono) pre-wired with the core
   context middleware.
 - **Boilerplate Generators:** Aggressive CLI generation commands
-  (`gantry5 g command <name>`) to scaffold commands, queries, and their
-  respective handlers instantly.
+  (`xeno g command <name>`) to scaffold commands, queries, and their respective
+  handlers instantly.
 - **Automated DI Wiring:** Programmatic AST-based injection to automatically
   append tokens and register new handlers within the container bootstrap file.
 
@@ -318,7 +317,7 @@ development:
 
 ### 🔵 Planned: v1.0.0 Stable (Enterprise Distributed Toolkit)
 
-The final milestone designed to turn Gantry5 into an elite platform for highly
+The final milestone designed to turn XenoJS into an elite platform for highly
 scalable, event-driven distributed microservices:
 
 - **Unit of Work (UoW):** Coordinated, atomic transaction management across
@@ -335,7 +334,7 @@ scalable, event-driven distributed microservices:
 
 ## 🤝 For Contributors
 
-We welcome contributions to Gantry5! To maintain the highest code quality and
+We welcome contributions to XenoJS! To maintain the highest code quality and
 stability of the core framework, **direct pushes to the `main` and `develop`
 branches are strictly prohibited.** Please follow this Git Flow to contribute:
 
@@ -407,16 +406,16 @@ Building, benchmarking, and maintaining a progressive, enterprise-ready
 open-source framework requires a massive amount of continuous dedication and
 architectural engineering.
 
-If Gantry5 has brought value to your development workflows, helped decouple your
+If XenoJS has brought value to your development workflows, helped decouple your
 core business logic, or simplified your system infrastructure layout, consider
 supporting its open-source lifecycle. Your backing directly accelerates our
 strategic roadmap for new out-of-the-box transport integrations (such as gRPC,
 RabbitMQ, and GraphQL) and keeps the documentation pristine.
 
-**Want to know how you can contribute or sponsor Gantry5?** We rely on the
+**Want to know how you can contribute or sponsor XenoJS?** We rely on the
 commitment of our community to keep the project independent and thriving.
-Whether you are an individual developer or a business using Gantry5, your
-support makes a real difference.
+Whether you are an individual developer or a business using XenoJS, your support
+makes a real difference.
 
 👉
 **[Read our support guidelines and find out how to help](./docs/support/README.md)**
@@ -424,25 +423,25 @@ support makes a real difference.
 Thank you for being part of this decoupled open-source journey!
 
 <amp-bounce></amp-bounce>
-<a href="https://www.buymeacoffee.com/gantry5" target="_blank">
+<a href="https://www.buymeacoffee.com/xeno" target="_blank">
 <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="42" style="height: 42px !important;" />
 </a>
 
 ---
 
-## 🛡️ Powered by Gantry5
+## 🛡️ Powered by XenoJS
 
-If you are using Gantry5 in your project, let the world know! Add this badge to
+If you are using XenoJS in your project, let the world know! Add this badge to
 your README:
 
 ```html
 <a
-  href="[https://github.com/Mattia-Carcione/gantry5](https://github.com/Mattia-Carcione/gantry5)"
+  href="[https://github.com/Mattia-Carcione/xeno](https://github.com/Mattia-Carcione/xeno)"
   target="_blank"
 >
   <img
-    src="[https://img.shields.io/badge/Powered%20by-Gantry5-black?style=flat-square](https://img.shields.io/badge/Powered%20by-Gantry5-black?style=flat-square)"
-    alt="Powered by Gantry5"
+    src="[https://img.shields.io/badge/Powered%20by-XenoJS-black?style=flat-square](https://img.shields.io/badge/Powered%20by-XenoJS-black?style=flat-square)"
+    alt="Powered by XenoJS"
     height="20"
   />
 </a>
@@ -450,4 +449,4 @@ your README:
 
 ## 📄 License
 
-Copyright (c) 2026 Gantry5. Licensed under the [ISC License](LICENSE).
+Copyright (c) 2026 XenoJS. Licensed under the [ISC License](LICENSE).

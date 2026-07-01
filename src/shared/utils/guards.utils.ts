@@ -7,10 +7,10 @@ const DATE_TAG = '[object Date]'
  * @description Centralized type guards and runtime predicates.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export const Guards = Object.freeze({
   /**
@@ -19,10 +19,10 @@ export const Guards = Object.freeze({
    * @returns True when value is defined.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isDefined<TValue>(value: Maybe<TValue>): value is TValue {
     return value !== null && value !== undefined && value !== '' && !Number.isNaN(value)
@@ -34,10 +34,10 @@ export const Guards = Object.freeze({
    * @returns True when value is null, undefined, empty string, or false.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isNullOrEmpty<TValue>(value: Maybe<TValue>): value is null | undefined {
     return (
@@ -54,10 +54,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is null, undefined, empty string, or false.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   throwIfNullOrEmpty<TValue>(value: Maybe<TValue>, errorMessage: string): void {
     if (Guards.isNullOrEmpty(value)) {
@@ -72,10 +72,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not a positive integer.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   throwIfNegative(value: number, errorMessage: string): void {
     if (Guards.isInteger(value) && value < 0) {
@@ -90,10 +90,10 @@ export const Guards = Object.freeze({
    * @throws Error with the provided message if the value is not an integer.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   throwIfNotInteger(value: number, errorMessage: string): void {
     if (!Guards.isInteger(value)) {
@@ -108,10 +108,10 @@ export const Guards = Object.freeze({
    * @returns True when obj has a function property named methodName.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   hasMethod(obj: unknown, methodName: string): boolean {
     if (!this.isDefined(obj)) return false
@@ -126,10 +126,10 @@ export const Guards = Object.freeze({
    * @returns True when value is string.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isString(value: unknown): value is string {
     return typeof value === 'string'
@@ -141,10 +141,10 @@ export const Guards = Object.freeze({
    * @returns True when value is finite number.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isNumber(value: unknown): value is number {
     return typeof value === 'number' && Number.isFinite(value)
@@ -156,10 +156,10 @@ export const Guards = Object.freeze({
    * @returns True when value is integer number.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isInteger(value: unknown): value is number {
     return Guards.isNumber(value) && Number.isInteger(value)
@@ -171,10 +171,10 @@ export const Guards = Object.freeze({
    * @returns True when value is boolean.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isBoolean(value: unknown): value is boolean {
     return typeof value === 'boolean'
@@ -186,10 +186,10 @@ export const Guards = Object.freeze({
    * @returns True when value is bigint.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isBigInt(value: unknown): value is bigint {
     return typeof value === 'bigint'
@@ -201,10 +201,10 @@ export const Guards = Object.freeze({
    * @returns True when value is symbol.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isSymbol(value: unknown): value is symbol {
     return typeof value === 'symbol'
@@ -216,10 +216,10 @@ export const Guards = Object.freeze({
    * @returns True when value is function.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isFunction(value: unknown): value is (...args: readonly unknown[]) => unknown {
     return typeof value === 'function'
@@ -231,10 +231,10 @@ export const Guards = Object.freeze({
    * @returns True when value is array.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isArray<TValue>(value: unknown): value is TValue[] {
     return Array.isArray(value)
@@ -246,10 +246,10 @@ export const Guards = Object.freeze({
    * @returns True when value is valid Date.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isDate(value: unknown): value is Date {
     if (Object.prototype.toString.call(value) !== DATE_TAG) {
@@ -265,10 +265,10 @@ export const Guards = Object.freeze({
    * @returns True when value is Error.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isError(value: unknown): value is Error {
     return value instanceof Error
@@ -280,10 +280,10 @@ export const Guards = Object.freeze({
    * @returns True when value is object record.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isObjectRecord(value: unknown): value is Readonly<Dictionary<unknown>> {
     if (!Guards.isDefined(value)) {
@@ -299,10 +299,10 @@ export const Guards = Object.freeze({
    * @returns True when value is object.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isObject(value: unknown): value is object {
     return typeof value === 'object' && Guards.isDefined(value)
@@ -314,10 +314,10 @@ export const Guards = Object.freeze({
    * @returns True when value has then function.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   isPromiseLike<TValue>(value: unknown): value is PromiseLike<TValue> {
     if (!Guards.isDefined(value)) {

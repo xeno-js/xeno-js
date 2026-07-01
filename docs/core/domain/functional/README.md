@@ -2,7 +2,7 @@
 
 ## The Railway Oriented Programming (ROP) Pattern
 
-To achieve high-throughput resilience, Gantry5 replaces standard runtime
+To achieve high-throughput resilience, XenoJS replaces standard runtime
 exceptions (`throw new Error`) with the **Result Monad** pattern. By wrapping
 execution execution paths inside a structured container, operations propagate
 success values or logical errors explicitly. This allows downstream handlers to
@@ -77,8 +77,8 @@ public static throwIfAborted(signal: Maybe<AbortSignal>, name: string): void {
 ## Enterprise Operational Integration Blueprint
 
 ```typescript
-import { Result, AppError } from '@gantry5/core'
-import type { ResultType } from '@gantry5/core'
+import { Result, AppError } from '@xeno/core'
+import type { ResultType } from '@xeno/core'
 
 export class AccountService {
   public async withdrawFunds(

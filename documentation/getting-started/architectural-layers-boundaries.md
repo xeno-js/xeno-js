@@ -3,7 +3,7 @@ title: Architectural Layers & Boundaries
 sidebar_position: 3
 description:
   Deep dive into the strict Domain-Driven Design (DDD) and Clean Architecture
-  layers enforced by compile-time rules in Gantry5.
+  layers enforced by compile-time rules in XenoJS.
 keywords:
   - clean architecture
   - domain-driven design
@@ -17,14 +17,14 @@ keywords:
 
 ## Introduction
 
-Gantry5 enforces a strict **Clean Architecture** and **Domain-Driven Design
+XenoJS enforces a strict **Clean Architecture** and **Domain-Driven Design
 (DDD)** topology to ensure business logic remains isolated, highly testable, and
 completely independent of third-party frameworks, delivery mechanisms, or
 database engines.
 
-Unlike frameworks that allow indiscriminate cross-layer importing, Gantry5
-relies on directional code dependency boundaries. Dependencies flow exclusively
-from the outside inward: outer infrastructural layers depend on inner abstract
+Unlike frameworks that allow indiscriminate cross-layer importing, XenoJS relies
+on directional code dependency boundaries. Dependencies flow exclusively from
+the outside inward: outer infrastructural layers depend on inner abstract
 application and domain layers, but the inner core remains entirely oblivious to
 the infrastructure.
 
@@ -155,7 +155,7 @@ operational context vectors.
 ## Automated Boundary Enforcement via ESLint
 
 To prevent developer human error from compromising these boundaries over time,
-Gantry5 implements explicit static analysis constraints inside
+XenoJS implements explicit static analysis constraints inside
 `eslint.config.mjs` . If a developer attempts an illegal cross-layer import
 statement, the build fails instantly during continuous integration.
 

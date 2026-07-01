@@ -34,7 +34,7 @@ To activate query caching, toggle the `queryBus` option inside the application
 pipeline configuration block:
 
 ```typescript
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 
 builder.addPipeline((opts) => {
   opts.queryBus.isEnabled = true // Enables the query behavior stack allocation
@@ -47,7 +47,7 @@ Queries must declare their caching rules by implementing the `ICachedQuery`
 protocol:
 
 ```typescript
-import type { ICachedQuery } from '@gantry5/core'
+import type { ICachedQuery } from '@xeno/core'
 
 export class GetProjectMetricsQuery implements ICachedQuery<ProjectMetricsDto> {
   public readonly intent = 'GetProjectMetricsQuery'

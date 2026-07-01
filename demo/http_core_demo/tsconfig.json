@@ -8,9 +8,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      // Diciamo a TypeScript: "Quando vedi @gantry5, ignora node_modules
+      // Diciamo a TypeScript: "Quando vedi @xeno, ignora node_modules
       // e vai a leggere direttamente il codice sorgente TS del framework!"
-      "@gantry5": ["../../src/index.ts"],
+      "@xeno": ["../../src/index.ts"],
       "@/*": ["../../src/*"]
     }
   },

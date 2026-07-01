@@ -4,10 +4,10 @@ import type { Dictionary, Optional } from '@/shared'
  * Interface for building filter objects based on specifications.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = unknown> {
   /**
@@ -16,10 +16,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in queries.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   buildFindCriteria(filter: unknown): TQueryConditions
   /**
@@ -28,10 +28,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in query operations.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   buildQueryCriteria(filter: unknown, params?: Dictionary<unknown>): TQueryConditions
   /**
@@ -40,10 +40,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in delete operations.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   buildDeleteCriteria(filter: unknown): TQueryConditions
   /**
@@ -52,10 +52,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in update operations.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   buildUpdateCriteria(filter: unknown): TQueryConditions
 
@@ -65,10 +65,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A projections object that can be used in query operations to specify which fields to return.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   buildProjections(cols: Optional<string[]>): TQueryProjections
 }

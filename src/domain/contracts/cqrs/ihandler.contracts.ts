@@ -7,10 +7,10 @@ import type { ResultType } from '../../results/result.types'
  * @template TResponse - The type of the response that the handler will return after processing the request.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IHandler<TRequest, TResponse> {
   /**
@@ -19,10 +19,10 @@ export interface IHandler<TRequest, TResponse> {
    * @returns A Promise that resolves to a response of type TResponse.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   handle(request: TRequest): Promise<ResultType<TResponse>>
 }

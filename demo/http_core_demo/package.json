@@ -2,13 +2,13 @@
   "name": "demo-03-http-core",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 03 - HTTP Core with @gantry5",
+  "description": "Demo 03 - HTTP Core with @xeno",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@gantry5": "file:../../",
+    "@xeno": "file:../../",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {

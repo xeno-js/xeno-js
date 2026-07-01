@@ -12,8 +12,8 @@ To implement a custom security strategy, extend the abstract
 and override its internal `performAuthorizationCheck` lifecycle method:
 
 ```typescript
-import { BaseAuthorizationStrategy, Result } from '@gantry5/core'
-import type { IRequest, Identity, AppError } from '@gantry5/core'
+import { BaseAuthorizationStrategy, Result } from '@xeno/core'
+import type { IRequest, Identity, AppError } from '@xeno/core'
 
 interface UpdateProjectRepositoryRequest extends IRequest {
   intent: 'UpdateProjectRepositoryCommand'
@@ -55,7 +55,7 @@ export class ResourceOwnershipAuthorizationStrategy extends BaseAuthorizationStr
 
 > 🛡️ **ARCHITECTURAL CRITICAL STANDARD**: To maintain compile-time type
 > boundaries and absolute structural isolation, the use of raw strings or native
-> global `Symbol.for` allocations is forbidden within the Gantry5 workspace
+> global `Symbol.for` allocations is forbidden within the XenoJS workspace
 > ecosystem. All custom extensions must generate uniquely branded tracking
 > identifiers utilizing the framework's **`TokenHelper.createToken<T>()`**
 > utility.
@@ -67,8 +67,8 @@ class inside the `addServices` block, and attach the token to the
 `customAuthorizationStrategy` options array inside `.addPipeline()`:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@gantry5/core'
-import type { IStrategy, IRequest } from '@gantry5/core'
+import { AppBuilder, TokenHelper } from '@xeno/core'
+import type { IStrategy, IRequest } from '@xeno/core'
 import { ResourceOwnershipAuthorizationStrategy } from './strategies/resource-ownership.authorization'
 
 // 1. Provision a uniquely branded, strongly-typed injection token via TokenHelper

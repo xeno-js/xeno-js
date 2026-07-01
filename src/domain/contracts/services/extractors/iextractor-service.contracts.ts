@@ -2,10 +2,10 @@
  * @description The IServiceExtractor interface defines a contract for extracting metadata from HTTP headers. Implementing classes must provide the extract method, which takes HttpHeaders as input and returns a Metadata object containing the extracted information. This allows for flexible and consistent extraction of metadata across different parts of the application, such as authentication, logging, or request validation.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IServiceExtractor<TRequest, TResponse = unknown> {
   /**
@@ -14,10 +14,10 @@ export interface IServiceExtractor<TRequest, TResponse = unknown> {
    * @returns A Metadata object containing the extracted metadata information. This allows for handling both success and error cases in a consistent manner.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   extract(headers: TRequest): TResponse
 }

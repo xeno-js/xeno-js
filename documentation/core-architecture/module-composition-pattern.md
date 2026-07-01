@@ -3,7 +3,7 @@ title: Module Composition Pattern
 sidebar_position: 3
 description:
   Decouple and encapsulate complex domain sub-systems and infrastructure drivers
-  using Gantry5 structural IModule composition pattern.
+  using XenoJS structural IModule composition pattern.
 keywords:
   - imodule
   - encapsulation
@@ -18,7 +18,7 @@ keywords:
 ## What is it?
 
 The **Module Composition Pattern** is the primary encapsulation mechanism used
-by Gantry5 to organize, decouple, and scale large codebase frameworks.
+by XenoJS to organize, decouple, and scale large codebase frameworks.
 Implemented via the **`IModule<TOptions>`** structural contract, a module acts
 as a self-contained registry block that packages related services, commands,
 queries, and infrastructure adapters together, exposing only what is necessary
@@ -47,7 +47,7 @@ cohesive technical boundaries, features can be safely turned on or off via the
 
 ## Technical Specifications: The `IModule` Contract
 
-Every structural capsule inside Gantry5 implements the clean, asynchronous
+Every structural capsule inside XenoJS implements the clean, asynchronous
 initialization contract of `IModule`:
 
 ```typescript
@@ -68,7 +68,7 @@ export interface IModule<TOptions = void> {
 
 ## Structural Breakdown of Framework Modules
 
-Gantry5 builds its entire core capability map—from database persistence to
+XenoJS builds its entire core capability map—from database persistence to
 telemetry tracking—by executing dedicated internal implementations of the
 `IModule` contract.
 
@@ -126,14 +126,14 @@ graph TD
 ## Guide: Creating and Registering a Custom Feature Module
 
 To encapsulate a newly developed corporate domain boundary (e.g., an Identity
-Management Sub-system), follow the standard Gantry5 encapsulation blueprint:
+Management Sub-system), follow the standard XenoJS encapsulation blueprint:
 
 ### 1. Define the Feature Module Structure
 
 ```typescript
 // src/infrastructure/modules/identity-management.module.ts
-import type { IModule, IServiceContainer } from '@gantry5/core'
-import { TokenHelper } from '@gantry5/core'
+import type { IModule, IServiceContainer } from '@xeno/core'
+import { TokenHelper } from '@xeno/core'
 
 export interface IdentityModuleConfig {
   enableAuditTrails: boolean
@@ -176,7 +176,7 @@ within `src/bootstrap.ts`:
 
 ```typescript
 // src/bootstrap.ts
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 import { IdentityManagementModule } from './infrastructure/modules/identity-management.module.js'
 
 export async function bootstrap() {
@@ -222,7 +222,7 @@ patterns are fully defined, progress to the data structures that govern business
 logic domains:
 
 - **[Entities & Unique Identifiers](https://www.google.com/search?q=../domain-driven-design-core-building-blocks/entities-unique-identifiers.md):**
-  Master how Gantry5 identifies aggregate roots and tracks domain changes
+  Master how XenoJS identifies aggregate roots and tracks domain changes
   securely.
 
 - **[Functional Monads & Core Errors](https://www.google.com/search?q=..%2Fdomain-driven-design-core-building-blocks%2Ffunctional-monads-core-errors.md):**

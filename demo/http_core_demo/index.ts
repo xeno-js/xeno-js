@@ -1,14 +1,14 @@
 import http from 'node:http';
-import { HttpRequest } from '@gantry5/core';
+import { HttpRequest } from '@xeno/core';
 import { bootstrap } from './bootstrap';
 import { DATA_SOURCE_TOKEN } from './tokens';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN DEMO FUNCTION
 // ─────────────────────────────────────────────────────────────────────────────
-// This function initializes the Gantry5 container, sets up an HTTP server, and defines a single endpoint for fetching data from the PokeAPI. It resolves the necessary data source from the service container and starts the server on port 3000.
+// This function initializes the XenoJS container, sets up an HTTP server, and defines a single endpoint for fetching data from the PokeAPI. It resolves the necessary data source from the service container and starts the server on port 3000.
 async function runDemo() {
-  console.log('⚙️ Inizializzazione Gantry5 Container...')
+  console.log('⚙️ Inizializzazione XenoJS Container...')
   // 1. Bootstrap the application and get the service container
   const container = await bootstrap()
 

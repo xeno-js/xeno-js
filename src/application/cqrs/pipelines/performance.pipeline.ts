@@ -5,10 +5,10 @@ import { Guards } from '@/shared'
  * @description Default threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value can be overridden by providing a different thresholdMs value when constructing the PerformancePipeline instance.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 const defaultThresholdMs = 500
 
@@ -19,10 +19,10 @@ const defaultThresholdMs = 500
  * @template TResult - The type of the result returned by the request handler.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export class PerformancePipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
@@ -32,10 +32,10 @@ export class PerformancePipeline<TInput extends IRequest, TResult> implements IP
    * @description Threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value is set through the constructor and must be a positive integer.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   private readonly _thresholdMs: number
 
@@ -46,10 +46,10 @@ export class PerformancePipeline<TInput extends IRequest, TResult> implements IP
    * @throws Will throw an error if the provided thresholdMs value is not a positive integer.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   constructor(
     private readonly _logger: ILogger,

@@ -1,5 +1,5 @@
-import { AppBuilder } from '@gantry5/core'
-import type { IServiceContainer } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
+import type { IServiceContainer } from '@xeno/core'
 import { DATA_SOURCE_TOKEN, HTTP_CLIENT_TOKEN } from './tokens'
 
 // ─────────────────────────────────────────────────────────────────────────────

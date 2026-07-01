@@ -1,14 +1,14 @@
 import fastify from 'fastify'
-import { INJECTION_TOKENS } from '@gantry5/core'
+import { INJECTION_TOKENS } from '@xeno/core'
 import { bootstrap } from './bootstrap'
 import { PING_CONTROLLER_TOKEN, STATUS_CONTROLLER_TOKEN } from './tokens'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN DEMO FUNCTION
 // ─────────────────────────────────────────────────────────────────────────────
-// This function initializes the Gantry5 container, sets up the Fastify server, and defines two endpoints: one for handling a ping command and another for retrieving the status. It resolves the necessary controllers and middleware from the service container and starts the server on port 3000.
+// This function initializes the XenoJS container, sets up the Fastify server, and defines two endpoints: one for handling a ping command and another for retrieving the status. It resolves the necessary controllers and middleware from the service container and starts the server on port 3000.
 async function runDemo() {
-    console.log('⚙️ Inizializzazione Gantry5 Container...')
+    console.log('⚙️ Inizializzazione XenoJS Container...')
     // 1. Bootstrap the application and get the service container
     const container = await bootstrap()
 

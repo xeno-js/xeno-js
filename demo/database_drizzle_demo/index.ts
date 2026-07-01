@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { SQL } from 'drizzle-orm'
 
-import { HardDeleteDataSource, Guards } from '@gantry5/core'
+import { HardDeleteDataSource, Guards } from '@xeno/core'
 
 import { UserDto } from './schema'
 import { bootstrap } from './bootstrap'

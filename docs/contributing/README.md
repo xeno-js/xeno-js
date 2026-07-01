@@ -1,6 +1,6 @@
 # Contributing
 
-Documentation for developers working directly on the Gantry5 repository.
+Documentation for developers working directly on the XenoJS repository.
 
 ## Guides
 

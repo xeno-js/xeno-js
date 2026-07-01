@@ -8,10 +8,10 @@ import { Guards, LOG_LEVEL } from '@/shared'
  * @description Concrete implementation of ILoggerClient that uses Sentry as the error tracking system. This class acts as an adapter between the ILoggerClient interface and the Sentry library, allowing the use of Sentry as a logging provider within the application's architecture without directly coupling the code to the specific tracking framework.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export class SentryLogger implements ILoggerClient {
   constructor(

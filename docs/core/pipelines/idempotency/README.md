@@ -34,7 +34,7 @@ To activate idempotency, declare the parameters inside the `commandBus` config
 block:
 
 ```typescript
-import { AppBuilder } from '@gantry5/core'
+import { AppBuilder } from '@xeno/core'
 
 builder.addPipeline((opts) => {
   opts.commandBus.idempotency = {

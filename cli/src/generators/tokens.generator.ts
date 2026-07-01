@@ -14,12 +14,12 @@ export class TokensGenerator implements IGenerator {
   }
 
   private composeTokensContent(): string {
-    return `import { TokenHelper } from '@gantry5/core';
+    return `import { TokenHelper } from '@xeno/core';
     
 /**
  * @file tokens.ts
  * @description In this file, define the 'Injection Tokens' for the Dependency Injection system.
- * * A token is a unique identifier (usually a Symbol) used by the Gantry5 container to resolve dependencies in a type-safe and decoupled manner.
+ * * A token is a unique identifier (usually a Symbol) used by the XenoJS container to resolve dependencies in a type-safe and decoupled manner.
  * * HOW TO USE:
  * 1. Define your token: 
  * export const MY_SERVICE_TOKEN = TokenHelper.createToken<MyService>('MY_SERVICE_TOKEN');

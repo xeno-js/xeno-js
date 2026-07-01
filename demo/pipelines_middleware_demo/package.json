@@ -2,13 +2,13 @@
   "name": "demo-02-cqrs",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 02 - CQRS with @gantry5",
+  "description": "Demo 02 - CQRS with @xeno",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts"
   },
   "dependencies": {
-    "@gantry5": "file:../../",
+    "@xeno": "file:../../",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0"
   },

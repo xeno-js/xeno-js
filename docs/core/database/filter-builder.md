@@ -1,7 +1,7 @@
 # Filter Builder
 
-Gantry5 criteria are framework-level objects. Drizzle expects SQL expressions
-and selected fields. `IFilterBuilder` is the adapter between those two worlds.
+XenoJS criteria are framework-level objects. Drizzle expects SQL expressions and
+selected fields. `IFilterBuilder` is the adapter between those two worlds.
 
 The framework does not ship one universal Drizzle filter builder because every
 application has different column names, allowed filters, projections, and
@@ -10,7 +10,7 @@ soft-delete rules. You implement a builder per table or per aggregate.
 ## Contract
 
 ```ts
-import type { IFilterBuilder } from '@gantry5/core'
+import type { IFilterBuilder } from '@xeno/core'
 
 export interface IFilterBuilder<
   TQueryConditions = unknown,
@@ -53,7 +53,7 @@ const criteria = {
 }
 ```
 
-The supported operators in Gantry5 criteria are:
+The supported operators in XenoJS criteria are:
 
 - `eq`
 - `neq`
@@ -68,7 +68,7 @@ application allows, which prevents accidentally exposing arbitrary columns
 through API input.
 
 ```ts
-import type { IFilterBuilder, ReadCriteria, WriteCriteria } from '@gantry5/core'
+import type { IFilterBuilder, ReadCriteria, WriteCriteria } from '@xeno/core'
 import { and, eq, gt, inArray, lt, ne, type SQL } from 'drizzle-orm'
 import type { AnyPgColumn, SelectedFields } from 'drizzle-orm/pg-core'
 

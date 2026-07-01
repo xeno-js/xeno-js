@@ -5,10 +5,10 @@ import type { IConcurrencyService } from '@/domain'
  * This service ensures that no matter how many tasks are submitted, only the specified 'concurrencyLimit' number of tasks will be in a pending state simultaneously.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export class PLimitConcurrencyService implements IConcurrencyService {
   public async executeInParallel<T>(

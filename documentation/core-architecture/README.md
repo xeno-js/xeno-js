@@ -4,7 +4,7 @@ sidebar_position: 2
 slug: ./
 description:
   Technical index and summary of the core runtime engine, application hosting
-  lifecycle, and IoC service container mechanics of Gantry5.
+  lifecycle, and IoC service container mechanics of XenoJS.
 keywords:
   - core architecture
   - dependency injection lifetimes
@@ -16,7 +16,7 @@ keywords:
 # Core Architecture & Lifecycle
 
 This chapter encapsulates the deep programmatic primitives that govern the
-instantiation, compilation, tracking, and teardown of a Gantry5 framework
+instantiation, compilation, tracking, and teardown of a XenoJS framework
 environment.
 
 By entirely eliminating reflection, runtime decorator overhead, and ambient
@@ -29,7 +29,7 @@ and serverless runtimes.
 ## Chapter Summary
 
 The _Core Architecture & Lifecycle_ layer acts as the foundational engine room
-of Gantry5. It isolates how an unhydrated host translates declarative
+of XenoJS. It isolates how an unhydrated host translates declarative
 configurations, manages graph dependency validation safely through nominal type
 tokens, handles scoped memory isolation blocks, and exposes macro structural
 plugins. Understanding these core components is essential before implementing
@@ -47,21 +47,15 @@ Navigate through the foundational runtime structural paths sequentially:
   orchestrator model, the separate roles of the `bootstrap.ts` configuration
   script and `main.ts` process runtime, and the multi-step lazy-loading workflow
   executed during container compilation.
-- **Target Audience:** Systems engineers designing multi-environment setups,
-  orchestrating configuration overrides, or integrating custom cloud
-  infrastructure wrappers.
 
 ### 2. [The IoC Container & Service Lifetimes](./ioc-container-service-lifetimes.md)
 
-- **What it covers:** An explicit technical manual on how Gantry5 allocates
+- **What it covers:** An explicit technical manual on how XenoJS allocates
   instance tracking behaviors across its three native lifecycles: `Singleton`,
   `Scoped`, and `Transient`. It includes complete implementation analysis of
   `IServiceScopeFactory`, thread scope creation during active requests, and safe
   garbage collection mechanics via explicit resource cleanup lookups
   (`.dispose()`).
-- **Target Audience:** Application architects managing thread-safe memory
-  allocations, state persistence boundaries, or debugging active cross-cutting
-  connection leaks.
 
 ### 3. [Module Composition Pattern](./module-composition-pattern.md)
 
@@ -70,9 +64,6 @@ Navigate through the foundational runtime structural paths sequentially:
   This section reveals how core systems (such as `CqrsModule`, `DbModule`, and
   `HttpCoreModule`) use their `.configure()` loops to hook into the
   `IServiceContainer` safely without exposing private inner classes.
-- **Target Audience:** Domain engineers needing to isolate corporate feature
-  boundaries, scale large-scale workspaces into decoupled modules, or write
-  pluggable architectural add-ons.
 
 ---
 

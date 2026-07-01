@@ -21,8 +21,8 @@ behavior stack alongside required policy records using the `AppBuilder`
 pipeline:
 
 ```typescript
-import { AppBuilder, TokenHelper } from '@gantry5/core'
-import type { AuthPolicy } from '@Gantry5/shared'
+import { AppBuilder, TokenHelper } from '@xeno/core'
+import type { AuthPolicy } from '@XenoJS/shared'
 
 // 1. Declare the unified security policy mapping request intents to required claims
 const applicationPolicyRegistry: Record<string, AuthPolicy> = {

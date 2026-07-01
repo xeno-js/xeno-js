@@ -1,6 +1,6 @@
 # Dependency Injection
 
-Gantry5 uses explicit injection tokens to register and resolve services from the
+XenoJS uses explicit injection tokens to register and resolve services from the
 application container. Tokens keep infrastructure wiring type-safe and avoid
 coupling your code to concrete classes.
 

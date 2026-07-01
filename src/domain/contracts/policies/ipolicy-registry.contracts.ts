@@ -4,10 +4,10 @@ import type { AuthPolicy, Optional } from '@/shared'
  * @description The IPolicyRegistry interface defines the contract for a Policy registry that manages role-based access control policies. It provides methods to add policies for certain intents and to retrieve the access control policy for a given intent. Implementations of this interface can be used to enforce Policy policies across the application by associating roles and permissions with specific actions or intents.
 
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
 export interface IPolicyRegistry {
   /**
@@ -17,10 +17,10 @@ export interface IPolicyRegistry {
    * @returns The current instance of the policy registry.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   addPolicy(intent: string, policy: AuthPolicy): this
 
@@ -30,10 +30,10 @@ export interface IPolicyRegistry {
    * @returns The policy associated with the intent, or undefined if no policy exists.
   
    * 
-   * @author Gantry5
+   * @author XenoJS
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/Gantry5 
+   * @link https://github.com/Mattia-Carcione/XenoJS 
    */
   getPolicy(intent: string): Optional<AuthPolicy>
 }

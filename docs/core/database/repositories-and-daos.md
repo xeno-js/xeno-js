@@ -1,6 +1,6 @@
 # Repositories and DAOs
 
-Gantry5 provides two higher-level persistence helpers:
+XenoJS provides two higher-level persistence helpers:
 
 - `Repository<T, TDto>` for write models and CRUD-style flows.
 - `ReadDao<T, TDto>` for read models and query-only flows.
@@ -13,7 +13,7 @@ The mapper translates between domain entities and database DTOs.
 Create an `IMapper` for each persisted model.
 
 ```ts
-import type { IMapper } from '@gantry5/core'
+import type { IMapper } from '@xeno/core'
 
 import type { UserDto } from '../schema.js'
 import { User } from './user.entity.js'
@@ -52,7 +52,7 @@ export class UserMapper implements IMapper<User, UserDto> {
 }
 ```
 
-The exact entity API is yours. Gantry5 only needs the mapper contract.
+The exact entity API is yours. XenoJS only needs the mapper contract.
 
 ## Register a Repository
 
@@ -64,7 +64,7 @@ import {
   INJECTION_TOKENS,
   Repository,
   type IDbClient,
-} from '@gantry5/core'
+} from '@xeno/core'
 import type { SQL } from 'drizzle-orm'
 
 import {
@@ -114,7 +114,7 @@ await usersRepository.update(partialUser, criteria, signal)
 await usersRepository.delete(user, signal)
 ```
 
-Every method returns a Gantry5 `ResultType`, so application code should inspect
+Every method returns a XenoJS `ResultType`, so application code should inspect
 the result before reading the value.
 
 ```ts
@@ -138,7 +138,7 @@ import {
   ReadDataSource,
   type IDbClient,
   type IFilterBuilder,
-} from '@gantry5/core'
+} from '@xeno/core'
 import type { SQL } from 'drizzle-orm'
 import type { SelectedFields } from 'drizzle-orm/pg-core'
 

@@ -1,7 +1,7 @@
-# CQRS Implementation Guide - Gantry5 Framework
+# CQRS Implementation Guide - XenoJS Framework
 
 This project demonstrates the implementation of the **CQRS (Command Query
-Responsibility Segregation)** pattern using the `gantry5` framework. The
+Responsibility Segregation)** pattern using the `xeno` framework. The
 architecture focuses on decoupling write operations (Commands) from read
 operations (Queries), ensuring a clean, maintainable, and scalable codebase.
 
@@ -24,7 +24,7 @@ The system follows a strict flow to handle requests:
 ### 1. Prerequisites
 
 - Node.js (v20+)
-- `gantry5` framework (linked via file path in `package.json`)
+- `xeno` framework (linked via file path in `package.json`)
 
 ### 2. Implementation Steps
 
