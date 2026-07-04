@@ -1,13 +1,12 @@
-# 🚀 XenoJS Core Demo: HTTP Integration
+# 🚀 Xeno Core Demo: HTTP Integration
 
-Welcome to the **XenoJS Core** demo. This project demonstrates how to build a
-production-ready HTTP infrastructure using the XenoJS Core framework, focusing
-on clean architecture, dependency injection, and resilient service-to-service
-communication.
+This project demonstrates how to build a production-ready HTTP infrastructure
+using the Xeno Core framework, focusing on clean architecture, dependency
+injection, and resilient service-to-service communication.
 
 ## 🎯 Objective
 
-This demo showcases how XenoJS Core simplifies external service calls (e.g.,
+This demo showcases how Xeno Core simplifies external service calls (e.g.,
 PokeAPI) through a `RemoteDataSource`. It implements robust resilience patterns
 to handle network volatility, ensuring your business logic remains decoupled
 from infrastructure concerns.
@@ -61,7 +60,7 @@ with: `GET http://localhost:3000/pokemon/pikachu`
 
 ## 🧠 Core Architecture
 
-XenoJS Core is built on the principles of **Dependency Inversion**. The
+Xeno Core is built on the principles of **Dependency Inversion**. The
 infrastructure is assembled via the `AppBuilder` in `bootstrap.ts`.
 
 ### Resilience Patterns

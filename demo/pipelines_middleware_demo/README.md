@@ -1,4 +1,4 @@
-# CQRS Implementation Guide - XenoJS Framework
+# CQRS Implementation Guide - Xeno Framework
 
 This project demonstrates the implementation of the **CQRS (Command Query
 Responsibility Segregation)** pattern using the `xeno` framework. The

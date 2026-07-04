@@ -22,9 +22,9 @@ export async function bootstrap(): Promise<IServiceContainer> {
     // B. REGISTRATION OF OUR CUSTOM DATASOURCE IN THE CONTAINER
     // Register the filter builder as a singleton in the container
     builder.addServices((services) => {
-        services.addSingleton(FILTER_BUILDER_TOKEN, UserFilterBuilder, [])
+        services.addSingleton(FILTER_BUILDER_TOKEN, UserFilterBuilder)
         services.addTransientFactory(USER_DS_TOKEN, (c) => {
-            const dbClient = c.resolve(INJECTION_TOKENS.DB_CLIENT)
+            const dbClient = c.resolve(INJECTION_TOKENS.DB_ORM_CLIENT)
             return new HardDeleteDataSource<UserDto, SQL | undefined>(dbClient, 'users', c.resolve(FILTER_BUILDER_TOKEN))
         })
     })

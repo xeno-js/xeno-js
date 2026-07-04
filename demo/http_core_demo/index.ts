@@ -6,9 +6,9 @@ import { DATA_SOURCE_TOKEN } from './tokens';
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN DEMO FUNCTION
 // ─────────────────────────────────────────────────────────────────────────────
-// This function initializes the XenoJS container, sets up an HTTP server, and defines a single endpoint for fetching data from the PokeAPI. It resolves the necessary data source from the service container and starts the server on port 3000.
+// This function initializes the Xeno container, sets up an HTTP server, and defines a single endpoint for fetching data from the PokeAPI. It resolves the necessary data source from the service container and starts the server on port 3000.
 async function runDemo() {
-  console.log('⚙️ Inizializzazione XenoJS Container...')
+  console.log('⚙️ Inizializzazione Xeno Container...')
   // 1. Bootstrap the application and get the service container
   const container = await bootstrap()
 
@@ -29,14 +29,14 @@ async function runDemo() {
 
       try {
         const requestUrl = `pokemon/${name.toLowerCase()}`;
+        
         const request: HttpRequest<unknown> = {
           method: 'GET',
           query: Object.fromEntries(url.searchParams.entries()),
-          url: requestUrl,
           signal: new AbortController().signal
         }
         // 4. Use the data source to fetch data from the PokeAPI
-        const pokemonData = await dataSource.send(request.url, request)
+        const pokemonData = await dataSource.send(requestUrl, request)
 
         res.writeHead(200, { 'Content-Type': 'application/json' })
         if (pokemonData.isOk()) {
@@ -55,9 +55,9 @@ async function runDemo() {
     }
   })
 
-  // 5. Start the server on port 3000
-  server.listen(3000, () => {
-    console.log('🚀 Server running at http://localhost:3000')
+  // 5. Start the server on port 5000
+  server.listen(5000, () => {
+    console.log('🚀 Server running at http://localhost:5000')
   })
 }
 

@@ -14,8 +14,8 @@ export async function bootstrap(): Promise<IServiceContainer> {
         opts.http.client.baseURL = 'https://pokeapi.co/api/v2/'
         opts.http.client.timeoutMs = 5000
         opts.http.token = HTTP_CLIENT_TOKEN
-        opts.resilience.retry.attempts = 3
-        opts.resilience.circuitBreaker.consecutiveFailures = 5
+        opts.resilience.retry.attempts = 10
+        opts.resilience.circuitBreaker.consecutiveFailures = 7
     })
 
     // C. BUILD THE CONTAINER (WHICH WILL INVOKE THE DB MODULE FACTORY)

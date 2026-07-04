@@ -2,14 +2,15 @@
   "name": "demo-01-database",
   "version": "1.0.0",
   "private": true,
-  "description": "Demo 01 - Configurazione DB e Inserimento con @xeno",
+  "description": "Demo 01 - Configurazione DB e Inserimento con @xeno/core",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@xeno": "file:../../",
+    "@xeno/core": "file:../../",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.45.2",
     "pg": "^8.22.0"

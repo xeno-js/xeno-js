@@ -37,7 +37,7 @@ insert your PostgreSQL connection string.
 
 ```env
 # Example of local connection. Replace "your_password" with the actual password.
-DATABASE_URL=postgres://postgres:your_password@localhost:5432/xeno_demo
+DATABASE_URL=postgres://user:your_password@localhost:5432/xeno_demo
 
 ```
 
