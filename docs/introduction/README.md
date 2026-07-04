@@ -1,6 +1,6 @@
-# XenoJS Developer Docs
+# Xeno Developer Docs
 
-This directory contains the operational documentation for building with XenoJS.
+This directory contains the operational documentation for building with Xeno.
 
 ## Documentation Tree
 
@@ -121,7 +121,7 @@ docs/
 - [AppBuilder](../core/app_builder/README.md): what is and how to use AppBuilder
   container
 - [Database](../core/database/README.md): configure Drizzle/PostgreSQL and use
-  XenoJS data sources, repositories, and filters.
+  Xeno data sources, repositories, and filters.
 - [Cache](../core/cache/README.md): configure Redis or InMemory storage for
   optimized data access and idempotency.
 - [Logging](../core/logging/README.md): configure Console or Pino or Sentry

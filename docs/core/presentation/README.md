@@ -3,7 +3,7 @@
 ## Overview
 
 The `presentation/` layer functions as the protocol-specific delivery system and
-communication boundary for the XenoJS application runtime. Operating as an
+communication boundary for the Xeno application runtime. Operating as an
 architectural adapter at the perimeter of the infrastructure, this layer is
 responsible for intercepting raw external incoming messaging models (such as
 REST HTTP network streams), validating payload boundaries, and translating

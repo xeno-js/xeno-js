@@ -45,7 +45,7 @@ preventing naming collisions inside the global service container map.
   without altering container allocations.
 
 ```typescript
-// Standard implementation paradigm across XenoJS infrastructure modules
+// Standard implementation paradigm across Xeno infrastructure modules
 export const DB_CLIENT_TOKEN =
   TokenHelper.createToken<IDbClient>('DB_CLIENT_TOKEN')
 ```

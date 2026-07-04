@@ -1,7 +1,7 @@
 # Redis Configuration & CLI Integration
 
-When initializing a brand new project via the `@XenoJS/create` CLI—either
-through interactive step-by-step choices or by supplying the `complete` mode
+When initializing a brand new project via the `@Xeno/create` CLI—either through
+interactive step-by-step choices or by supplying the `complete` mode
 argument—selecting the `redis` option automatically initializes your application
 shell to orchestrate distributed caching layers[cite: 2, 5].
 

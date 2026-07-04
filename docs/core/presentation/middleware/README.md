@@ -1,10 +1,10 @@
 # Middleware Overview
 
-The Presentation Layer Middleware inside XenoJS serves as the secure entry
-gateway and execution perimeter for all incoming external transactions.
-Orchestrated primarily by the **`RequestContextMiddleware`**, this layer is
-responsible for translating raw protocol-specific transportation inputs (such as
-HTTP request headers) into unified, strongly-typed domain metadata envelopes.
+The Presentation Layer Middleware inside Xeno serves as the secure entry gateway
+and execution perimeter for all incoming external transactions. Orchestrated
+primarily by the **`RequestContextMiddleware`**, this layer is responsible for
+translating raw protocol-specific transportation inputs (such as HTTP request
+headers) into unified, strongly-typed domain metadata envelopes.
 
 The middleware acts as an architectural boundary between the outer network layer
 and the inner application core. It extracts tracing parameters, establishes

@@ -1,6 +1,6 @@
 # Logging overview
 
-The XenoJS framework features a powerful, diagnostic-centric logging
+The Xeno framework features a powerful, diagnostic-centric logging
 infrastructure designed to capture runtime execution contexts, performance
 metrics, and unhandled exceptions across your application layer.
 
@@ -16,7 +16,7 @@ docs/core/logging/
 
 ## How It Works Under the Hood
 
-XenoJS decouples the application logging interface from the underlying concrete
+Xeno decouples the application logging interface from the underlying concrete
 transportation layers using a specialized driver aggregation pattern.
 
 ```text
@@ -46,7 +46,7 @@ polluting your core domain logic.
 
 ## The Default Pipeline Fallback
 
-To prevent application bootstrap crashes, XenoJS enforces a strict defensive
+To prevent application bootstrap crashes, Xeno enforces a strict defensive
 design pattern. When you activate your CQRS bus using
 `builder.addPipeline(...)`, the internal `CqrsModule` implicitly triggers a
 baseline registration:
@@ -103,7 +103,7 @@ builder
 
 ## Built-in Production Drivers
 
-XenoJS provides built-in enterprise abstraction drivers that can be mixed and
+Xeno provides built-in enterprise abstraction drivers that can be mixed and
 matched inside your setup action:
 
 ### 1. Pino Logger (High-Performance Structured JSON)

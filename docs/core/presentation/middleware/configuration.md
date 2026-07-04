@@ -28,7 +28,7 @@ immutable framework key **`INJECTION_TOKENS.MIDDLEWARE`**.
 
 ## The Zero-Auth Default Guardrail
 
-A core design requirement of the XenoJS framework is to guarantee **fail-safe
+A core design requirement of the Xeno framework is to guarantee **fail-safe
 operational security**. If an application layout includes `.addMiddlewares()`
 but completely omits an identity provider configuration (i.e., skipping
 `.addAuth()`), the application will not fail during the container compilation

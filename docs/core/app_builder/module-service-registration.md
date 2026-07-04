@@ -2,7 +2,7 @@
 
 ## Extending the Core Application Workspace
 
-The XenoJS core framework remains agnostically uncoupled from your explicit
+The Xeno core framework remains agnostically uncoupled from your explicit
 business use-cases or enterprise features. To register domain logic, repository
 persistence layers, or external communication adapters into the shared IoC
 engine, `AppBuilder` provides two extension mechanisms: direct service

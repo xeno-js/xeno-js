@@ -1,10 +1,10 @@
 # Sentry Production Logger Configuration
 
-The Sentry integration in XenoJS handles production exception tracking, alert
+The Sentry integration in Xeno handles production exception tracking, alert
 monitoring, and real-time error telemetry. Managed internally by the
-`SentryLoggerFactory`, this provider integrates natively with XenoJS's
-dependency container to capture framework anomalies while proactively filtering
-operational noise.
+`SentryLoggerFactory`, this provider integrates natively with Xeno's dependency
+container to capture framework anomalies while proactively filtering operational
+noise.
 
 ## Configuration Options (`SentryLoggerConfig`)
 
@@ -28,7 +28,7 @@ specific variables:
 # Standard Runtime Environment
 NODE_ENV=development
 
-# XenoJS Sentry Logger Configuration
+# Xeno Sentry Logger Configuration
 SENTRY_DSN=https://your-sentry-dsn@o0.ingest.sentry.io/0
 SENTRY_ENVIRONMENT=development
 SENTRY_RELEASE=app@1.0.0
@@ -142,8 +142,8 @@ builder
 
 ## ⚠️ Critical Rule: Builder Execution Order
 
-As with all XenoJS logging extensions, you must chain `.addLogger(...)`
-**after** `.addPipeline(...)`.
+As with all Xeno logging extensions, you must chain `.addLogger(...)` **after**
+`.addPipeline(...)`.
 
 Enabling the CQRS pipelines automatically mounts a default fallback system
 logger container definition to preserve immediate functionality. Placing your

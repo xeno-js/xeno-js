@@ -21,7 +21,7 @@ to the network layer introduces severe architectural liabilities:
   message brokers) expect predictable contractual responses. Raw engine failures
   degrade contract uniformity.
 - **Data Flow Unification**: By translating standard JavaScript errors into the
-  framework’s custom domain representation (`AppError`), XenoJS handles failure
+  framework’s custom domain representation (`AppError`), Xeno handles failure
   tracking deterministically using clean functional programming semantics
   (`Result.fail`) instead of throwing chaotic exceptions.
 
@@ -51,7 +51,7 @@ evaluation phase of the framework's internal `CqrsModule`.
   `500 Internal Server Error` status profile.
 
 ```typescript
-// Core implementation summary of XenoJS exception isolation
+// Core implementation summary of Xeno exception isolation
 try {
   return await next()
 } catch (error: unknown) {

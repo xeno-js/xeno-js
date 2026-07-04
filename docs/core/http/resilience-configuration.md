@@ -1,7 +1,7 @@
 # Resilience & Fault Tolerance Configuration
 
 The `CockatielResilienceFactory` handles the execution protection architecture
-inside XenoJS. Instead of evaluating faults inside separate, isolated hooks, it
+inside Xeno. Instead of evaluating faults inside separate, isolated hooks, it
 orchestrates a layered structural wrapper
 (`wrap(bulkheadPolicy, circuitBreakerPolicy, retryPolicy)`) that intercepts
 failures before they can cascade downstream and saturate local system resources.

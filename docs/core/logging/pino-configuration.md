@@ -1,6 +1,6 @@
 # Pino Production Logger Configuration
 
-The Pino integration in XenoJS handles enterprise-grade, high-throughput
+The Pino integration in Xeno handles enterprise-grade, high-throughput
 structured JSON logging. Managed internally by the `PinoLoggerFactory`, this
 driver bypasses the overhead of standard runtime evaluation by utilizing
 asynchronous streams, smart serialization, and automatic sensitive field
@@ -30,7 +30,7 @@ configuration from your TypeScript compilation layer:
 # Standard Runtime Environment
 NODE_ENV=development
 
-# XenoJS Pino Logger Configuration
+# Xeno Pino Logger Configuration
 LOG_LEVEL=debug
 LOG_DESTINATION=stdout
 LOG_FILE_PATH=logs/app.log
@@ -58,10 +58,9 @@ native high-speed redaction:
 
 ### 2. Performance Serialization
 
-Standard error serialization in Node.js often truncates important metadata.
-XenoJS automatically binds `pino.stdSerializers.err`, ensuring full structural
-analysis of native and application level stack traces under the `err` object
-attribute.
+Standard error serialization in Node.js often truncates important metadata. Xeno
+automatically binds `pino.stdSerializers.err`, ensuring full structural analysis
+of native and application level stack traces under the `err` object attribute.
 
 ### 3. ISO Standardized Timestamps
 

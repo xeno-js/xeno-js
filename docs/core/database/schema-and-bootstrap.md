@@ -1,11 +1,11 @@
 # Schema and Bootstrap
 
-XenoJS needs two things to enable database access:
+Xeno needs two things to enable database access:
 
 - a PostgreSQL connection string
 - a table registry that maps logical table names to Drizzle table definitions
 
-The table registry matters because XenoJS data sources pass table names as
+The table registry matters because Xeno data sources pass table names as
 strings. The registered `DrizzleDbClient` uses those names to find the actual
 Drizzle `PgTable`.
 

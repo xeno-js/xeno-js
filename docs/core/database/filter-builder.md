@@ -1,6 +1,6 @@
 # Filter Builder
 
-XenoJS criteria are framework-level objects. Drizzle expects SQL expressions and
+Xeno criteria are framework-level objects. Drizzle expects SQL expressions and
 selected fields. `IFilterBuilder` is the adapter between those two worlds.
 
 The framework does not ship one universal Drizzle filter builder because every
@@ -53,7 +53,7 @@ const criteria = {
 }
 ```
 
-The supported operators in XenoJS criteria are:
+The supported operators in Xeno criteria are:
 
 - `eq`
 - `neq`

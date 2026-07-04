@@ -54,7 +54,7 @@ footprint:
 
 ```http
 POST /api/v1/payments/process HTTP/1.1
-Host: gateway.XenoJS-enterprise.io
+Host: gateway.Xeno-enterprise.io
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMTIzIn0...
 X-Correlation-ID: 7b9e12c4-84d1-4db5-9e67-ea22f183d201

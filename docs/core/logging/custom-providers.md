@@ -2,7 +2,7 @@
 
 When your enterprise ecosystem demands integration with custom log
 transportation networks (e.g., specialized internal REST sinks, cloud-native
-vendor APIs, or custom formatting aggregators), XenoJS allows you to build and
+vendor APIs, or custom formatting aggregators), Xeno allows you to build and
 register proprietary logging drivers seamlessly.
 
 ## 1. Implement the Contract

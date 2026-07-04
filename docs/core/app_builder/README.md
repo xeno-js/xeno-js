@@ -2,7 +2,7 @@
 
 ## Overview
 
-The XenoJS initialization ecosystem relies on the **`AppBuilder`** pattern to
+The Xeno initialization ecosystem relies on the **`AppBuilder`** pattern to
 coordinate application configuration, module compilation, and service
 registration. Drawing inspiration from modern enterprise application hosting
 models (such as the .NET `WebApplicationBuilder`), `AppBuilder` exposes a
@@ -30,9 +30,9 @@ single, unified Inversion of Control (IoC) repository.
 
 ## The Bootstrap Lifecycle Architecture
 
-When creating a brand-new project layout via the `@XenoJS/create` CLI
-scaffolding engine, the workspace architecture separates configuration mechanics
-from application runtime loops across two specific structural layers:
+When creating a brand-new project layout via the `@Xeno/create` CLI scaffolding
+engine, the workspace architecture separates configuration mechanics from
+application runtime loops across two specific structural layers:
 
 ### 1. The Configuration Hub (`src/bootstrap.ts`)
 

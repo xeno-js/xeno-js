@@ -52,7 +52,7 @@ export class PayoutAllowanceValidationStrategy extends BaseValidationStrategy {
 
 > 🛡️ **ARCHITECTURAL CRITICAL STANDARD**: To maintain compile-time type
 > boundaries and absolute structural isolation, the use of raw strings or native
-> global `Symbol.for` allocations is forbidden within the XenoJS workspace
+> global `Symbol.for` allocations is forbidden within the Xeno workspace
 > ecosystem. All custom extensions must generate uniquely branded tracking
 > identifiers utilizing the framework's **`TokenHelper.createToken<T>()`**
 > utility.

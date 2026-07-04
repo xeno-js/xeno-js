@@ -1,6 +1,6 @@
 # Identity & Access Control
 
-The XenoJS Identity & Access Control subsystem delivers an enterprise-grade,
+The Xeno Identity & Access Control subsystem delivers an enterprise-grade,
 decoupling-first architecture for managing authentication (**AuthN**) and
 authorization (**AuthZ**) in high-performance TypeScript applications. Designed
 around Domain-Driven Design (DDD) principles and Clean Architecture, it cleanly
@@ -32,7 +32,7 @@ following modules:
 
 - **[Supabase Configuration Manual](https://www.google.com/search?q=supabase-configuration.md)**:
   Details the automated initialization of the infrastructure through the
-  `@XenoJS/create` scaffolding CLI tool, environment variables, and the
+  `@Xeno/create` scaffolding CLI tool, environment variables, and the
   programmatic runtime properties of the `SupabaseAuthServiceFactory`.
 - **[How-To-Use & Architecture Guide](https://www.google.com/search?q=how-to-use.md)**:
   Explains the internal request-identity lifecycle, the critical ordering rules

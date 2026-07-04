@@ -1,12 +1,12 @@
 # Injection Tokens
 
-An injection token is the stable key used by the XenoJS service container to
+An injection token is the stable key used by the Xeno service container to
 register and resolve a dependency. Instead of resolving services by class name
 or string literals scattered across the codebase, you create a token once and
 use that token everywhere.
 
-XenoJS exposes framework tokens through `INJECTION_TOKENS`. For example, when
-you call `builder.addDb(...)`, XenoJS registers the database client under:
+Xeno exposes framework tokens through `INJECTION_TOKENS`. For example, when you
+call `builder.addDb(...)`, Xeno registers the database client under:
 
 ```ts
 INJECTION_TOKENS.DB_CLIENT

@@ -1,6 +1,6 @@
 # Data Sources
 
-XenoJS data sources sit between the low-level `IDbClient` and your repositories.
+Xeno data sources sit between the low-level `IDbClient` and your repositories.
 They know which table they operate on and ask an `IFilterBuilder` to translate
 criteria into database-specific query conditions.
 

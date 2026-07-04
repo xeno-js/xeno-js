@@ -4,7 +4,7 @@
 
 In Domain-Driven Design, an **Entity** represents an object whose identity
 remains continuous, unique, and traceable throughout the entire application
-lifecycle, spanning across multiple system-state mutations. Within the XenoJS
+lifecycle, spanning across multiple system-state mutations. Within the Xeno
 framework, this invariant is guaranteed by the abstract **`Entity<T>`** base
 class, which decouples an entity's continuous identity from its underlying state
 properties (`props`).
@@ -56,7 +56,7 @@ cryptographically safe UUID v4 generator.
 ## Core Unique ID Wrapping (`UniqueId`)
 
 The framework prohibits the usage of raw primitive types (such as `string` or
-`number`) to model entity identities. XenoJS wraps values inside a dedicated
+`number`) to model entity identities. Xeno wraps values inside a dedicated
 value-holder class known as **`UniqueId`**:
 
 - **Private Construction**: Direct execution of `new UniqueId()` is blocked to
@@ -82,7 +82,7 @@ Entity aggregate inside your use-case modules:
 
 ```typescript
 import { Entity, UniqueId } from '@xeno/core'
-import type { Optional } from '@XenoJS/shared'
+import type { Optional } from '@Xeno/shared'
 
 export interface CustomerProps {
   firstName: string
@@ -114,7 +114,7 @@ export class Customer extends Entity<CustomerProps> {
 
     // Assigning updated parameters to the inner props map is done by reconstruction
     // or mutating non-primitive parameters through state methods.
-    // Inside XenoJS, props are frozen on construction to lock state stability:
+    // Inside Xeno, props are frozen on construction to lock state stability:
     // this._props.isActive = false; // -> Throws error at runtime
   }
 

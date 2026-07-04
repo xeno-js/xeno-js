@@ -3,7 +3,7 @@
 ## Overview
 
 The `utils/` directory houses the foundational, cross-cutting operational
-utilities and type-safety primitives of the XenoJS framework. Operating as a
+utilities and type-safety primitives of the Xeno framework. Operating as a
 shared kernel framework layout, these utilities implement strict **Defensive
 Programming** patterns to enforce data integrity, run deterministic runtime
 type-checking, and provide unified formatting primitives across all layers of

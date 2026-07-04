@@ -1,6 +1,6 @@
 # HTTP Request and Resilience
 
-The XenoJS HTTP & Fault-Tolerance subsystem delivers an isolated, resilient, and
+The Xeno HTTP & Fault-Tolerance subsystem delivers an isolated, resilient, and
 contract-agnostic communication architecture for distributed integrations. By
 utilizing the _Bridge Pattern_, the framework completely decouples the low-level
 transportation concerns (handled by Axios) from the resilience and recovery
@@ -36,7 +36,7 @@ modules:
 
 - **[HTTP Client Configuration](./http-client-configuration.md)**: Outlines the
   granular properties of the core transport layer, the `AxiosFactory` engine,
-  and the automated setup routines provided by the `@XenoJS/create` scaffolding
+  and the automated setup routines provided by the `@Xeno/create` scaffolding
   engine.
 - **[Resilience & Fault Tolerance Configuration](./resilience-configuration.md)**:
   Explains the architectural composition of the Cockatiel-backed sandbox,

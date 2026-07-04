@@ -2,7 +2,7 @@
 
 ## Overview
 
-The XenoJS Authorization Subsystem provides a robust, zero-trust infrastructure
+The Xeno Authorization Subsystem provides a robust, zero-trust infrastructure
 designed to secure CQRS message flows before execution context segments cross
 into the application core. Managed by the centralized
 **`AuthorizationPipeline`**, this architecture encapsulates security rules into
@@ -18,9 +18,9 @@ resources and ensure data isolation.
 
 ## The Authorization Layer Stack
 
-Instead of handling authentication and authorization inside unified blocks,
-XenoJS divides identity inspection across four distinct security pillars. Each
-strategy maps directly to specific operational requirements:
+Instead of handling authentication and authorization inside unified blocks, Xeno
+divides identity inspection across four distinct security pillars. Each strategy
+maps directly to specific operational requirements:
 
 ```
 

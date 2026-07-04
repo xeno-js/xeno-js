@@ -10,9 +10,9 @@ dependencies.
 - [Injection tokens](./dependency-injection/tokens.md): create stable
   application-level DI tokens with `TokenHelper`.
 - [Modules and dependencies](./modules-and-dependencies.md): map CLI choices to
-  installed packages and enabled XenoJS APIs.
+  installed packages and enabled Xeno APIs.
 - [Database](./database/README.md): configure Drizzle/PostgreSQL and build data
-  access with XenoJS primitives.
+  access with Xeno primitives.
 - [Cache](./cache/README.md): configure Redis or InMemory providers to handle
   application-level caching and idempotency strategies.
 - [Logging](./logging/README.md): configure Pino, Sentry or Console logger
@@ -39,8 +39,7 @@ dependencies.
 ## Dependency Injection
 
 - [Tokens](./dependency-injection/tokens.md): understand what injection tokens
-  are, why XenoJS uses them, and how to centralize app tokens in
-  `src/tokens.ts`.
+  are, why Xeno uses them, and how to centralize app tokens in `src/tokens.ts`.
 
 ## Database
 
@@ -50,7 +49,7 @@ dependencies.
   tables and register them with `AppBuilder`.
 - [Data sources](./database/datasources.md): choose between hard delete and soft
   delete write data sources.
-- [Filter builder](./database/filter-builder.md): translate XenoJS criteria into
+- [Filter builder](./database/filter-builder.md): translate Xeno criteria into
   Drizzle conditions and projections.
 - [Repositories and DAOs](./database/repositories-and-daos.md): compose data
   sources, mappers, repositories, and read DAOs.

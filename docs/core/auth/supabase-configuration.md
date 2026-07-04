@@ -1,7 +1,7 @@
 # Infrastructure Provisioning
 
 Integrating Supabase as the underlying identity provider can be fully automated
-during the initialization of a brand new project via the `@XenoJS/create`
+during the initialization of a brand new project via the `@Xeno/create`
 scaffolding CLI tool.
 
 When prompted by the interactive CLI engine:

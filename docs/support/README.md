@@ -1,34 +1,34 @@
-# Supporting XenoJS
+# Supporting Xeno
 
-**XenoJS** is an MIT-licensed, open-source framework.
+**Xeno** is an MIT-licensed, open-source framework.
 
 Building an enterprise-grade framework is a challenging labor of love. I develop
-XenoJS in my spare time—late nights, early mornings, and weekends—driven by the
+Xeno in my spare time—late nights, early mornings, and weekends—driven by the
 vision of a cleaner, more performant architecture for Node.js.
 
-### Why support XenoJS?
+### Why support Xeno?
 
-XenoJS is an independent, side-project born from the need to solve real-world
+Xeno is an independent, side-project born from the need to solve real-world
 architectural problems. I don't have a large corporation behind me funding the
 hours spent on research, coding, documentation, and maintenance.
 
 **Your support is a direct investment in the project's longevity:**
 
-- **Bridging the Gap**: I am balancing XenoJS with a full-time job. Your support
+- **Bridging the Gap**: I am balancing Xeno with a full-time job. Your support
   helps me dedicate more energy to this framework without sacrificing its
-  quality. It is the bridge that allows XenoJS to evolve from a "side-project"
-  to a project with the care and pace of an enterprise-grade tool.
-- **Stability & Maintenance**: By sponsoring XenoJS, you ensure that the
-  framework your product relies on is actively maintained, updated, and secured
-  against future Node.js releases.
+  quality. It is the bridge that allows Xeno to evolve from a "side-project" to
+  a project with the care and pace of an enterprise-grade tool.
+- **Stability & Maintenance**: By sponsoring Xeno, you ensure that the framework
+  your product relies on is actively maintained, updated, and secured against
+  future Node.js releases.
 - **Strategic Roadmap**: Your backing accelerates my ability to deliver new,
   highly-requested features (like RabbitMQ integration, advanced documentation,
   and more) that I otherwise wouldn't have the time to build.
 
-If you are running a business that uses XenoJS, or if you simply appreciate the
+If you are running a business that uses Xeno, or if you simply appreciate the
 engineering effort that went into decoupling your core logic, please consider
 sponsoring this project. Your support makes a tangible difference in keeping
-XenoJS independent and sustainable for the long term.
+Xeno independent and sustainable for the long term.
 
 ### How can you help?
 
@@ -40,7 +40,7 @@ sponsorship, buys the most precious resource: **time**.
   fueled during late-night coding sessions.
 - **Direct Contact & Enterprise Support**: If you are a company interested in
   dedicated support, feature prioritization, or specialized consulting for your
-  infrastructure, please reach out to me directly at xeno@outlook.it .
+  infrastructure, please reach out to me directly at xeno-js@outlook.it.
 
 ### Join our Contributors
 
@@ -49,7 +49,7 @@ you can still be a massive help by:
 
 - **Reporting issues** or suggesting features on GitHub.
 - **Writing documentation** or tutorials based on your experience.
-- **Spreading the word** about XenoJS in your tech community.
+- **Spreading the word** about Xeno in your tech community.
 
 Thank you for being part of this decoupled, open-source journey. Your support
 keeps the engine running and helps me focus on delivering the best possible

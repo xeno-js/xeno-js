@@ -22,7 +22,7 @@ pipeline:
 
 ```typescript
 import { AppBuilder, TokenHelper } from '@xeno/core'
-import type { AuthPolicy } from '@XenoJS/shared'
+import type { AuthPolicy } from '@Xeno/shared'
 
 // 1. Declare the unified security policy mapping request intents to required claims
 const applicationPolicyRegistry: Record<string, AuthPolicy> = {

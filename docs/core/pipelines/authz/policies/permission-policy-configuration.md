@@ -3,9 +3,9 @@
 ## Overview
 
 The `PermissionAuthorizationStrategy` implements granular, feature-level
-capability verification inside the XenoJS pipeline behavior stack. Operating
-under a least-privilege security model, it enforces fine-grained authorization
-rules by checking that an authenticated user possesses the explicit permissions
+capability verification inside the Xeno pipeline behavior stack. Operating under
+a least-privilege security model, it enforces fine-grained authorization rules
+by checking that an authenticated user possesses the explicit permissions
 required to execute a given request.
 
 ---

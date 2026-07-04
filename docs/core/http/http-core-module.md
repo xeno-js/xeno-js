@@ -13,7 +13,7 @@ glues them together inside an instances of the **`RemoteDataSource`** engine.
 
 ## Automated CLI Scaffolding & Environmental Variables
 
-When scaffolding a workspace with the interactive `@XenoJS/create` CLI tool,
+When scaffolding a workspace with the interactive `@Xeno/create` CLI tool,
 selecting the `http` option automatically prepares your runtime environment
 matrix. The CLI appends a granular blueprint block directly to your project's
 local `.env.example` file:

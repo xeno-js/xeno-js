@@ -1,6 +1,6 @@
 # Logging Architecture & Configuration
 
-The XenoJS framework features a powerful, diagnostic-centric logging
+The Xeno framework features a powerful, diagnostic-centric logging
 infrastructure designed to capture runtime execution contexts, performance
 metrics, and unhandled exceptions across your application layer.
 

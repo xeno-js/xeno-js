@@ -2,12 +2,12 @@
 
 ## The Railway Oriented Programming (ROP) Pattern
 
-To achieve high-throughput resilience, XenoJS replaces standard runtime
-exceptions (`throw new Error`) with the **Result Monad** pattern. By wrapping
-execution execution paths inside a structured container, operations propagate
-success values or logical errors explicitly. This allows downstream handlers to
-process outcomes predictably using type-safe pipelines without crashing active
-worker nodes.
+To achieve high-throughput resilience, Xeno replaces standard runtime exceptions
+(`throw new Error`) with the **Result Monad** pattern. By wrapping execution
+execution paths inside a structured container, operations propagate success
+values or logical errors explicitly. This allows downstream handlers to process
+outcomes predictably using type-safe pipelines without crashing active worker
+nodes.
 
 ---
 

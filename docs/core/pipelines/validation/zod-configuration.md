@@ -1,8 +1,8 @@
 # Automated Infrastructure Scaffolding
 
 Declarative schema validation using Zod is integrated out of the box during the
-structural workspace generation phase managed by the `@XenoJS/create`
-interactive CLI engine.
+structural workspace generation phase managed by the `@Xeno/create` interactive
+CLI engine.
 
 Confirming the pipeline or core telemetry infrastructure modules during
 execution, or selecting the `complete` bootstrap mode, automatically configures
@@ -85,7 +85,7 @@ map using the request's `intent` attribute. If a schema matches, it runs a
 non-throwing execution via `safeParse`:
 
 ```typescript
-// Abstract of XenoJS's structural error-packing runtime behavior
+// Abstract of Xeno's structural error-packing runtime behavior
 if (!zodResult.success) {
   const errorMessage = zodResult.error.issues
     .map((issue) => `[${issue.path.join('.')}] ${issue.message}`)

@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Installation
 
-XenoJS is an agnostic TypeScript core for applications based on DDD, Clean
+Xeno is an agnostic TypeScript core for applications based on DDD, Clean
 Architecture, CQRS, and dependency injection. The fastest way to start is the
 CLI in `cli/`, which generates a TypeScript project with `AppBuilder`,
 `bootstrap.ts`, `main.ts`, `tsconfig.json`, `.env.example`, and the optional

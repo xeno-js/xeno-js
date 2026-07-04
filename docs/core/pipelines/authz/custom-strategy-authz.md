@@ -38,7 +38,7 @@ export class ResourceOwnershipAuthorizationStrategy extends BaseAuthorizationStr
     // 2. Evaluate dynamic business rule context rules
     if (repositoryRequest.repositoryOwnerId !== auth.userId) {
       // Return a forbidden status token (403 Forbidden) utilizing the class base helper
-      return this.createAuthError(
+      return this.createForbiddenError(
         request,
         'Access Denied: The authenticated user profile is not the designated owner of this resource.',
       )
@@ -55,7 +55,7 @@ export class ResourceOwnershipAuthorizationStrategy extends BaseAuthorizationStr
 
 > 🛡️ **ARCHITECTURAL CRITICAL STANDARD**: To maintain compile-time type
 > boundaries and absolute structural isolation, the use of raw strings or native
-> global `Symbol.for` allocations is forbidden within the XenoJS workspace
+> global `Symbol.for` allocations is forbidden within the Xeno workspace
 > ecosystem. All custom extensions must generate uniquely branded tracking
 > identifiers utilizing the framework's **`TokenHelper.createToken<T>()`**
 > utility.

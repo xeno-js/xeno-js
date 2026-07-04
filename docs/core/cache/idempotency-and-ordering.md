@@ -1,10 +1,9 @@
 # Idempotency and Cache Configuration Ordering
 
-The XenoJS CQRS middleware core ships with an advanced engine to guarantee
-request idempotency across your mutation pipeline
-(`commandBus.idempotency`)[cite: 2, 4]. This behavior intercepts incoming
-messages to prevent double execution of sensitive operations due to clients
-retry requests or network drops[cite: 2].
+The Xeno CQRS middleware core ships with an advanced engine to guarantee request
+idempotency across your mutation pipeline (`commandBus.idempotency`)[cite: 2,
+4]. This behavior intercepts incoming messages to prevent double execution of
+sensitive operations due to clients retry requests or network drops[cite: 2].
 
 ## Automatic Fallback Behavior
 
@@ -26,7 +25,7 @@ builder.addPipeline((opts) => {
   }
 })
 // Without an explicit cache block defined,
-// XenoJS implicitly configures an InMemoryCache fallback.
+// Xeno implicitly configures an InMemoryCache fallback.
 ```
 
 ## Strict Builder Chaining Architecture Rule

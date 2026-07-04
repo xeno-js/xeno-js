@@ -1,8 +1,8 @@
 # Modules and Dependencies
 
-XenoJS uses optional peer dependencies: you install only the libraries required
-by the modules you enable. The `@xeno/create` CLI translates your initial
-choices into dependencies, dev dependencies, files, and commented snippets in
+Xeno uses optional peer dependencies: you install only the libraries required by
+the modules you enable. The `@xeno/create` CLI translates your initial choices
+into dependencies, dev dependencies, files, and commented snippets in
 `src/bootstrap.ts`.
 
 ## Minimal Core
@@ -74,7 +74,7 @@ Added files:
 - `drizzle.config.ts`
 - `src/schema.ts`
 
-Related XenoJS API:
+Related Xeno API:
 
 ```ts
 builder.addDb((opts) => {
@@ -96,7 +96,7 @@ Dependencies:
 }
 ```
 
-Related XenoJS API:
+Related Xeno API:
 
 ```ts
 builder.addHttpCore((opts) => {
@@ -121,7 +121,7 @@ Dependency:
 }
 ```
 
-Related XenoJS API:
+Related Xeno API:
 
 ```ts
 builder.addAuth((opts) => {
@@ -150,7 +150,7 @@ DevDependencies:
 }
 ```
 
-Related XenoJS API:
+Related Xeno API:
 
 ```ts
 import { LOG_LEVEL } from '@xeno/core'
@@ -200,7 +200,7 @@ Dependency:
 }
 ```
 
-Related XenoJS API:
+Related Xeno API:
 
 ```ts
 builder.addCache((opts) => {

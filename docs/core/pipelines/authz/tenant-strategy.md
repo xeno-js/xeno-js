@@ -37,7 +37,7 @@ protected async performAuthorizationCheck(
   auth: Identity,
 ): Promise<Result<void, AppError>> {
   if (Guards.isNullOrEmpty(auth.tenantId) || !GuidHelper.isValidGuid(auth.tenantId))
-    return this.createUnauthError(command, 'Tenant is not authenticated.')
+    return this.createUnauthorizeError(command, 'Tenant is not authenticated.')
 
   return Result.ok()
 }

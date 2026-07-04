@@ -1,6 +1,6 @@
 # Validation pipeline behavior
 
-The XenoJS Validation Subsystem enforces data integrity and structural safety
+The Xeno Validation Subsystem enforces data integrity and structural safety
 before any command or query reaches its corresponding domain handler within the
 CQRS mediator loop. Built upon the _Pipe and Filter_ architectural pattern, the
 core pipeline leverages a dedicated `ValidationPipeline` to intercept requests,
@@ -94,7 +94,7 @@ builder.addPipeline((opts) => {
 
 ## Documentation Roadmap
 
-To implement, customize, and orchestrate validation layers within a XenoJS
+To implement, customize, and orchestrate validation layers within a Xeno
 enterprise application, consult the following dedicated technical manuals:
 
 - **[Zod Schema Configuration Guide](./zod-configuration.md)**: Outlines

@@ -1,6 +1,6 @@
 # Repositories and DAOs
 
-XenoJS provides two higher-level persistence helpers:
+Xeno provides two higher-level persistence helpers:
 
 - `Repository<T, TDto>` for write models and CRUD-style flows.
 - `ReadDao<T, TDto>` for read models and query-only flows.
@@ -52,7 +52,7 @@ export class UserMapper implements IMapper<User, UserDto> {
 }
 ```
 
-The exact entity API is yours. XenoJS only needs the mapper contract.
+The exact entity API is yours. Xeno only needs the mapper contract.
 
 ## Register a Repository
 
@@ -114,8 +114,8 @@ await usersRepository.update(partialUser, criteria, signal)
 await usersRepository.delete(user, signal)
 ```
 
-Every method returns a XenoJS `ResultType`, so application code should inspect
-the result before reading the value.
+Every method returns a Xeno `ResultType`, so application code should inspect the
+result before reading the value.
 
 ```ts
 const result = await usersRepository.findById('1', undefined)

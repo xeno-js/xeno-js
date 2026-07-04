@@ -1,6 +1,6 @@
 # Local Development
 
-This guide is for developers working on the XenoJS repository.
+This guide is for developers working on the Xeno repository.
 
 ## Repository Install
 

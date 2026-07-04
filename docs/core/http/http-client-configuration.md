@@ -1,6 +1,6 @@
 # Infrastructure Scaffolding
 
-When provisioning an application ecosystem via the `@XenoJS/create` CLI
+When provisioning an application ecosystem via the `@Xeno/create` CLI
 initialization engine, enabling remote platform messaging can be accomplished by
 confirming the interactive script option:
 
@@ -39,7 +39,7 @@ transport pipeline maps parameters from your configuration block directly to the
 
 ## Automated CLI Scaffolding & Environmental Variables
 
-When scaffolding a workspace with the interactive `@XenoJS/create` CLI tool,
+When scaffolding a workspace with the interactive `@Xeno/create` CLI tool,
 selecting the `http` option automatically prepares your runtime environment
 matrix. The CLI appends a granular blueprint block directly to your project's
 local `.env.example` file:
@@ -87,7 +87,7 @@ async function bootstrap() {
       timeoutMs: parseInt(process.env.HTTP_TIMEOUT_MS || '5000', 10),
       defaultHeaders: {
         'Accept': 'application/json',
-        'X-Client-Identifier': 'XenoJS-core-runtime',
+        'X-Client-Identifier': 'Xeno-core-runtime',
       },
     }
   })
