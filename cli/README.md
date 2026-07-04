@@ -1,15 +1,15 @@
 # @xeno/create
 
-The official scaffolding tool for **XenoJS**. This CLI allows you to quickly
-bootstrap a production-ready Node.js application based on XenoJS, following
+The official scaffolding tool for **Xeno**. This CLI allows you to quickly
+bootstrap a production-ready Node.js application based on Xeno, following
 Domain-Driven Design (DDD) and Clean Architecture principles.
 
 ## 🚀 Quick Start
 
-To create a new XenoJS project, simply run:
+To create a new Xeno project, simply run:
 
 ```bash
-npx @xeno/create my-xeno-app
+npx @xeno/cli my-xeno-app
 
 ```
 
@@ -25,7 +25,7 @@ need (Database, HTTP, Auth, Logging, etc.).
 You can specify the project directory directly:
 
 ```bash
-npx @xeno/create <project-name>
+npx @xeno/cli <project-name>
 
 ```
 
@@ -35,7 +35,7 @@ The CLI supports optional flags to bypass the interactive prompt:
 
 - **`--full`**: Scaffolds a project with all enterprise features enabled
   (Drizzle ORM, Axios, Supabase, Logging, etc.).
-- **`--empty`**: Scaffolds a minimal XenoJS project without additional
+- **`--empty`**: Scaffolds a minimal Xeno project without additional
   infrastructure plugins.
 
 ---

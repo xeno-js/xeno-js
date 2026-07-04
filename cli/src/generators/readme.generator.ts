@@ -16,9 +16,9 @@ export class ReadmeGenerator implements IGenerator {
   private composeReadme(options: ScaffoldingOptions): string {
     return `# ${options.targetDir}
 
-Enterprise application built with [XenoJS](https://github.com/Mattia-Carcione/xeno).
+Enterprise application built with [Xeno](https://github.com/Mattia-Carcione/xeno-js).
 
-[![Powered by XenoJS](https://img.shields.io/badge/Powered%20by-XenoJS-blueviolet?style=flat-square)](https://github.com/Mattia-Carcione/xeno)
+[![Powered by Xeno](https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square)](https://github.com/Mattia-Carcione/xeno-js)
 
 ## 🚀 Quick Start
 
@@ -29,12 +29,12 @@ npm run dev
 \`\`\`
 
 ## 📖 Documentation
-For a deep dive into XenoJS concepts, CQRS pipelines, and Domain-Driven Design principles, visit the [official XenoJS documentation](https://github.com/Mattia-Carcione/xeno/tree/main/docs).
+For a deep dive into Xeno concepts, CQRS pipelines, and Domain-Driven Design principles, visit the [official Xeno documentation](https://github.com/Mattia-Carcione/xeno-js/tree/main/docs).
 
 ## 🛡️ Architecture
-This project leverages XenoJS's decoupled architecture:
+This project leverages Xeno's decoupled architecture:
 - **CQRS:** Command Query Responsibility Segregation.
-- **Dependency Injection:** Powered by XenoJS IoC container.
+- **Dependency Injection:** Powered by Xeno IoC container.
 - **Resilience:** Built-in fault tolerance via ${options.http ? 'Cockatiel' : 'infrastructure'} patterns.
 ${options.database ? '- **Persistence:** Drizzle ORM integrated.' : ''}
 

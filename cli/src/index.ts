@@ -65,9 +65,6 @@ async function init() {
     console.log(pc.cyan('\n📦 Installing dependencies...'));
     await CommandUtils.runCommand('npm', ['install'], targetDir);
 
-    console.log(pc.cyan('\n🚀 Starting development server...'));
-    await CommandUtils.runCommand('npm', ['run', 'dev'], targetDir);
-
     console.log(pc.white(`\nNext steps:\n  cd ${targetDir}\n  npm run dev\n`));
   } catch (error) {
     console.error(pc.red('\n❌ Scaffolding failed.'), error);

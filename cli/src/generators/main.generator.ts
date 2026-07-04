@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
@@ -19,7 +18,7 @@ export class MainGenerator implements IGenerator {
 
 /**
  * Main application entry point.
- * This is the orchestrator that initializes the XenoJS container
+ * This is the orchestrator that initializes the Xeno container
  * and starts your transport layers (HTTP servers, message brokers, etc.).
  */
 async function main() {

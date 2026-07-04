@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
@@ -62,6 +61,7 @@ export class PackageJsonGenerator implements IGenerator {
 
   private getDevDependencies(options: ScaffoldingOptions): Record<string, string> {
     const devDeps: Record<string, string> = {
+      "@xeno/cli": "latest",
       "tsx": "^4.7.0",
       "typescript": "^5.4.0",
       "@types/node": "^20.0.0"
@@ -82,7 +82,8 @@ export class PackageJsonGenerator implements IGenerator {
   private getScripts(options: ScaffoldingOptions): Record<string, string> {
     const scripts: Record<string, string> = {
       "start": "tsx src/main.ts",
-      "dev": "tsx watch src/main.ts"
+      "dev": "tsx watch src/main.ts",
+      "g": "xeno generate" // Alias for scaffolding - actually, this is a placeholder for the scaffolding command
     };
 
     if (options.database) {

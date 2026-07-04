@@ -19,7 +19,7 @@ export class TokensGenerator implements IGenerator {
 /**
  * @file tokens.ts
  * @description In this file, define the 'Injection Tokens' for the Dependency Injection system.
- * * A token is a unique identifier (usually a Symbol) used by the XenoJS container to resolve dependencies in a type-safe and decoupled manner.
+ * * A token is a unique identifier (usually a Symbol) used by the Xeno container to resolve dependencies in a type-safe and decoupled manner.
  * * HOW TO USE:
  * 1. Define your token: 
  * export const MY_SERVICE_TOKEN = TokenHelper.createToken<MyService>('MY_SERVICE_TOKEN');

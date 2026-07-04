@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
@@ -17,7 +16,7 @@ export class EnvGenerator implements IGenerator {
   private composeEnvContent(options: ScaffoldingOptions): string {
     const sections: string[] = [
       '# ─────────────────────────────────────────────────────────────────────────────',
-      '# XenoJS APPLICATION ENVIRONMENT VARIABLES',
+      '# Xeno APPLICATION ENVIRONMENT VARIABLES',
       '# ─────────────────────────────────────────────────────────────────────────────',
       'NODE_ENV=development',
     ];

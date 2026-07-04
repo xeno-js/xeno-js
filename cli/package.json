@@ -1,16 +1,16 @@
 {
-  "name": "@xeno/create",
+  "name": "@xeno/cli",
   "version": "1.0.0",
-  "description": "XenoJS create — CLI to scaffold a new XenoJS project",
+  "description": "Xeno CLI — Command Line Interface for Xeno projects",
   "bin": {
-    "create-xeno": "./dist/index.js"
+    "xeno": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts"
   },
   "keywords": [],
-  "author": "XenoJS",
+  "author": "Xeno",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

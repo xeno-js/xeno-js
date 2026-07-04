@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
