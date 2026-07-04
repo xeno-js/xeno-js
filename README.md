@@ -1,21 +1,21 @@
 <div align="center">
-  <img src="website/static/img/logo.png" alt="XenoJS Logo" width="140" />
+  <img src="website/static/img/logo.png" alt="Xeno Logo" width="140" />
   
-  <h1>XenoJS</h1>
+  <h1>Xeno</h1>
   
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
   
   <p>
     <a href="https://github.com/Mattia-Carcione/xeno">
-      <img src="https://img.shields.io/badge/Powered%20by-XenoJS-blueviolet?style=flat-square" alt="Powered by XenoJS" />
+      <img src="https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square" alt="Powered by Xeno" />
     </a>
-    <a href="https://github.com/Mattia-Carcione/XenoJS/blob/main/LICENSE">
+    <a href="https://github.com/Mattia-Carcione/xeno-js/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/@xeno?style=flat-square" alt="License: ISC" />
     </a>
     <a href="https://www.npmjs.com/package/@xeno">
       <img src="https://img.shields.io/npm/v/@xeno?style=flat-square" alt="NPM Version" />
     </a>
-    <a href="https://buymeacoffee.com/xeno">
+    <a href="https://buymeacoffee.com/xenojs">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
     </a>
   </p>
@@ -36,7 +36,7 @@ heavy frameworks.
 
 ---
 
-## 💡 Why XenoJS?
+## 💡 Why Xeno?
 
 Most modern Node.js frameworks rely on heavy abstractions through decorators and
 reflection. While they offer rapid setup, these approaches often lead to:
@@ -48,41 +48,41 @@ reflection. While they offer rapid setup, these approaches often lead to:
 - **Lock-in**: You become tightly coupled to the framework’s opinionated
   architecture and toolset.
 
-**XenoJS** inverts this paradigm. It is not a "cage," but an architectural
+**Xeno** inverts this paradigm. It is not a "cage," but an architectural
 accelerator that restores full control over your TypeScript stack.
 
-### Why choose XenoJS?
+### Why choose Xeno?
 
-- **Zero Magic, Zero Decorators & Cloud Optimized**: XenoJS avoids "magic"
+- **Zero Magic, Zero Decorators & Cloud Optimized**: Xeno avoids "magic"
   meta-programming in favor of explicit, strongly-typed configuration. The
   result is lightning-fast cold starts and a codebase that is straightforward to
   debug because the code is exactly what you see. Its lightweight footprint
   makes it perfect for serverless and edge computing environments (AWS Lambda,
   Cloudflare Workers, Vercel Edge), allowing you to leverage highly
   cost-effective cloud infrastructure without compromising performance.
-- **Transparent & DDD-First Architecture**: XenoJS enforces a native "Clean
+- **Transparent & DDD-First Architecture**: Xeno enforces a native "Clean
   Architecture" (`domain`, `application`, `infrastructure`, `presentation`).
   Every component is isolated, and the data flow (CQRS) is fully traceable,
   eliminating the "black box" effect common in traditional frameworks.
-- **100% Agnostic & Decoupled**: XenoJS acts as a Kernel. It doesn't force you
+- **100% Agnostic & Decoupled**: Xeno acts as a Kernel. It doesn't force you
   into a specific web server; it provides the business logic and execution
   pipelines, leaving you free to choose your preferred transport layer (Express,
   Hono, Fastify, or CLI). By strictly decoupling your business logic from
-  infrastructure, external libraries, and frameworks, XenoJS ensures your core
+  infrastructure, external libraries, and frameworks, Xeno ensures your core
   domain remains highly testable, maintainable, and scalable. This isolation
   allows you to swap, upgrade, or mock external components without ever
   impacting your primary business logic.
-- **Install Only What You Need**: XenoJS utilizes **Optional Peer
-  Dependencies**. You only install the external libraries you actually require.
-  The framework is designed to strictly lazy-load only the modules you enable in
-  your configuration, keeping your node_modules lean, preventing dependency
-  bloat, and reducing build sizes.
+- **Install Only What You Need**: Xeno utilizes **Optional Peer Dependencies**.
+  You only install the external libraries you actually require. The framework is
+  designed to strictly lazy-load only the modules you enable in your
+  configuration, keeping your node_modules lean, preventing dependency bloat,
+  and reducing build sizes.
 - **Precision Engineering**: Configuration is handled via a fluent, type-safe
   `AppBuilder`. Dependency management uses `TokenHelper` with nominal branding,
   preventing cross-token resolution errors and ensuring the DI container remains
   consistent and predictable.
 - **Enterprise-Ready Out of the Box**: Stop reinventing the wheel for complex
-  requirements. XenoJS integrates native enterprise patterns:
+  requirements. Xeno integrates native enterprise patterns:
 
 - **CQRS Pipelines**: Ready-to-use logic for Logging, Validation (Zod),
   Idempotency, and Concurrency.
@@ -93,13 +93,13 @@ accelerator that restores full control over your TypeScript stack.
 
 ### An "Open" Framework
 
-XenoJS hides nothing. Need a custom authorization strategy or a specific log
+Xeno hides nothing. Need a custom authorization strategy or a specific log
 driver? The modular approach via `IModule` allows you to extend the framework
 without fighting its conventions. It is designed for developers who understand
 their code and want a robust "backbone" framework that doesn't obstruct
 architectural choices.
 
-XenoJS doesn't dictate how to write your business logic; it provides the
+Xeno doesn't dictate how to write your business logic; it provides the
 enterprise-grade infrastructure to run it at peak performance.
 
 ---
@@ -107,10 +107,10 @@ enterprise-grade infrastructure to run it at peak performance.
 ## 📖 Documentation & Getting Started
 
 To explore the architecture, programmatic configurations, and extension
-workflows of XenoJS, read our full technical manuals located inside the main
+workflows of Xeno, read our full technical manuals located inside the main
 documentation hub:
 
-- 👉 **[Framework Documentation Repository](./docs/README.md)**
+- **[Framework Documentation Repository](./docs/README.md)**
 
 Inside, you will find exhaustive, step-by-step assembly guides covering core
 host building (`AppBuilder`), isolated request middleware lifecycles, functional
@@ -124,7 +124,7 @@ Before writing your first corporate use-case, inspect our fully operational
 reference environments designed to showcase decoupled enterprise topologies in
 action. Read the main entry point documentation at:
 
-- 👉 **[Live Demos Directory Overview](./demo/README.md)**
+- **[Live Demos Directory Overview](./demo/README.md)**
 
 You can dive straight into the explicit source code modules of our specialized
 sandbox environments:
@@ -152,7 +152,7 @@ npm install @xeno
 
 ```
 
-XenoJS uses **Optional Peer Dependencies**. You only install the external
+Xeno uses **Optional Peer Dependencies**. You only install the external
 libraries you actually need. Node.js will strictly lazy-load only the modules
 you enable in the configuration.
 
@@ -248,7 +248,7 @@ if (!result.isOk()) {
 
 ## 🛠 Scaffold your project with CLI
 
-XenoJS includes an official CLI tool, `@xeno/create`, designed to bootstrap your
+Xeno includes an official CLI tool, `@xeno/create`, designed to bootstrap your
 new application in seconds. It offers an interactive setup to select exactly the
 modules you need (Database, HTTP, Auth, Logging, etc.), ensuring you start with
 a clean, pre-configured architecture tailored to your specific requirements.
@@ -261,7 +261,7 @@ understand how the scaffolding engine works, check the
 
 ## 🏗️ Architecture Structure
 
-The framework strictly follows Clean Architecture principles. When using XenoJS,
+The framework strictly follows Clean Architecture principles. When using Xeno,
 we recommend structuring your application as follows:
 
 ```text
@@ -276,7 +276,7 @@ src/
 
 ## 🗺️ Release Roadmap & Lifecycle
 
-XenoJS is currently in **Beta**. We are actively stabilizing the architecture of
+Xeno is currently in **Beta**. We are actively stabilizing the architecture of
 the core engine while incrementally expanding our developer tooling and
 distributed systems primitives.
 
@@ -317,7 +317,7 @@ development:
 
 ### 🔵 Planned: v1.0.0 Stable (Enterprise Distributed Toolkit)
 
-The final milestone designed to turn XenoJS into an elite platform for highly
+The final milestone designed to turn Xeno into an elite platform for highly
 scalable, event-driven distributed microservices:
 
 - **Unit of Work (UoW):** Coordinated, atomic transaction management across
@@ -334,7 +334,7 @@ scalable, event-driven distributed microservices:
 
 ## 🤝 For Contributors
 
-We welcome contributions to XenoJS! To maintain the highest code quality and
+We welcome contributions to Xeno! To maintain the highest code quality and
 stability of the core framework, **direct pushes to the `main` and `develop`
 branches are strictly prohibited.** Please follow this Git Flow to contribute:
 
@@ -406,15 +406,15 @@ Building, benchmarking, and maintaining a progressive, enterprise-ready
 open-source framework requires a massive amount of continuous dedication and
 architectural engineering.
 
-If XenoJS has brought value to your development workflows, helped decouple your
+If Xeno has brought value to your development workflows, helped decouple your
 core business logic, or simplified your system infrastructure layout, consider
 supporting its open-source lifecycle. Your backing directly accelerates our
 strategic roadmap for new out-of-the-box transport integrations (such as gRPC,
 RabbitMQ, and GraphQL) and keeps the documentation pristine.
 
-**Want to know how you can contribute or sponsor XenoJS?** We rely on the
+**Want to know how you can contribute or sponsor Xeno?** We rely on the
 commitment of our community to keep the project independent and thriving.
-Whether you are an individual developer or a business using XenoJS, your support
+Whether you are an individual developer or a business using Xeno, your support
 makes a real difference.
 
 👉
@@ -423,15 +423,15 @@ makes a real difference.
 Thank you for being part of this decoupled open-source journey!
 
 <amp-bounce></amp-bounce>
-<a href="https://www.buymeacoffee.com/xeno" target="_blank">
+<a href="https://www.buymeacoffee.com/xenojs" target="_blank">
 <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="42" style="height: 42px !important;" />
 </a>
 
 ---
 
-## 🛡️ Powered by XenoJS
+## 🛡️ Powered by Xeno
 
-If you are using XenoJS in your project, let the world know! Add this badge to
+If you are using Xeno in your project, let the world know! Add this badge to
 your README:
 
 ```html
@@ -440,8 +440,8 @@ your README:
   target="_blank"
 >
   <img
-    src="[https://img.shields.io/badge/Powered%20by-XenoJS-black?style=flat-square](https://img.shields.io/badge/Powered%20by-XenoJS-black?style=flat-square)"
-    alt="Powered by XenoJS"
+    src="[https://img.shields.io/badge/Powered%20by-Xeno-black?style=flat-square](https://img.shields.io/badge/Powered%20by-Xeno-black?style=flat-square)"
+    alt="Powered by Xeno"
     height="20"
   />
 </a>
@@ -449,4 +449,4 @@ your README:
 
 ## 📄 License
 
-Copyright (c) 2026 XenoJS. Licensed under the [ISC License](LICENSE).
+Copyright (c) 2026 Xeno. Licensed under the [ISC License](LICENSE).

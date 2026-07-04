@@ -6,10 +6,8 @@ import type {
   IRequestContext,
   IServiceExtractor,
   IServiceScope,
-  NetworkContext,
-  TracingContext,
 } from '@/domain'
-import type { HttpHeaders, Metadata, Optional, ResponseDto } from '@/shared'
+import type { Guid, HttpHeaders, Metadata, Optional, ResponseDto } from '@/shared'
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
@@ -19,14 +17,16 @@ import {
   STATUS_CODES,
 } from '@/shared'
 
+import { ContextMapper } from '../mappers/context.mapper'
+
 /**
  * @description The RequestContextMiddleware class is responsible for extracting metadata from incoming HTTP requests, performing authentication using the provided authentication middleware, and composing an ExecutionContext that includes identity, network, and tracing information. It implements the IMiddleware interface, allowing it to be used as part of a middleware chain in the request processing pipeline. The middleware ensures that the ExecutionContext is properly set up for downstream handlers, controllers, or use cases to access necessary contextual information for processing the request.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   /**
@@ -34,13 +34,13 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    * @param _requestContext An instance of IRequestContext used to manage the execution context for the request. This context allows the middleware to set and retrieve contextual information that can be accessed by downstream handlers, controllers, or use cases during the processing of the request.
    * @param _extractor An instance of IServiceExtractor used to extract metadata from the incoming HTTP request headers. This extractor is responsible for parsing the headers and retrieving relevant information such as correlation IDs, request IDs, authentication tokens, client IP addresses, and tracing span IDs, which are essential for building the ExecutionContext.
    * @param _gateKeeper An instance of IGateKeeper used to perform authentication. This component is responsible for validating the authentication token extracted from the request headers and returning the authentication result, which includes the identity of the authenticated user if the authentication is successful.
-   * @param _container An instance of IServiceContainer used to manage service scopes and dependencies. This container allows the middleware to create a new scope for each request, ensuring that services are properly scoped and disposed of after the request is processed.
+   * @param _factoryScope An instance of IFactory used to create a new IServiceScope for managing service dependencies during the execution of the request. This allows for proper scoping and disposal of services after the request is processed, ensuring that resources are managed efficiently and preventing memory leaks.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,
@@ -50,11 +50,14 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   ) {}
 
   public async execute<T>(
+    path: string,
     headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     let correlationId = GuidHelper.generate()
     let requestId = GuidHelper.generate()
+    let spanId: Guid = correlationId
+    let formatIndicator = 'application/json'
 
     let scope: Optional<IServiceScope> = undefined
 
@@ -62,57 +65,68 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
       const meta = this._extractor.extract(headers)
       correlationId = meta.correlationId ?? correlationId
       requestId = meta.requestId ?? requestId
+      spanId = meta.spanId ?? spanId
+      formatIndicator = meta.formatIndicator
+
+      const metadata: Metadata = {
+        ...meta,
+        correlationId,
+        requestId,
+        spanId,
+      }
 
       const authResult = await this._gateKeeper.authenticate(meta.token)
       if (!authResult.isOk()) {
         const error = authResult.getErrorOrThrow()
-        return HttpHelper.error({
-          code: error.code,
-          message: error.message,
-          status: error.status,
-          details: undefined,
-          correlationId,
-          requestId,
-          customHeaders: undefined,
-        })
+        return HttpHelper.error(
+          {
+            success: false,
+            error: {
+              code: error.code,
+              message: error.message,
+              details: undefined,
+              path,
+            },
+            correlationId: metadata.correlationId!,
+            requestId: metadata.requestId!,
+            spanId: metadata.spanId!,
+            timestamp: new Date().toISOString(),
+          },
+          error.status ?? STATUS_CODES.UNAUTHORIZED,
+          { 'Content-Type': [formatIndicator] },
+        )
       }
-
-      const network: NetworkContext = {
-        requestId,
-        clientIp: meta.clientIp,
-      }
-      const tracing: TracingContext = {
-        correlationId,
-        startTime: Date.now(),
-        spanId: meta.spanId,
-      }
-
-      const identity = authResult.getValueOrThrow()
 
       scope = this._factoryScope.create()
 
-      const executionContext: ExecutionContext = {
-        context: {
-          identity: identity!,
-          network,
-          tracing,
-        },
+      const executionContext = ContextMapper.map({
+        metadata,
+        identity: authResult.getValueOrThrow()!,
         scope,
-      }
+        path,
+      })
 
-      return this._requestContext.runAsync(executionContext, async () => {
+      return await this._requestContext.runAsync(executionContext, async () => {
         return next()
       })
     } catch (error) {
-      return HttpHelper.error({
-        code: ERROR_CODES.SYSTEM_ERROR,
-        message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
-        status: STATUS_CODES.INTERNAL_SERVER_ERROR,
-        details: error instanceof Error ? error.message : String(error),
-        correlationId,
-        requestId,
-        customHeaders: undefined,
-      })
+      return HttpHelper.error(
+        {
+          success: false,
+          error: {
+            code: ERROR_CODES.SYSTEM_ERROR,
+            message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
+            details: error instanceof Error ? error.message : String(error),
+            path,
+          },
+          correlationId,
+          requestId,
+          spanId,
+          timestamp: new Date().toISOString(),
+        },
+        STATUS_CODES.INTERNAL_SERVER_ERROR,
+        { 'Content-Type': [formatIndicator] },
+      )
     } finally {
       if (Guards.isDefined(scope)) {
         scope.dispose()

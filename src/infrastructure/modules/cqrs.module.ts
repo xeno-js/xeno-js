@@ -8,10 +8,10 @@ import { LoggerUtils } from './utils/logger.utils'
  * @description CqrsModule is responsible for configuring and registering the necessary services and dependencies related to the Command Query Responsibility Segregation (CQRS) pattern in the application. It sets up the Mediator service, which acts as a central hub for handling commands and queries, allowing for a clean separation of concerns between the command and query sides of the application. By registering the Mediator in the dependency injection container, it enables other parts of the application to easily resolve and utilize its functionality for processing commands and queries.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class CqrsModule implements IModule<PipelineConfig> {
   async configure(container: IServiceContainer, opts: PipelineConfig): Promise<void> {
@@ -42,9 +42,11 @@ export class CqrsModule implements IModule<PipelineConfig> {
       pipelines.push(INJECTION_TOKENS.PERFORMANCE_PIPELINE)
     }
 
-    const { AuthUtils } = await import('./utils/auth.utils')
-    const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
-    pipelines.push(...authPipelines)
+    if (opts.authorization.isEnabled) {
+      const { AuthUtils } = await import('./utils/auth.utils')
+      const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
+      pipelines.push(...authPipelines)
+    }
 
     const { ValidationUtils } = await import('./utils/validation.utils')
     const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)

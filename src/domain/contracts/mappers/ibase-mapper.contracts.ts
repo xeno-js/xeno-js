@@ -11,10 +11,10 @@
  *  }
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IBaseMapper<TSource, TDestination> {
   /**
@@ -23,10 +23,10 @@ export interface IBaseMapper<TSource, TDestination> {
    * @returns An object of type TDestination that is the result of mapping the source object. The returned object should be a new instance that represents the transformed data according to the mapping logic defined in the implementation of this method.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   map(source: TSource): TDestination
 }

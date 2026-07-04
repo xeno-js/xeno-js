@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Dictionary } from '@/shared'
 
-import { DrizzleDbClient } from '../drizzle.client'
+import { DrizzleOrmClient } from '../drizzle.client'
 
 interface UserRow {
   id: string
@@ -54,7 +54,7 @@ function makeSut(table: PgTable = {} as PgTable) {
     delete: del,
   } as unknown as NodePgDatabase<Dictionary<never>>
 
-  const client = new DrizzleDbClient(db, { users: table })
+  const client = new DrizzleOrmClient(db, { users: table })
 
   return {
     client,
@@ -72,7 +72,7 @@ function makeSut(table: PgTable = {} as PgTable) {
   }
 }
 
-describe('DrizzleDbClient', () => {
+describe('DrizzleOrmClient', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
   })
@@ -200,10 +200,10 @@ describe('DrizzleDbClient', () => {
       delete: vi.fn(),
     } as unknown as NodePgDatabase<Dictionary<never>>
 
-    const client = new DrizzleDbClient(db, {})
+    const client = new DrizzleOrmClient(db, {})
 
     await expect(client.select('missing', undefined, undefined, undefined)).rejects.toThrow(
-      "[DrizzleDbClient] Table schema 'missing' not found in registry.",
+      "[DrizzleOrmClient] Table schema 'missing' not found in registry.",
     )
   })
 })

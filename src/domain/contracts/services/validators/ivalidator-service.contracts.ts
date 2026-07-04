@@ -4,10 +4,10 @@ import type { ResultType } from '../../../results/result.types'
  * @description Interface for a validation service that provides methods to check for the existence of validation schemas and to validate data against those schemas. The IValidatorService interface defines two methods: hasSchema, which checks if a validation schema exists for a given key, and validate, which validates data against a specified schema key and returns a ResultType indicating the success or failure of the validation process. This interface can be implemented by various validation services that utilize different schema validation libraries or custom validation logic to ensure that incoming data meets the required criteria before being processed further in the application.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IValidatorService {
   /**
@@ -17,10 +17,10 @@ export interface IValidatorService {
    * @returns A ResultType indicating the outcome of the validation. If the validation is successful, it returns a ResultType with a value of true; if the validation fails, it returns a ResultType with a value of false and includes error information.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   validate<T>(key: string, data: T): Promise<ResultType<boolean>>
 
@@ -30,10 +30,10 @@ export interface IValidatorService {
    * @param schema The validation schema to be added, which defines the rules and structure that incoming data must conform to in order to pass validation. The specific type of the schema will depend on the validation library being used (e.g., ZodType for Zod schemas).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addSchema<T>(key: string, schema: T): void
 }

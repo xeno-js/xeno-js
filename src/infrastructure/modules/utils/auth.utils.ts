@@ -8,10 +8,10 @@ import type { AuthClientConfig, PipelineConfig } from '../config'
  *  @description Utility functions for configuring authentication and authorization in the service container.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export const AuthUtils = Object.freeze({
   /**
@@ -20,25 +20,16 @@ export const AuthUtils = Object.freeze({
    * @returns True if any authorization strategies are required, false otherwise.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
   addAuthZ: async (
     container: IServiceContainer,
     opts: PipelineConfig['authorization'],
   ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    if (
-      !Guards.isDefined(opts.policy.role) &&
-      !Guards.isDefined(opts.policy.permission) &&
-      !opts.tenant &&
-      Guards.isNullOrEmpty(opts.customAuthorizationStrategy)
-    ) {
-      return []
-    }
-
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
     const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
     const strategies = []
@@ -49,7 +40,6 @@ export const AuthUtils = Object.freeze({
       UserAuthorizationStrategy,
       [INJECTION_TOKENS.REQUEST_CONTEXT],
     )
-    strategies.push(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
 
     if (opts.tenant) {
       const { TenantAuthorizationStrategy } = await import('@/application')
@@ -58,7 +48,6 @@ export const AuthUtils = Object.freeze({
         TenantAuthorizationStrategy,
         [INJECTION_TOKENS.REQUEST_CONTEXT],
       )
-      strategies.push(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
     }
 
     if (opts.policy.permission || opts.policy.role) {
@@ -120,22 +109,28 @@ export const AuthUtils = Object.freeze({
    * @param opts The authentication configuration options.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addAuthN: async (container: IServiceContainer, opts: AuthClientConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    const { SupabaseAuthServiceFactory } = await import('../../factories/supabase-auth.factory')
-    container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
-      const factory = new SupabaseAuthServiceFactory()
-      return factory.create(opts)
-    })
+    if (Guards.isDefined(opts.customAuthService)) {
+      container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
+        return container.resolve(opts.customAuthService!)
+      })
+    } else {
+      const { SupabaseAuthServiceFactory } = await import('../../factories/supabase-auth.factory')
+      container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
+        const factory = new SupabaseAuthServiceFactory()
+        return factory.create(opts)
+      })
 
-    const { ClaimsIdentityMapper } = await import('@/application')
-    container.addSingleton(INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER, ClaimsIdentityMapper, [])
+      const { ClaimsIdentityMapper } = await import('@/application')
+      container.addSingleton(INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER, ClaimsIdentityMapper, [])
+    }
 
     const { GateKeeper } = await import('@/application')
     container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, GateKeeper, [

@@ -10,10 +10,10 @@ import type { IServiceContainer } from '../container/iservice-container.contract
  * @template TOptions - The type of configuration options for the module.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IModule<TOptions = unknown> {
   /**
@@ -23,10 +23,10 @@ export interface IModule<TOptions = unknown> {
    * @param opts - The configuration options for the module.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   configure(container: IServiceContainer, opts?: Optional<TOptions>): Promise<void>
 }

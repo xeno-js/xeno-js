@@ -7,10 +7,10 @@ import type { Optional, WriteCriteria } from '@/shared'
  * @template TQueryConditions - The type of the query conditions object that is built using the IFilterBuilder to specify the criteria for writing data to the database.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export abstract class AbstractWriteDataSource<
   TDto extends object,
@@ -58,10 +58,10 @@ export abstract class AbstractWriteDataSource<
    * @returns A promise that resolves when the delete operation has been executed successfully.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   protected abstract performDelete(
     dto: TDto,

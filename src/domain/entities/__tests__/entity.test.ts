@@ -66,4 +66,11 @@ describe('Entity', () => {
 
     expect(Object.isFrozen(entity)).toBe(true)
   })
+
+  it('getId returns the UniqueId of the entity', () => {
+    const props: SampleProps = { name: 'grace', tags: ['moderator'] }
+    const entity = new SampleEntity(props)
+
+    expect(entity.getId()).toBe(entity.id)
+  })
 })

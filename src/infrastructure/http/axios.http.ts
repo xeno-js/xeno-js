@@ -10,10 +10,10 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } fr
  * @description Axios-based implementation of the agnostic IHttpClient contract.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class AxiosHttpClient implements IHttpClient {
   /**
@@ -21,10 +21,10 @@ export class AxiosHttpClient implements IHttpClient {
    * @param config Optional HTTP client config used to initialize the internal client instance.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(private readonly _client: AxiosInstance) {}
 

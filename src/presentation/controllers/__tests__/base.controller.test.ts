@@ -1,20 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { IMediator } from '@/domain'
-import { AppError } from '@/domain'
+import type { ExecutionContext, ICommand, IMediator, IQuery, IRequestContext } from '@/domain'
+import { AppError, Result } from '@/domain'
 import type { ResponseDto } from '@/shared'
-import { PIPELINE_ERROR_CODES, STATUS_CODES } from '@/shared'
+import { ERROR_CODES, REQUEST_TYPE, STATUS_CODES } from '@/shared'
 
 import { BaseController } from '../base.controller'
 
 // Classe concreta di test per testare i metodi protetti della classe astratta
 class TestController extends BaseController<string, string> {
-  constructor(mediator: IMediator) {
-    super(mediator)
-  }
-
-  public getMediator(): IMediator {
-    return this._mediator
+  constructor(requestContext: IRequestContext<ExecutionContext>, mediator: IMediator) {
+    super(requestContext, mediator)
   }
 
   // Implementazione minima richiesta dall'abstract
@@ -30,20 +26,32 @@ class TestController extends BaseController<string, string> {
   public exposeFail(error: AppError, details?: string) {
     return this.fail(error, details)
   }
+
+  public exposeQuery(request: IQuery<string>) {
+    return this._query(request)
+  }
+
+  public exposeSend(request: ICommand<string>) {
+    return this._send(request)
+  }
 }
 
 describe('BaseController', () => {
   let mockMediator: IMediator
+  let mockRequestContext: IRequestContext<ExecutionContext>
   let controller: TestController
 
   beforeEach(() => {
     mockMediator = { send: vi.fn(), query: vi.fn() }
-    controller = new TestController(mockMediator)
+    mockRequestContext = {
+      runAsync: vi.fn(),
+      getContext: vi.fn().mockReturnValue(undefined),
+    }
+    controller = new TestController(mockRequestContext, mockMediator)
   })
 
-  it('should initialize with mediator', () => {
+  it('should initialize with mediator and requestContext', () => {
     expect(controller).toBeDefined()
-    expect(controller.getMediator()).toBe(mockMediator)
   })
 
   it('should format successful response correctly via ok()', () => {
@@ -60,7 +68,7 @@ describe('BaseController', () => {
 
   it('should format error response correctly via fail()', () => {
     const error = AppError.create({
-      code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
+      code: ERROR_CODES.VALIDATION_FAILED,
       message: 'Validation failed',
       status: STATUS_CODES.BAD_REQUEST,
       name: 'TestController',
@@ -78,5 +86,40 @@ describe('BaseController', () => {
     } else {
       throw new Error('Expected failure response')
     }
+  })
+
+  it('delegates _query to mediator.query with an AbortSignal', async () => {
+    const expected = Result.ok('query-result')
+    const queryMock = vi.fn().mockResolvedValue(expected)
+    mockMediator.query = queryMock
+
+    const request: IQuery<string> = {
+      intent: 'TestQuery',
+      type: REQUEST_TYPE.QUERY,
+      readCriteria: {} as never,
+    }
+
+    const result = await controller.exposeQuery(request)
+
+    expect(queryMock).toHaveBeenCalledOnce()
+    expect(queryMock).toHaveBeenCalledWith(request, expect.any(AbortSignal))
+    expect(result).toBe(expected)
+  })
+
+  it('delegates _send to mediator.send with an AbortSignal', async () => {
+    const expected = Result.ok('send-result')
+    const sendMock = vi.fn().mockResolvedValue(expected)
+    mockMediator.send = sendMock
+
+    const request: ICommand<string> = {
+      intent: 'TestCommand',
+      type: REQUEST_TYPE.COMMAND,
+    }
+
+    const result = await controller.exposeSend(request)
+
+    expect(sendMock).toHaveBeenCalledOnce()
+    expect(sendMock).toHaveBeenCalledWith(request, expect.any(AbortSignal))
+    expect(result).toBe(expected)
   })
 })

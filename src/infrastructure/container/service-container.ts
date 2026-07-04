@@ -17,10 +17,10 @@ import { ServiceScope } from './service-scope'
  *   through a scope obtained via {@link createScope}.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class ServiceContainer implements IServiceContainer {
   private readonly _descriptors = new Map<symbol, ServiceDescriptor<unknown>>()
@@ -34,15 +34,15 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addSingleton<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this {
     this._descriptors.set(token.symbol, {
       implementation,
@@ -56,15 +56,15 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addTransient<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this {
     this._descriptors.set(token.symbol, {
       implementation,
@@ -78,15 +78,15 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addScoped<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this {
     this._descriptors.set(token.symbol, {
       implementation,
@@ -100,10 +100,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -120,10 +120,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addScopedFactory<T>(
     token: InjectionToken<T>,
@@ -140,10 +140,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -160,10 +160,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     const descriptor = this._descriptors.get(token.symbol)
@@ -183,10 +183,10 @@ export class ServiceContainer implements IServiceContainer {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public createScope(): IServiceScope {
     return new ServiceScope(this._descriptors, this)

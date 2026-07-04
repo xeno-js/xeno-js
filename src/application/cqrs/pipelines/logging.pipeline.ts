@@ -8,10 +8,10 @@ import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from 
  * @template TResult - The type of the result returned by the request handler.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
   TInput,
@@ -22,28 +22,33 @@ export class LoggingPipeline<TInput extends IRequest, TResult> implements IPipel
    * @param _logger An instance of ILogger used for logging informational messages and errors related to the handling of requests.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(private readonly _logger: ILogger) {}
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     this._logger.info(`Handling ${request.type} ${request.intent}`)
 
-    const result = await next()
+    try {
+      const result = await next()
 
-    if (!result.isOk()) {
-      const error = result.getErrorOrThrow()
-      this._logger.error(
-        `Failed to handle ${request.type} ${request.intent}: ${error.message}`,
-        error,
-      )
-    } else {
-      this._logger.info(`Successfully handled ${request.type} ${request.intent}`)
+      if (!result.isOk()) {
+        const error = result.getErrorOrThrow()
+        this._logger.error(
+          `Failed to handle ${request.type} ${request.intent}: ${error.message}`,
+          error,
+        )
+      } else {
+        this._logger.info(`Successfully handled ${request.type} ${request.intent}`)
+      }
+
+      return result
+    } catch (error: unknown) {
+      this._logger.error(`Exception while handling ${request.type} ${request.intent}`, error)
+      throw error
     }
-
-    return result
   }
 }

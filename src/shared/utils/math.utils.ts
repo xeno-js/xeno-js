@@ -1,11 +1,14 @@
+import type { Optional } from '../types'
+import { Guards } from './guards.utils'
+
 /**
  * @description Namespace for safe mathematical operations.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export const MathHelper = Object.freeze({
   /**
@@ -16,10 +19,10 @@ export const MathHelper = Object.freeze({
    * @returns Clamped value.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max)
@@ -32,10 +35,10 @@ export const MathHelper = Object.freeze({
    * @returns Rounded value.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   roundTo(value: number, decimals: number): number {
     const factor = 10 ** decimals
@@ -50,10 +53,10 @@ export const MathHelper = Object.freeze({
    * @returns Division result or fallback.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   safeDivide(numerator: number, denominator: number, fallback = 0): number {
     if (denominator === 0) return fallback
@@ -67,13 +70,29 @@ export const MathHelper = Object.freeze({
    * @returns Percentage or 0 when total is zero.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   toPercentage(part: number, total: number): number {
     if (total === 0) return 0
     return (part / total) * 100
+  },
+  /**
+   * @description Converts a value to a number, returning a fallback for non-numeric inputs.
+   * @param value Input value.
+   * @param fallback Fallback value for non-numeric inputs.
+   * @returns Numeric value or fallback.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  toNumber(value: Optional<unknown>, fallback = 0): number {
+    if (!Guards.isDefined(value) || !Guards.isNumber(value)) return fallback
+    const num = Number(value)
+    return isNaN(num) ? fallback : num
   },
 } as const)

@@ -7,21 +7,19 @@ import type {
   AuthClientConfig,
   CacheConfig,
   DbConfig,
-  HttpConfig,
   HttpCoreConfig,
   LoggerConfig,
   PipelineConfig,
-  ResilienceConfig,
 } from '../modules/config'
 
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 interface QueuedModule {
   name: string
@@ -33,10 +31,10 @@ interface QueuedModule {
  * It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class AppBuilder {
   private readonly _container: IServiceContainer = new ServiceContainer()
@@ -48,6 +46,7 @@ export class AppBuilder {
   private _pipelineConfig: PipelineConfig = {
     performance: { thresholdMs: 500 },
     authorization: {
+      isEnabled: false,
       tenant: false,
       policy: { role: false, permission: false, policyRegistry: undefined },
       customAuthorizationStrategy: undefined,
@@ -71,7 +70,6 @@ export class AppBuilder {
   private _isAuthModuleQueued = false
   private _isDbContextModuleQueued = false
   private _isConcurrencyServiceQueued = false
-  private _isResilienceModuleQueued = false
 
   // ─────────────────────────────────────────────────────────────────────────────
   // Application Modules Configuration
@@ -82,10 +80,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addMiddlewares(): this {
     this._queueMiddlewareModule()
@@ -97,10 +95,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addContext(): this {
     this._queueContextModule()
@@ -113,12 +111,12 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addLogger(setupAction: SetupAction<LoggerConfig>): this {
+  public addLogger(setupAction?: SetupAction<LoggerConfig>): this {
     if (this._isLoggerModuleQueued) return this
     this._isLoggerModuleQueued = true
     const config = {
@@ -128,7 +126,8 @@ export class AppBuilder {
       pino: { config: undefined },
       customLoggers: undefined,
     }
-    setupAction(config)
+    if (Guards.isDefined(setupAction)) setupAction(config)
+
     this._modules.push({
       name: 'LoggerModule',
       action: async () => {
@@ -145,14 +144,14 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addCache(setupAction: SetupAction<CacheConfig>): this {
+  public addCache(setupAction?: SetupAction<CacheConfig>): this {
     const config = { inMemory: true, redis: undefined }
-    setupAction(config)
+    if (Guards.isDefined(setupAction)) setupAction(config)
     this._modules.push({
       name: 'CacheModule',
       action: async () => {
@@ -169,15 +168,15 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addAuth(setupAction: SetupAction<AuthClientConfig>): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
-    const config = { url: '', key: '', options: undefined }
+    const config = { url: '', key: '', options: undefined, customAuthService: undefined }
     setupAction(config)
     this._modules.push({
       name: 'AuthModule',
@@ -195,15 +194,15 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addDb(setupAction: SetupAction<DbConfig>): this {
     if (this._isDbContextModuleQueued) return this
     this._isDbContextModuleQueued = true
-    const config = { connectionString: '', tables: {} }
+    const config = { connectionString: '', tables: {}, useOnlyPoolClient: false }
     setupAction(config)
     this._modules.push({
       name: 'DbModule',
@@ -221,10 +220,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addConcurrencyService(): this {
     if (this._isConcurrencyServiceQueued) return this
@@ -254,13 +253,15 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addPipeline(setupAction: SetupAction<PipelineConfig>): this {
-    setupAction(this._pipelineConfig)
+  public addPipeline(setupAction?: SetupAction<PipelineConfig>): this {
+    if (Guards.isDefined(setupAction)) {
+      setupAction(this._pipelineConfig)
+    }
     this._queuePipelineModule()
     return this
   }
@@ -270,78 +271,15 @@ export class AppBuilder {
   // ─────────────────────────────────────────────────────────────────────────────
 
   /**
-   * @description Configures the HTTP settings for the application. This method allows you to set up HTTP options such as authentication token, headers, and other HTTP client configurations.
-   * @param setupAction A callback function that receives an HttpConfig object to configure the HTTP settings.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author XenoJS
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
-   */
-  public addHttp(setupAction: SetupAction<HttpConfig>): this {
-    const config = { token: undefined, client: {} } as unknown as HttpConfig
-    setupAction(config)
-    this._modules.push({
-      name: 'HttpModule',
-      action: async () => {
-        const { HttpUtils } = await import('../modules/utils/http.utils')
-        await HttpUtils.addAxios(this._container, config)
-      },
-    })
-    return this
-  }
-
-  /**
-   * @description Configures the resilience settings for the application. This method allows you to set up resilience options such as retry policies, circuit breakers, and bulkhead isolation.
-   * @param setupAction A callback function that receives a ResilienceConfig object to configure the resilience settings.
-   * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
-   * @author XenoJS
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
-   */
-  public addResilience(setupAction: SetupAction<ResilienceConfig>): this {
-    if (this._isResilienceModuleQueued) return this
-    this._isResilienceModuleQueued = true
-    const resilienceConfig = {
-      retry: {
-        attempts: undefined,
-        baseDelayMs: undefined,
-        maxDelayMs: undefined,
-      },
-      circuitBreaker: {
-        consecutiveFailures: undefined,
-        halfOpenTimeoutMs: undefined,
-      },
-      bulkhead: {
-        maxConcurrent: undefined,
-      },
-    }
-    setupAction(resilienceConfig)
-    this._modules.push({
-      name: 'ResilienceModule',
-      action: async () => {
-        const { HttpUtils } = await import('../modules/utils/http.utils')
-        await HttpUtils.addResilience(this._container, resilienceConfig)
-      },
-    })
-    return this
-  }
-
-  /**
    * @description Configures the HTTP core settings for the application. This method allows you to set up HTTP core options such as data source token, HTTP client configuration, and resilience settings.
    * @param setupAction A callback function that receives an HttpCoreConfig object to configure the HTTP core settings.
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
     const config = {
@@ -364,18 +302,16 @@ export class AppBuilder {
   // ─────────────────────────────────────────────────────────────────────────────
   // Dependency Injection Pass-through Methods
   // ─────────────────────────────────────────────────────────────────────────────
-  // Dependency Injection Pass-through Methods
-  // ─────────────────────────────────────────────────────────────────────────────
 
   /**
    * @description Registers services in the application. This method allows you to add custom services to the dependency injection container, enabling modular and organized configuration of services.
    * @param setupAction A callback function that receives the IServiceContainer to register services.
    * @returns The current instance of AppBuilder for method chaining.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   public addServices(setupAction: SetupAction<IServiceContainer>): this {
     setupAction(this._container)
@@ -389,10 +325,10 @@ export class AppBuilder {
    * @returns The current instance of AppBuilder for method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addModule<T>(name: string, factory: () => Promise<IModule<T>>, opts?: T): this {
     this._modules.push({
@@ -411,10 +347,10 @@ export class AppBuilder {
    * @returns The resolved service instance.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     return this._container.resolve(token)
@@ -429,10 +365,10 @@ export class AppBuilder {
    * @returns The fully configured ServiceContainer.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public async build(): Promise<IServiceContainer> {
     for (const queued of this._modules) {
@@ -471,10 +407,10 @@ export class AppBuilder {
    * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private _queuePipelineModule(): void {
     if (this._isPipelineModuleQueued) return
@@ -496,10 +432,10 @@ export class AppBuilder {
    * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return
@@ -521,10 +457,10 @@ export class AppBuilder {
    * @description Queues the configuration of the context module if it has not already been queued. This method ensures that the context module is only added once, even if multiple context-related configurations are made.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private _queueContextModule(): void {
     if (this._isContextModuleQueued) return

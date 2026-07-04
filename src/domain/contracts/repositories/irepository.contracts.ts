@@ -6,10 +6,10 @@ import type { ResultType } from '../../results/result.types'
  * @fileoverview Defines the IRepository interface for generic data access operations.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
 /**
@@ -18,10 +18,10 @@ import type { ResultType } from '../../results/result.types'
  * @template T - The type of the entity that the repository will manage.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IRepository<T> {
   /**
@@ -31,12 +31,12 @@ export interface IRepository<T> {
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  findById(id: string, signal: Optional<AbortSignal>): Promise<ResultType<Optional<T>>>
+  findById(id: string, signal?: Optional<AbortSignal>): Promise<ResultType<Optional<T>>>
 
   /**
    * @description Finds entities based on a write criteria. This method takes a write criteria object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the criteria. The implementation of this method is responsible for constructing the appropriate query based on the provided criteria and handling any necessary data transformations before returning the results.
@@ -45,12 +45,12 @@ export interface IRepository<T> {
    * @returns A promise that resolves to an array of entities that match the criteria.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(criteria: WriteCriteria, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
+  find(criteria: WriteCriteria, signal?: Optional<AbortSignal>): Promise<ResultType<T[]>>
 
   /**
    * @description Updates entities based on a write criteria. This method takes a write criteria object and an optional AbortSignal for cancellation. It returns a promise that resolves when the update operation is complete.
@@ -60,15 +60,15 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the update operation is complete.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   update(
     entity: Partial<T>,
     criteria: WriteCriteria,
-    signal: Optional<AbortSignal>,
+    signal?: Optional<AbortSignal>,
   ): Promise<ResultType<void>>
 
   /**
@@ -78,12 +78,12 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been saved.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  save(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
+  save(entity: T, signal?: Optional<AbortSignal>): Promise<ResultType<void>>
 
   /**
    * Deletes an entity from the repository by its unique identifier.
@@ -93,10 +93,10 @@ export interface IRepository<T> {
    * @returns A promise that resolves when the entity has been deleted.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  delete(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
+  delete(entity: T, signal?: Optional<AbortSignal>): Promise<ResultType<void>>
 }

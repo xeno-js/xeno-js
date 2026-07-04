@@ -2,16 +2,16 @@ import type { core, ZodType } from 'zod'
 
 import type { IValidatorService, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
-import { Guards, PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
+import { Guards } from '@/shared'
 
 /**
  * @description Implementation of the IValidatorService interface using Zod schemas for validation. This service maintains a registry of Zod schemas identified by unique keys and provides methods to check for the existence of a schema and to validate data against a specified schema. The validate method returns a ResultType indicating success or failure, with detailed error information in case of validation failure, including formatted error messages from Zod.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class ZodValidatorService implements IValidatorService {
   /**
@@ -19,10 +19,10 @@ export class ZodValidatorService implements IValidatorService {
    * @param _cache An instance of ICache used to store and retrieve Zod schemas. This cache is essential for the operation of the validator service, as it allows it to look up and apply the correct schema for validating incoming data.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(private readonly _cache: Map<string, ZodType> = new Map()) {}
 
@@ -40,13 +40,10 @@ export class ZodValidatorService implements IValidatorService {
     const schema = this._cache.get(key)
     if (!Guards.isDefined(schema)) {
       return Result.fail(
-        AppError.create({
-          code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
-          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR],
-          status: STATUS_CODES.BAD_REQUEST,
-          name: 'ZodValidatorService',
-          cause: new Error(`Validation schema not found for key: ${key}`),
-        }),
+        AppError.validationError(
+          'ZodValidatorService',
+          `Validation schema not found for key: ${key}`,
+        ),
       )
     }
 
@@ -58,13 +55,10 @@ export class ZodValidatorService implements IValidatorService {
         .join(', ')
 
       return Result.fail(
-        AppError.create({
-          code: PIPELINE_ERROR_CODES.VALIDATION_ERROR,
-          message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR],
-          status: STATUS_CODES.BAD_REQUEST,
-          name: 'ZodValidatorService',
-          cause: new Error(`Validation failed for schema: ${errorMessage}`),
-        }),
+        AppError.validationError(
+          'ZodValidatorService',
+          `Validation failed for schema: ${errorMessage}`,
+        ),
       )
     }
 

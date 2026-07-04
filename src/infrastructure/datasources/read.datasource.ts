@@ -7,10 +7,10 @@ import type { Optional, ReadCriteria } from '@/shared'
  * @template Filter - The type of the filter object that is built using the IFilterBuilder to specify the criteria for retrieving data from the database.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class ReadDataSource<
   TDto,

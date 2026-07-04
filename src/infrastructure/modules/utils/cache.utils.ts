@@ -7,27 +7,33 @@ import type { CacheConfig } from '../config'
  * @description Utility functions for configuring caching in the service container.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export const CacheUtils = Object.freeze({
   /**
    * @description Checks if the provided cache configuration requires any cache strategies.
-   * @param cacheConfig The cache configuration to check.
+   * @param container The service container to which the cache strategies will be added.
+   * @param opts The cache configuration options.
    * @returns True if any cache strategies are required, false otherwise.
-  
-   * 
-   * @author XenoJS
+   *
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
 
-    if (opts.inMemory) {
+    if (!opts.inMemory && !Guards.isDefined(opts.redis)) {
+      throw new Error(
+        'No cache strategies are configured. Please provide at least one cache strategy.',
+      )
+    }
+
+    if (opts.inMemory || !Guards.isDefined(opts.redis)) {
       const { InMemoryCache } = await import('../../cache/in-memory.cache')
       container.addSingleton(INJECTION_TOKENS.CACHE, InMemoryCache, [])
       return

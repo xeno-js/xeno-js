@@ -2,9 +2,9 @@ import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 
 import type { IRequest, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
-import { PIPELINE_ERROR_CODES, PromiseHelper, STATUS_CODES } from '@/shared'
+import { ERROR_CODES, PromiseHelper, STATUS_CODES } from '@/shared'
 
-import { ConcurrencyRetryPipeline } from '../pipelines/concurrency-retry.pipeline'
+import { ConcurrencyRetryPipeline } from '../concurrency-retry.pipeline'
 
 type NextFn = () => Promise<ResultType<string>>
 
@@ -23,7 +23,7 @@ vi.mock('@/shared', async () => {
 
 describe('ConcurrencyRetryPipeline', () => {
   let mockNext: Mock<NextFn>
-  const mockRequest: IRequest = { intent: 'TestCommand', type: 'COMMAND', signal: undefined }
+  const mockRequest: IRequest = { intent: 'TestCommand', type: 'COMMAND' }
 
   beforeEach(() => {
     mockNext = vi.fn<NextFn>()
@@ -59,13 +59,13 @@ describe('ConcurrencyRetryPipeline', () => {
 
     expect(mockNext).toHaveBeenCalledTimes(1)
     expect(result.isOk()).toBe(false)
-    expect(result.getErrorOrThrow().code).not.toBe(PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT)
+    expect(result.getErrorOrThrow().code).not.toBe(ERROR_CODES.CONFLICT)
   })
 
   it('should retry on concurrency conflict and succeed eventually', async () => {
     const conflictError: ResultType<string> = Result.fail(
       AppError.create({
-        code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
+        code: ERROR_CODES.CONFLICT,
         status: STATUS_CODES.CONFLICT,
         name: 'TestCommand',
         message: 'Conflict',
@@ -73,7 +73,6 @@ describe('ConcurrencyRetryPipeline', () => {
       }),
     )
 
-    // Fallisce due volte, poi successo
     mockNext
       .mockResolvedValueOnce(conflictError)
       .mockResolvedValueOnce(conflictError)
@@ -90,7 +89,7 @@ describe('ConcurrencyRetryPipeline', () => {
   it('should fail after max retries exceeded', async () => {
     const conflictError: ResultType<string> = Result.fail(
       AppError.create({
-        code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
+        code: ERROR_CODES.CONFLICT,
         status: STATUS_CODES.CONFLICT,
         name: 'TestCommand',
         message: 'Conflict',
@@ -106,7 +105,7 @@ describe('ConcurrencyRetryPipeline', () => {
 
     expect(mockNext).toHaveBeenCalledTimes(maxRetries)
     expect(result.isOk()).toBe(false)
-    expect(result.getErrorOrThrow().code).toBe(PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.CONFLICT)
   })
 
   describe('Constructor Validation', () => {

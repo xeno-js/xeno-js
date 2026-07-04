@@ -9,10 +9,10 @@ import { Guards } from '@/shared'
  * @template TCtx - The type of the context data that will be stored and accessed using this request context implementation. This typically includes user identity information, such as user ID, roles, and correlation ID, which can be used for authentication and authorization purposes within the application.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class NodeRequestContext<TCtx> implements IRequestContext<TCtx> {
   /**
@@ -20,10 +20,10 @@ export class NodeRequestContext<TCtx> implements IRequestContext<TCtx> {
    * @param _storage An instance of AsyncLocalStorage that is used to manage the request context, allowing for the storage and retrieval of identity information and other relevant data across asynchronous operations.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(private readonly _storage: AsyncLocalStorage<TCtx>) {}
 

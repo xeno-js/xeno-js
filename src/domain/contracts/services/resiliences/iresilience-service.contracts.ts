@@ -4,10 +4,10 @@ import type { Optional } from '@/shared'
  * @description The ServiceResilience interface defines a contract for implementing resilience features in service calls. It provides a method to execute asynchronous operations with built-in support for retries, timeouts, and circuit breakers. This interface is designed to enhance the reliability of service interactions by automatically handling transient faults and preventing cascading failures in distributed systems.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IServiceResilience {
   /**
@@ -17,10 +17,10 @@ export interface IServiceResilience {
    * @returns A Promise that resolves with the result of the operation if it succeeds within the allowed retry attempts and timeouts, or rejects with an error if it fails after exhausting all retry attempts or if a timeout occurs.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  execute<T>(action: () => Promise<T>, signal: Optional<AbortSignal>): Promise<T>
+  execute<T>(action: () => Promise<T>, signal?: Optional<AbortSignal>): Promise<T>
 }

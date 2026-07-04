@@ -7,15 +7,15 @@ import type { Dictionary, Optional } from '@/shared'
 import { Guards } from '@/shared'
 
 /**
- * @description The DrizzleDbClient class is an implementation of the IDbClient interface that utilizes the Drizzle ORM to perform database operations. This class provides methods for selecting multiple records, selecting a single record, inserting new records, updating existing records, and deleting records from a PostgreSQL database. The DrizzleDbClient class abstracts away the complexities of interacting with the database directly, allowing for cleaner and more maintainable code when performing database operations. It also includes error handling to ensure that any issues during database interactions are properly managed and communicated.
+ * @description The DrizzleOrmClient class is an implementation of the IDbClient interface that utilizes the Drizzle ORM to perform database operations. This class provides methods for selecting multiple records, selecting a single record, inserting new records, updating existing records, and deleting records from a PostgreSQL database. The DrizzleOrmClient class abstracts away the complexities of interacting with the database directly, allowing for cleaner and more maintainable code when performing database operations. It also includes error handling to ensure that any issues during database interactions are properly managed and communicated.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
+export class DrizzleOrmClient implements IDbClient<SQL, SelectedFields> {
   constructor(
     private readonly _db: NodePgDatabase<Dictionary<unknown>>,
     private readonly _tables: Dictionary<unknown>,
@@ -27,7 +27,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     projection: Optional<SelectedFields>,
     signal: Optional<AbortSignal>,
   ): Promise<T[]> {
-    AppError.throwIfAborted(signal, 'DrizzleDbClient.select')
+    AppError.throwIfAborted(signal, 'DrizzleOrmClient.select')
     const query = this.createQuery(schema, conditions, projection)
     return (await query) as T[]
   }
@@ -38,7 +38,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     projection: Optional<SelectedFields>,
     signal: Optional<AbortSignal>,
   ): Promise<Optional<T>> {
-    AppError.throwIfAborted(signal, 'DrizzleDbClient.selectOne')
+    AppError.throwIfAborted(signal, 'DrizzleOrmClient.selectOne')
     const query = this.createQuery(schema, conditions, projection)
     const result = (await query.limit(1)) as T[]
     return Guards.isNullOrEmpty(result) ? undefined : result[0]
@@ -49,7 +49,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     schema: string,
     signal: Optional<AbortSignal>,
   ): Promise<void> {
-    AppError.throwIfAborted(signal, 'DrizzleDbClient.insert')
+    AppError.throwIfAborted(signal, 'DrizzleOrmClient.insert')
     const table = this.getTable(schema)
     await this._db.insert(table).values(dto)
   }
@@ -60,7 +60,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     conditions: Optional<SQL>,
     signal: Optional<AbortSignal>,
   ): Promise<void> {
-    AppError.throwIfAborted(signal, 'DrizzleDbClient.update')
+    AppError.throwIfAborted(signal, 'DrizzleOrmClient.update')
 
     if (!Guards.isDefined(conditions)) {
       throw new Error('Update operations require conditions to prevent mass updates.')
@@ -76,7 +76,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     conditions: Optional<SQL>,
     signal: Optional<AbortSignal>,
   ): Promise<void> {
-    AppError.throwIfAborted(signal, 'DrizzleDbClient.delete')
+    AppError.throwIfAborted(signal, 'DrizzleOrmClient.delete')
 
     if (!Guards.isDefined(conditions)) {
       throw new Error('Delete operations require conditions to prevent mass deletions.')
@@ -91,7 +91,7 @@ export class DrizzleDbClient implements IDbClient<SQL, SelectedFields> {
     const table = this._tables[schemaName]
 
     if (!Guards.isDefined(table))
-      throw new Error(`[DrizzleDbClient] Table schema '${schemaName}' not found in registry.`)
+      throw new Error(`[DrizzleOrmClient] Table schema '${schemaName}' not found in registry.`)
 
     return table as PgTable
   }

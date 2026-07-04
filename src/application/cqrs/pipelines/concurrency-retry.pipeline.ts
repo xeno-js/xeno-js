@@ -1,22 +1,15 @@
 import type { Delegate, ICommand, IPipelineBehavior, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
 import type { Optional } from '@/shared'
-import {
-  DEFAULT_CONCURRENCY,
-  Guards,
-  PIPELINE_ERROR_CODES,
-  PIPELINE_ERROR_CODES_KEYS,
-  PromiseHelper,
-  STATUS_CODES,
-} from '@/shared'
+import { DEFAULT_CONCURRENCY, ERROR_CODES, Guards, PromiseHelper, STATUS_CODES } from '@/shared'
 
 /**
  * @description A pipeline behavior that implements a retry mechanism for handling concurrency conflicts in the CQRS pipelines. When a request results in a concurrency conflict error, this behavior will automatically retry the request up to a specified maximum number of attempts, with an exponential backoff strategy and added jitter to prevent thundering herd problems. If the maximum number of retry attempts is exceeded, it returns a failed Result with an AppError indicating the concurrency conflict.
  *
- * @author XenoJS
+ * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/XenoJS
+ * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class ConcurrencyRetryPipeline<
   TInput extends ICommand,
@@ -25,19 +18,19 @@ export class ConcurrencyRetryPipeline<
   /**
    * @description Configuration for the retry mechanism, including the base delay and maximum jitter for calculating the delay between retry attempts, as well as the maximum number of retry attempts allowed before giving up and returning a failed Result with an AppError indicating the concurrency conflict.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   private readonly _delayConfig: { baseDelayMs: number; maxJitterMs: number }
   /**
    * @description Maximum number of retry attempts for handling concurrency conflicts. If the number of attempts exceeds this value, the pipeline will return a failed Result with an AppError indicating that the maximum retry attempts have been exceeded due to concurrency conflicts.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   private readonly _maxRetries: number
 
@@ -47,10 +40,10 @@ export class ConcurrencyRetryPipeline<
    * @param delayConfig An optional parameter that specifies the delay configuration for the exponential backoff strategy, including a base delay in milliseconds and a maximum jitter in milliseconds. The default values are DEFAULT_CONCURRENCY.BASE_DELAY for the base delay and DEFAULT_CONCURRENCY.MAX_JITTER for the maximum jitter. Both values must be non-negative integers.
    * @throws Will throw an error if the provided maxRetries value is not a positive integer or if the provided delayConfig values are not valid non-negative integers.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   constructor(
     maxRetries: number = DEFAULT_CONCURRENCY.MAX_RETRIES,
@@ -84,10 +77,10 @@ export class ConcurrencyRetryPipeline<
    * @param next The delegate function that represents the next behavior or handler in the pipeline.
    * @returns A Promise that resolves to a ResultType containing either the successful result or a failed AppError if the maximum retry attempts are exceeded due to concurrency conflicts.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     let attempts = 0
@@ -101,15 +94,10 @@ export class ConcurrencyRetryPipeline<
 
       if (attempts >= this._maxRetries)
         return Result.fail(
-          AppError.create({
-            code: PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT,
-            message: PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT],
-            status: STATUS_CODES.CONFLICT,
-            name: request.intent,
-            cause: new Error(
-              `Maximum retry attempts (${this._maxRetries}) exceeded due to concurrency conflicts.`,
-            ),
-          }),
+          AppError.conflict(
+            request.intent,
+            `Maximum retry attempts (${this._maxRetries}) exceeded due to concurrency conflicts.`,
+          ),
         )
 
       const { baseDelayMs, maxJitterMs } = this._delayConfig
@@ -123,15 +111,12 @@ export class ConcurrencyRetryPipeline<
    * @param error The error to be checked.
    * @returns A boolean indicating whether the error is a concurrency conflict error.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   private isConcurrencyError(error: AppError): boolean {
-    return (
-      error.code === PIPELINE_ERROR_CODES.CONCURRENCY_CONFLICT &&
-      error.status === STATUS_CODES.CONFLICT
-    )
+    return error.code === ERROR_CODES.CONFLICT && error.status === STATUS_CODES.CONFLICT
   }
 }

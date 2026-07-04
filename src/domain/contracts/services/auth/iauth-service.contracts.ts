@@ -7,10 +7,10 @@ import type { ResultType } from '../../../results/result.types'
  * It provides methods to check if a user is authenticated and to retrieve the user's claims.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IAuthService {
   /**
@@ -18,10 +18,10 @@ export interface IAuthService {
    * @returns A promise that resolves to true if the user is authenticated, false otherwise.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   isAuthenticated(): Promise<boolean>
   /**
@@ -30,10 +30,10 @@ export interface IAuthService {
    * @returns A promise that resolves to the user's claims, or null if not authenticated.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   authenticate(token: string): Promise<ResultType<AuthClaims>>
 }

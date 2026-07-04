@@ -6,10 +6,10 @@ import type { UniqueId } from '../unique_id/unique-id'
  * @template T - The type of the properties of the entity.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IEntity<T> {
   /**
@@ -17,10 +17,10 @@ export interface IEntity<T> {
    * @see UniqueId for more details on the unique identifier.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   readonly id: UniqueId
 
@@ -30,10 +30,10 @@ export interface IEntity<T> {
    * @throws An error if the entity is in an invalid state or if the properties cannot be retrieved.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   getProps(): T
 }

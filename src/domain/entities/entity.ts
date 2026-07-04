@@ -9,10 +9,10 @@ import type { IEntity } from './ientity.contracts'
  * @template T - The type of the properties of the entity.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export abstract class Entity<T> implements IEntity<T> {
   public readonly id: UniqueId
@@ -21,10 +21,10 @@ export abstract class Entity<T> implements IEntity<T> {
    * The properties of the entity. This is a private property that holds the state of the entity. It should be accessed and modified through methods defined in the concrete entity classes to ensure encapsulation and maintain invariants.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private readonly props: T
 
@@ -35,10 +35,10 @@ export abstract class Entity<T> implements IEntity<T> {
    * @param id - An optional unique identifier for the entity. If not provided, a new UniqueId will be generated.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   protected constructor(props: T, id: Optional<UniqueId> = undefined) {
     if (Guards.isNullOrEmpty(id)) {

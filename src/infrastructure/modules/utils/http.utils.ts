@@ -6,25 +6,24 @@ import type { HttpConfig, ResilienceConfig } from '../config'
  * @description Utility functions for configuring HTTP clients and resilience features in the service container.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export const HttpUtils = Object.freeze({
   /**
    * @description Utility function to create a query string from an object of query parameters. It takes an object where the keys are the parameter names and the values are the parameter values, and returns a properly encoded query string that can be appended to a URL for making HTTP requests.
    * @param params - An object containing the query parameters as key-value pairs. The keys represent the parameter names, and the values represent the parameter values.
    * @returns A string representing the encoded query string that can be appended to a URL for making HTTP requests.
-  
-   * 
-   * @author XenoJS
+   *
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   addAxios: async (container: IServiceContainer, opts: HttpConfig): Promise<void> => {
-    const { AxiosFactory } = await import('@/infrastructure')
+    const { AxiosFactory } = await import('../../factories/axios.factory')
     container.addSingletonFactory(opts.token, () => {
       const factory = new AxiosFactory()
       return factory.create(opts.client)
@@ -36,10 +35,10 @@ export const HttpUtils = Object.freeze({
    * @param opts - The ResilienceConfig options that determine whether resilience features are enabled and provide the necessary settings for implementing resilience strategies.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addResilience: async (container: IServiceContainer, opts: ResilienceConfig): Promise<void> => {
     const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')

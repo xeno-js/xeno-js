@@ -1,5 +1,5 @@
+export { BaseHandler } from './application/cqrs/base-handler'
 export { BaseAuthorizationStrategy } from './application/cqrs/pipelines/pipeline_strategies/auth/base-authorization.strategy'
-export { BaseValidationStrategy } from './application/cqrs/pipelines/pipeline_strategies/validation/base-validation.strategy'
 export { Specification } from './application/specifications/specification'
 export * from './domain/index'
 export { AppBuilder } from './infrastructure/builder/app.builder'

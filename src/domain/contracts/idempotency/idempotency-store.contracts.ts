@@ -4,10 +4,10 @@ import type { Optional } from '@/shared'
  * @description Interface for an idempotency store that provides methods for acquiring locks, checking if a command has been processed, marking commands as processed with associated payloads, retrieving stored payloads, and releasing locks. This interface is designed to support idempotent command processing in a distributed system, ensuring that duplicate commands are not processed multiple times and that the results of previously processed commands can be retrieved when necessary.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IIdempotencyStore {
   /** @description Acquires a lock for the given commandId with a specified time-to-live (TTL) in seconds. This method is used to ensure that only one instance of a command with the same commandId is processed at a time, preventing duplicate processing of the same command. If the lock is successfully acquired, it returns true; otherwise, it returns false, indicating that another instance of the command is currently being processed.
@@ -16,10 +16,10 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to true if the lock was successfully acquired, or false if the lock is currently held by another instance of the command.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   acquireLock(commandId: string, ttlSeconds: number): Promise<boolean>
 
@@ -28,10 +28,10 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to true if the command has already been processed, or false if it has not been processed yet.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   hasBeenProcessed(commandId: string): Promise<boolean>
 
@@ -42,10 +42,10 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves when the command has been marked as processed and the payload has been stored successfully in the idempotency store.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   markAsProcessed<T>(commandId: string, payload: T, ttlSeconds: number): Promise<void>
 
@@ -54,10 +54,10 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves to the payload associated with the processed command if it exists, or null if there is no stored result for the specified commandId.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   getPayload<T>(commandId: string): Promise<Optional<T>>
 
@@ -66,10 +66,10 @@ export interface IIdempotencyStore {
    * @returns A promise that resolves when the lock has been successfully released.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   releaseLock(commandId: string): Promise<void>
 }

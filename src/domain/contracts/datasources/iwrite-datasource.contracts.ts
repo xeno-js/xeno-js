@@ -4,10 +4,10 @@ import type { Optional, WriteCriteria } from '@/shared'
  * @description Interface representing a data source for performing database operations. This interface defines the contract for executing SQL queries and commands against a database, including methods for finding records based on filters and unique identifiers, as well as inserting and deleting records. The IWriteDataSource interface is designed to be implemented by classes that provide specific data access logic, allowing for separation of concerns and easier testing. It extends the IReadDataSource interface, which includes basic read operations, and adds methods for write operations such as insert and delete.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IWriteDataSource<TDto> {
   /**
@@ -17,12 +17,12 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves to an array of objects representing the rows returned by the query.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(criteria: WriteCriteria, signal: Optional<AbortSignal>): Promise<TDto[]>
+  find(criteria: WriteCriteria, signal?: Optional<AbortSignal>): Promise<TDto[]>
 
   /**
    * Executes a SQL query and returns the result as an array of objects.
@@ -31,12 +31,12 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves to an object representing the row returned by the query.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  findById(id: string, signal: Optional<AbortSignal>): Promise<Optional<TDto>>
+  findById(id: string, signal?: Optional<AbortSignal>): Promise<Optional<TDto>>
 
   /**
    * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
@@ -45,12 +45,12 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  insert(dto: TDto, signal: Optional<AbortSignal>): Promise<void>
+  insert(dto: TDto, signal?: Optional<AbortSignal>): Promise<void>
 
   /**
    * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
@@ -59,12 +59,12 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  delete(dto: TDto, signal: Optional<AbortSignal>): Promise<void>
+  delete(dto: TDto, signal?: Optional<AbortSignal>): Promise<void>
 
   /**
    * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
@@ -74,10 +74,10 @@ export interface IWriteDataSource<TDto> {
    * @returns A promise that resolves when the command has been executed successfully.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  update(dto: Partial<TDto>, criteria: WriteCriteria, signal: Optional<AbortSignal>): Promise<void>
+  update(dto: Partial<TDto>, criteria: WriteCriteria, signal?: Optional<AbortSignal>): Promise<void>
 }

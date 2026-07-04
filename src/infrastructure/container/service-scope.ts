@@ -11,10 +11,10 @@ import { Guards, type InjectionToken } from '@/shared'
  * resolved by delegating to the root container resolver.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class ServiceScope implements IServiceScope {
   private readonly _scopedInstances = new Map<symbol, unknown>()
@@ -26,10 +26,10 @@ export class ServiceScope implements IServiceScope {
    *   singleton and transient services.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public constructor(
     private readonly _descriptors: ReadonlyMap<symbol, ServiceDescriptor<unknown>>,
@@ -40,10 +40,10 @@ export class ServiceScope implements IServiceScope {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public resolve<T>(token: InjectionToken<T>): T {
     if (this._disposed) {
@@ -84,10 +84,10 @@ export class ServiceScope implements IServiceScope {
    * @inheritdoc
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public dispose(): void {
     this._scopedInstances.clear()

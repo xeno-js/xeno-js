@@ -5,10 +5,10 @@ import type { AuthPolicy, Optional } from '@/shared'
  * @description The PolicyRegistry class is an implementation of the IPolicyRegistry interface that manages role-based access control policies. It provides methods to add policies for certain intents and to retrieve the access control policy for a given intent. The policies are stored in a cache, allowing for efficient retrieval and management of access control policies across the application.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class PolicyRegistry implements IPolicyRegistry {
   /**
@@ -16,10 +16,10 @@ export class PolicyRegistry implements IPolicyRegistry {
    * @param _cache An instance of ICache used to store and retrieve policies for specific intents. This cache is essential for efficient management of access control policies across the application.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(private readonly _cache: Map<string, AuthPolicy> = new Map()) {}
 

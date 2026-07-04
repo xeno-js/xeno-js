@@ -6,10 +6,10 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * @fileoverview Defines the IServiceContainer interface for a dependency injection container.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
 /**
@@ -21,10 +21,10 @@ import type { IServiceScope } from './iservice-scope.contracts'
  * that the container will resolve and inject into the constructor.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IServiceContainer {
   /**
@@ -39,15 +39,15 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addSingleton<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this
 
   /**
@@ -61,15 +61,15 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addTransient<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this
 
   /**
@@ -85,15 +85,15 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addScoped<T>(
     token: InjectionToken<T>,
     implementation: Constructor<T>,
-    dependencies: Optional<readonly InjectionToken<unknown>[]>,
+    dependencies?: Optional<readonly InjectionToken<unknown>[]>,
   ): this
 
   /**
@@ -106,10 +106,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addSingletonFactory<T>(
     token: InjectionToken<T>,
@@ -125,10 +125,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addTransientFactory<T>(
     token: InjectionToken<T>,
@@ -146,10 +146,10 @@ export interface IServiceContainer {
    * @returns The container instance to allow method chaining.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceContainer) => T): this
 
@@ -164,10 +164,10 @@ export interface IServiceContainer {
    * @throws An error if the token is registered with scoped lifetime.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   resolve<T>(token: InjectionToken<T>): T
 
@@ -181,10 +181,10 @@ export interface IServiceContainer {
    * @returns A new scope instance.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   createScope(): IServiceScope
 }

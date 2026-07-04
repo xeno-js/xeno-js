@@ -54,7 +54,7 @@ describe('PinoLogger', () => {
 
       expect(mockPinoLogger.error).toHaveBeenCalledOnce()
       expect(mockPinoLogger.error).toHaveBeenCalledWith(
-        { requestId: 'abc', err: 'boom', stack: err.stack },
+        { requestId: 'abc', error: err },
         'error message',
       )
     })

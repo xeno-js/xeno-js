@@ -4,10 +4,10 @@ import type { HttpOptions, HttpRequest, HttpResponse, Optional } from '@/shared'
  * @description Agnostic contract used to execute HTTP calls independently from concrete transport libraries (fetch, axios, undici, etc.).
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IHttpClient {
   /**
@@ -17,10 +17,10 @@ export interface IHttpClient {
    * @returns A promise that resolves to an HttpResponse object containing the status code, response headers, and response data from the server. The HttpResponse object provides information about the outcome of the HTTP request, including whether it was successful (status code 2xx) or if there was an error (status code 4xx or 5xx).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   get<TResponse = unknown>(
     url: string,
@@ -35,10 +35,10 @@ export interface IHttpClient {
    * @returns A promise that resolves to an HttpResponse object containing the status code, response headers, and response data from the server. The HttpResponse object provides information about the outcome of the HTTP request, including whether it was successful (status code 2xx) or if there was an error (status code 4xx or 5xx).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   post<TResponse = unknown, TBody = unknown>(
     url: string,
@@ -54,10 +54,10 @@ export interface IHttpClient {
    * @returns A promise that resolves to an HttpResponse object containing the status code, response headers, and response data from the server. The HttpResponse object provides information about the outcome of the HTTP request, including whether it was successful (status code 2xx) or if there was an error (status code 4xx or 5xx).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   put<TResponse = unknown, TBody = unknown>(
     url: string,
@@ -73,10 +73,10 @@ export interface IHttpClient {
    * @returns A promise that resolves to an HttpResponse object containing the status code, response headers, and response data from the server. The HttpResponse object provides information about the outcome of the HTTP request, including whether it was successful (status code 2xx) or if there was an error (status code 4xx or 5xx).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   patch<TResponse = unknown, TBody = unknown>(
     url: string,
@@ -91,10 +91,10 @@ export interface IHttpClient {
    * @returns A promise that resolves to an HttpResponse object containing the status code, response headers, and response data from the server. The HttpResponse object provides information about the outcome of the HTTP request, including whether it was successful (status code 2xx) or if there was an error (status code 4xx or 5xx).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   delete<TResponse = unknown>(
     url: string,

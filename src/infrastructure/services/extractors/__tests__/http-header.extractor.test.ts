@@ -19,7 +19,7 @@ describe('HttpHeaderExtractor', () => {
         'x-correlation-id': VALID_GUID,
         'x-request-id': VALID_GUID,
         'x-forwarded-for': '192.168.1.1',
-        'x-span-id': 'span-abc',
+        'x-span-id': VALID_GUID,
       }
 
       const result = extractor.extract(headers)
@@ -28,7 +28,7 @@ describe('HttpHeaderExtractor', () => {
       expect(result.requestId).toBe(VALID_GUID)
       expect(result.token).toBe(TOKEN)
       expect(result.clientIp).toBe('192.168.1.1')
-      expect(result.spanId).toBe('span-abc')
+      expect(result.spanId).toBe(VALID_GUID)
     })
 
     it('returns undefined fields when headers are absent', () => {

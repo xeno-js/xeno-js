@@ -13,10 +13,10 @@ import { Guards } from '@/shared'
  * @description A pipeline behavior that implements caching for query requests in the CQRS architecture. This behavior checks if the incoming request is a query and if it implements the ICachedQuery interface. If so, it attempts to retrieve the response from the cache using the provided cache key. If a cached response is found, it returns it immediately. If not, it delegates control to the next handler in the pipeline to execute the query and retrieve the data from the database. After successfully retrieving the data, it stores the result in the cache with the specified TTL (time-to-live) for future requests. This behavior also includes error handling for cache read/write operations, ensuring that any cache-related errors do not disrupt the normal flow of query execution and that appropriate warnings are logged.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class QueryCachingPipeline<
   TInput extends ICachedQuery,
@@ -28,10 +28,10 @@ export class QueryCachingPipeline<
    * @param _logger An instance of ILogger used for logging cache-related operations, such as cache hits, cache misses, and any errors that occur during cache read/write operations.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
     private readonly _cacheService: ICache,
@@ -39,7 +39,11 @@ export class QueryCachingPipeline<
   ) {}
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    if (Guards.isNullOrEmpty(request.cacheOptions.cacheKey)) return next()
+    if (
+      Guards.isNullOrEmpty(request.cacheOptions) ||
+      Guards.isNullOrEmpty(request.cacheOptions.cacheKey)
+    )
+      return next()
 
     const bypass =
       request.cacheOptions.bypassCache === true || request.cacheOptions.consistentRead === true

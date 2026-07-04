@@ -4,7 +4,7 @@ import type { IRequest } from '@/domain'
 import { Result } from '@/domain'
 import { AppError } from '@/domain'
 
-import { AuthorizationPipeline } from '../pipelines/authorization.pipeline'
+import { AuthorizationPipeline } from '../authorization.pipeline'
 
 describe('AuthorizationPipeline', () => {
   let mockNext: () => Promise<Result<string>>
@@ -12,7 +12,7 @@ describe('AuthorizationPipeline', () => {
 
   beforeEach(() => {
     mockNext = vi.fn().mockResolvedValue(Result.ok('success'))
-    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND', signal: undefined }
+    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND' }
   })
 
   it('should call next() if all strategies succeed', async () => {

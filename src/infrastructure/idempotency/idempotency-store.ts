@@ -6,10 +6,10 @@ import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
  * @description The IdempotencyStore class provides an implementation of the IIdempotencyStore interface, utilizing a caching mechanism to manage locks and processed command results for idempotent operations. This class is designed to ensure that commands with the same ID are processed only once, preventing duplicate processing and allowing for retrieval of results from previously processed commands. The IdempotencyStore uses the IRequestContext to build contextual keys for storing locks and results in a multi-tenant environment, following the AWS SaaS Factory Pattern for logical partitioning. By leveraging the ICache interface, the IdempotencyStore can efficiently manage locks and stored results with configurable time-to-live (TTL) values, ensuring that stale data is automatically cleaned up over time.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class IdempotencyStore implements IIdempotencyStore {
   /**
@@ -18,10 +18,10 @@ export class IdempotencyStore implements IIdempotencyStore {
    * @param _requestContext An instance of IRequestContext that allows access to the user's identity context, used to build contextual keys for idempotent commands, supporting multi-tenant scenarios.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
     private readonly _cache: ICache,
@@ -73,10 +73,10 @@ export class IdempotencyStore implements IIdempotencyStore {
    * @returns A string representing the contextual key to be used in the cache for storing locks and processed command results, incorporating tenant information if available.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private buildContextualKey(requestId: string): string {
     const { context } = this._requestContext.getContext() ?? {}

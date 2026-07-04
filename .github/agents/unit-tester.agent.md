@@ -14,9 +14,6 @@ coverage su una singola classe alla volta. Rispetta rigorosamente questo flusso:
 ## 1. Selezione Target (Strict 1-Target Policy)
 
 - **Se l'utente fornisce N target:** Scegli SOLO il primo. Ignora gli altri.
-- **Se il target non esiste:** Segnala l'errore e fermati.
-- **Se il target ha già 100% coverage (statement/branch):** Rispondi "Target già
-  coperto" e fermati.
 - **Se nessun target è fornito:** Esegui `npm run test:coverage` ma creando un
   report coverage machine-readable ed estraine direttamente le percentuali del
   file target. Seleziona la classe scoperta col coverage più basso (o più
@@ -30,16 +27,19 @@ coverage su una singola classe alla volta. Rispetta rigorosamente questo flusso:
   logica delle classi importate.
 - Criterio di stop: 100% di coverage sul file corrente o limite tecnico
   invalicabile raggiunto.
+- Attieniti alle regole eslint e non forzare con un workaround. Se non puoi
+  rispettarle, segnala il blocco tecnico e fermati.
 
 ## 3. Validazione & Error Handling
 
-Dopo ogni modifica rilevante, esegui in ordine: `npm run test:coverage` (mirato
-al target se possibile, con report coverage machine-readable ed estraine
-direttamente le percentuali del file target), `npm run typecheck`,
-`npm run lint`.
+Dopo ogni modifica rilevante, esegui in ordine: `npm run lint:fix` e poi
+`npm run check` (mirato al target se possibile, con report coverage
+machine-readable ed estraine direttamente le percentuali del file target).
 
 - **Se falliscono:** Correggi SOLO il file di test. Se l'errore deriva da file
-  esterni, aggiusta i mock. Non modificare altri file della codebase.
+  esterni, aggiusta i mock. Non modificare altri file della codebase. Una volta
+  corretto, riesegui i comandi di validazione (prima `npm run lint:fix` e poi
+  `npm run check`).
 - **Se mancano comandi/configurazioni:** Segnala il blocco tecnico all'utente e
   fermati.
 

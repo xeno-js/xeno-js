@@ -8,10 +8,10 @@ import type { Factory } from '@/shared'
  * @template TOutput The type of the output produced by the factory method.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IFactory<TInput, TOutput> {
   /**
@@ -20,10 +20,10 @@ export interface IFactory<TInput, TOutput> {
    * @returns An instance of type `Output`.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   create: Factory<TOutput, [TInput]>
 }

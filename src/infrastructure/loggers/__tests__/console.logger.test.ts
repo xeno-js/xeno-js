@@ -1,4 +1,4 @@
-﻿import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { LOG_LEVEL } from '@/shared'
 
@@ -33,8 +33,8 @@ describe('ConsoleLogger', () => {
 
     expect(errorSpy).toHaveBeenCalledOnce()
     expect(errorSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ requestId: 'abc', err: 'boom', stack: err.stack }),
       '[3] failure happened',
+      expect.objectContaining({ requestId: 'abc', error: err }),
     )
   })
 
@@ -45,7 +45,7 @@ describe('ConsoleLogger', () => {
     logger.track(LOG_LEVEL.WARN, 'warn message', { user: 'u1' })
 
     expect(warnSpy).toHaveBeenCalledOnce()
-    expect(warnSpy).toHaveBeenCalledWith({ user: 'u1' }, '[2] warn message')
+    expect(warnSpy).toHaveBeenCalledWith('[2] warn message', { user: 'u1' })
   })
 
   it('logs DEBUG level using console.debug', () => {
@@ -55,7 +55,7 @@ describe('ConsoleLogger', () => {
     logger.track(LOG_LEVEL.DEBUG, 'debug message', { trace: 't1' })
 
     expect(debugSpy).toHaveBeenCalledOnce()
-    expect(debugSpy).toHaveBeenCalledWith({ trace: 't1' }, '[0] debug message')
+    expect(debugSpy).toHaveBeenCalledWith('[0] debug message', { trace: 't1' })
   })
 
   it('logs default branch using console.info for non-mapped level', () => {
@@ -65,7 +65,7 @@ describe('ConsoleLogger', () => {
     logger.track(1, 'info message', { ok: true })
 
     expect(infoSpy).toHaveBeenCalledOnce()
-    expect(infoSpy).toHaveBeenCalledWith({ ok: true }, '[1] info message')
+    expect(infoSpy).toHaveBeenCalledWith('[1] info message', { ok: true })
   })
 
   it('uses empty object payload when context is undefined in default branch', () => {
@@ -74,7 +74,7 @@ describe('ConsoleLogger', () => {
 
     logger.track(1, 'no context', undefined)
 
-    expect(infoSpy).toHaveBeenCalledWith({}, '[1] no context')
+    expect(infoSpy).toHaveBeenCalledWith('[1] no context', {})
   })
 
   it('uses empty object payload for ERROR level when context and error are undefined', () => {
@@ -83,7 +83,7 @@ describe('ConsoleLogger', () => {
 
     logger.track(LOG_LEVEL.ERROR, 'error no context', undefined)
 
-    expect(errorSpy).toHaveBeenCalledWith({}, '[3] error no context')
+    expect(errorSpy).toHaveBeenCalledWith('[3] error no context', {})
   })
 
   it('uses empty object payload for WARN level when context is undefined', () => {
@@ -92,7 +92,7 @@ describe('ConsoleLogger', () => {
 
     logger.track(LOG_LEVEL.WARN, 'warn no context', undefined)
 
-    expect(warnSpy).toHaveBeenCalledWith({}, '[2] warn no context')
+    expect(warnSpy).toHaveBeenCalledWith('[2] warn no context', {})
   })
 
   it('uses empty object payload for DEBUG level when context is undefined', () => {
@@ -101,6 +101,6 @@ describe('ConsoleLogger', () => {
 
     logger.track(LOG_LEVEL.DEBUG, 'debug no context', undefined)
 
-    expect(debugSpy).toHaveBeenCalledWith({}, '[0] debug no context')
+    expect(debugSpy).toHaveBeenCalledWith('[0] debug no context', {})
   })
 })

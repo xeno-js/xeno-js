@@ -4,10 +4,10 @@ import type { InjectionToken } from '@/shared'
  * @fileoverview Defines the IServiceScope interface for scoped dependency injection.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
 /**
@@ -22,10 +22,10 @@ import type { InjectionToken } from '@/shared'
  * scoped instances and invalidate the scope.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IServiceScope {
   /**
@@ -40,10 +40,10 @@ export interface IServiceScope {
    * @throws An error if the scope has already been disposed.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   resolve<T>(token: InjectionToken<T>): T
 
@@ -54,10 +54,10 @@ export interface IServiceScope {
    * Any subsequent call to {@link resolve} on a disposed scope will throw.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   dispose(): void
 }

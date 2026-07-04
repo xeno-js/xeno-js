@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 
 import { AppError } from '@/domain'
-import { PIPELINE_ERROR_CODES, PIPELINE_ERROR_CODES_KEYS, STATUS_CODES } from '@/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { ZodValidatorService } from '../zod.validator'
 
@@ -29,7 +29,7 @@ describe('ZodValidatorService', () => {
       expect(result.getValueOrThrow()).toBe(true)
     })
 
-    it('returns VALIDATION_ERROR when schema key is missing', async () => {
+    it('returns.VALIDATION_FAILED when schema key is missing', async () => {
       const service = new ZodValidatorService(new Map())
       const result = await service.validate('missing', { any: 'value' })
 
@@ -37,8 +37,8 @@ describe('ZodValidatorService', () => {
 
       const error = result.getErrorOrThrow()
       expect(error).toBeInstanceOf(AppError)
-      expect(error.code).toBe(PIPELINE_ERROR_CODES.VALIDATION_ERROR)
-      expect(error.message).toBe(PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR])
+      expect(error.code).toBe(ERROR_CODES.VALIDATION_FAILED)
+      expect(error.message).toBe(ERROR_CODE_MESSAGES[ERROR_CODES.VALIDATION_FAILED])
       expect(error.status).toBe(STATUS_CODES.BAD_REQUEST)
       expect(error.name).toBe('ZodValidatorService')
       expect(error.cause).toBeInstanceOf(Error)
@@ -47,7 +47,7 @@ describe('ZodValidatorService', () => {
       }
     })
 
-    it('returns VALIDATION_ERROR and formats both path and root issues', async () => {
+    it('returns.VALIDATION_FAILED and formats both path and root issues', async () => {
       const schema = z
         .object({
           name: z.string().min(3),
@@ -66,8 +66,8 @@ describe('ZodValidatorService', () => {
       expect(result.isOk()).toBe(false)
 
       const error = result.getErrorOrThrow()
-      expect(error.code).toBe(PIPELINE_ERROR_CODES.VALIDATION_ERROR)
-      expect(error.message).toBe(PIPELINE_ERROR_CODES_KEYS[PIPELINE_ERROR_CODES.VALIDATION_ERROR])
+      expect(error.code).toBe(ERROR_CODES.VALIDATION_FAILED)
+      expect(error.message).toBe(ERROR_CODE_MESSAGES[ERROR_CODES.VALIDATION_FAILED])
       expect(error.status).toBe(STATUS_CODES.BAD_REQUEST)
       expect(error.name).toBe('ZodValidatorService')
       expect(error.cause).toBeInstanceOf(Error)

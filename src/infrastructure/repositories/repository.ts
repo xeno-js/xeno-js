@@ -9,10 +9,10 @@ import { Guards } from '@/shared'
  * @template TDto - The type of the Data Transfer Object (DTO) used for data access.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class Repository<T, TDto> implements IRepository<T> {
   /**
@@ -21,10 +21,10 @@ export class Repository<T, TDto> implements IRepository<T> {
    * @param _mapper An instance of IMapper used to convert between entities and DTOs.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
     private readonly _dataSource: IWriteDataSource<TDto>,

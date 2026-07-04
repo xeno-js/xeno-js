@@ -8,40 +8,40 @@ import type { Optional } from '@/shared'
  * @template TError - The type of the error in case of a failed operation (default is never).
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class Result<TValue, TError = never> {
   /**
    * Indicates whether the operation was successful or not.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private readonly _isSuccess: boolean
   /**
    * The error of the operation in case it failed.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private readonly _error: Optional<TError>
   /**
    * The value of the operation in case it succeeded.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private readonly _value: Optional<TValue>
 
@@ -53,10 +53,10 @@ export class Result<TValue, TError = never> {
    * @param value - The value of the operation in case it succeeded (optional).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private constructor(isSuccess: boolean, error: Optional<TError>, value: Optional<TValue>) {
     this._isSuccess = isSuccess
@@ -71,10 +71,10 @@ export class Result<TValue, TError = never> {
    * @returns A Result instance representing a successful operation.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public static ok<U>(value?: U): Result<U> {
     return new Result<U>(true, undefined, value)
@@ -87,10 +87,10 @@ export class Result<TValue, TError = never> {
    * @returns A Result instance representing a failed operation.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public static fail<U, V = never>(error: V): Result<U, V> {
     return new Result<U, V>(false, error, undefined)
@@ -102,10 +102,10 @@ export class Result<TValue, TError = never> {
    * @returns True if the result is a success, false otherwise.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public isOk(): boolean {
     return this._isSuccess
@@ -118,10 +118,10 @@ export class Result<TValue, TError = never> {
    * @throws An error if the result is a failure.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public getValueOrThrow(): Optional<TValue> {
     if (!this._isSuccess) {
@@ -137,10 +137,10 @@ export class Result<TValue, TError = never> {
    * @throws An error if the result is a success.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public getErrorOrThrow(): TError {
     if (this._isSuccess) {

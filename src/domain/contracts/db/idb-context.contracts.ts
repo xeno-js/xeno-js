@@ -6,20 +6,20 @@ import type { ResultType } from '../../results/result.types'
  * An interface representing a context for managing transactions in a data access layer. This interface defines methods for beginning a transaction, committing it, and rolling it back in case of errors.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IDbContext {
   /**
    * Begins a new transaction. This method should be called before performing any operations that need to be part of the transaction.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   beginTransaction(): Promise<void>
 
@@ -27,10 +27,10 @@ export interface IDbContext {
    * Commits the current transaction. This method should be called after all operations in the transaction have been successfully completed.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   commitTransaction(): Promise<void>
 
@@ -38,10 +38,10 @@ export interface IDbContext {
    * Rolls back the current transaction. This method should be called if any operation in the transaction fails, to ensure that all changes made during the transaction are undone.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   rollbackTransaction(): Promise<void>
 
@@ -51,10 +51,10 @@ export interface IDbContext {
    * @returns A promise that resolves to a ResultType containing the result of the operation, or an error if the operation fails.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   runInTransaction<T>(
     operation: () => Promise<ResultType<T>>,

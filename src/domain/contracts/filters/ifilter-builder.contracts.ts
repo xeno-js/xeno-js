@@ -4,10 +4,10 @@ import type { Dictionary, Optional } from '@/shared'
  * Interface for building filter objects based on specifications.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = unknown> {
   /**
@@ -16,10 +16,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in queries.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   buildFindCriteria(filter: unknown): TQueryConditions
   /**
@@ -28,10 +28,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in query operations.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   buildQueryCriteria(filter: unknown, params?: Dictionary<unknown>): TQueryConditions
   /**
@@ -40,10 +40,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in delete operations.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   buildDeleteCriteria(filter: unknown): TQueryConditions
   /**
@@ -52,10 +52,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A filter object that can be used in update operations.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   buildUpdateCriteria(filter: unknown): TQueryConditions
 
@@ -65,10 +65,10 @@ export interface IFilterBuilder<TQueryConditions = unknown, TQueryProjections = 
    * @returns A projections object that can be used in query operations to specify which fields to return.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   buildProjections(cols: Optional<string[]>): TQueryProjections
 }

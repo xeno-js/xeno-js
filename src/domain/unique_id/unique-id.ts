@@ -6,10 +6,10 @@ import { GuidHelper } from '@/shared'
  * This class encapsulates the generation and representation of unique identifiers.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class UniqueId {
   /**
@@ -18,10 +18,10 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private constructor(private readonly _value: Guid) {
     Object.freeze(this)
@@ -32,10 +32,10 @@ export class UniqueId {
    * @returns A new instance of UniqueId with a generated UUID v4.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public static create(): UniqueId {
     const uniqueId = GuidHelper.generate()
@@ -47,10 +47,10 @@ export class UniqueId {
    * @returns The string representation of the unique identifier (UUID v4).
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public toString(): string {
     return this._value.toString()
@@ -61,10 +61,10 @@ export class UniqueId {
    * @returns The GUID value of the UniqueId instance.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public getValue(): Guid {
     return this._value
@@ -76,10 +76,10 @@ export class UniqueId {
    * @returns True if both UniqueIds have the same string value, false otherwise.
   
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public equals(other: UniqueId): boolean {
     if (!(other instanceof UniqueId)) {

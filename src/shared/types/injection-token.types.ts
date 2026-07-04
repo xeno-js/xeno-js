@@ -15,26 +15,26 @@ declare const _phantom: unique symbol
  * Tokens must be created exclusively through {@link createToken}.
 
    * 
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
+   * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export interface InjectionToken<T> {
   /** @description The unique symbol that identifies this token at runtime.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly symbol: symbol
   /** @description Phantom property to bind the generic type `T` to this token.
    *
-   * @author XenoJS
+   * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly [_phantom]: T
 }

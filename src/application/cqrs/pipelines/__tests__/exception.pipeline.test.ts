@@ -2,13 +2,13 @@ import { describe, expect, it, vi } from 'vitest'
 
 import type { IRequest } from '@/domain'
 import { AppError, Result } from '@/domain'
-import { PIPELINE_ERROR_CODES, STATUS_CODES } from '@/shared'
+import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
-import { ExceptionPipeline } from '../pipelines/exception.pipeline'
+import { ExceptionPipeline } from '../exception.pipeline'
 
 describe('ExceptionPipeline', () => {
   const pipeline = new ExceptionPipeline()
-  const mockRequest: IRequest = { intent: 'TestIntent', type: 'COMMAND', signal: undefined }
+  const mockRequest: IRequest = { intent: 'TestIntent', type: 'COMMAND' }
 
   it('should return the result successfully when next() does not throw', async () => {
     const mockNext = vi.fn().mockResolvedValue(Result.ok('success'))
@@ -37,7 +37,7 @@ describe('ExceptionPipeline', () => {
     expect(result.getErrorOrThrow()).toBe(expectedError)
   })
 
-  it('should catch generic errors and wrap them in SYSTEM_EXCEPTION AppError', async () => {
+  it('should catch generic errors and wrap them in SYSTEM_ERROR AppError', async () => {
     const genericError = new Error('Unexpected crash')
     const mockNext = vi.fn().mockRejectedValue(genericError)
 
@@ -47,7 +47,7 @@ describe('ExceptionPipeline', () => {
     const error = result.getErrorOrThrow()
 
     expect(error).toBeInstanceOf(AppError)
-    expect(error?.code).toBe(PIPELINE_ERROR_CODES.SYSTEM_EXCEPTION)
+    expect(error?.code).toBe(ERROR_CODES.SYSTEM_ERROR)
     expect(error?.status).toBe(STATUS_CODES.INTERNAL_SERVER_ERROR)
     expect(error?.cause).toBe(genericError)
   })
