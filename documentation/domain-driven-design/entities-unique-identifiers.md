@@ -2,8 +2,9 @@
 title: Entities & Unique Identifiers
 sidebar_position: 2
 description:
-  Technical implementation guide for modeling domain entities and managing
-  type-safe unique identifiers using the Graviton5 Entity base class.
+  Reference documentation for the Entity<T> abstract base class and the UniqueId
+  type wrapper in Xeno. Covers identity management, immutability enforcement,
+  state isolation, and implementation patterns for domain entities.
 keywords:
   - domain entities
   - aggregate root
@@ -15,23 +16,23 @@ keywords:
 
 # Entities & Unique Identifiers
 
-In Domain-Driven Design (DDD), a **Domain Entity** is an object characterized by
-its structural identity thread rather than its temporary attributes. While the
-properties of an entity can change during its lifecycle, its unique identity
-remains completely immutable.
+A **Domain Entity** is a domain object whose identity is defined by a stable,
+unique identifier rather than by its attribute values. Properties may change
+throughout the entity lifecycle; the identifier does not.
 
-Graviton5 enforces this pattern at the architectural level through the abstract
-**`Entity<T>`** base class, combining client-side unique identification via the
-**`UniqueId`** value type with strict immutability guarantees.
+Xeno provides the abstract `Entity<T>` base class as the foundational primitive
+for all domain entities and aggregate roots. It pairs with the `UniqueId` value
+type to enforce nominal identity at compile time and prevent raw-string
+identifier usage within domain boundaries.
 
 ---
 
-## Technical Specifications: The `Entity<T>` Base Class
+## The `Entity<T>` Base Class
 
-The `Entity<T>` abstract class acts as the baseline primitive for all entities
-and aggregate roots within your domain layer. It encapsulates state, manages
-structural encapsulation, and shields the model from direct external
-manipulation.
+`Entity<T>` is an abstract class that encapsulates domain state, enforces
+immutability at both the property and instance level, and exposes identity
+through the `UniqueId` type wrapper. Concrete entity classes extend it and
+cannot be instantiated directly.
 
 ```typescript
 import type { Optional } from '@/shared'
@@ -39,43 +40,11 @@ import { Guards, GuidHelper } from '@/shared'
 
 import { UniqueId } from '../unique_id/unique-id'
 import type { IEntity } from './ientity.contracts'
-/**
- * A base class representing a generic entity in the domain. An entity is an object that has a unique identity and is defined by its properties.
- *
- * @template T - The type of the properties of the entity.
 
-   * 
-   * @author XenoJS
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
-   */
 export abstract class Entity<T> implements IEntity<T> {
   public readonly id: UniqueId
-
-  /**
-   * The properties of the entity. This is a private property that holds the state of the entity. It should be accessed and modified through methods defined in the concrete entity classes to ensure encapsulation and maintain invariants.
-  
-   * 
-   * @author XenoJS
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
-   */
   private readonly props: T
 
-  /**
-   * Protected constructor to prevent direct instantiation. Concrete entity classes should extend this base class and call this constructor with the appropriate properties and an optional unique identifier.
-   *
-   * @param props - The properties of the entity.
-   * @param id - An optional unique identifier for the entity. If not provided, a new UniqueId will be generated.
-  
-   * 
-   * @author XenoJS
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/XenoJS 
-   */
   protected constructor(props: T, id: Optional<UniqueId> = undefined) {
     if (Guards.isNullOrEmpty(id)) {
       this.id = UniqueId.create()
@@ -98,40 +67,32 @@ export abstract class Entity<T> implements IEntity<T> {
 }
 ```
 
-### Core Architectural Features
+### Behavioral Characteristics
 
-- nominal Identity Protection: The entity identity is wrapped inside a dedicated
-  `UniqueId` type wrapper, shielding the model from raw string vulnerabilities.
-- **Double-Layer Defensive Freezing:** During instantiation, the constructor
-  applies `Object.freeze` to a shallow copy of the incoming properties (`props`)
-  and then permanently freezes the entire entity instance execution surface via
-  `Object.freeze(this)`. This blocks accidental direct assignment hacks outside
-  the defined domain boundaries.
-- **State Isolation via Cloning:** The `getProps()` method executes a deep copy
-  using `structuredClone()` on the underlying state. This guarantees that
-  consumers reading entity properties cannot mutate the internal state by
-  modifying reference objects.
+- **Nominal Identity Protection:** The entity identifier is encapsulated within
+  the `UniqueId` type wrapper. This prevents raw string values from being used
+  as identifiers within domain boundaries and enables compile-time validation.
+- **Two-Phase Immutability:** The constructor applies `Object.freeze` to a
+  shallow copy of `props` before assigning it, then calls `Object.freeze(this)`
+  on the entity instance. This isolates the property state from external
+  mutation and prevents post-construction field assignment.
+- **State Isolation via Deep Clone:** `getProps()` returns a deep copy of the
+  internal state using `structuredClone()`. Callers cannot mutate the entity
+  state by modifying the returned object.
 
 ---
 
-## How to Use It: Practical Implementation Guide
+## Implementation Guide
 
-To implement a domain entity, you must define a dedicated state shape interface
-(`Props`) and extend the base `Entity<T>` class.
+A concrete entity defines a typed `Props` interface and extends `Entity<T>`.
+Because the base constructor seals the instance, state transitions are expressed
+as copy-on-write operations that return a new entity instance.
 
-### 1. Modeling an Entity with Immutability
-
-Because the base constructor seals the instance completely, state transitions
-must be modeled explicitly. Since the internal properties are frozen, updates
-are typically applied by generating a modified copy or by managing specific
-lifecycles within your use-case orchestration handlers.
-
-Here is the recommended implementation pattern for a `Product` entity:
+### Defining an Entity
 
 ```typescript
-import { Entity, Optional, UniqueId } from '@graviton5/core'
+import { Entity, Optional, UniqueId } from '@xeno/core'
 
-// 1. Define the isolated, strongly-typed property blueprint
 export interface ProductProps {
   name: string
   sku: string
@@ -140,14 +101,10 @@ export interface ProductProps {
 }
 
 export class ProductEntity extends Entity<ProductProps> {
-  // 2. Pass dependencies to the protected base constructor
   private constructor(props: ProductProps, id?: Optional<UniqueId>) {
     super(props, id)
   }
 
-  /**
-   * @description Factory method to instantiate a brand new Product with a generated ID.
-   */
   public static create(
     name: string,
     sku: string,
@@ -161,14 +118,10 @@ export class ProductEntity extends Entity<ProductProps> {
     })
   }
 
-  /**
-   * @description Factory method to reconstitute an existing Product from database persistence.
-   */
   public static reconstitute(id: UniqueId, props: ProductProps): ProductEntity {
     return new ProductEntity(props, id)
   }
 
-  // 3. Expose specific business accessors
   public get name(): string {
     return this.getProps().name
   }
@@ -181,10 +134,6 @@ export class ProductEntity extends Entity<ProductProps> {
     return this.getProps().priceInCents
   }
 
-  /**
-   * @description Domain operation handling state evolution.
-   * Because the instance is frozen, updates must return a newly compiled Entity copy.
-   */
   public updatePrice(newPriceInCents: number): ProductEntity {
     if (newPriceInCents < 0) {
       throw new Error('[Domain Violation] Product price cannot be negative.')
@@ -201,44 +150,33 @@ export class ProductEntity extends Entity<ProductProps> {
 }
 ```
 
-### 2. Consuming Identity Mechanics in Use Cases
+### Accessing Identity in Handlers
 
-When dispatching use cases or storing entities within repositories, developers
-should interact directly with the explicit getters provided by the base class
-contract:
+Handlers interact with entity identity through the `getId()` and `getProps()`
+getters defined on the base class contract.
 
 ```typescript
-import { UniqueId } from '@graviton5/core'
+import { UniqueId } from '@xeno/core'
 import { ProductEntity } from './product.entity'
 
 export class ProductService {
-  public async processProductDiscount(
-    existingProduct: ProductEntity,
-  ): Promise<ProductEntity> {
-    // Read the encapsulated UniqueId type wrapper safely
-    const productId: UniqueId = existingProduct.getId()
-    const rawUuidString: string = productId.getValue()
+  public async applyDiscount(product: ProductEntity): Promise<ProductEntity> {
+    const productId: UniqueId = product.getId()
+    const rawId: string = productId.getValue()
 
-    console.info(
-      `Applying enterprise markdown logic to product: ${rawUuidString}`,
-    )
+    console.info(`Applying discount to product: ${rawId}`)
 
-    // Execute state transition logic resulting in a clean copy
-    const discountedProduct = existingProduct.updatePrice(
-      Math.round(existingProduct.priceInCents * 0.9),
-    )
-
-    return discountedProduct
+    return product.updatePrice(Math.round(product.priceInCents * 0.9))
   }
 }
 ```
 
 ---
 
-## Crucial Constructor Invariants
+## Constructor Invariants
 
-When `super(props, id)` is called, the initialization path performs strict
-layout structural validations:
+On each call to `super(props, id)`, the constructor enforces the following
+initialization sequence:
 
 ```mermaid
 graph TD
@@ -254,24 +192,24 @@ graph TD
 
 ---
 
-## Architectural Pitfalls to Avoid
+## Constraints & Limitations
 
-- ❌ **Do not attempt direct inline mutations:** Writing operations like
-  `this.getProps().name = 'New Name'` will either fail silently or throw a
-  runtime exception because the internal properties state reference is frozen.
-  Always reconstruct state structures using copy-on-write patterns.
-- ❌ **Do not bypass the `UniqueId` contract:** Avoid using plain string
-  variables to reference entity identifiers inside domain aggregates. Restrict
-  identifier declarations exclusively to the `UniqueId` type wrapper to preserve
-  compile-time validation rules.
+- **Direct property mutation is not supported.** Assignments such as
+  `this.getProps().name = 'New Name'` will fail silently or throw at runtime
+  because the internal `props` reference is frozen. State transitions must be
+  expressed as copy-on-write operations that return a new entity instance.
+- **Raw string identifiers are not accepted.** Entity identifiers must be
+  declared using the `UniqueId` type wrapper. Passing a plain `string` where a
+  `UniqueId` is expected will produce a compile-time error.
+- **Shallow freeze on `props`.** The constructor applies a shallow
+  `Object.freeze` to the props copy. Nested objects within `props` are not
+  deeply frozen; `getProps()` compensates for this by returning a deep clone via
+  `structuredClone()`.
 
 ---
 
-## Next Steps
+## Related
 
-Now that you understand entity modeling and immutable identity management, move
-forward to property attributes:
-
-- **[Value Objects & Defensive Immutability](https://www.google.com/search?q=./value-objects-defensive-immutability.md)**:
-  Discover how to encapsulate secondary state validation blocks without identity
+- [Value Objects & Defensive Immutability](./value-objects-defensive-immutability.md):
+  Encapsulating attribute-level validation and immutability without identity
   constraints.

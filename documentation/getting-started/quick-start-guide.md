@@ -2,59 +2,80 @@
 title: Quick Start Guide
 sidebar_position: 5
 description:
-  Bootstrap your first enterprise-grade, decorator-free XenoJS application using
-  AppBuilder and the CQRS Mediator.
+  Step-by-step technical guide to bootstrapping a decorator-free Xeno
+  application workspace using the AppBuilder configuration API and the CQRS
+  Mediator.
 keywords:
-  - appbuilder
-  - bootstrap
-  - mediator
-  - dependency injection
-  - quick start
-  - setup
+  - xeno appbuilder configuration
+  - bootstrap cqrs typescript
+  - mediator dispatch execution
+  - clean architecture scaffolding
+  - typescript dependency injection
 ---
 
 # Quick Start Guide
 
-## Introduction
+The Quick Start Guide provides a step-by-step procedural walkthrough for
+initializing an application workspace, configuring runtime modules using the
+explicit `AppBuilder` API, and executing a transaction command payload through
+the Mediator bus.
 
-This guide provides an end-to-end walkthrough for spinning up a production-ready
-application using the XenoJS kernel engine [cite: 9]. You will configure a
-highly decoupled, multi-tenant capable host from scratch using the explicit,
-fluent `AppBuilder` API, resolve the central pipeline mediator, and dispatch
-your first transaction command safely [cite: 1, 9].
+---
+
+## Direct Definition Block
+
+The `Quick Start Guide` describes the foundational composition mechanics
+required to assemble a functional, transport-agnostic Xeno execution kernel. It
+maps out how to structure initialization sequences without runtime metadata
+annotations, establishing a typed, deterministic pipeline ready to host
+enterprise use cases.
 
 ---
 
 ## Scaffolding Options
 
-You can instantly generate the necessary Clean Architecture directory topology
-and configurations by employing the official scaffolding tool [cite: 9]:
+### What it is
+
+Scaffolding Options represent the initialization commands provided by the
+framework command-line interface (`@xeno/cli`) to automate the generation of a
+standard Clean Architecture directory matrix.
+
+### How it works
+
+Executing the initializer utility prompts an interactive configuration selector
+or parses absolute compilation flags directly from the terminal console:
 
 ```bash
-npx @xeno/create my-xeno-app
+npx @xeno/cli my-xeno-app
 
 ```
 
-During execution, the CLI presents an interactive setup allowing you to toggle
-targeted modules (`Drizzle ORM`, `Axios`, `Pino`, `Sentry`, `ioredis`, or
-`Supabase`) . Alternatively, you can bypass prompts using execution flags :
+The generation logic maps project assets based on the following specific
+execution flags:
 
-- `--full`: Automates generation with every premium enterprise plugin active .
+- `--full`: Automates workspace initialization with all external infrastructure
+  provider integrations pre-configured.
+- `--empty`: Provision an un-opinionated, minimal execution kernel featuring
+  zero optional external library dependencies.
 
-- `--empty`: Provision an ultra-minimal kernel configuration with zero baseline
-  infrastructure attachments .
+### Why it exists
+
+Manual workspace setup exposes code layout configurations to variance and human
+organizational errors. The scaffolding utility guarantees that all directory
+setups mirror the exact layer isolation and compilation rules required by the
+internal lint tracking engine.
 
 ---
 
 ## Structural Assembly Blueprint
 
-A standard XenoJS execution host splits its initialization lifecycle across two
-main modules inside the `src/` ring: `src/bootstrap.ts` and `src/main.ts` .
+A standard Xeno execution engine partitions its system boot lifecycles across
+two distinct source modules located within the presentation or root folder:
 
 ```text
 src/
- ├── bootstrap.ts  # House the configuration logic of the fluent AppBuilder
- └── main.ts       # Orchestrate runtime startup and trigger delivery servers
+ ├── bootstrap.ts  # Configures the programmatic AppBuilder layout and compiles the IoC container
+ └── main.ts       # Initializes the execution runtime thread and binds the compiled container to a transport server
 
 ```
 
@@ -62,9 +83,17 @@ src/
 
 ## 1. Composing the Host Setup (`src/bootstrap.ts`)
 
-The `bootstrap.ts` module isolates the initialization of the Inversion of
-Control (IoC) graph . By assembling layers explicitly without decorators,
-startup computation runs with sub-millisecond execution overhead .
+#### Definition
+
+Composing the host setup is the phase where external infrastructure providers,
+core pipeline strategies, and structural application bindings are explicitly
+registered into the dependency container.
+
+#### Behavior
+
+The initialization logic acts through a programmatic, fluid `AppBuilder` script
+that executes linearly without triggering decorators, file-system scanning, or
+metadata reflection loops.
 
 ```typescript
 import {
@@ -73,6 +102,8 @@ import {
   TokenHelper,
   INJECTION_TOKENS,
 } from '@xeno/core'
+
+import { INVOICE_DATA_SOURCE_TOKEN, INVOICE_API_TOKEN } from './tokens.ts'
 
 /**
  * @description Assembles the application runtime container and configures
@@ -102,8 +133,9 @@ export async function bootstrap() {
 
     // 4. Attach resilient external HTTP channels (Axios + Cockatiel)
     .addHttpCore((config) => {
-      config.http.client.baseURL =
-        '[https://api.enterprise-domain.local](https://api.enterprise-domain.local)'
+      config.dataSourceToken = INVOICE_DATA_SOURCE_TOKEN
+      ;((config.http.client.token = INVOICE_API_TOKEN),
+        (config.http.client.baseURL = 'https://api.enterprise-domain.local'))
       config.http.client.timeoutMs = 5000
       config.resilience.retry.attempts = 3
     })
@@ -112,7 +144,7 @@ export async function bootstrap() {
     .addDb((config) => {
       config.connectionString =
         process.env.DATABASE_URL || 'postgres://postgres:pass@localhost:5432/db'
-      config.tables = {} // Register drizzle PgTable mappings here
+      config.tables = {} // Register Drizzle PgTable mappings here
     })
 
     // 6. Anchor Zero-Trust Identity Providers (Supabase Auth Client)
@@ -128,19 +160,31 @@ export async function bootstrap() {
 }
 ```
 
-:::info XenoJS operates with strict **Optional Peer Dependencies** . If you
-activate a component block within the builder (e.g., `.addDb()` or
-`.addLogger()`), you must ensure that your package layer holds the required
-underlying provider libraries (`drizzle-orm`, `pino`, `pg`, `axios`) . :::
+#### Effect
+
+This structural format eliminates application bootstrap overhead, ensuring that
+container graph resolution executes within sub-millisecond ranges.
+
+:::info Xeno utilizes an explicit Optional Peer Dependencies engineering model.
+Activating specific configuration blocks (such as `.addDb()` or `.addLogger()`)
+requires that the root workspace manifest explicitly holds the corresponding
+peer package assets (`drizzle-orm`, `pino`, `pg`, `axios`). :::
 
 ---
 
 ## 2. Setting the Entry Point Mechanics (`src/main.ts`)
 
-The `main.ts` entry file acts as the primary orchestrator that triggers the boot
-logic, instantiates the runtime thread context, and binds the kernel to your
-preferred transport server framework (Hono, Fastify, CLI, or Cloud event stream
-handlers) .
+#### Definition
+
+The Entry Point Mechanics module governs the physical system execution launch
+sequence, catching startup failures and mapping the agnostic kernel to concrete
+transport listeners.
+
+#### Behavior
+
+The entry execution script calls the compiled initialization graph, resolves the
+primary pipeline Mediator engine using an explicit token reference, and prepares
+the transport environment for network connections.
 
 ```typescript
 import { bootstrap } from './bootstrap.js'
@@ -151,7 +195,7 @@ import { INJECTION_TOKENS } from '@xeno/core'
  */
 async function main() {
   try {
-    console.log('  Bootstrapping XenoJS execution container...')
+    console.log('  Bootstrapping Xeno execution container...')
 
     // Resolve compiled dependency graph container
     const container = await bootstrap()
@@ -177,18 +221,27 @@ async function main() {
 main()
 ```
 
+#### Effect
+
+This decouples system bootstrapping from specific runtime environments, allowing
+identical core containers to run interchangeably across long-running background
+daemons, HTTP web servers, or serverless functions.
+
 ---
 
 ## 3. Execution Pipeline in Action: Dispatching a Command
 
-Once the container infrastructure is operational, transaction scenarios flow
-natively through the core system Mediator . Every request payload is verified
-against schema invariants, evaluated for multitenancy structural constraints,
-logged, and isolated within isolated transactional scopes automatically before
-hitting your final handler .
+#### Definition
 
-Here is how you execute an action scenario securely inside your presentation
-delivery ring:
+Dispatching a Command is the operational runtime phase where an external
+presentation wrapper feeds a raw action payload directly into the system
+use-case pipeline.
+
+#### Behavior
+
+The presentation layer resolves the primary Mediator instance, encapsulates
+parameters inside a rigid request payload format, and monitors outcome routing
+flags using standard result envelopes.
 
 ```typescript
 import { INJECTION_TOKENS } from '@xeno/core'
@@ -229,36 +282,41 @@ async function handleIncomingWebRequest(container: any, rawPayload: any) {
 }
 ```
 
+#### Effect
+
+This pattern passes the request payload sequentially through the configuration
+interceptor rings (Validation, Concurrency, and Idempotency), halting process
+propagation prior to use-case handler evaluation if an operational validation
+limit is breached.
+
 ---
 
-## Architectural Trade-offs & Common Mistakes
+## Architectural Constraints & Trade-offs
 
-### ❌ Relying on Automated Implicit Wire Registration
-
-XenoJS prioritizes absolute clarity and execution speed over implicit
-configuration scanning . It does not parse file structures at startup . If you
-generate a new Command Handler, Query Handler, or custom infrastructure data
-service, it **will not be discovered automatically** by the kernel. You must
-register its nominal association inside your `bootstrap` orchestration setup
-using clear token associations .
-
-### ❌ Violating Execution Context Boundaries
-
-Never bypass `IRequestContext` to pass request identifiers or authorization
-state parameters directly into inner service constructor methods . Let
-`RequestContextMiddleware` handle the lifecycle context internally using
-`AsyncLocalStorage` bounds, ensuring code decoupled testability remains intact .
+- **Explicit Registry Overhead Over Directory Crawling**: Because Xeno does not
+  perform automated folder scanning or dynamic file tracking, every new use-case
+  handler or infrastructural component must be manually configured inside the
+  `AppBuilder` configuration sequence. Omiting manual registration results in an
+  instant container resolution error.
+- **Separation of Communication and Context Primitives**: Transferring network
+  parameters directly into business layer components via constructor objects is
+  prohibited by the architectural layers. All context tracking must flow
+  strictly through the `IRequestContext` abstraction using Node.js
+  `AsyncLocalStorage` memory cells.
 
 ---
 
 ## Next Steps
 
-With your baseline application host constructed and operational, deepen your
-technical understanding of how XenoJS controls system execution internally:
+To continue setting up and optimizing the application workspace, proceed to the
+following architectural sections:
 
-- **[Type-Safe Dependency Injection](https://www.google.com/search?q=../core-runtime-mechanics/type-safe-dependency-injection.md)**:
-  Explore token nominal branding mechanisms and phantom type compile guarantees
-  .
-
-- **[Execution Context Lifecycle](https://www.google.com/search?q=../core-runtime-mechanics/execution-context-lifecycle.md)**:
-  Master the internals of multi-tenant async memory tracking . """
+- **[Architecture Layers](./architectural-layers-boundaries.md)**: Review code
+  isolation constraints and compilation policies enforced across domain
+  boundaries.
+- **[CQRS System](../cqrs-pipeline-architecture/README.md)**: Construct
+  decoupled Command and Query pipelines using the explicit Mediator abstraction
+  layer.
+- **[Dependency Injection Container](../core-architecture/README.md)**:
+  Configure dependency token registration profiles inside the explicit
+  `AppBuilder` workspace.

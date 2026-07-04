@@ -3,8 +3,8 @@ title: Execution Context & Middleware Layer
 sidebar_position: 4
 slug: ./
 description:
-  Technical index and summary of Graviton5 execution context tracing,
-  asynchronous storage isolation, and HTTP request metadata extraction.
+  Technical index and summary of Xeno execution context tracing, asynchronous
+  storage isolation, and HTTP request metadata extraction.
 keywords:
   - execution context
   - async hooks
@@ -16,63 +16,102 @@ keywords:
 
 # Execution Context & Middleware Layer
 
-This chapter documents the internal mechanisms that Graviton5 uses to capture,
-isolate, and propagate operational state vectors—including multi-tenant
-boundaries, security identities, and diagnostic tracing codes—down a concurrent
-asynchronous execution thread without coupling application logic to raw HTTP
-payloads.
+## Definition
 
----
+This chapter documents how Xeno captures request metadata, authenticates the
+caller, and propagates a request-scoped ExecutionContext through asynchronous
+operations.
 
-## Chapter Summary
+## What It Is
 
-In a cloud-native or serverless ecosystem, tracking a request across decoupled
-layers requires absolute context isolation. Graviton5 achieves this by using an
-asynchronous storage boundary wrapper powered by Node.js `AsyncLocalStorage`.
+Definition: The Execution Context and Middleware layer is the boundary between
+incoming transport headers and request-scoped runtime state.
 
-Instead of passing an HTTP request or connection reference parameter through
-every service constructor, the presentation transport layer uses specialized
-middleware to capture metadata headers early. This data is formalized into an
-immutable context envelope and injected into an isolated execution thread
-sandbox, making it globally accessible but safely isolated from adjacent
-requests.
+Behavior:
 
----
+- RequestContextMiddleware reads headers through HttpHeaderExtractor
+- Authentication is delegated to the GateKeeper
+- A new IServiceScope is created per request
+- ExecutionContext is executed through IRequestContext.runAsync
+- Scope disposal is enforced in finally
+
+Effect: Application code accesses request identity, network, and tracing
+metadata without passing raw HTTP objects through each service and Handler.
+
+## How It Works
+
+Definition: The current implementation composes and propagates request context
+in a strict sequence.
+
+Behavior:
+
+- Metadata extraction:
+  - Correlation ID and Request ID are parsed from headers
+  - Missing IDs are generated
+  - Token, client IP, and span ID are normalized
+- Authentication:
+  - GateKeeper.authenticate evaluates the extracted token
+  - Failed authentication returns an error response envelope
+- Context composition:
+  - identity comes from authentication result
+  - network contains requestId and clientIp
+  - tracing contains correlationId, spanId, and startTime
+  - scope is created via the scope factory
+- Context propagation:
+  - IRequestContext.runAsync stores ExecutionContext for the async flow
+  - NodeRequestContext uses AsyncLocalStorage for store isolation
+  - getContext returns a frozen shallow copy of the current store
+
+Effect: Concurrent requests remain isolated while downstream components resolve
+scoped dependencies and read contextual metadata.
+
+## Why It Exists
+
+Definition: The layer is designed to isolate request state and make it available
+across asynchronous boundaries.
+
+Behavior: Instead of propagating raw headers manually across constructors and
+method signatures, the framework centralizes extraction and storage at
+middleware entry.
+
+Effect: This reduces parameter coupling and helps keep Domain, Application,
+Infrastructure, and Presentation responsibilities separated.
 
 ## Document Directory
 
-Navigate through the execution context and storage mechanics sequentially:
+Read the chapter in this order:
 
-### 1. [The Request-Identity Storage Lifecycle](https://www.google.com/search?q=./request-identity-storage-lifecycle.md)
+### 1. [The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle.md)
 
-- **What it covers:** An exploration of how `RequestContextMiddleware`
-  intercepts incoming header maps, invokes the authentication gatekeeper, wraps
-  the operation within a scoped container boundary, and leverages
-  `IRequestContext` to drive state transitions across asynchronous task
-  sequences safely.
+Definition: Details the middleware orchestration from metadata extraction to
+scope disposal.
 
-### 2. [ExecutionContext Composition](https://www.google.com/search?q=./execution-context-composition.md)
+Behavior: Focuses on RequestContextMiddleware, authentication flow, and
+request-scoped execution.
 
-- **What it covers:** An anatomical breakdown of the `ExecutionContext`
-  structural data shape, analyzing its three core sub-contexts: `identity` (user
-  claims and tenant IDs), `network` (client IP addresses and unique request
-  tracking tokens), and `tracing` (correlation IDs and execution start
-  timestamps).
+Effect: Clarifies where context enters the pipeline and how it is kept isolated.
 
-### 3. [Transportation Contract Metadata & Headers Extraction](https://www.google.com/search?q=./transportation-contract-metadata-headers.md)
+### 2. [ExecutionContext Composition](./execution-context-composition.md)
 
-- **What it covers:** A code-first operational guide to the agnostics extractor
-  ecosystem. This section reviews how the framework splits extraction duties
-  between `BearerTokenExtractor` and `HttpHeaderExtractor` to cleanly normalize
-  raw string or array header definitions into a unified `Metadata` object model.
+Definition: Describes the ExecutionContext shape.
 
----
+Behavior: Breaks down identity, network, tracing, and scope components.
 
-## The Request Isolation & Storage Sequence
+Effect: Helps Command and Query handlers consume context consistently.
 
-The diagram below details the operational path an incoming transport payload
-follows as it is parsed, authenticated, and bound into an isolated thread
-context:
+### 3. [Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers.md)
+
+Definition: Documents the header extraction contract.
+
+Behavior: Covers BearerTokenExtractor and HttpHeaderExtractor normalization
+rules.
+
+Effect: Ensures stable metadata mapping from transport headers to internal
+models.
+
+## Example
+
+The sequence below summarizes the request isolation flow:
 
 ```mermaid
 sequenceDiagram
@@ -101,26 +140,23 @@ sequenceDiagram
 
 ```
 
----
+## Constraints / Limitations
 
-## Operational Best Practices
+Definition: The current implementation provides request isolation with explicit
+operational boundaries.
 
-:::info Context Encapsulation Never store request-specific information inside
-global singleton variables or class properties. Always interact with request
-state using the thread-safe `IRequestContext` API instance to avoid
-cross-request data leaks. :::
+Behavior:
 
-:::tip Telemetry Injection Always utilize the `tracing.correlationId` field
-captured by this layer when executing external HTTP calls or outputting
-structured log strings. This maintains complete execution traceability across
-distinct distributed network services. :::
+- Store snapshots are shallow-frozen copies
+- Error responses in middleware use fallback system codes on unexpected
+  exceptions
+- Correct behavior depends on executing request flows through middleware entry
+  points
 
----
+Effect: Custom integrations should keep middleware ordering intact and avoid
+bypassing RequestContextMiddleware for request-handling paths.
 
 ## Next Step
 
-Review the core lifecycle orchestrator responsible for compiling request
-environments:
-
-- 👉
-  **[Proceed to The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle.md)**
+Continue with
+[The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle.md).

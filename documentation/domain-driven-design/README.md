@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: ./
 description:
   Technical index and overview of the pure, framework-agnostic Domain-Driven
-  Design (DDD) building blocks in Graviton5.
+  Design (DDD) building blocks in Xeno.
 keywords:
   - domain-driven design
   - ddd
@@ -17,25 +17,46 @@ keywords:
 
 # Domain-Driven Design (DDD) Core Building Blocks
 
-This chapter documents the primitive structures and structural rules that govern
-the innermost layer of a Graviton5 application: the **Domain Layer**
-(`src/domain/`).
+## Definition
 
-In strict alignment with Clean Architecture, this layer is designed to be
-entirely pure, framework-agnostic, and insulated from volatile external I/O
-choices, third-party libraries, and database engines.
+The Domain Layer contains the core business model of a Xeno application. It is
+implemented as pure TypeScript code and is isolated from transport, persistence,
+and framework-specific concerns.
 
----
+## What It Is
 
-## Chapter Summary
+This chapter is the technical index for the Domain Layer located in
+`src/domain/`.
 
-The domain layer serves as the absolute blueprint of corporate business rules.
-By encapsulating complex invariant logic directly inside deterministic
-components, Graviton5 ensures that business rules remain highly testable,
-self-documenting, and entirely decoupled from infrastructure drivers. This
-chapter breaks down how to model real-world business domains using the
-framework's native primitives without introducing runtime reflection or magic
-decorations.
+The layer defines:
+
+- Entities and identity boundaries
+- Value Objects and invariant protection
+- Functional outcomes and business error contracts
+- Rule evaluation through Specifications
+
+The current implementation is framework-agnostic and does not depend on HTTP,
+ORM, logging, or message broker libraries.
+
+## How It Works
+
+Domain components collaborate through explicit types and deterministic behavior:
+
+1. Application code invokes Domain logic for business decisions.
+2. Specifications evaluate rule compliance.
+3. Entities encapsulate mutable business state.
+4. Value Objects encapsulate validated immutable attributes.
+5. Methods return `Result` values that carry success or `AppError` failure
+   states.
+
+This model keeps policy decisions inside the Domain Layer and keeps
+Infrastructure-specific behavior outside of it.
+
+## Why It Exists
+
+Separating Domain logic from Infrastructure reduces coupling and protects
+business rules from technology churn. The effect is a codebase that is easier to
+test, safer to refactor, and more predictable across delivery channels.
 
 ---
 
@@ -45,68 +66,59 @@ Navigate through the domain structural building blocks sequentially:
 
 ### 1. [Entities & Unique Identifiers](./entities-unique-identifiers.md)
 
-- **What it covers:** An analysis of entities and mutable domain objects defined
-  by their programmatic identities rather than their structural attributes. This
-  manual covers secure tracking mechanics and type-safe identity mapping
-  utilizing the native framework `Guid` primitives and `GuidHelper` factory.
+- **What it covers:** Entities as identity-based objects, aggregate state
+  boundaries, and type-safe identity mapping with `Guid` and `GuidHelper`.
 
 ### 2. [Value Objects & Defensive Immutability](./value-objects-defensive-immutability.md)
 
-- **What it covers:** Architectural guidelines for capturing descriptive,
-  stateless, and immutable attributes of the business domain. This section
-  outlines how to apply defensive programming techniques, leverage explicit
-  runtime structural deep freezing, and execute validation checks to lock down
-  invariants.
+- **What it covers:** Immutable domain attributes, validation-first
+  construction, and defensive patterns used to preserve invariants.
 
 ### 3. [Functional Monads & Core Errors](./functional-monads-core-errors.md)
 
-- **What it covers:** An in-depth manual on modeling operational outcomes and
-  handling edge cases without throwing traditional runtime JavaScript
-  exceptions. It covers the structure of the native framework functional
-  `Result` monad, the unified `AppError` record, and the integration of
-  conditional business rules via the abstract `Specification` pattern.
+- **What it covers:** Explicit success/failure modeling through `Result`,
+  standardized error contracts with `AppError`, and rule composition through
+  `Specification`.
 
 ---
 
-## Domain Primitive Collaboration Trace
+## Example: Domain Primitive Collaboration Trace
 
-The following diagram illustrates how the individual DDD building blocks
-collaborate natively within the application layer boundaries to process business
-rules safely:
+The diagram below shows the observable collaboration path between Application
+logic and Domain primitives.
 
 ```mermaid
 graph TD
-    A[Application Use-Case] -->|1. Validates Rule via| B[Domain Specification]
-    A -->|2. Resolves Identity with| C[Guid Primitives]
-    A -->|3. Mutates State inside| D[Aggregate Root / Entity]
-    D -->|Encapsulates Attributes in| E[Immutable Value Objects]
-    D -->|4. Emits Lifecycle Outcome| F[Functional Result Monad]
-    F -->|On Failure Case Contains| G[Standardized AppError]
+  A[Application Use Case] -->|1. Validates rule through| B[Specification]
+  A -->|2. Resolves identity with| C[Guid]
+  A -->|3. Executes behavior on| D[Entity or Aggregate Root]
+  D -->|Uses| E[Value Objects]
+  D -->|Returns| F[Result]
+  F -->|Failure branch carries| G[AppError]
 
 ```
 
 ---
 
-## DDD Best Practices at a Glance
+## Constraints / Limitations
 
-:::info Isolation Mandate The domain layer must remain entirely pure. Never
-import libraries like Drizzle ORM, Axios, or Pino into a domain module file. If
-the domain requires external infrastructure capabilities, it must define them as
-abstract contracts (interfaces) inside the domain layer, leaving implementations
-to the infrastructure layer. :::
+:::info Isolation mandate
 
-:::tip TIP: Avoid Exception Sprawl Do not use `throw new Error()` for
-predictable business logic violations (e.g., "Insufficient funds" or "User
-already exists"). Reserve exceptions strictly for unrecoverable infrastructure
-faults. For all business policy validations, return a failed `Result` containing
-a well-defined `AppError` code instead. :::
+The Domain Layer must remain pure. Do not import Infrastructure libraries (for
+example ORM clients, HTTP clients, or logging adapters) into Domain modules.
+When external capabilities are required, define abstract contracts in Domain and
+provide implementations in Infrastructure. :::
+
+:::tip Exception policy
+
+Do not use `throw new Error()` for predictable business rule violations. Return
+a failed `Result` with a well-defined `AppError` instead. Reserve exceptions for
+unrecoverable Infrastructure faults. :::
 
 ---
 
-## Next Step
+## Next Steps
 
-Begin by exploring how Graviton5 handles aggregate state tracking and identity
-boundaries:
+Continue with the identity and entity model details:
 
-- 👉
-  **[Proceed to Entities & Unique Identifiers](./entities-unique-identifiers.md)**
+- **[Proceed to Entities & Unique Identifiers](./entities-unique-identifiers.md)**

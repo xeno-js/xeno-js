@@ -2,76 +2,100 @@
 title: Getting Started
 sidebar_position: 1
 description:
-  Welcome to the XenoJS Getting Started hub. Explore the core philosophy, Clean
-  Architecture isolation layer boundaries, and step-by-step setup guides.
+  Introduction to the Xeno framework installation, core directory structure, and
+  initial application bootstrapping.
 keywords:
   - xeno getting started
   - introduction
   - clean architecture
   - quick start
-  - architecture handbook
 ---
 
 # Getting Started
 
-Welcome to the official **XenoJS Architecture and Operational Manual**. This
-chapter introduces the core conceptual layout, engineering philosophy,
-structural layers, and quick-scaffolding processes required to construct
-ultra-high-performance, decoupled TypeScript enterprise services.
+The Getting Started documentation provides the foundational installation steps,
+architectural principles, and entry-point configurations required to initialize
+a Xeno application.
 
 ---
 
-## Chapter Summary
+## What it is
 
-The _Getting Started_ module establishes the fundamental technical and
-philosophical pillars of the framework. By entirely bypassing runtime decorator
-magic and metadata reflection scanning, XenoJS aligns itself directly with
-high-efficiency cloud-native and serverless paradigms, offering sub-millisecond
-start sequences. Here, you will learn how the kernel structures business logic,
-handles layer isolation via automated static analysis lint tooling, and compiles
-the dependency graph linearly through a fluent configuration API.
+The `Getting Started` module is the entry point to the Xeno framework ecosystem.
+It establishes the configuration patterns, dependency structures, and CLI
+commands needed to scaffold and run a decoupled TypeScript enterprise backend
+application.
 
----
+## How it works
 
-## Document Directory
+The execution sequence initiates via the CLI scaffolding tool, which generates a
+pre-configured directory structure separated into explicit architectural layers.
+Applications boot linearly through a programmatic `AppBuilder` instance in the
+entry module without relying on runtime decorator metadata analysis or
+reflection scanning.
 
-Navigate through the introductory path sequentially to understand how to design,
-boot, and run your first domain-driven application:
+## Why it exists
 
-### 1. [Introduction & Philosophy](./getting_started_introduction_philosophy.md)
-
-- **What it covers:** An extensive review of why XenoJS exists, its core
-  zero-magic design principles, serverless/cloud cold-start performance
-  benchmarks, and the optional peer dependency lazy-loading memory model.
-
-### 2. [Architectural Layers & Boundaries](./getting_started_architectural_layers_boundaries.md)
-
-- **What it covers:** An anatomical breakdown of the five strictly isolated
-  directory layers (`shared`, `domain`, `application`, `infrastructure`,
-  `presentation`) that form the framework's concentric onion model. This
-  document outlines the exact technical constraint rules checked at build-time
-  via `eslint.config.mjs` to block architectural decay.
-
-### 3. [Quick Start Guide](./getting_started_quick_start_guide.md)
-
-- **What it covers:** A hands-on, code-first operational setup guide. It details
-  how to scaffold a new application repository using the `@xeno/create`
-  interactive CLI wizard, organize separate `bootstrap.ts` and `main.ts` entry
-  modules, assemble modules using the fluent `AppBuilder` instance, and dispatch
-  secure transactions through the agnostics CQRS `Mediator` bus.
+This initialization strategy isolates business logic from infrastructure
+concerns from the first line of code. By enforcing compile-time validation of
+boundaries and programmatic dependency graphs, the system eliminates hidden
+configuration side-effects and reduces runtime cold-start latency.
 
 ---
 
-## Core Pipeline Flow Map
+## Directory Overview
 
-Before diving into individual deep dives, familiarize yourself with the path an
-incoming transport payload transits through the framework's sequential
-cross-cutting behavior behaviors until it reaches your final handler:
+The introductory documentation is divided into separate, atomic modules
+targeting specific operational phases:
+
+### 1. [Introduction & Philosophy](./introduction-philosophy.md)
+
+- **Definition:** A conceptual overview of the core architectural goals of the
+  Xeno framework.
+- **Behavior:** Explains the zero-reflection engine mechanics and
+  peer-dependency lazy-loading execution model.
+- **Effect:** Minimizes memory consumption and optimizes cold-start times within
+  containerized and serverless environments.
+
+### 2. [Architectural Layers & Boundaries](./architectural-layers-boundaries.md)
+
+- **Definition:** A structural specification detailing the framework's
+  concentric isolation onion model.
+- **Behavior:** Defines the boundaries across the five distinct layers:
+  `Shared`, `Domain`, `Application`, `Infrastructure`, and `Presentation`.
+- **Effect:** Enforces strict code segregation verified at build time through
+  static analysis (`eslint.config.mjs`) to eliminate layer bleeding.
+
+### 3. [Why Choose Xeno? An Architectural Deep-Dive](./why-this-framework.md)
+
+- **Definition:** A technical comparison analyzing the design trade-offs and
+  structural choices implemented in the framework.
+- **Behavior:** Outlines the native integration of CQRS pipelines, functional
+  error handling, and `AsyncLocalStorage` request sandboxing.
+- **Effect:** Displaces framework-specific runtime coupling with standard
+  TypeScript design patterns.
+
+### 4. [Quick Start Guide](https://www.google.com/search?q=./quick-start-guide.md)
+
+- **Definition:** A step-by-step operational implementation manual for initial
+  environment setup.
+- **Behavior:** Guides the user through the `@xeno/create` interactive CLI
+  wizard, `bootstrap.ts` setup, and programmatic module registration.
+- **Effect:** Delivers a functional development environment with an operational
+  CQRS execution path.
+
+---
+
+## Request Execution Flow
+
+The flowchart below traces the sequential path an incoming transport payload
+takes through the framework cross-cutting pipelines before reaching the
+designated application handler:
 
 ```mermaid
 graph LR
     A[Presentation Transport] --> B[Mediator Bus Router]
-    B --> C[Exception Ring]
+    B --> C[Exception Pipeline]
     C --> D[Telemetry Logging]
     D --> E[Schema Validation]
     E --> F[Authorization Guard]
@@ -80,18 +104,21 @@ graph LR
 
 ```
 
+> **Note on Core Pipeline Components:** Every component in this execution path
+> executes sequentially. If a layer fails (e.g., Schema Validation fails or
+> Idempotency Lock is active), the pipeline halts execution and returns the
+> boundary error back to the Presentation Transport layer.
+
 ---
 
-## Support us
+## Support and Open Source
 
-Nest is an MIT-licensed open source project. It can grow thanks to the support
-of these awesome people. If you'd like to join them, please read more
-[here](../community-open-source/support-appreciation.md).
+Xeno is an MIT-licensed open-source project. Contributions, feature requests,
+and community support guidelines are maintained within our dedicated
+[Community and Open Source Support section](../community-open-source/support-appreciation.md).
 
-## Next Step
+## Next Steps
 
-Begin by exploring the core architectural motives and compilation benefits that
-govern the system kernel:
+To begin implementation, proceed to the first core conceptual module:
 
-- 👉
-  **[Proceed to Introduction & Philosophy](./getting_started_introduction_philosophy.md)**
+- **[Proceed to Introduction & Philosophy](./introduction-philosophy.md)**

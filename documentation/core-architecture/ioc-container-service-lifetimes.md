@@ -2,9 +2,8 @@
 title: The IoC Container & Service Lifetimes
 sidebar_position: 2
 description:
-  Master XenoJS Inversion of Control (IoC) instance management, including
-  Singleton, Scoped, and Transient lifetimes, scope factories, and deterministic
-  resource disposal.
+  How Xeno manages dependency resolution with Singleton, Scoped, and Transient
+  lifetimes, including scope creation and deterministic disposal.
 keywords:
   - ioc container
   - dependency injection
@@ -17,179 +16,92 @@ keywords:
 
 # The IoC Container & Service Lifetimes
 
-## What is it?
+The IoC Container in Xeno resolves dependencies and controls instance lifetime
+across application execution. It provides three lifetimes, Singleton, Scoped,
+and Transient, to isolate state and define disposal boundaries.
 
-The **Inversion of Control (IoC) Container** is the architectural engine that
-controls object instantiation, dependency resolution, and memory lifecycles
-throughout the XenoJS framework execution lifecycle. By organizing component
-dependencies explicitly into three native service lifetimes—**Singleton**,
-**Scoped**, and **Transient**—the container manages memory boundaries cleanly,
-maintaining thread safety and preventing execution memory leaks.
+## What it is
 
-## Why does it exist?
+The IoC Container is the dependency resolution runtime used by modules to bind
+tokens to implementations. It tracks object creation rules and lifetime scope.
 
-In a highly concurrent or multi-tenant system, different services have
-fundamentally different lifecycle and data isolation requirements. For instance:
+Behavior:
 
-- A database pool connection client or external HTTP router should exist
-  globally to prevent resource exhaustion.
+- Registers services by token using class constructors or factory functions.
+- Resolves dependencies recursively based on registration metadata.
+- Stores instances according to lifetime policy.
 
-- User authentication claims, tracing identifiers, and transactional units of
-  work must remain strictly locked within a single isolated execution thread
-  context.
+Effect:
 
-The IoC container explicitly segregates these boundaries. It replaces manual
-object orchestration and prevents severe performance traps, such as accidentally
-sharing request-specific state across separate incoming connection threads.
+- Reduces manual wiring between Domain, Application, Infrastructure, and
+  Presentation components.
+- Isolates request-level state from process-level state.
+- Enables deterministic cleanup of scoped resources.
 
----
+## Why it exists
 
-## Service Lifetime Classifications
+Concurrent systems require different lifetimes for different responsibilities.
+Long-lived infrastructure clients and short-lived request context should not
+share the same lifecycle.
 
-XenoJS supports three deterministic instance tracking lifecycles:
+Behavior:
 
-| Lifetime        | Cardinality & Resolution Boundary                                                        | Architectural Target Use Case                                                            |
-| --------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| **`Singleton`** | One single instance created once and shared globally across the entire process lifetime. | State-free infrastructure clients, database connection managers, and configurations.     |
-| **`Scoped`**    | One distinct instance created per execution storage context boundary branch.             | Request metadata, current user context, transaction states, and single-request handlers. |
-| **`Transient`** | A brand new, unique instance instantiated on every individual resolution call site.      | Stateless calculation algorithms, validation parsing templates, and map operators.       |
+- Global services are cached once and reused.
+- Request services are created within a scope and disposed at the end.
+- Per-use services are instantiated on every resolve.
 
----
+Effect:
 
-## Service Registration API
+- Prevents accidental cross-request state sharing.
+- Reduces resource leaks by explicit scope disposal.
+- Keeps lifecycle intent visible in module registration.
 
-Dependencies are configured and bound within the initialization loop of a module
-(`IModule`) using the unsealed container instance. The container exposes precise
-methods for both direct constructor dependency wiring and functional
-factory-driven hydration.
+## Service lifetimes
 
-### 1. Standard Class Registration
+| Lifetime  | Definition                                               | Typical usage                                              |
+| --------- | -------------------------------------------------------- | ---------------------------------------------------------- |
+| Singleton | One instance for the process lifetime.                   | Configuration readers, shared adapters, telemetry clients. |
+| Scoped    | One instance per scope created for an execution context. | Request metadata, unit of work, context-aware handlers.    |
+| Transient | New instance on every resolution.                        | Stateless calculators, mappers, validation helpers.        |
 
-When registering a raw class, you pass the nominal type-safe injection token,
-the concrete class constructor, and an array of dependency tokens matching the
-constructor parameters in exact linear order.
+## How it works
 
-- **Singleton Registration:** Maps a globally shared instance across the entire
-  application thread.
+### Class registration
 
-```typescript
-container.addServices((services) => {
-  services.addSingleton(token, Class, dependenciesArray)
-})
-```
-
-- **Scoped Registration:** Maps an isolated instance unique to each incoming
-  request execution context branch.
+Use class registration when constructor dependencies are known as tokens.
 
 ```typescript
 container.addServices((services) => {
-  services.addScoped(token, Class, dependenciesArray)
+  services.addSingleton(token, ServiceClass, [depA, depB])
+  services.addScoped(token2, ScopedClass, [depC])
+  services.addTransient(token3, TransientClass)
 })
 ```
 
-- **Transient Registration:** Generates a completely new instance on every
-  resolution call site.
+### Factory registration
+
+Use factory registration when initialization needs runtime logic.
 
 ```typescript
 container.addServices((services) => {
-  services.addTransient(token, Class, dependenciesArray)
+  services.addSingletonFactory(TOKENS.PIPELINE, (resolver) => {
+    const logger = resolver.resolve(TOKENS.LOGGER)
+    return new PerformancePipeline(logger, 100)
+  })
+  services.addSTransientFactory(TOKENS.TRANSIENT_CLASS, (resolver) => {
+    const deps = resolver.resolve(TOKENS.DEPS)
+    return new TransientClass(deps)
+  })
+  services.addScopedFactory(TOKENS.PIPELINE, () => {
+    return new ScopedClass()
+  })
 })
 ```
 
-#### Implementation Example:
+### Request scope flow
 
-```typescript
-// Concrete example from infrastructure/modules/middleware.module.ts
-container.addServices((services) => {
-  services.addSingleton<IMiddleware<HttpHeaders>>(
-    INJECTION_TOKENS.MIDDLEWARE,
-    RequestContextMiddleware,
-    [
-      INJECTION_TOKENS.REQUEST_CONTEXT,
-      INJECTION_TOKENS.SERVICE_EXTRACTOR,
-      INJECTION_TOKENS.GATE_KEEPER,
-      INJECTION_TOKENS.SERVICE_SCOPE_FACTORY,
-    ],
-  )
-})
-```
-
-### 2. Factory-Driven Registration
-
-Factories allow for complex instantiation logic, custom configurations
-injection, or manual conditioning before object return. The factory callback
-function passes a context-aware injection tracker (`resolver`) to allow lazy
-dependency lookups during resolution.
-
-- **Singleton Factory:** Instantiates the factory closure only once, caching the
-  result globally.
-
-```typescript
-container.addServices((services) => {
-  services.addSingletonFactory(token, (resolver) => new CustomClass())
-})
-```
-
-- **Scoped Factory:** Invokes the factory once per request context branch,
-  caching the result inside the active scope array.
-
-```typescript
-container.addServices((services) => {
-  services.addScopedFactory(token, (resolver) => new CustomClass())
-})
-```
-
-- **Transient Factory:** Re-executes the factory lambda function continuously on
-  every resolution site request.
-
-```typescript
-container.addServices((services) => {
-  services.addTransientFactory(token, (resolver) => new CustomClass())
-})
-```
-
-#### Implementation Example:
-
-```typescript
-// Concrete example from infrastructure/modules/cqrs.module.ts
-container.addServices((services) => {
-  services.addSingletonFactory(
-    INJECTION_TOKENS.MY_PERFORMANCE_PIPELINE,
-    (resolver) => {
-      const logger = resolver.resolve(INJECTION_TOKENS.LOGGER)
-      const thresholdMs = 100
-      return new MyPerformancePipeline(logger, thresholdMs)
-    },
-  )
-})
-```
-
-## Scoped Isolation & Request Lifecycle Mechanics
-
-The framework guarantees multi-tenant and cross-request state isolation by
-binding the **Scoped** lifetime to an independent runtime execution wrapper.
-When a transport layer triggers an action, the system provisions an isolated
-boundary.
-
-### Lifecycle Flow of a Scoped Request
-
-1. **Request Interception:** The `RequestContextMiddleware` intercepts an
-   incoming transport request array.
-
-2. **Scope Factory Invocation:** The middleware calls
-   `IServiceScopeFactory.create()` to instantiate a dedicated `IServiceScope`
-   instance.
-
-3. **Context Binding:** A unique `ExecutionContext` is created, binding the new
-   `scope` along with isolated network and tracing details.
-
-4. **Execution Sandbox:** The request enters an asynchronous storage wrapper
-   (`_requestContext.runAsync()`), routing operations within an isolated context
-   path.
-
-5. **Deterministic Teardown:** When the operation finishes (successfully or via
-   an unhandled exception), the `finally` block activates `.dispose()` on the
-   scope, cleaning up resources.
+Scoped services are bound to an execution scope that is created and disposed per
+request.
 
 ```mermaid
 sequenceDiagram
@@ -197,35 +109,28 @@ sequenceDiagram
     participant Transport as Presentation Transport
     participant MW as RequestContextMiddleware
     participant SF as IServiceScopeFactory
-    participant Scope as Isolated IServiceScope
-    participant Handler as Scoped Command Handler
+    participant Scope as IServiceScope
+    participant Handler as Scoped Handler
 
     Transport->>MW: execute(headers, next)
     MW->>SF: create()
-    SF-->>MW: Return new IServiceScope
-    MW->>MW: Wrap scope inside ExecutionContext
-    MW->>Handler: Resolve Handler within Scope
-    activate Handler
-    Handler->>Handler: execute use-case business rules
-    Handler-->>MW: Return action response
-    deactivate Handler
+    SF-->>MW: scope
+    MW->>MW: runAsync(executionContext)
+    MW->>Handler: resolve and execute
+    Handler-->>MW: response
     MW->>Scope: dispose()
-    activate Scope
-    Scope->>Scope: Call .dispose() on nested Scoped instances
-    Scope-->>MW: Cleaned up & garbage collected
-    deactivate Scope
-    MW-->>Transport: Return finalized ResponseDto
-
+    MW-->>Transport: response
 ```
 
----
+## Internal behavior flow
 
-## Technical Implementations Exploration
+1. Presentation middleware extracts metadata and starts request processing.
+2. A new IServiceScope is created through IServiceScopeFactory.
+3. ExecutionContext is populated with identity, network, tracing, and scope.
+4. Command or Query handlers resolve dependencies inside the active scope.
+5. The scope is disposed in a finally block, including nested scoped resources.
 
-### 1. Request Scope Creation
-
-The `RequestContextMiddleware` relies on the injected `IServiceScopeFactory` to
-coordinate request sandbox boundaries:
+## Example
 
 ```typescript
 // Excerpt from presentation/middlewares/request.middleware.ts
@@ -275,66 +180,44 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
 }
 ```
 
-### 2. Eager Resource Disposal Pattern
+## Constraints and limitations
 
-To prevent persistent connection leaks, stateful services instantiated inside a
-Scoped lifetime can implement an explicit disposal sequence. When
-`scope.dispose()` is executed, the container looks for explicit teardown hooks,
-ensuring reliable resource release.
+- Captive dependency risk: injecting a Scoped dependency into a Singleton can
+  retain request state beyond its boundary.
+- Scope disposal is required for deterministic cleanup. Missing disposal can
+  delay resource release.
+- Lifetime choice does not replace thread-safety requirements inside shared
+  Singleton implementations.
+- The current implementation depends on explicit module registration order and
+  token correctness.
 
----
+## Common mistake and safe pattern
 
-## Architectural Guardrails & Common Mistakes
-
-### ❌ Captive Dependencies (The Singleton Trap)
-
-A **Captive Dependency** occurs when a longer-lived service references a
-shorter-lived service. For example, injecting a **Scoped** service directly into
-a **Singleton** constructor freezes the scoped instance inside the singleton
-context forever. This breaks request isolation and leaks multitenant or
-request-specific data across the entire global process.
+Anti-pattern:
 
 ```typescript
-// ─── CRITICAL ARCHITECTURAL ANTI-PATTERN ───
 export class FaultyGlobalService {
-  // Bounded as Singleton inside the AppBuilder graph
-  constructor(
-    // DANGER: Injecting a Scoped dependency directly locks this instance into global memory!
-    private readonly _userContext: IScopedUserContext,
-  ) {}
+  constructor(private readonly _userContext: IScopedUserContext) {}
 }
 ```
 
-### Proper Pattern for Singleton Contexts ✅
-
-If a global Singleton component needs to query data belonging to a Scoped
-service, it must retrieve it lazily at runtime through the active thread
-executor or an injected context abstraction.
+Safe pattern:
 
 ```typescript
-// ─── ACCURATE DECOUPLED PATTERN ───
 export class SafeGlobalService {
   constructor(
-    // Inject the thread manager wrapper, not the raw scoped state instance
     private readonly _contextAccessor: IRequestContext<ExecutionContext>,
   ) {}
 
   public executeAction() {
-    // Dynamically retrieve the current context boundary of the executing task safely
-    const currentThreadContext = this._requestContext.getContext()
-    const currentTenantId = currentThreadContext?.context.identity.tenantId
-    // ...
+    const ctx = this._contextAccessor.getContext()
+    const tenantId = ctx?.context.identity?.tenantId
+    return tenantId
   }
 }
 ```
 
----
+## Next step
 
-## Next Steps
-
-Now that the core lifetime and scope tracking boundaries are fully defined,
-explore the macro structural grouping layer:
-
-- **[Module Composition Pattern](./module-composition-pattern.md):** Master how
-  to bundle separate multi-lifetime services into maintainable architectural
-  blocks using `IModule` classes.
+- Continue with [Module Composition Pattern](./module-composition-pattern.md) to
+  define module boundaries and registration composition.

@@ -2,8 +2,8 @@
 title: ExecutionContext Composition
 sidebar_position: 3
 description:
-  Technical specification of Graviton5 ExecutionContext structure, documenting
-  the composition of Identity, Network, and Tracing sub-contexts.
+  Technical specification of Xeno ExecutionContext structure, documenting the
+  composition of Identity, Network, and Tracing sub-contexts.
 keywords:
   - executioncontext
   - identity context
@@ -15,55 +15,70 @@ keywords:
 
 # ExecutionContext Composition
 
-## Introduction
+## Definition
 
-The **`ExecutionContext`** is the strongly-typed structural data model that
-encapsulates the complete runtime state of an active asynchronous request thread
-within Graviton5. It serves as a unified container combining security clearance
-profiles, network topology attributes, transaction tracing tokens, and the
-localized dependency injection scope.
+ExecutionContext is the request-scoped container used in Xeno to propagate
+identity, network, tracing, and scoped dependencies across asynchronous
+operations.
 
----
+## What It Is
 
-## Why it Exists: Contextual Decoupling
+Definition: ExecutionContext is a Domain contract with two top-level fields:
+`context` and `scope`.
 
-Downstream software layers (such as application use-case handlers or
-infrastructure repositories) frequently require access to environmental
-indicators to enforce operational boundaries. Examples include:
+Behavior:
 
-- Verifying a caller's permissions during command dispatching.
+- `context` is a RequestContext that includes:
+  - `identity` (Identity)
+  - `network` (NetworkContext)
+  - `tracing` (TracingContext)
+- `scope` is an IServiceScope created per request
 
-- Segmenting multi-tenant database transactions.
+Effect: Command Handler, Query Handler, logging, idempotency, and authorization
+flows can consume the same request metadata and scoped dependencies without
+transport coupling.
 
-- Appending a correlation ID to distributed logging outputs.
+## How It Works
 
-Instead of exposing raw presentation layer models (such as Express requests or
-Fastify context properties) to the core domain, Graviton5 normalizes these
-variables into an agnostically structured object. This isolation allows your
-core application logic to remain fully operational and testable outside of
-network delivery grids.
+Definition: ExecutionContext is created in middleware and propagated through
+IRequestContext.runAsync.
 
----
+Behavior:
 
-## Structural Anatomy of `ExecutionContext`
+- RequestContextMiddleware composes ExecutionContext after header extraction and
+  authentication
+- Identity is provided by GateKeeper authentication output
+- Network includes requestId and clientIp
+- Tracing includes correlationId, startTime, and spanId
+- A new IServiceScope is attached and disposed when request processing ends
+- NodeRequestContext stores the context through AsyncLocalStorage
 
-The `ExecutionContext` object is composed of a nested `context` record and an
-operational `scope` reference:
+Effect: Each asynchronous request chain resolves isolated context data and
+scoped services.
+
+## Structural Anatomy
+
+Definition: The diagram reflects the current contract-level composition.
+
+Behavior: ExecutionContext contains RequestContext and IServiceScope.
+RequestContext is split into Identity, NetworkContext, and TracingContext.
+
+Effect: The type model makes request metadata explicit and testable.
 
 ```mermaid
 classDiagram
     class ExecutionContext {
-        +context ContextData
+    +context RequestContext
         +scope IServiceScope
     }
-    class ContextData {
-        +identity AuthClaims
+  class RequestContext {
+    +identity Identity
         +network NetworkContext
         +tracing TracingContext
     }
-    class AuthClaims {
-        +string sub
-        +Optional~string~ tenantId
+  class Identity {
+    +Optional~Guid~ userId
+    +Optional~Guid~ tenantId
         +Optional~string[]~ roles
         +Optional~string[]~ permissions
     }
@@ -77,108 +92,81 @@ classDiagram
         +Optional~string~ spanId
     }
 
-    ExecutionContext *-- ContextData
+    ExecutionContext *-- RequestContext
     ExecutionContext *-- IServiceScope
-    ContextData *-- AuthClaims
-    ContextData *-- NetworkContext
-    ContextData *-- TracingContext
+    RequestContext *-- Identity
+    RequestContext *-- NetworkContext
+    RequestContext *-- TracingContext
 
 ```
 
-### 1. The Core Composition Object
+## Why It Exists
 
-The primary wrapper layout exposed across thread boundaries contains two fields:
+Definition: The contract is designed to decouple Application and Domain logic
+from raw transport objects.
 
-- **`context`**: Holds the structured tracking details (Identity, Network,
-  Tracing).
+Behavior: Instead of passing framework-specific request models through every
+layer, middleware maps and stores only the fields required by business and
+observability flows.
 
-- **`scope`**: Refers to the isolated `IServiceScope` instance generated for the
-  request.
+Effect: Code remains transport-agnostic and easier to validate in unit tests.
 
-### 2. The Identity Sub-Context (`AuthClaims`)
+## Example
 
-Extracted from validated authorization tokens, this sub-context models the
-security permissions of the caller:
+Definition: The following snippets show context registration and context
+consumption.
 
-- **`sub`**: The unique identifier string representing the authenticated subject
-  or user.
+Behavior:
 
-- **`tenantId`**: An optional identifier used to implement data separation in
-  multi-tenant software systems.
+- Registration enables context services in the container
+- Consumption reads the active context through IRequestContext
 
-- **`roles`**: An array listing the authorization roles assigned to the subject.
+Effect: Handlers can enforce tenant, role, and tracing-aware behavior.
 
-- **`permissions`**: An array listing the fine-grained operational permissions
-  granted to the subject.
-
-### 3. The Network Sub-Context (`NetworkContext`)
-
-Captures volatile transmission criteria from the presentation layer:
-
-- **`requestId`**: A unique, cryptographically random `Guid` tracking token
-  assigned to the physical request.
-
-- **`clientIp`**: An optional string tracking the source IP address, parsed from
-  headers like `X-Forwarded-For`.
-
-### 4. The Tracing Sub-Context (`TracingContext`)
-
-Manages distributed telemetry metrics across microservices:
-
-- **`correlationId`**: A shared `Guid` sequence that persists across network
-  boundaries to group related operations.
-
-- **`startTime`**: A high-precision Unix epoch millisecond timestamp capturing
-  exactly when the request entered the middleware boundary.
-
-- **`spanId`**: An optional distributed tracking identifier used to integrate
-  with external telemetry aggregators.
-
----
-
-## Practical Implementation Guide: Consuming Context Data
-
-Downstream components can safely access the active `ExecutionContext` by
-injecting the `IRequestContext` wrapper token. The following blueprint
-demonstrates how a query handler can leverage this to enforce tenant isolation
-rules:
+### Context Registration
 
 ```typescript
-import { IRequestContext, ExecutionContext } from '@graviton5/core'
-import { INJECTION_TOKENS } from '@graviton5/core'
+import { AppBuilder } from '@xeno/core'
+
+export async function bootstrap() {
+  const builder = new AppBuilder()
+
+  builder.addContext()
+
+  return await builder.build()
+}
+```
+
+### Consuming Context Data
+
+```typescript
+import { IRequestContext, ExecutionContext } from '@xeno/core'
 
 export class GetTenantAnalyticsQueryHandler {
-  // 1. Inject the agnostics context accessor token
   constructor(
     private readonly _contextAccessor: IRequestContext<ExecutionContext>,
   ) {}
 
-  public async handle(query: any): Promise<any> {
-    // 2. Safely extract the active execution context block
+  public async handle(): Promise<{
+    tenantPartition: string
+    processedAt: number
+  }> {
     const threadContext = this._contextAccessor.getContext()
 
     if (!threadContext) {
       throw new Error(
-        '[Context Fault] Execution context is missing in the active thread.',
+        'Execution context is missing in the active request flow.',
       )
     }
 
-    // 3. Extract the isolated identity properties
     const { identity } = threadContext.context
 
-    // 4. Enforce strict multi-tenant boundary checks
     if (!identity.tenantId) {
-      throw new Error(
-        '[Security Fault] Multi-tenant queries require a valid tenant context identifier.',
-      )
+      throw new Error('Tenant context is required for this query.')
     }
 
-    const activeTenantId: string = identity.tenantId
-    console.log(
-      `[Query Dispatched] Fetching data partition for tenant keyspace: ${activeTenantId}`,
-    )
+    const activeTenantId = identity.tenantId
 
-    // Execute tenant-isolated business operations...
     return {
       tenantPartition: activeTenantId,
       processedAt: Date.now(),
@@ -187,28 +175,22 @@ export class GetTenantAnalyticsQueryHandler {
 }
 ```
 
----
+## Constraints / Limitations
 
-## Technical Pitfalls to Avoid
+Definition: ExecutionContext composition has explicit operational constraints in
+the current implementation.
 
-- ❌ **Do not cache context states inside Singleton scopes:** Never assign the
-  output of `_contextAccessor.getContext()` to a local class property inside a
-  service configured with a Singleton lifetime. Doing so locks that specific
-  request's context in memory globally, exposing subsequent requests to data
-  corruption and cross-tenant security leaks.
+Behavior:
 
-- ❌ **Do not modify context properties inline:** The sub-contexts managed
-  within `ExecutionContext` should be treated as immutable read-only records.
-  Altering variables like `identity.tenantId` dynamically during a request
-  breaks auditing guarantees and can destabilize downstream pipeline components.
+- Context snapshots returned by NodeRequestContext are shallow-frozen copies
+- Mutable nested objects are not deeply frozen by default
+- Context is available only when code executes inside runAsync middleware flow
+- Scope lifecycle is request-bound and should not be reused across requests
 
----
+Effect: Services should read context on demand and avoid persisting
+request-scoped state in Singleton components.
 
-## Next Steps
+## Next Step
 
-Now that you understand the internal composition of the execution context,
-explore the mechanisms used to parse and extract these fields from raw transport
-requests:
-
-- 👉
-  **[Proceed to Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers.md)**
+Continue with
+[Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers.md).

@@ -3,7 +3,7 @@ title: Functional Monads & Core Errors
 sidebar_position: 4
 description:
   Practical developer manual for handling operational outcomes and domain errors
-  using Graviton5 Result monad and AppError architecture.
+  using Xeno Result monad and AppError architecture.
 keywords:
   - result monad
   - apperror
@@ -15,263 +15,160 @@ keywords:
 
 # Functional Monads & Core Errors
 
-## What is it?
+## Definition
 
-Graviton5 replaces traditional JavaScript exception throwing patterns with
-explicit, type-safe functional error handling. The framework introduces the
-**Result Monad** pattern via the `Result<TValue, TError>` class and standardizes
-cross-cutting system faults through the **`AppError`** execution envelope.
+Functional Monads and Core Errors in Xeno describe two complementary constructs:
+`Result<TValue, TError>` for explicit operation outcomes, and `AppError` for
+structured thrown errors.
 
----
+## What It Is
 
-## Why does it exist?
+Definition: `Result` is a Domain container with two channels (success or
+failure). `AppError` is a typed error envelope extending `Error` with `code` and
+`status`.
 
-In standard Node.js applications, errors are typically handled by scattering
-`throw new Error()` statements across different layers. This approach introduces
-multiple architectural problems:
+Behavior:
 
-- **Hidden Break Points:** A thrown exception immediately breaks the current
-  execution stack, creating unexpected exit paths that are difficult to trace
-  static-analytically.
-- **Loss of Type Safety:** The native JavaScript `catch (error)` block forces
-  the error variable type to be `any` or `unknown`, losing all autocomplete and
-  validation properties during compilation.
-- **Layer Leakage:** Raw database exceptions or network timeout errors are
-  frequently returned directly to user presentation interfaces, exposing
-  internal security credentials and data structures.
+- `Result` instances are created through `Result.ok()` and `Result.fail()`
+- `Result` exposes `isOk()`, `getValueOrThrow()`, and `getErrorOrThrow()`
+- `AppError` instances are created through static factories such as
+  `AppError.create`, `AppError.throw`, and `AppError.aborted`
+- `AppError.throwIfAborted` checks an optional `AbortSignal` and throws when
+  aborted
 
-By encapsulating both successful payloads and business rule violations inside an
-immutable object wrapper, Graviton5 forces developers to declare error
-boundaries explicitly. This guarantees that layer communications remain fully
-type-safe.
+Effect: Application and Domain flows can express expected failures as values
+while preserving a structured path for thrown runtime errors.
 
----
+## How It Works
 
-## The `AppError` Architectural Envelope
+Definition: The current implementation separates value-based failure handling
+from thrown exceptions.
 
-The `AppError` class extends the native JavaScript `Error` primitive, enriching
-it with machine-readable error codes, metadata context tracking, and HTTP status
-codes ready for delivery.
+Behavior:
 
-### Internal Code Blueprint
+- Result flow:
+  - `Result.ok(value)` creates a success instance
+  - `Result.fail(error)` creates a failure instance
+  - `isOk()` selects the branch
+  - `getValueOrThrow()` throws when called on failure
+  - `getErrorOrThrow()` throws when called on success
+- AppError flow:
+  - `AppError.create(payload)` returns a configured error object
+  - `AppError.throw(payload)` throws immediately
+  - `AppError.aborted(name)` builds a standardized aborted error
+  - `AppError.throwIfAborted(signal, name)` enforces cancellation boundaries
+- Type alias:
+  - `ResultType<T, E = AppError>` maps to `Result<T, E>`
 
-```typescript
-import type { Maybe, Optional } from '@/shared'
-import {
-  ERROR_CODE_MESSAGES,
-  ERROR_CODES,
-  Guards,
-  STATUS_CODES,
-} from '@/shared'
+Effect: The framework enables explicit branching for business outcomes and
+consistent error metadata for thrown failures.
 
-interface ErrorPayload {
-  message: string
-  code: string
-  status: number
-  name: string
-  cause: Optional<unknown>
-}
+## Why It Exists
 
-export class AppError extends Error {
-  public readonly code: string
-  public readonly status: number
+Definition: The model is designed to make outcome handling explicit at call
+sites.
 
-  private constructor(payload: ErrorPayload) {
-    super(payload.message)
-    this.name = payload.name
-    this.code = payload.code
-    this.status = payload.status
-    this.cause = payload.cause
-  }
+Behavior: Consumers must check the result state before unwrapping values, and
+can use a shared error shape when propagating thrown failures.
 
-  public static create(payload: ErrorPayload): AppError {
-    return new AppError(payload)
-  }
+Effect: This reduces ambiguous control flow and improves consistency across
+Application, Domain, Infrastructure, and Presentation boundaries.
 
-  public static throw(payload: ErrorPayload): never {
-    throw new AppError(payload)
-  }
+## Example
 
-  public static aborted(name: string): AppError {
-    return new AppError({
-      code: ERROR_CODES.ABORTED,
-      message: ERROR_CODE_MESSAGES[ERROR_CODES.ABORTED],
-      status: STATUS_CODES.ABORTED,
-      name,
-      cause: new Error(
-        'The client closed the connection before the server finished responding.',
-      ),
-    })
-  }
+Definition: The example returns `Result.fail` for a Domain rule violation and
+`Result.ok` for a successful path.
 
-  public static throwIfAborted(signal: Maybe<AbortSignal>, name: string): void {
-    if (Guards.isDefined(signal) && signal.aborted) {
-      throw AppError.aborted(name)
-    }
-  }
-}
-```
+Behavior:
 
----
+- A debit command validates balance before mutation
+- Failure returns `Result.fail(AppError.create(...))`
+- Success returns `Result.ok(receipt)`
+- Consumer branches with `isOk()` before unwrapping
 
-## The `Result` Monad Mechanics
-
-The `Result<TValue, TError>` block encapsulates the status of an active
-operation. It cannot be instantiated via direct assignment; developers must use
-the explicit static factory methods `Result.ok()` or `Result.fail()`.
-
-### The `ResultType` Alias
-
-To simplify typical code declarations, Graviton5 exposes a clean utility type
-mapping `TError` to an `AppError` fallback by default:
-
-```typescript
-export type ResultType<T, E = AppError> = Result<T, E>
-```
-
----
-
-## Practical Implementation Guide
-
-### 1. Returning a Result from a Domain Service
-
-This example demonstrates how to encapsulate business rules within a banking
-transfer scenario without throwing native exceptions:
+Effect: The caller handles both outcomes without relying on exceptions for
+expected business paths.
 
 ```typescript
 import {
-  STATUS_CODES,
+  AppError,
   ERROR_CODES,
   Result,
   ResultType,
-  AppError,
-} from '@graviton5/core'
+  STATUS_CODES,
+} from '@xeno/core'
 
-export interface TransferReceipt {
+interface TransferReceipt {
   transactionId: string
   processedAt: Date
 }
 
-export class BankAccount {
-  private _balanceInCents: number = 50000 // €500.00 baseline
+class BankAccount {
+  private balanceInCents = 50000
 
-  /**
-   * @description Processes a debit transaction safely via the Result monad.
-   */
   public executeDebit(amountInCents: number): ResultType<TransferReceipt> {
-    // 1. Invariant check: Domain Policy violation (Not an infrastructure crash)
-    if (amountInCents > this._balanceInCents) {
+    if (amountInCents > this.balanceInCents) {
       return Result.fail(
         AppError.create({
           name: 'InsufficientFundsException',
           code: ERROR_CODES.BAD_REQUEST,
           status: STATUS_CODES.BAD_REQUEST,
-          message:
-            'Operation rejected: Account holds insufficient funds to complete transfer.',
+          message: 'Insufficient funds.',
           cause: undefined,
         }),
       )
     }
 
-    // 2. State Mutation execution
-    this._balanceInCents -= amountInCents
+    this.balanceInCents -= amountInCents
 
-    const receipt: TransferReceipt = {
-      transactionId:
-        'TXN-' + Math.random().toString(36).substring(7).toUpperCase(),
+    return Result.ok({
+      transactionId: 'TXN-' + Date.now().toString(36).toUpperCase(),
       processedAt: new Date(),
-    }
-
-    // 3. Return sealed success channel
-    return Result.ok(receipt)
+    })
   }
 }
-```
 
-### 2. Consuming and Processing Results in the Application Layer
+async function handleTransfer(
+  command: { amount: number },
+  signal?: AbortSignal,
+) {
+  AppError.throwIfAborted(signal, 'handleTransfer')
 
-When your application workflows receive a `Result` output, use the descriptive
-access properties to unwrap the payload safely:
+  const account = new BankAccount()
+  const result = account.executeDebit(command.amount)
 
-```typescript
-import { BankAccount } from './bank-account.entity.js'
-
-export class TransferUseCaseHandler {
-  public async handle(
-    command: { amount: number },
-    signal?: AbortSignal,
-  ): Promise<any> {
-    // 1. Defensive Guard check: Stop execution instantly if client dropped connection
-    AppError.throwIfAborted(signal, 'TransferUseCaseHandler.handle')
-
-    const account = new BankAccount()
-    const result = account.executeDebit(command.amount)
-
-    // 2. Evaluate outcome path branching safely without try/catch blocks
-    if (!result.isOk()) {
-      const error = result.getErrorOrThrow()
-      console.warn(
-        `[Transfer Blocked] Code: ${error!.code}. Reason: ${error!.message}`,
-      )
-
-      return {
-        success: false,
-        error: { code: error!.code, message: error!.message },
-      }
-    }
-
-    // 3. Unwrap the success payload securely
-    const successReceipt = result.getValueOrThrow()
+  if (!result.isOk()) {
+    const error = result.getErrorOrThrow()
     return {
-      success: true,
-      data: successReceipt,
+      success: false,
+      error: { code: error.code, message: error.message },
     }
   }
+
+  return { success: true, data: result.getValueOrThrow() }
 }
 ```
 
----
+## Constraints / Limitations
 
-## Operational Lifecycle Topologies
+Definition: The current implementation has explicit behavior constraints that
+should be considered in handler design.
 
-The flowchart below visualizes how requests move through functional verification
-checking blocks before mapping final structural responses:
+Behavior:
 
-```mermaid
-flowchart TD
-    A[Trigger Use-Case Action] --> B{Check AbortSignal via throwIfAborted}
-    B -->|signal.aborted === true| C[Throw AppError.aborted Exception]
-    B -->|Normal execution| D[Execute Business Rules Logic]
-    D --> E{Are invariants respected?}
-    E -->|No Policy Violation| F[Instantiate Result.fail error]
-    E -->|Yes Successful| G[Instantiate Result.ok value]
-    F --> H[Return ResultType object to presentation layer]
-    G --> H
+- `getValueOrThrow` and `getErrorOrThrow` throw generic `Error` when used on the
+  wrong branch
+- `Result` does not enforce exhaustiveness by itself; callers must branch via
+  `isOk()`
+- `Result.ok()` allows `undefined` values
+- `AppError` payload construction is manual; consistency depends on caller
+  conventions
 
-```
+Effect: Teams should adopt disciplined usage patterns, especially in Query and
+Command Handler code, to keep outcome handling deterministic.
 
----
+## Next Step
 
-## Technical Pitfalls to Avoid
-
-- ❌ **Do not call `getValueOrThrow()` without checking `isOk()`:** Invoking
-  property unwrapping parameters blindly on a failed execution outcome path will
-  cause the internal container logic to throw a raw JavaScript exception,
-  breaking runtime execution.
-- ❌ **Do not use `Result` for catastrophic infrastructure failures:**
-  Predictable domain rule violations (e.g., "SKU out of stock") belong inside a
-  returned `Result.fail()`. Catastrophic, unexpected runtime infrastructure
-  issues (such as an unreachable database pool or socket network loss) should be
-  thrown as an actual `AppError.throw()` to let the framework exception pipeline
-  catch and log it globally.
-
----
-
-## Next Architecture Layer
-
-Now that the core domain primitives, entities, value types, and monads are
-established, progress to the execution environment mechanics:
-
-- **[The Request-Identity Storage Lifecycle](../execution-context-middleware/request-identity-storage-lifecycle.md)**:
-  Explore how authentication states and metadata are propagated safely across
-  asynchronous thread continuations.
+Continue with
+[The Request-Identity Storage Lifecycle](../execution-context-middleware/README.md)
+to connect Result-based flows with request-scoped execution context.
