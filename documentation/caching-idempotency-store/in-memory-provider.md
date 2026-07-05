@@ -207,11 +207,10 @@ await this._cacheService.clear()
   this provider to host persistent corporate metrics, user tokens, or
   transaction states requiring long-term durability across cluster updates.
 - **Risk of Heap Inflation and Out-of-Memory (OOM) Failures**: Registering
-  dynamic lookups or high-volume datasets without passing an explicit
-  `cacheTtlSeconds` integer value forces records to persist indefinitely. This
-  accumulation degrades garbage collection execution performance and can lead to
-  process crashes due to heap memory exhaustion, necessitating reasonable time
-  limits.
+  dynamic lookups or high-volume datasets without passing an explicit `ttl`
+  integer value forces records to persist indefinitely. This accumulation
+  degrades garbage collection execution performance and can lead to process
+  crashes due to heap memory exhaustion, necessitating reasonable time limits.
 
 ---
 

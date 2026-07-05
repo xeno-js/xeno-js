@@ -152,7 +152,8 @@ execution payloads through decoupled message-routing abstractions.
 #### Behavior
 
 This layer incorporates command and query dispatch protocols, the central core
-`Mediator` bus, cross-cutting interceptor rings (`CompositePipeline`,
+`Mediator` bus, the abstract `BaseHandler` that provides the current user in the
+thread context, cross-cutting interceptor rings (`CompositePipeline`,
 `ValidationPipeline`, `IdempotencyPipeline`), and structural object mapping
 systems (`ClaimsIdentityMapper`). It coordinates technical actions exclusively
 by interacting with abstract domain interfaces.

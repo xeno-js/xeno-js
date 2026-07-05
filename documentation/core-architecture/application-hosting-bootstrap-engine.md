@@ -122,6 +122,7 @@ export async function bootstrap() {
     // 3. Configure global cross-cutting CQRS execution pipelines
     .addPipeline((config) => {
       config.performance.thresholdMs = 500 // Logs slow operations exceeding 500ms
+      config.authorization.isEnabled = true // Enforces authorization
       config.authorization.tenant = true // Enforces multi-tenant data boundaries
       config.commandBus.idempotency = { lockTtlSeconds: 60 }
       config.commandBus.concurrency = { maxRetries: 3 }
@@ -231,6 +232,24 @@ deterministic compilation sequence:
    omitted from the configuration script, its corresponding third-party package
    assets (e.g., `drizzle-orm`) are skipped during compilation, keeping runtime
    memory footprints minimal.
+
+:::danger Strict Inversion of Control (IoC) Graph Validation During the final
+invocation of the `.build()` method, the framework engine executes a
+deterministic validation loop across the entire service container before handing
+control over to the application transport adapters. If any of the following
+conditions are met, the bootstrap sequence aborts instantly, throwing a fatal
+exception that halts the Node.js process initialization:
+
+- **Arity Mismatch (`IoC Arity Mismatch Error`)**: The number of dependencies
+  declared within the bootstrap registration array does not exactly match the
+  number of parameters expected by the target class constructor signature.
+- **Missing Dependency (`IoC Missing Dependency Error`)**: One of the nominal
+  branded tokens declared as a constructor dependency has not been registered
+  anywhere within the active modules or the IoC container registry.
+
+This structural validation tier completely eliminates runtime instantiation
+anomalies, execution failures, or hidden side-effects caused by unresolved
+dependencies or passing `undefined` arguments into class components. :::
 
 ---
 

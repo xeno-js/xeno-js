@@ -1,10 +1,10 @@
 # Query caching pipeline behavior
 
 The `QueryCachingPipeline` provides high-performance response caching across the
-Query Track. It intercepts read requests that implement the framework's
-`ICachedQuery` contract, inspecting active cache infrastructure targets
-(In-Memory maps or distributed Redis clusters) to serve read payloads instantly
-and bypass redundant data access layers.
+Query Track. It intercepts read requests that implement the framework's `IQuery`
+contract, inspecting active cache infrastructure targets (In-Memory maps or
+distributed Redis clusters) to serve read payloads instantly and bypass
+redundant data access layers.
 
 ---
 
@@ -41,22 +41,21 @@ builder.addPipeline((opts) => {
 })
 ```
 
-### The Query Consumer Contract (`ICachedQuery`)
+### The Query Consumer Contract (`IQuery`)
 
-Queries must declare their caching rules by implementing the `ICachedQuery`
-protocol:
+Queries must declare their caching rules by implementing the `IQuery` protocol:
 
 ```typescript
-import type { ICachedQuery } from '@xeno/core'
+import type { IQuery } from '@xeno/core'
 
-export class GetProjectMetricsQuery implements ICachedQuery<ProjectMetricsDto> {
+export class GetProjectMetricsQuery implements IQuery<ProjectMetricsDto> {
   public readonly intent = 'GetProjectMetricsQuery'
 
   constructor(
     public readonly projectId: string,
     public readonly cacheOptions: {
       cacheKey: string
-      cacheTtlSeconds: number
+      ttl: number
       bypassCache?: boolean
       consistentRead?: boolean
     },

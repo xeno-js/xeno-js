@@ -26,10 +26,10 @@ lifecycles managed by the query bus execution path.
 
 The `QueryCachingPipeline` is a native pipeline behavior in Xeno engineered to
 provide transparent, high-performance caching for read-side operations. It
-exclusively intercepts queries implementing the framework's `ICachedQuery`
-contract, evaluating explicit cache keys against an infrastructure-backed
-storage provider (`ICache`) to short-circuit duplicate data lookups and bypass
-primary relational database indexes entirely.
+exclusively intercepts queries implementing the framework's `IQuery` contract,
+evaluating explicit cache keys against an infrastructure-backed storage provider
+(`ICache`) to short-circuit duplicate data lookups and bypass primary relational
+database indexes entirely.
 
 ---
 
@@ -164,19 +164,19 @@ export async function bootstrap(): Promise<IServiceContainer> {
 ### 2. Crafting an Eligible Cached Query Message
 
 To channel a query payload through the caching middleware ring, implement the
-framework's native `ICachedQuery` contract:
+framework's native `IQuery` contract:
 
 ```typescript
 // src/application/queries/get-product-catalog.query.ts
-import type { ICachedQuery, CacheOptions, Optional } from '@xeno/core'
+import type { IQuery, CacheOptions, Optional } from '@xeno/core'
 import { REQUEST_TYPE } from '@xeno/core'
 
 export interface ProductCatalogDto {
   products: Array<{ id: string; name: string; price: number }>
 }
 
-// IMPORTANT: USE ONLY ICachedQuery<T> FOR THE QueryCachingPipeline!
-export class GetProductCatalogQuery implements ICachedQuery<ProductCatalogDto> {
+// IMPORTANT: USE ONLY IQuery<T> FOR THE QueryCachingPipeline!
+export class GetProductCatalogQuery implements IQuery<ProductCatalogDto> {
   public readonly type = REQUEST_TYPE.QUERY
   public readonly intent = 'GetProductCatalogQuery' as const
   public readonly cacheOptions: CacheOptions
@@ -186,7 +186,7 @@ export class GetProductCatalogQuery implements ICachedQuery<ProductCatalogDto> {
       // Define a deterministic, unique cache namespace key identifier string
       cacheKey: `catalog:category:${categoryFilter.trim().toLowerCase()}`,
       // Time-to-live expiration constraint (e.g., cache data for 10 minutes)
-      cacheTtlSeconds: 600,
+      ttl: 600,
       // If true, bypasses the cache lookup phase completely to pull directly from the DB
       bypassCache: forceRefresh,
       consistentRead: false,

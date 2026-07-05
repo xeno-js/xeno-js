@@ -24,11 +24,12 @@ programmatic integration rules managed by the security interceptor subsystems.
 
 ## Direct Definition Block
 
-The `AuthorizationPipeline` is the central access control boundary within the
-Xeno messaging engine. Operating as a foundational middleware behavior inside
-the mediator ring, it intercepts incoming requests (Commands and Queries) early
-in the request lifecycle to evaluate identity metadata, multi-tenant alignment,
-and operational permissions before use-case handlers are evaluated.
+The `AuthorizationPipeline` is a specialized access control boundary within the
+Xeno messaging engine. Operating as a conditional middleware behavior inside the
+mediator ring, it intercepts incoming requests (Commands and Queries) to
+evaluate Role-Based Access Control (RBAC), Permission-Based Access Control
+(PBAC), and custom security strategy rules through sequential synchronous loop
+checking before use-case handlers are evaluated.
 
 ---
 
@@ -37,18 +38,18 @@ and operational permissions before use-case handlers are evaluated.
 ### What it is
 
 The centralized security paradigm is an un-bypassable transaction interceptor
-chain that separates security credentials evaluation from application use-case
-logic.
+chain that separates role, permission, and custom policy validation rules from
+application use-case logic.
 
 ### How it works
 
-Rather than allowing individual use cases or route handlers to independently
-parse user identities, incoming messages are intercepted by the
-`AuthorizationPipeline`. The pipeline evaluates identity properties sequentially
-against configured policy matrices. If a security criteria violation is
-detected, propagation terminates immediately, and a failed `Result` monad
-containing an explicit framework error payload is returned directly to the
-active transport interface.
+Rather than allowing individual use-case handlers or route controllers to
+independently verify client privileges, incoming requests pass through the
+`AuthorizationPipeline`. The pipeline loops over a pre-compiled array of
+authorized security strategies sequentially. If any strategy detects a privilege
+violation or contract failure (`!result.isOk()`), request propagation terminates
+instantly, short-circuiting execution to return the failed `Result` monad
+directly back to the active transport interface.
 
 ### Why it exists
 
@@ -66,12 +67,12 @@ newly written endpoint.
 ### What it is
 
 Authorization Pipeline configuration represents the declarative assembly of
-tenant separation gates, Role-Based Access Control (RBAC), and Permission-Based
-Access Control (PBAC) policies inside the application container graph.
+Role-Based Access Control (RBAC), Permission-Based Access Control (PBAC), and
+custom strategy arrays inside the application container graph.
 
 ### How it works
 
-The security subsystem remains completely inactive until explicitly enabled via
+The security pipeline remains completely inactive until explicitly enabled via
 the global pipeline setup block inside the application bootstrap routine
 (`src/bootstrap.ts`). It compiles the policy maps programmatically via the fluid
 configuration callbacks:
@@ -91,10 +92,7 @@ export async function bootstrap(): Promise<IServiceContainer> {
       // 1. Enable the overarching authorization behavior subsystem
       opts.authorization.isEnabled = true
 
-      // 2. Activate tenant segmentation guards if building a SaaS application
-      opts.authorization.tenant = true
-
-      // 3. Configure native Role-Based (RBAC) and Permission-Based (PBAC) access control
+      // 2. Configure native Role-Based (RBAC) and Permission-Based (PBAC) access control
       opts.authorization.policy.role = true
       opts.authorization.policy.permission = true
       opts.authorization.policy.policyRegistry = {
@@ -123,30 +121,27 @@ enabling comprehensive compliance audits across all application entry paths.
 
 ### What it is
 
-The `BaseAuthorizationStrategy<TRequest>` is an abstract template utility that
-encapsulates shared context-parsing routines and pre-flight identity checkpoints
-for bespoke security rule evaluations.
+The `BaseAuthorizationStrategy<TRequest>` is an abstract template utility class
+that encapsulates shared context-parsing routines and pre-flight authentication
+checkpoints for bespoke security rule evaluations.
 
 ### How it works
 
-The base class implements structural verification hooks that execute prior to
-invoking custom validation rules:
+The base class implements structural verification hooks that execute within its
+public `.execute()` lane prior to invoking custom validation rules:
 
 - **Automated Thread Context Resolution**: Dynamically extracts the active
-  thread-local data memory cell via the injected `IRequestContext` wrapper.
-- **Pre-Flight Authentication Guard**: Verifies if an authenticated user session
-  profile exists within the storage thread. If a non-authenticated payload
-  reaches the loop, it intercepts execution instantly and returns an HTTP 401
-  Unauthorized status code, shielding downstream custom evaluation rules from
-  handling undefined identity states.
+  `ExecutionContext` cell bound to the thread via the injected `IRequestContext`
+  wrapper.
+- **Pre-Flight Authentication Guard**: Verifies if an active, defined request
+  context exists. If a non-authenticated payload reaches the loop
+  (`!Guards.isDefined(context)`), it intercepts execution instantly and returns
+  an unauthorized `AppError` failure monad, shielding downstream custom
+  evaluation rules from handling undefined identity states.
 
-The class exposes targeted protected helpers to maintain uniform error
-normalization:
-
-- `this.createUnauthorizeError(request, message)`: Standardizes HTTP 401
-  Unauthorized result payloads (`PIPELINE_ERROR_CODES.AUTHORIZATION_FAILED`).
-- `this.createForbiddenError(request, message)`: Standardizes HTTP 403 Forbidden
-  result payloads (`PIPELINE_ERROR_CODES.AUTH_FORBIDDEN`).
+Once pre-flight checks clear, the execution lane automatically forwards the
+request payload and the verified `Identity` claims to the overridden
+`performAuthorizationCheck` subclass method.
 
 ### Why it exists
 
@@ -165,7 +160,7 @@ override the abstract `performAuthorizationCheck(request, auth)` lifecycle hook:
 
 ```typescript
 // src/infrastructure/security/resource-ownership.strategy.ts
-import { BaseAuthorizationStrategy, Result } from '@xeno/core'
+import { BaseAuthorizationStrategy, Result, AppError } from '@xeno/core'
 import type {
   IRequest,
   Identity,
@@ -194,13 +189,15 @@ export class ResourceOwnershipStrategy extends BaseAuthorizationStrategy<IReques
       // Verify if the authenticated user matches the resource owner or is a super admin
       const isOwner = auth.userId === documentOwnerId
       const isSuperAdmin = auth.roles
-        .map((r) => r.toLowerCase())
+        ?.map((r) => r.toLowerCase())
         .includes('superadmin')
 
       if (!isOwner && !isSuperAdmin) {
-        return this.createForbiddenError(
-          request,
-          `Authorization denied: User ${auth.userId} does not own the requested document resource.`,
+        return Result.fail(
+          AppError.forbidden(
+            request.intent,
+            `Authorization denied: User ${auth.userId} does not own the requested document resource.`,
+          ),
         )
       }
     }
@@ -253,12 +250,20 @@ export async function bootstrap(): Promise<IServiceContainer> {
 
 ## Architectural Constraints & Trade-offs
 
+- **User and Tenant Boundary Verification Decoupled from the Pipeline**: The
+  `AuthorizationPipeline` itself does _not_ contain validation filters for raw
+  user presence or multi-tenant scope containment. While
+  `UserAuthorizationStrategy` and `TenantAuthorizationStrategy` are registered
+  inside the dependency injection map during initialization, their execution
+  checks are triggered natively by the `BaseHandler` lifecycle rather than the
+  generic mediator pipeline behavior loop. The middleware pipeline evaluates
+  policy mappings and custom extensions exclusively.
 - **Raw Javascript Error Throwing Prohibited**: Software engineers cannot use
   raw `throw new Error()` statements inside custom strategy hooks. Bypassing the
   pipeline's structured resolution path breaks error handling uniformity and
   leaks internal code layouts back to presentation clients. Security failures
-  must return structured result monads via `this.createForbiddenError()` or
-  `this.createUnauthorizeError()`.
+  must return type-safe, functional failed results via
+  `Result.fail(AppError.forbidden(...))`.
 - **Compulsory IRequestContext Constructor Invariants**: Custom security
   components depend directly on asynchronous thread storage. Forgetting to
   resolve `INJECTION_TOKENS.REQUEST_CONTEXT` and passing it to the base class

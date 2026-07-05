@@ -15,34 +15,107 @@ keywords:
 
 # Transportation Contract Metadata & Headers Extraction
 
-## Definition
+The Transportation Contract Metadata & Headers Extraction documentation defines
+the transport boundary rules, network packet parsing routines, and protocol
+normalization matrices managed by the application entry adapters.
 
-This page documents how Xeno normalizes transport headers into typed Metadata
-through the IServiceExtractor contract.
+---
 
-## What It Is
+## Direct Definition Block
 
-Definition: The metadata extraction layer is a transport boundary that maps raw
-headers to application-friendly values.
+The metadata extraction layer normalizes raw inbound transport layer headers
+into type-safe, system-compliant application metadata objects via the core
+`IServiceExtractor` contract. By separating stream parsing rules from
+application use cases, it ensures that transport anomalies or web client
+specifications are fully abstracted at the network edge.
 
-Behavior:
+---
 
-- IServiceExtractor defines a single extract operation
-- BearerTokenExtractor parses authorization headers into an optional token
-- HttpHeaderExtractor composes correlation ID, request ID, token, client IP, and
-  span ID
+## The Network Normalization Paradigm
 
-Effect: Command and Query flows consume consistent metadata without direct
-dependency on framework-specific request objects.
+### What it is
 
-## How It Works
+The network normalization paradigm is an automated presentation-layer boundary
+designed to strip transport protocol specifics and format variance from client
+header configurations.
 
-Definition: Extraction is split into a generic contract and focused
-infrastructure implementations.
+### How it works
 
-Behavior:
+The extraction infrastructure maps key-value dictionary records using
+specialized extraction components. The engine evaluates string primitives or
+string arrays uniformly, converting volatile wire-level information into frozen
+data structures prior to route execution or authentication checking.
 
-- Contract:
+### Why it exists
+
+Incoming network headers are notoriously irregular: keys deviate across
+lowercase or title-case representations, token formats require complex substring
+splitting, and tracking properties (such as sequence positions or execution
+deadlines) arrive as plain strings rather than structural types. Scattering
+ad-hoc parsing rules (`headers['x-request-id']`) inside use-case components
+blocks unit testing, creates tight coupling to unique web frameworks, and
+exposes the kernel to initialization faults if header vectors omit crucial keys.
+
+---
+
+## Subsystem Execution Flow
+
+### What it is
+
+The subsystem execution flow represents the sequential runtime checkpoints and
+casting routines managed by the extractor drivers to compile a complete request
+footprint.
+
+### How it works
+
+The extraction lifecycle processes incoming dictionary maps across a multi-stage
+compilation track:
+
+1. **Token Extraction Layer**: The `BearerTokenExtractor` queries the
+   `authorization` index via `StringHelper.getSingleValue()`. If present, it
+   checks for a case-insensitive prefix match using
+   `.toLowerCase().startsWith('bearer ')` and cuts the authenticated substring
+   via `.substring(7)`.
+2. **Nominal ID Parsing**: The `HttpHeaderExtractor` reads tracking fields,
+   casting `x-correlation-id`, `x-request-id`, and `x-span-id` values to valid
+   unique identifiers using `GuidHelper.parse()`.
+3. **Content Format Negotiation**: Evaluates the `accept` parameter. If it
+   equals `*/*`, it drops the marker; otherwise, it computes the final system
+   `formatIndicator` by applying a fallback evaluation loop:
+   `accept ?? contentTypeHeader ?? 'application/json'`.
+4. **Messaging Sequence Casting**: Inspects the presence of sequence metadata
+   properties (`x-sequence-id`, `x-sequence-position`, `x-sequence-size`) and
+   the timeout boundary header (`x-expiration`). If these text strings are
+   defined, the engine programmatically maps them using `MathHelper.toNumber()`
+   to assemble safe, structured numeric blocks.
+
+```mermaid
+graph TD
+    A[Inbound Transport Headers Map] --> B[BearerTokenExtractor]
+    B -->|Parse authorization substring| C[Token String / undefined]
+    A --> D[HttpHeaderExtractor Engine]
+    C --> D
+    D -->|GuidHelper.parse| E[correlationId / requestId / spanId]
+    D -->|Content Negotiation Loop| F[formatIndicator Mapping]
+    D -->|MathHelper.toNumber| G[sequence position / size / expiration]
+    E & F & G --> H[Compile Sealed Metadata Object]
+
+```
+
+### Why it exists
+
+Enforcing explicit primitive validations and sub-type abstractions prevents
+malformed or malicious network fields from interacting with deep domain models,
+keeping error handling predictable and structured.
+
+---
+
+## Contract Definitions
+
+### 1. Agnostic Extraction Interface
+
+The foundation interface defines a singular execution contract, decoupling data
+parsing from specific web libraries:
 
 ```typescript
 export interface IServiceExtractor<TRequest, TResponse = unknown> {
@@ -50,81 +123,90 @@ export interface IServiceExtractor<TRequest, TResponse = unknown> {
 }
 ```
 
-- Bearer token parsing:
-  - Reads authorization with StringHelper.getSingleValue
-  - Returns undefined when header is missing
-  - Accepts values starting with bearer followed by a space (case-insensitive)
-  - Returns the substring after bearer prefix
-- Header metadata composition:
-  - correlationId and requestId are parsed with GuidHelper.parse
-  - token is delegated to BearerTokenExtractor
-  - clientIp is read from x-forwarded-for
-  - spanId is read from x-span-id
-  - The extractor returns a Metadata object
-
-Effect: Middleware receives normalized metadata ready for authentication and
-context composition.
-
-## Why It Exists
-
-Definition: The layer isolates parsing concerns at the transport edge.
-
-Behavior: Headers may arrive as string or string array values.
-StringHelper.getSingleValue normalizes this shape so extractors can operate
-predictably.
-
-Effect: Parsing rules remain centralized and reusable, reducing duplication
-across controllers, adapters, and middleware.
-
-## Example
-
-Definition: The following example shows how a custom transport adapter can use
-the registered extractor.
-
-Behavior:
-
-- Resolve SERVICE_EXTRACTOR from the container
-- Convert incoming headers to HttpHeaders
-- Call extract and forward parsed metadata
-
-Effect: Custom transports can integrate with the same metadata contract used by
-RequestContextMiddleware.
+### 2. Concrete Bearer Client implementation
 
 ```typescript
-import type { HttpHeaders } from '@xeno/core'
-import { INJECTION_TOKENS } from '@xeno/core'
+import type { IServiceExtractor } from '@/domain'
+import { Guards, type HttpHeaders, type Optional, StringHelper } from '@/shared'
 
-export class CustomTransportAdapter {
-  constructor(private readonly _container: any) {}
+export class BearerTokenExtractor implements IServiceExtractor<
+  HttpHeaders,
+  Optional<string>
+> {
+  public extract(headers: HttpHeaders): Optional<string> {
+    const authHeader = StringHelper.getSingleValue(headers['authorization'])
+    if (!Guards.isDefined(authHeader)) {
+      return undefined
+    }
 
-  public async handle(input: { headers: HttpHeaders }) {
-    const extractor = this._container.resolve(
-      INJECTION_TOKENS.SERVICE_EXTRACTOR,
-    )
-    const metadata = extractor.extract(input.headers)
+    if (authHeader.toLowerCase().startsWith('bearer ')) {
+      return authHeader.substring(7)
+    }
 
-    return metadata
+    return undefined
   }
 }
 ```
 
-## Constraints / Limitations
+---
 
-Definition: The current extraction behavior has explicit limits.
+## Practical Implementation: Integrating a Custom Transport
 
-Behavior:
+The example below maps how a custom transport adapter or message queue
+subscriber resolves the core extractor module from the service container to
+normalize payloads agnostically:
 
-- StringHelper.getSingleValue selects only the first value for array headers
-- BearerTokenExtractor only supports authorization values beginning with bearer
-  prefix
-- GuidHelper.parse may return undefined for invalid identifier formats
-- Header name handling depends on the incoming HttpHeaders representation used
-  by the transport adapter
+```typescript
+// src/presentation/adapters/custom-queue.adapter.ts
+import type { HttpHeaders, IServiceContainer } from '@xeno/core'
+import { INJECTION_TOKENS } from '@xeno/core'
 
-Effect: Adapters should normalize header keys consistently and avoid duplicating
-parsing logic outside extractor components.
+export class CustomQueueAdapter {
+  constructor(private readonly _container: IServiceContainer) {}
+
+  /**
+   * @description Intercepts amqp/kafka message properties and converts them to standard Metadata.
+   */
+  public async onMessageReceived(message: {
+    properties: { headers: Record<string, any> }
+  }): Promise<void> {
+    // 1. Resolve the core extractor component using its nominal token
+    const extractor = this._container.resolve(
+      INJECTION_TOKENS.SERVICE_EXTRACTOR,
+    )
+
+    // 2. Cast raw message properties to the framework's compliant HttpHeaders layout
+    const normalizedHeaders = message.properties.headers as HttpHeaders
+
+    // 3. Extract the metadata footprint uniformly
+    // Automatically handles token parsing, tracing boundaries, and sequence numbers
+    const metadata = extractor.extract(normalizedHeaders)
+
+    console.info(`Processed Inbound Intent. Request ID: ${metadata.requestId}`)
+  }
+}
+```
+
+---
+
+## Architectural Constraints & Trade-offs
+
+- **Array Header Value Collapse Invariants**: The underlying payload extraction
+  helper (`StringHelper.getSingleValue()`) operates under strict array
+  collapsing constraints. If a network client transmits an array of values for a
+  unique header tracking key, the extraction driver selects and returns only the
+  first index primitive, discarding subsequent fields.
+- **Strict 7-Character Substring Authorization Rule**: The token extraction
+  engine parses auth tokens strictly by evaluating the exact `"bearer "`
+  character sequence. Custom tokens that deviate from this design pattern or
+  prepend distinct identifiers (such as `"ApiKey "` prefixes) fail the
+  validation branch and return `undefined`, requiring independent custom
+  strategy extensions.
+
+---
 
 ## Next Step
 
-Continue with
-[CQRS Pipeline Architecture / Mediator Pattern](../cqrs-pipeline-architecture/README.md).
+Continue with the core execution engine documentation:
+
+- **[Proceed to CQRS Pipeline Architecture Index](../cqrs-pipeline-architecture/README.md)**
