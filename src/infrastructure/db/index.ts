@@ -1,1 +1,1 @@
-export * from './drizzle.client'
+export type * from './db.types'

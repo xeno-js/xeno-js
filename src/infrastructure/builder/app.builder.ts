@@ -37,7 +37,7 @@ interface QueuedModule {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class AppBuilder {
-  private readonly _container: IServiceContainer = new ServiceContainer()
+  private readonly _container: ServiceContainer = new ServiceContainer()
 
   // --- Module Configurations ---
   private readonly _modules: QueuedModule[] = []
@@ -48,7 +48,7 @@ export class AppBuilder {
     authorization: {
       isEnabled: false,
       tenant: false,
-      policy: { role: false, permission: false, policyRegistry: undefined },
+      policies: undefined,
       customAuthorizationStrategy: undefined,
     },
     validation: {
@@ -202,7 +202,7 @@ export class AppBuilder {
   public addDb(setupAction: SetupAction<DbConfig>): this {
     if (this._isDbContextModuleQueued) return this
     this._isDbContextModuleQueued = true
-    const config = { connectionString: '', tables: {}, useOnlyPoolClient: false }
+    const config = { connectionString: '' }
     setupAction(config)
     this._modules.push({
       name: 'DbModule',
@@ -371,31 +371,27 @@ export class AppBuilder {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public async build(): Promise<IServiceContainer> {
+    console.info('⚙️ Bootstrapping application modules...')
     for (const queued of this._modules) {
       try {
-        // If in the future you want to add a debug log for each module:
-        // console.log(`[AppBuilder] Initializing module: ${queued.name}...`);
         await queued.action()
       } catch (error) {
-        // 1. Extract the error message safely
         const errorMessage = error instanceof Error ? error.message : String(error)
 
-        // 2. Direct output for the developer in the terminal
         console.error(`\n❌ [AppBuilder Fatal Error]`)
         console.error(`An error occurred while initializing the module:`)
         console.error(`👉 Module: **${queued.name}**`)
         console.error(`📝 Reason: ${errorMessage}\n`)
 
-        // If the error has a useful stack trace, print it for debugging
         if (error instanceof Error && Guards.isDefined(error.stack)) {
           console.error(error.stack)
         }
 
-        // 3. Throw a descriptive exception to halt execution (Graceful Shutdown pre-start)
         throw new Error(`Bootstrap failed at [${queued.name}]: ${errorMessage}`, { cause: error })
       }
     }
-
+    this._container.validate()
+    console.info('✅ Application modules bootstrapped successfully.')
     return this._container
   }
 

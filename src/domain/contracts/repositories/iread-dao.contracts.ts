@@ -1,4 +1,4 @@
-import type { Optional, ReadCriteria } from '@/shared'
+import type { Optional, UserContext } from '@/shared'
 
 import type { ResultType } from '../../results/result.types'
 
@@ -15,7 +15,7 @@ export interface IReadDao<T> {
   /**
    * @description Finds an entity by its unique identifier. This method takes an ID and an optional AbortSignal for cancellation. It returns a promise that resolves to the entity if found, or null | undefined if not found. The implementation of this method is responsible for constructing the appropriate query based on the provided ID and handling any necessary data transformations before returning the result.
    * @param id The unique identifier of the entity to find.
-   * @param criteria The criteria for querying the data, including filters, pagination, and sorting options.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
   
@@ -27,13 +27,14 @@ export interface IReadDao<T> {
    */
   findById(
     id: string,
-    criteria: ReadCriteria,
-    signal?: Optional<AbortSignal>,
+    ctx: UserContext,
+    signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>>
 
   /**
    * @description Finds entities based on a filter. This method takes a filter object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the filter criteria. The implementation of this method is responsible for constructing the appropriate query based on the provided filter and handling any necessary data transformations before returning the results.
-   * @param criteria The criteria for querying the data, including filters, pagination, and sorting options.
+   * @param filter The filter criteria to apply when querying the database.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to an array of entities that match the filter criteria.
   
@@ -43,5 +44,5 @@ export interface IReadDao<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(criteria: ReadCriteria, signal?: Optional<AbortSignal>): Promise<ResultType<T[]>>
+  find(filter: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 }

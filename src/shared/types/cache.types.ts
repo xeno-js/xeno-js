@@ -30,7 +30,7 @@ export interface ICacheableOptions {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly cacheTtlSeconds: Optional<number>
+  readonly ttl: Optional<number>
 
   /**
    * @description If true, indicates that the cache should be bypassed for this request. Similar to consistentRead but less semantically explicit.

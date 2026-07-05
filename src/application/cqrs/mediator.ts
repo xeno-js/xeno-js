@@ -50,9 +50,9 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  async send<TResponse>(
-    request: ICommand<TResponse>,
-    signal?: AbortSignal,
+  async send<TRequest, TResponse>(
+    request: ICommand<TRequest>,
+    signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR, signal)
   }
@@ -65,9 +65,9 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  async query<TResponse>(
-    request: IQuery<TResponse>,
-    signal?: AbortSignal,
+  async query<TRequest, TResponse>(
+    request: IQuery<TRequest>,
+    signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
     return this.process(request, TOKENS.QUERY_PIPELINES_BEHAVIOR, signal)
   }
@@ -85,10 +85,10 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  private async process<TResponse>(
-    request: IRequest<TResponse>,
+  private async process<TRequest, TResponse>(
+    request: IRequest<TRequest>,
     pipelineToken: string,
-    signal?: AbortSignal,
+    signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
     if (Guards.isDefined(signal) && signal.aborted)
       return Result.fail(AppError.aborted(request.intent))
@@ -105,14 +105,14 @@ export class Mediator implements IMediator {
         }),
       )
 
-    const token = TokenHelper.get<IHandler<ICommand<TResponse>, TResponse>>(request.intent)
+    const token = TokenHelper.get<IHandler<ICommand<TRequest>, TResponse>>(request.intent)
     if (!Guards.isDefined(token))
       throw new Error(`No handler registered for request intent: ${request.intent}`)
 
     const handler = scope.resolve(token)
 
     const pipelines = scope.resolve(
-      TokenHelper.createToken<IPipelineBehavior<ICommand<TResponse>, TResponse>>(pipelineToken),
+      TokenHelper.createToken<IPipelineBehavior<ICommand<TRequest>, TResponse>>(pipelineToken),
     )
 
     const next: Delegate<TResponse> = () => handler.handle(request, signal)

@@ -1,6 +1,6 @@
 import type { IMapper, IReadDao, IReadDataSource, ResultType } from '@/domain'
-import { Result } from '@/domain'
-import type { Optional, ReadCriteria } from '@/shared'
+import { AppError, Result } from '@/domain'
+import type { Optional, UserContext } from '@/shared'
 import { Guards } from '@/shared'
 
 /**
@@ -33,10 +33,11 @@ export class ReadDao<T, TDto> implements IReadDao<T> {
 
   public async findById(
     id: string,
-    criteria: ReadCriteria,
+    ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>> {
-    const result = await this._dataSource.findById(id, criteria, signal)
+    AppError.throwIfAborted(signal, 'ReadDao.findById')
+    const result = await this._dataSource.findById(id, ctx, signal)
     if (Guards.isNullOrEmpty(result)) return Result.ok()
 
     const entity = this._mapper.toEntity(result)
@@ -44,10 +45,12 @@ export class ReadDao<T, TDto> implements IReadDao<T> {
   }
 
   public async find(
-    criteria: ReadCriteria,
+    filter: unknown,
+    ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<T[]>> {
-    const results = await this._dataSource.find(criteria, signal)
+    AppError.throwIfAborted(signal, 'ReadDao.find')
+    const results = await this._dataSource.find(filter, ctx, signal)
     const entities = results.map((result) => this._mapper.toEntity(result))
     return Result.ok(entities)
   }

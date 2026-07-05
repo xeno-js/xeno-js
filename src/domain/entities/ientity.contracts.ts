@@ -36,4 +36,10 @@ export interface IEntity<T> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   getProps(): T
+
+  /** Retrieves the unique identifier of the entity.
+   *
+   * @returns The unique identifier of the entity.
+   */
+  getId(): UniqueId
 }

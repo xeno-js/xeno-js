@@ -1,6 +1,3 @@
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import type { Pool } from 'pg'
-
 import type { BaseAuthorizationStrategy } from '@/application'
 import type {
   ExecutionContext,
@@ -8,7 +5,6 @@ import type {
   IBaseMapper,
   ICache,
   IConcurrencyService,
-  IDbClient,
   Identity,
   IFactory,
   IGateKeeper,
@@ -31,6 +27,7 @@ import type {
 import type { AuthClaims, HttpHeaders, Metadata, Optional } from '@/shared'
 import { TokenHelper, TOKENS } from '@/shared'
 
+import type { DbContext } from '../db/db.types'
 import type { LoggerConfig } from '../modules/config'
 
 /**
@@ -137,24 +134,14 @@ export const INJECTION_TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CONSOLE_LOGGER: TokenHelper.createToken<ILoggerClient>(TOKENS.CONSOLE_LOGGER),
-  /** @description Token used to register and resolve the DbClient instance in the dependency injection container.
+  /** @description Token used to register and resolve the DbContext instance in the dependency injection container.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  DB_ORM_CLIENT: TokenHelper.createToken<IDbClient>(TOKENS.DB_ORM_CLIENT),
-  /** @description Token used to register and resolve the DbPoolClient instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  DB_POOL_CLIENT: TokenHelper.createToken<
-    NodePgDatabase<Record<string, never>> & { $client: Pool }
-  >(TOKENS.DB_POOL_CLIENT),
+  DB_CONTEXT: TokenHelper.createToken<DbContext<unknown>>(TOKENS.DB_CONTEXT),
   /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container.
    *
    * @author Xeno

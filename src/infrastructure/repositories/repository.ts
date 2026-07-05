@@ -1,6 +1,6 @@
 import type { IMapper, IRepository, IWriteDataSource, ResultType } from '@/domain'
-import { Result } from '@/domain'
-import type { Optional, WriteCriteria } from '@/shared'
+import { AppError, Result } from '@/domain'
+import type { Optional, UserContext } from '@/shared'
 import { Guards } from '@/shared'
 
 /**
@@ -33,9 +33,12 @@ export class Repository<T, TDto> implements IRepository<T> {
 
   public async findById(
     id: string,
+    ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>> {
-    const result = await this._dataSource.findById(id, signal)
+    AppError.throwIfAborted(signal, 'Repository.findById')
+
+    const result = await this._dataSource.findById(id, ctx, signal)
     if (Guards.isNullOrEmpty(result)) return Result.ok()
 
     const entity = this._mapper.toEntity(result)
@@ -43,33 +46,50 @@ export class Repository<T, TDto> implements IRepository<T> {
   }
 
   public async find(
-    criteria: WriteCriteria,
+    filter: unknown,
+    ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<T[]>> {
-    const results = await this._dataSource.find(criteria, signal)
+    AppError.throwIfAborted(signal, 'Repository.find')
+
+    const results = await this._dataSource.find(filter, ctx, signal)
     const entities = results.map((result) => this._mapper.toEntity(result))
     return Result.ok(entities)
   }
 
   public async save(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
     const dto = this._mapper.toDto(entity)
+
+    AppError.throwIfAborted(signal, 'Repository.save')
+
     await this._dataSource.insert(dto, signal)
     return Result.ok()
   }
 
-  public async delete(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
+  public async delete(
+    entity: T,
+    ctx: UserContext,
+    signal: Optional<AbortSignal>,
+  ): Promise<ResultType<void>> {
     const dto = this._mapper.toDto(entity)
-    await this._dataSource.delete(dto, signal)
+
+    AppError.throwIfAborted(signal, 'Repository.delete')
+
+    await this._dataSource.delete(dto, ctx, signal)
     return Result.ok()
   }
 
   public async update(
+    id: string,
     entity: Partial<T>,
-    criteria: WriteCriteria,
+    ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<void>> {
     const dto = this._mapper.toPartialDto(entity)
-    await this._dataSource.update(dto, criteria, signal)
+
+    AppError.throwIfAborted(signal, 'Repository.update')
+
+    await this._dataSource.update(id, dto, ctx, signal)
     return Result.ok()
   }
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import type { IMapper, IReadDataSource } from '@/domain'
-import type { Optional, ReadCriteria } from '@/shared'
+import type { Optional, UserContext } from '@/shared'
 
 import { ReadDao } from '../read-dao'
 
@@ -13,6 +13,11 @@ interface Entity {
 interface Dto {
   id: string
   fullName: string
+}
+
+const userContext: UserContext = {
+  userId: 'd108b2d2-1df8-45ca-8a27-686f9f443269',
+  tenantId: '6fdeff88-9f53-4c58-b24f-2e2db77d95ce',
 }
 
 function makeDeps() {
@@ -47,13 +52,12 @@ describe('ReadDao', () => {
     mocks.findByIdMock.mockResolvedValue(undefined)
 
     const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
-    const criteria = undefined as unknown as ReadCriteria
     const signal = undefined as Optional<AbortSignal>
-    const result = await dao.findById('1', criteria, signal)
+    const result = await dao.findById('1', userContext, signal)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
-    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', criteria, signal)
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
@@ -62,13 +66,12 @@ describe('ReadDao', () => {
     mocks.findByIdMock.mockResolvedValue(null)
 
     const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
-    const criteria = undefined as unknown as ReadCriteria
     const signal = undefined as Optional<AbortSignal>
-    const result = await dao.findById('1', criteria, signal)
+    const result = await dao.findById('1', userContext, signal)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
-    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', criteria, signal)
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
@@ -81,14 +84,25 @@ describe('ReadDao', () => {
     mocks.toEntityMock.mockReturnValue(entity)
 
     const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
-    const criteria = undefined as unknown as ReadCriteria
     const signal = undefined as Optional<AbortSignal>
-    const result = await dao.findById('1', criteria, signal)
+    const result = await dao.findById('1', userContext, signal)
 
-    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', criteria, signal)
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).toHaveBeenCalledWith(dto)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual(entity)
+  })
+
+  it('findById throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+
+    await expect(dao.findById('1', userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.findByIdMock).not.toHaveBeenCalled()
+    expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
   it('find maps every dto to entity and returns ok(list)', async () => {
@@ -106,17 +120,10 @@ describe('ReadDao', () => {
     mocks.toEntityMock.mockReturnValueOnce(entities[0]).mockReturnValueOnce(entities[1])
 
     const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
-    const criteria: ReadCriteria = {
-      where: [],
-      limit: null,
-      offset: null,
-      orderBy: null,
-      cols: undefined,
-    }
     const signal = undefined as Optional<AbortSignal>
-    const result = await dao.find(criteria, signal)
+    const result = await dao.find(dtos[0].fullName, userContext, signal)
 
-    expect(mocks.findMock).toHaveBeenCalledWith(criteria, signal)
+    expect(mocks.findMock).toHaveBeenCalledWith(dtos[0].fullName, userContext, signal)
     expect(mocks.toEntityMock).toHaveBeenCalledTimes(2)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual(entities)
@@ -127,17 +134,22 @@ describe('ReadDao', () => {
     mocks.findMock.mockResolvedValue([])
 
     const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
-    const criteria: ReadCriteria = {
-      where: [],
-      limit: null,
-      offset: null,
-      orderBy: null,
-      cols: undefined,
-    }
-    const result = await dao.find(criteria, undefined)
+    const result = await dao.find('123', userContext, undefined)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual([])
+    expect(mocks.toEntityMock).not.toHaveBeenCalled()
+  })
+
+  it('find throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+
+    await expect(dao.find('123', userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.findMock).not.toHaveBeenCalled()
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 })

@@ -1,4 +1,4 @@
-import type { Optional, WriteCriteria } from '@/shared'
+import type { Optional, UserContext } from '@/shared'
 
 import type { ResultType } from '../../results/result.types'
 
@@ -27,6 +27,7 @@ export interface IRepository<T> {
   /**
    * @description Finds an entity by its unique identifier. This method takes an ID and an optional AbortSignal for cancellation. It returns a promise that resolves to the entity if found, or null | undefined if not found. The implementation of this method is responsible for constructing the appropriate query based on the provided ID and handling any necessary data transformations before returning the result.
    * @param id The unique identifier of the entity to find.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to the entity if found, or null | undefined if not found.
   
@@ -36,13 +37,18 @@ export interface IRepository<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  findById(id: string, signal?: Optional<AbortSignal>): Promise<ResultType<Optional<T>>>
+  findById(
+    id: string,
+    ctx: UserContext,
+    signal: Optional<AbortSignal>,
+  ): Promise<ResultType<Optional<T>>>
 
   /**
-   * @description Finds entities based on a write criteria. This method takes a write criteria object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the criteria. The implementation of this method is responsible for constructing the appropriate query based on the provided criteria and handling any necessary data transformations before returning the results.
-   * @param criteria The write criteria object to use for querying entities.
+   * @description Finds entities based on the user context. This method takes a user context and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the context. The implementation of this method is responsible for constructing the appropriate query based on the provided context and handling any necessary data transformations before returning the results.
+   * @param filter The filter criteria to apply when querying the database.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
-   * @returns A promise that resolves to an array of entities that match the criteria.
+   * @returns A promise that resolves to an array of entities that match the context.
   
    * 
    * @author Xeno
@@ -50,12 +56,13 @@ export interface IRepository<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(criteria: WriteCriteria, signal?: Optional<AbortSignal>): Promise<ResultType<T[]>>
+  find(filter: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 
   /**
-   * @description Updates entities based on a write criteria. This method takes a write criteria object and an optional AbortSignal for cancellation. It returns a promise that resolves when the update operation is complete.
+   * @description Updates entities based on the user context. This method takes a user context and an optional AbortSignal for cancellation. It returns a promise that resolves when the update operation is complete.
+   * @param id The unique identifier of the entity to update.
    * @param entity The partial entity object containing the data to be updated.
-   * @param criteria The write criteria object to use for updating entities.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves when the update operation is complete.
   
@@ -66,9 +73,10 @@ export interface IRepository<T> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   update(
+    id: string,
     entity: Partial<T>,
-    criteria: WriteCriteria,
-    signal?: Optional<AbortSignal>,
+    ctx: UserContext,
+    signal: Optional<AbortSignal>,
   ): Promise<ResultType<void>>
 
   /**
@@ -83,12 +91,13 @@ export interface IRepository<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  save(entity: T, signal?: Optional<AbortSignal>): Promise<ResultType<void>>
+  save(entity: T, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 
   /**
    * Deletes an entity from the repository by its unique identifier.
    *
-   * @param entity - The entity to delete.
+   * @param entity The entity to delete.
+   * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the delete operation.
    * @returns A promise that resolves when the entity has been deleted.
   
@@ -98,5 +107,5 @@ export interface IRepository<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  delete(entity: T, signal?: Optional<AbortSignal>): Promise<ResultType<void>>
+  delete(entity: T, ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<void>>
 }

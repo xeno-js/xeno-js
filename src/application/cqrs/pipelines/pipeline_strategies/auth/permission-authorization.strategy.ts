@@ -41,15 +41,11 @@ export class PermissionAuthorizationStrategy extends BaseAuthorizationStrategy<I
     auth: Identity,
   ): Promise<Result<void, AppError>> {
     const policy = this._policy.getPolicy(command.intent)
-    if (!Guards.isDefined(policy))
-      return Result.fail(
-        AppError.forbidden(command.intent, 'No authorization policy found for the command.'),
-      )
 
-    if (!Guards.isNullOrEmpty(policy.permissions)) {
+    if (!Guards.isNullOrEmpty(policy?.permissions)) {
       const permissions = auth.permissions ?? []
       const hasRequiredPermission = policy.permissions?.some((permission) =>
-        permissions.includes(permission.toLowerCase()),
+        permissions.includes(permission),
       )
       if (!hasRequiredPermission)
         return Result.fail(

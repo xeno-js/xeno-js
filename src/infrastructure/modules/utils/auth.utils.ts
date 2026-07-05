@@ -50,38 +50,42 @@ export const AuthUtils = Object.freeze({
       )
     }
 
-    if (opts.policy.permission || opts.policy.role) {
-      if (!Guards.isDefined(opts.policy.policyRegistry)) {
-        throw new Error(
-          'Policy registry must be provided when role or permission based authorization is enabled.',
-        )
-      }
-
+    if (Guards.isDefined(opts.policies)) {
       const { PolicyRegistry } = await import('@/application')
       container.addSingleton(INJECTION_TOKENS.POLICY_REGISTRY, PolicyRegistry, [])
 
-      const policyRegistry = opts.policy.policyRegistry
+      const policyRegistry = opts.policies
       const registryInstance = container.resolve(INJECTION_TOKENS.POLICY_REGISTRY)
+      const Policies = new Set<string>()
       for (const [intent, policy] of Object.entries(policyRegistry)) {
-        registryInstance.addPolicy(intent, policy)
+        const intentLower = intent.toLowerCase()
+        registryInstance.addPolicy(intentLower, policy)
+
+        if (!Guards.isNullOrEmpty(policy.roles)) {
+          Policies.add('roles')
+        }
+
+        if (!Guards.isNullOrEmpty(policy.permissions)) {
+          Policies.add('permissions')
+        }
       }
 
-      if (opts.policy.role) {
+      if (Policies.has('roles')) {
         const { RoleAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
           INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE,
           RoleAuthorizationStrategy,
-          [INJECTION_TOKENS.REQUEST_CONTEXT],
+          [INJECTION_TOKENS.POLICY_REGISTRY, INJECTION_TOKENS.REQUEST_CONTEXT],
         )
         strategies.push(INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE)
       }
 
-      if (opts.policy.permission) {
+      if (Policies.has('permissions')) {
         const { PermissionAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
           INJECTION_TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
           PermissionAuthorizationStrategy,
-          [INJECTION_TOKENS.REQUEST_CONTEXT],
+          [INJECTION_TOKENS.POLICY_REGISTRY, INJECTION_TOKENS.REQUEST_CONTEXT],
         )
         strategies.push(INJECTION_TOKENS.PERMISSION_AUTHORIZATION_PIPELINE)
       }
@@ -107,7 +111,7 @@ export const AuthUtils = Object.freeze({
    * @description Configures the authentication service and gatekeeper in the service container.
    * @param container The service container to configure.
    * @param opts The authentication configuration options.
-  
+   
    * 
    * @author Xeno
    * @version 1.0.0

@@ -3,7 +3,7 @@ export { BaseAuthorizationStrategy } from './application/cqrs/pipelines/pipeline
 export { Specification } from './application/specifications/specification'
 export * from './domain/index'
 export { AppBuilder } from './infrastructure/builder/app.builder'
-export * from './infrastructure/datasources/index'
+export type * from './infrastructure/db/db.types'
 export { INJECTION_TOKENS } from './infrastructure/di/injection-tokens.constants'
 export type * from './infrastructure/modules/config/index'
 export * from './infrastructure/repositories/index'

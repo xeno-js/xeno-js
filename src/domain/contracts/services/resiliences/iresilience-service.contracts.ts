@@ -22,5 +22,5 @@ export interface IServiceResilience {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  execute<T>(action: () => Promise<T>, signal?: Optional<AbortSignal>): Promise<T>
+  execute<T>(action: () => Promise<T>, signal: Optional<AbortSignal>): Promise<T>
 }

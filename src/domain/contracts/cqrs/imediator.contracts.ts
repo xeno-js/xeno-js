@@ -24,9 +24,9 @@ export interface IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  send<TResponse>(
-    request: ICommand<TResponse>,
-    signal?: AbortSignal,
+  send<TRequest, TResponse>(
+    request: ICommand<TRequest>,
+    signal: AbortSignal,
   ): Promise<ResultType<TResponse>>
 
   /**
@@ -41,5 +41,8 @@ export interface IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  query<TResponse>(request: IQuery<TResponse>, signal?: AbortSignal): Promise<ResultType<TResponse>>
+  query<TRequest, TResponse>(
+    request: IQuery<TRequest>,
+    signal: AbortSignal,
+  ): Promise<ResultType<TResponse>>
 }

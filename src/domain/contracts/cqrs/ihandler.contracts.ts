@@ -25,5 +25,5 @@ export interface IHandler<TRequest, TResponse> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  handle(request: TRequest, signal?: AbortSignal): Promise<ResultType<TResponse>>
+  handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>>
 }

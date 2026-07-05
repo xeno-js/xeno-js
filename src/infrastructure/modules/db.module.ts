@@ -1,5 +1,4 @@
 import type { IModule, IServiceContainer } from '@/domain'
-import { Guards } from '@/shared'
 
 import type { DbConfig } from './config/db.config'
 
@@ -16,20 +15,8 @@ export class DbModule implements IModule<DbConfig> {
     const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
 
     const { DbClientFactory } = await import('../factories/db-client.factory')
-    container.addSingletonFactory(INJECTION_TOKENS.DB_POOL_CLIENT, () => {
+    container.addScopedFactory(INJECTION_TOKENS.DB_CONTEXT, () => {
       return new DbClientFactory().create(opts)
     })
-
-    if (!opts.useOnlyPoolClient) {
-      const { DrizzleOrmClient } = await import('../db/drizzle.client')
-      container.addSingletonFactory(INJECTION_TOKENS.DB_ORM_CLIENT, () => {
-        const pool = new DbClientFactory().create(opts)
-        if (!Guards.isDefined(opts.tables))
-          throw new Error(
-            'DbModule: tables configuration is required when useOnlyPoolClient is false.',
-          )
-        return new DrizzleOrmClient(pool, opts.tables)
-      })
-    }
   }
 }

@@ -290,4 +290,24 @@ export class AppError extends Error {
       cause: new Error(message),
     })
   }
+
+  /** @description Creates an AppError instance representing a not found error. This method is used to generate a standardized error response when a requested resource does not exist, indicating that the client attempted to access a resource that could not be found on the server.
+   * @param name The name of the error, typically the class name or context where the error occurred. This helps in identifying the source of the error in logs and error reports.
+   * @param message A custom message describing the reason for the not found error. This message is included in the AppError's cause for detailed error reporting.
+   * @returns An AppError instance representing the not found error.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  public static notFound(name: string, message: string): AppError {
+    return AppError.create({
+      code: ERROR_CODES.NOT_FOUND,
+      message: ERROR_CODE_MESSAGES[ERROR_CODES.NOT_FOUND],
+      status: STATUS_CODES.NOT_FOUND,
+      name,
+      cause: new Error(message),
+    })
+  }
 }

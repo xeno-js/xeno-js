@@ -101,7 +101,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  protected _query(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
+  protected _query(request: IQuery<TRequest>): Promise<ResultType<TResponse>> {
     const signal = new AbortController().signal
     return this._mediator.query(request, signal)
   }
@@ -116,7 +116,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  protected _send(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
+  protected _send(request: ICommand<TRequest>): Promise<ResultType<TResponse>> {
     const signal = new AbortController().signal
     return this._mediator.send(request, signal)
   }

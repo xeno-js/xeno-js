@@ -90,22 +90,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CONSOLE_LOGGER: 'CONSOLE_LOGGER',
-  /** @description Token used to register and resolve the DbOrmClient instance in the dependency injection container.
+  /** @description Token used to register and resolve the DbContext instance in the dependency injection container.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  DB_ORM_CLIENT: 'DB_ORM_CLIENT',
-  /** @description Token used to register and resolve the DbPoolClient instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  DB_POOL_CLIENT: 'DB_POOL_CLIENT',
+  DB_CONTEXT: 'DB_CONTEXT',
   /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container.
    *
    * @author Xeno

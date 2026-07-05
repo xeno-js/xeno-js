@@ -1,4 +1,4 @@
-import type { Optional } from './common.types'
+import type { Guid, Optional } from './common.types'
 
 /**
  * @file auth.types.ts
@@ -61,4 +61,32 @@ export interface AuthClaims {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   readonly permissions: Optional<string[]>
+}
+
+/**
+ * @description An interface representing the context of an authenticated user, including their unique identifier and tenant ID. This context can be used throughout the application to enforce authorization rules and access control based on the user's identity and associated claims.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
+export interface UserContext {
+  /**
+   * The unique identifier for the user (subject).
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly userId: Guid
+
+  /**
+   * The tenant ID associated with the user, if applicable. This is useful in multi-tenant applications to identify which tenant the user belongs to.
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly tenantId: Optional<Guid>
 }

@@ -18,7 +18,7 @@ export abstract class BaseHandler<TRequest, TResponse> implements IHandler<TRequ
     private readonly _strategies: IStrategy<TRequest>[] = [],
   ) {}
 
-  abstract handle(request: TRequest, signal?: AbortSignal): Promise<ResultType<TResponse>>
+  abstract handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>>
 
   /**
    * Retrieves the user identity from the request context after executing all strategies.

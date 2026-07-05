@@ -61,32 +61,7 @@ export interface PipelineConfig {
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/xeno-js
      */
-    policy: {
-      /** @description An optional registry of authorization policies, where each policy is associated with a specific intent (e.g., a command or query type). Each policy defines the required roles and permissions for executing the associated intent. If provided, the authorization pipeline will use this registry to evaluate policies for incoming commands and queries, ensuring that users have the necessary roles and permissions to perform the requested actions.
-       *
-       * @author Xeno
-       * @version 1.0.0
-       * @since 2025-09-30
-       * @link https://github.com/Mattia-Carcione/xeno-js
-       */
-      policyRegistry: Optional<Record<string, AuthPolicy>>
-      /** @description Flags to enable role-based and permission-based authorization checks. If role-based checks are enabled, the authorization pipeline will verify that the user has the required roles as defined in the policies. If permission-based checks are enabled, the pipeline will verify that the user has the necessary permissions. At least one of these checks must be enabled when policy-based authorization is active to ensure that there are criteria for evaluating access.
-       *
-       * @author Xeno
-       * @version 1.0.0
-       * @since 2025-09-30
-       * @link https://github.com/Mattia-Carcione/xeno-js
-       */
-      role: boolean
-      /** @description Flag to enable permission-based authorization checks. If set to true, the authorization pipeline will verify that the user has the necessary permissions as defined in the policies. This allows for fine-grained access control based on specific actions that a user is allowed to perform, rather than just their roles. If set to false or not defined, permission-based checks will be skipped, and only role-based checks (if enabled) or tenant-based/custom strategies will be evaluated.
-       *
-       * @author Xeno
-       * @version 1.0.0
-       * @since 2025-09-30
-       * @link https://github.com/Mattia-Carcione/xeno-js
-       */
-      permission: boolean
-    }
+    policies: Optional<Record<string, AuthPolicy>>
     /** @description An optional array of custom authorization strategies defined via injection tokens. If provided, these strategies will be included in the authorization pipeline and evaluated for each command or query, allowing for custom logic to determine if a user is authorized to perform a specific action. This provides flexibility in implementing application-specific access rules that may not fit into standard tenant-based or policy-based checks. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is authorized.
      *
      * @author Xeno

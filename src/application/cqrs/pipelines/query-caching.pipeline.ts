@@ -1,16 +1,9 @@
-import type {
-  Delegate,
-  ICache,
-  ICachedQuery,
-  ILogger,
-  IPipelineBehavior,
-  ResultType,
-} from '@/domain'
+import type { Delegate, ICache, ILogger, IPipelineBehavior, IQuery, ResultType } from '@/domain'
 import { Result } from '@/domain'
 import { Guards } from '@/shared'
 
 /**
- * @description A pipeline behavior that implements caching for query requests in the CQRS architecture. This behavior checks if the incoming request is a query and if it implements the ICachedQuery interface. If so, it attempts to retrieve the response from the cache using the provided cache key. If a cached response is found, it returns it immediately. If not, it delegates control to the next handler in the pipeline to execute the query and retrieve the data from the database. After successfully retrieving the data, it stores the result in the cache with the specified TTL (time-to-live) for future requests. This behavior also includes error handling for cache read/write operations, ensuring that any cache-related errors do not disrupt the normal flow of query execution and that appropriate warnings are logged.
+ * @description A pipeline behavior that implements caching for query requests in the CQRS architecture. This behavior checks if the incoming request is a query and if it implements the IQuery interface. If so, it attempts to retrieve the response from the cache using the provided cache key. If a cached response is found, it returns it immediately. If not, it delegates control to the next handler in the pipeline to execute the query and retrieve the data from the database. After successfully retrieving the data, it stores the result in the cache with the specified TTL (time-to-live) for future requests. This behavior also includes error handling for cache read/write operations, ensuring that any cache-related errors do not disrupt the normal flow of query execution and that appropriate warnings are logged.
 
    * 
    * @author Xeno
@@ -18,10 +11,10 @@ import { Guards } from '@/shared'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class QueryCachingPipeline<
-  TInput extends ICachedQuery,
-  TResult,
-> implements IPipelineBehavior<TInput, TResult> {
+export class QueryCachingPipeline<TInput extends IQuery, TResult> implements IPipelineBehavior<
+  TInput,
+  TResult
+> {
   /**
    * @description Constructs a new instance of the QueryCachingPipeline class, which requires an ICache implementation for interacting with the cache and an ILogger for logging cache-related operations and errors. The constructor initializes the dependencies needed for the caching behavior to function properly within the CQRS pipeline.
    * @param _cacheService An instance of ICache used for interacting with the cache, including retrieving and storing cached responses based on cache keys.
@@ -75,7 +68,7 @@ export class QueryCachingPipeline<
         await this._cacheService.set(
           request.cacheOptions.cacheKey,
           result.getValueOrThrow(),
-          request.cacheOptions.cacheTtlSeconds,
+          request.cacheOptions.ttl,
         )
         this._logger.debug(`[Cache SET] Data saved in cache for: ${request.cacheOptions.cacheKey}`)
       } catch (error) {

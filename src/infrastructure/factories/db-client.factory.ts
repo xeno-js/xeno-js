@@ -1,9 +1,10 @@
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 
 import type { IFactory } from '@/domain'
+import type { Dictionary } from '@/shared'
 
+import type { DbContext } from '../db/db.types'
 import type { DbConfig } from '../modules/config/db.config'
 
 /**
@@ -15,11 +16,8 @@ import type { DbConfig } from '../modules/config/db.config'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class DbClientFactory implements IFactory<
-  DbConfig,
-  NodePgDatabase<Record<string, never>> & { $client: Pool }
-> {
-  public create(opts: DbConfig): NodePgDatabase<Record<string, never>> & { $client: Pool } {
+export class DbClientFactory implements IFactory<DbConfig, DbContext<Dictionary>> {
+  public create(opts: DbConfig): DbContext<Dictionary> {
     const pool = new Pool({
       connectionString: opts.connectionString,
     })

@@ -6,9 +6,10 @@ import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { SchemaValidationStrategy } from '../schema-validation.strategy'
 
-const makeRequest = (intent = 'TestIntent'): IRequest => ({
+const makeRequest = (intent = 'TestIntent'): IRequest<{ id: string }> => ({
   intent,
   type: 'COMMAND',
+  payload: { id: 'test-id' },
 })
 
 const makeValidator = () => {

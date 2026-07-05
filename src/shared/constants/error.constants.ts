@@ -110,6 +110,14 @@ export const ERROR_CODES = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CONFLICT: 'CONFLICT',
+  /** @description The requested resource does not exist.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  NOT_FOUND: 'NOT_FOUND',
 } as const)
 
 /** @description Inferred union of every valid ERROR_CODES value.
@@ -289,4 +297,5 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
   [ERROR_CODES.AUTHENTICATION_FAILED]: 'errors.authentication_failed',
   [ERROR_CODES.SCOPE_NOT_AVAILABLE]: 'errors.scope_not_available',
   [ERROR_CODES.CONFLICT]: 'errors.conflict',
+  [ERROR_CODES.NOT_FOUND]: 'errors.not_found',
 } as const)

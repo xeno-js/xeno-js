@@ -23,7 +23,11 @@ vi.mock('@/shared', async () => {
 
 describe('ConcurrencyRetryPipeline', () => {
   let mockNext: Mock<NextFn>
-  const mockRequest: IRequest = { intent: 'TestCommand', type: 'COMMAND' }
+  const mockRequest: IRequest<{ id: string }> = {
+    intent: 'TestCommand',
+    type: 'COMMAND',
+    payload: { id: 'test-id' },
+  }
 
   beforeEach(() => {
     mockNext = vi.fn<NextFn>()

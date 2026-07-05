@@ -39,14 +39,10 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
     auth: Identity,
   ): Promise<Result<void, AppError>> {
     const policy = this._policy.getPolicy(command.intent)
-    if (!Guards.isDefined(policy))
-      return Result.fail(
-        AppError.forbidden(command.intent, 'No authorization policy found for the command.'),
-      )
 
-    if (!Guards.isNullOrEmpty(policy.permissions)) {
+    if (!Guards.isNullOrEmpty(policy?.roles)) {
       const roles = auth.roles ?? []
-      const hasRequiredRole = policy.roles?.some((role) => roles.includes(role.toLowerCase()))
+      const hasRequiredRole = policy.roles?.some((role) => roles.includes(role))
       if (!hasRequiredRole)
         return Result.fail(
           AppError.forbidden(command.intent, 'User does not have the required roles.'),

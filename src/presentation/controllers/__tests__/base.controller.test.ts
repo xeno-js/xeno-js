@@ -96,7 +96,8 @@ describe('BaseController', () => {
     const request: IQuery<string> = {
       intent: 'TestQuery',
       type: REQUEST_TYPE.QUERY,
-      readCriteria: {} as never,
+      payload: 'query-payload',
+      cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
     }
 
     const result = await controller.exposeQuery(request)
@@ -114,6 +115,7 @@ describe('BaseController', () => {
     const request: ICommand<string> = {
       intent: 'TestCommand',
       type: REQUEST_TYPE.COMMAND,
+      payload: 'command-payload',
     }
 
     const result = await controller.exposeSend(request)

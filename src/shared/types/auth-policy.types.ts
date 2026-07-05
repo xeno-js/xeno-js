@@ -17,7 +17,7 @@ export interface AuthPolicy {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly roles: string[]
+  readonly roles?: string[]
   /**
    * An array of permissions that are associated with the authorization policy. These permissions define the specific actions or operations that a user is allowed to perform within the application. The permissions can be used to enforce fine-grained access control by specifying which operations require certain permissions.
   
@@ -27,5 +27,5 @@ export interface AuthPolicy {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly permissions: string[]
+  readonly permissions?: string[]
 }

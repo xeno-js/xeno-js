@@ -8,11 +8,11 @@ import { AuthorizationPipeline } from '../authorization.pipeline'
 
 describe('AuthorizationPipeline', () => {
   let mockNext: () => Promise<Result<string>>
-  let mockRequest: IRequest
+  let mockRequest: IRequest<{ id: string }>
 
   beforeEach(() => {
     mockNext = vi.fn().mockResolvedValue(Result.ok('success'))
-    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND' }
+    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND', payload: { id: 'test-id' } }
   })
 
   it('should call next() if all strategies succeed', async () => {

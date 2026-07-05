@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { ICache, ICachedQuery, ILogger } from '@/domain'
+import type { ICache, ILogger, IQuery } from '@/domain'
 import { Result } from '@/domain'
 import { REQUEST_TYPE } from '@/shared'
 
@@ -32,19 +32,13 @@ const createLogger = () => {
   return { logger, warnMock, debugMock }
 }
 
-const makeRequest = (overrides?: Partial<ICachedQuery['cacheOptions']>): ICachedQuery => ({
+const makeRequest = (overrides?: Partial<IQuery['cacheOptions']>): IQuery<{ id: string }> => ({
   intent: 'TestQuery',
   type: REQUEST_TYPE.QUERY,
-  readCriteria: {
-    where: [],
-    orderBy: undefined,
-    limit: undefined,
-    offset: undefined,
-    cols: undefined,
-  },
+  payload: { id: 'test-id' },
   cacheOptions: {
     cacheKey: 'test-key',
-    cacheTtlSeconds: 60,
+    ttl: 60,
     bypassCache: undefined,
     consistentRead: undefined,
     ...overrides,

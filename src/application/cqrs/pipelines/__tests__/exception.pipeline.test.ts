@@ -8,7 +8,11 @@ import { ExceptionPipeline } from '../exception.pipeline'
 
 describe('ExceptionPipeline', () => {
   const pipeline = new ExceptionPipeline()
-  const mockRequest: IRequest = { intent: 'TestIntent', type: 'COMMAND' }
+  const mockRequest: IRequest<{ id: string }> = {
+    intent: 'TestIntent',
+    type: 'COMMAND',
+    payload: { id: 'test-id' },
+  }
 
   it('should return the result successfully when next() does not throw', async () => {
     const mockNext = vi.fn().mockResolvedValue(Result.ok('success'))

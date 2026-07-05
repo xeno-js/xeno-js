@@ -1,6 +1,6 @@
 import type { Constructor, InjectionToken, Optional } from '@/shared'
 
-import type { IServiceContainer } from './iservice-container.contracts'
+import type { IServiceProvider } from './iservice-container.contracts'
 
 /**
  * @fileoverview Defines the ServiceDescriptor type for service registrations.
@@ -77,5 +77,5 @@ export interface ServiceDescriptor<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly factory?: Optional<(container: IServiceContainer) => T>
+  readonly factory?: Optional<(container: IServiceProvider) => T>
 }

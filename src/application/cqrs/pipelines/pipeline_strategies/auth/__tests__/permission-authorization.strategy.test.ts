@@ -79,16 +79,14 @@ describe('PermissionAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � no policy found', () => {
-    it('returns FORBIDDEN when policy is undefined', async () => {
+    it('returns true when policy is undefined', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(undefined)
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
-      const error = result.getErrorOrThrow()
-      expect(error.code).toBe(ERROR_CODES.FORBIDDEN)
+      expect(result.isOk()).toBe(true)
     })
   })
 

@@ -65,7 +65,7 @@ export class ServiceScope implements IServiceScope {
     }
 
     if (Guards.isDefined(descriptor.factory)) {
-      const instance = descriptor.factory(this._rootResolve)
+      const instance = descriptor.factory(this)
       this._scopedInstances.set(token.symbol, instance)
       return instance as T
     } else if (

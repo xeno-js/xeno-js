@@ -6,9 +6,10 @@ import { REQUEST_TYPE } from '@/shared'
 
 import { CompositePipeline } from '../composite.pipeline'
 
-const mockRequest: IRequest = {
+const mockRequest: IRequest<{ id: string }> = {
   intent: 'TestIntent',
   type: REQUEST_TYPE.COMMAND,
+  payload: { id: 'test-id' },
 }
 
 const makeResult = (value: string) => Result.ok(value) as ResultType<string>

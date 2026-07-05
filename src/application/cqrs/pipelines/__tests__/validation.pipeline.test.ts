@@ -6,9 +6,10 @@ import { REQUEST_TYPE } from '@/shared'
 
 import { ValidationPipeline } from '../validation.pipeline'
 
-const request: IRequest = {
+const request: IRequest<{ id: string }> = {
   intent: 'test',
   type: REQUEST_TYPE.COMMAND,
+  payload: { id: 'test-id' },
 }
 
 function makeAppError(): AppError {

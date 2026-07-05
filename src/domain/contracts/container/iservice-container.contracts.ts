@@ -12,6 +12,10 @@ import type { IServiceScope } from './iservice-scope.contracts'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
+export interface IServiceProvider {
+  resolve<T>(token: InjectionToken<T>): T
+}
+
 /**
  * @description Agnostic contract for a dependency injection container that mimics
  * the .NET ServiceCollection builder pattern.
@@ -113,7 +117,7 @@ export interface IServiceContainer {
    */
   addSingletonFactory<T>(
     token: InjectionToken<T>,
-    factory: (container: IServiceContainer) => T,
+    factory: (container: IServiceProvider) => T,
   ): this
 
   /**
@@ -132,7 +136,7 @@ export interface IServiceContainer {
    */
   addTransientFactory<T>(
     token: InjectionToken<T>,
-    factory: (container: IServiceContainer) => T,
+    factory: (container: IServiceProvider) => T,
   ): this
 
   /**
@@ -151,7 +155,7 @@ export interface IServiceContainer {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceContainer) => T): this
+  addScopedFactory<T>(token: InjectionToken<T>, factory: (container: IServiceProvider) => T): this
 
   /**
    * Resolves and returns the service registered under the given token.

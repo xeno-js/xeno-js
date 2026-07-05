@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import type { IMapper, IWriteDataSource } from '@/domain'
-import type { WriteCriteria } from '@/shared'
+import type { Optional, UserContext } from '@/shared'
 
 import { Repository } from '../repository'
 
@@ -13,6 +13,11 @@ interface Entity {
 interface Dto {
   id: string
   fullName: string
+}
+
+const userContext: UserContext = {
+  userId: 'd108b2d2-1df8-45ca-8a27-686f9f443269',
+  tenantId: '6fdeff88-9f53-4c58-b24f-2e2db77d95ce',
 }
 
 function makeDeps() {
@@ -62,10 +67,12 @@ describe('Repository', () => {
     mocks.findByIdMock.mockResolvedValue(undefined)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.findById('1', undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.findById('1', userContext, signal)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
@@ -74,10 +81,12 @@ describe('Repository', () => {
     mocks.findByIdMock.mockResolvedValue(null)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.findById('1', undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.findById('1', userContext, signal)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
@@ -90,12 +99,25 @@ describe('Repository', () => {
     mocks.toEntityMock.mockReturnValue(entity)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.findById('1', undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.findById('1', userContext, signal)
 
-    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', undefined)
+    expect(mocks.findByIdMock).toHaveBeenCalledWith('1', userContext, signal)
     expect(mocks.toEntityMock).toHaveBeenCalledWith(dto)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual(entity)
+  })
+
+  it('findById throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+
+    await expect(repo.findById('1', userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.findByIdMock).not.toHaveBeenCalled()
+    expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
   it('find maps every dto to entity and returns ok(list)', async () => {
@@ -113,16 +135,38 @@ describe('Repository', () => {
     mocks.toEntityMock.mockReturnValueOnce(entities[0]).mockReturnValueOnce(entities[1])
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const criteria: WriteCriteria = {
-      where: [{ field: 'id', operator: 'eq', value: '1' }],
-      relationsToLoad: undefined,
-    }
-    const result = await repo.find(criteria, undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.find(dtos[0].fullName, userContext, signal)
 
-    expect(mocks.findMock).toHaveBeenCalledWith(criteria, undefined)
+    expect(mocks.findMock).toHaveBeenCalledWith(dtos[0].fullName, userContext, signal)
     expect(mocks.toEntityMock).toHaveBeenCalledTimes(2)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual(entities)
+  })
+
+  it('find returns ok(empty list) when datasource returns no records', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    mocks.findMock.mockResolvedValue([])
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.find('123', userContext, signal)
+
+    expect(result.isOk()).toBe(true)
+    expect(result.getValueOrThrow()).toEqual([])
+    expect(mocks.toEntityMock).not.toHaveBeenCalled()
+  })
+
+  it('find throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+
+    await expect(repo.find('123', userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.findMock).not.toHaveBeenCalled()
+    expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
   it('save maps entity to dto, calls insert and returns ok(void)', async () => {
@@ -133,12 +177,26 @@ describe('Repository', () => {
     mocks.toDtoMock.mockReturnValue(dto)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.save(entity, undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.save(entity, signal)
 
     expect(mocks.toDtoMock).toHaveBeenCalledWith(entity)
-    expect(mocks.insertMock).toHaveBeenCalledWith(dto, undefined)
+    expect(mocks.insertMock).toHaveBeenCalledWith(dto, signal)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
+  })
+
+  it('save throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const entity: Entity = { id: '1', name: 'Alice' }
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+
+    await expect(repo.save(entity, abortController.signal)).rejects.toThrowError()
+    expect(mocks.toDtoMock).toHaveBeenCalled()
+    expect(mocks.insertMock).not.toHaveBeenCalled()
   })
 
   it('delete maps entity to dto, calls delete and returns ok(void)', async () => {
@@ -149,31 +207,57 @@ describe('Repository', () => {
     mocks.toDtoMock.mockReturnValue(dto)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.delete(entity, undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.delete(entity, userContext, signal)
 
     expect(mocks.toDtoMock).toHaveBeenCalledWith(entity)
-    expect(mocks.deleteMock).toHaveBeenCalledWith(dto, undefined)
+    expect(mocks.deleteMock).toHaveBeenCalledWith(dto, userContext, signal)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
+  })
+
+  it('delete throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const entity: Entity = { id: '1', name: 'Alice' }
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+
+    await expect(repo.delete(entity, userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.toDtoMock).toHaveBeenCalled()
+    expect(mocks.deleteMock).not.toHaveBeenCalled()
   })
 
   it('update maps partial entity to partial dto, calls update and returns ok(void)', async () => {
     const { dataSource, mapper, mocks } = makeDeps()
     const partialEntity: Partial<Entity> = { name: 'Bob' }
     const partialDto: Partial<Dto> = { fullName: 'Bob' }
-    const criteria: WriteCriteria = {
-      where: [{ field: 'id', operator: 'eq', value: '1' }],
-      relationsToLoad: undefined,
-    }
 
     mocks.toPartialDtoMock.mockReturnValue(partialDto)
 
     const repo = new Repository<Entity, Dto>(dataSource, mapper)
-    const result = await repo.update(partialEntity, criteria, undefined)
+    const signal = undefined as Optional<AbortSignal>
+    const result = await repo.update('1', partialEntity, userContext, signal)
 
     expect(mocks.toPartialDtoMock).toHaveBeenCalledWith(partialEntity)
-    expect(mocks.updateMock).toHaveBeenCalledWith(partialDto, criteria, undefined)
+    expect(mocks.updateMock).toHaveBeenCalledWith('1', partialDto, userContext, signal)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBeUndefined()
+  })
+
+  it('update throws when signal is already aborted', async () => {
+    const { dataSource, mapper, mocks } = makeDeps()
+    const partialEntity: Partial<Entity> = { name: 'Bob' }
+    const abortController = new AbortController()
+    abortController.abort()
+
+    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+
+    await expect(
+      repo.update('1', partialEntity, userContext, abortController.signal),
+    ).rejects.toThrowError()
+    expect(mocks.toPartialDtoMock).toHaveBeenCalled()
+    expect(mocks.updateMock).not.toHaveBeenCalled()
   })
 })

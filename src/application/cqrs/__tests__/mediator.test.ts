@@ -57,6 +57,7 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'AbortCommand',
       type: REQUEST_TYPE.COMMAND,
+      payload: 'test-payload',
     }
 
     const result = await mediator.send(command, abortController.signal)
@@ -78,9 +79,10 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'ScopeMissingCommand',
       type: REQUEST_TYPE.COMMAND,
+      payload: 'test-payload',
     }
 
-    const result = await mediator.send(command)
+    const result = await mediator.send(command, new AbortController().signal)
 
     expect(getContextMock).toHaveBeenCalledTimes(1)
     expect(result.isOk()).toBe(false)
@@ -101,9 +103,10 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'NoHandlerIntent',
       type: REQUEST_TYPE.COMMAND,
+      payload: 'test-payload',
     }
 
-    await expect(mediator.send(command)).rejects.toThrow(
+    await expect(mediator.send(command, new AbortController().signal)).rejects.toThrow(
       `No handler registered for request intent: ${command.intent}`,
     )
 
@@ -114,6 +117,7 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'CommandIntent',
       type: REQUEST_TYPE.COMMAND,
+      payload: 'test-payload',
     }
 
     const handlerToken = TokenHelper.createToken<IHandler<ICommand<string>, string>>(command.intent)
@@ -147,12 +151,13 @@ describe('Mediator', () => {
     const { requestContext } = createRequestContext({ scope } as ExecutionContext)
     const mediator = new Mediator(requestContext)
 
-    const result = await mediator.send(command)
+    const signal = new AbortController().signal
+    const result = await mediator.send(command, signal)
 
     expect(resolveMock).toHaveBeenNthCalledWith(1, handlerToken)
     expect(resolveMock).toHaveBeenNthCalledWith(2, pipelineToken)
     expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
-    expect(handlerHandleSpy).toHaveBeenCalledWith(command, undefined)
+    expect(handlerHandleSpy).toHaveBeenCalledWith(command, signal)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBe('command-ok')
   })
@@ -161,20 +166,21 @@ describe('Mediator', () => {
     const query: IQuery<number> = {
       intent: 'QueryIntent',
       type: REQUEST_TYPE.QUERY,
-      readCriteria: {} as never,
+      payload: 0,
+      cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
     }
 
-    const handlerToken = TokenHelper.createToken<IHandler<ICommand<number>, number>>(query.intent)
-    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<number>, number>>(
+    const handlerToken = TokenHelper.createToken<IHandler<IQuery<number>, number>>(query.intent)
+    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<IQuery<number>, number>>(
       TOKENS.QUERY_PIPELINES_BEHAVIOR,
     )
 
-    const handler: IHandler<ICommand<number>, number> = {
+    const handler: IHandler<IQuery<number>, number> = {
       handle: async () => Result.ok(42),
     }
     const handlerHandleSpy = vi.spyOn(handler, 'handle')
 
-    const pipeline: IPipelineBehavior<ICommand<number>, number> = {
+    const pipeline: IPipelineBehavior<IQuery<number>, number> = {
       handle: async (_request, next) => next(),
     }
     const pipelineHandleSpy = vi.spyOn(pipeline, 'handle')
@@ -195,12 +201,14 @@ describe('Mediator', () => {
     const { requestContext } = createRequestContext({ scope } as ExecutionContext)
     const mediator = new Mediator(requestContext)
 
-    const result = await mediator.query(query)
+    const signal = new AbortController().signal
+
+    const result = await mediator.query(query, signal)
 
     expect(resolveMock).toHaveBeenNthCalledWith(1, handlerToken)
     expect(resolveMock).toHaveBeenNthCalledWith(2, pipelineToken)
     expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
-    expect(handlerHandleSpy).toHaveBeenCalledWith(query, undefined)
+    expect(handlerHandleSpy).toHaveBeenCalledWith(query, signal)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toBe(42)
   })
