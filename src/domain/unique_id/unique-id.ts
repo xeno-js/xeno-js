@@ -37,8 +37,8 @@ export class UniqueId {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public static create(): UniqueId {
-    const uniqueId = GuidHelper.generate()
+  public static create(id?: Guid): UniqueId {
+    const uniqueId = id ?? GuidHelper.generate()
     return new UniqueId(uniqueId)
   }
 

@@ -290,6 +290,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   TENANT_AUTHORIZATION_PIPELINE: 'TENANT_AUTHORIZATION_PIPELINE',
+  /** @description Token used to register and resolve the UnitOfWork instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  UNIT_OF_WORK: 'UNIT_OF_WORK',
   /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container.
    *
    * @author Xeno

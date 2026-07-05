@@ -32,7 +32,7 @@ export class ReadDao<T, TDto> implements IReadDao<T> {
   ) {}
 
   public async findById(
-    id: string,
+    id: string | number,
     ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>> {

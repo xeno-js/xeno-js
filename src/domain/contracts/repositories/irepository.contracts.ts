@@ -38,7 +38,7 @@ export interface IRepository<T> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   findById(
-    id: string,
+    id: string | number,
     ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>>
@@ -73,7 +73,7 @@ export interface IRepository<T> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   update(
-    id: string,
+    id: string | number,
     entity: Partial<T>,
     ctx: UserContext,
     signal: Optional<AbortSignal>,

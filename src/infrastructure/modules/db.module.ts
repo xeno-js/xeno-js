@@ -18,5 +18,8 @@ export class DbModule implements IModule<DbConfig> {
     container.addScopedFactory(INJECTION_TOKENS.DB_CONTEXT, () => {
       return new DbClientFactory().create(opts)
     })
+
+    const { UnitOfWork } = await import('../transaction/unit-of-work')
+    container.addScoped(INJECTION_TOKENS.UNIT_OF_WORK, UnitOfWork, [INJECTION_TOKENS.DB_CONTEXT])
   }
 }

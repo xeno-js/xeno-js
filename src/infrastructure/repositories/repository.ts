@@ -32,7 +32,7 @@ export class Repository<T, TDto> implements IRepository<T> {
   ) {}
 
   public async findById(
-    id: string,
+    id: string | number,
     ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>> {
@@ -80,7 +80,7 @@ export class Repository<T, TDto> implements IRepository<T> {
   }
 
   public async update(
-    id: string,
+    id: string | number,
     entity: Partial<T>,
     ctx: UserContext,
     signal: Optional<AbortSignal>,

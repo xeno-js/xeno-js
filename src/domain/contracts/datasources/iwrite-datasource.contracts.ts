@@ -87,7 +87,7 @@ export interface IWriteDataSource<TDto> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   update(
-    id: string,
+    id: string | number,
     dto: Partial<TDto>,
     ctx: UserContext,
     signal: Optional<AbortSignal>,

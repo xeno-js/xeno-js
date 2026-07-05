@@ -22,6 +22,7 @@ import type {
   IServiceResilience,
   IServiceScope,
   IStrategy,
+  IUnitOfWork,
   IValidatorService,
 } from '@/domain'
 import type { AuthClaims, HttpHeaders, Metadata, Optional } from '@/shared'
@@ -360,6 +361,14 @@ export const INJECTION_TOKENS = Object.freeze({
   TENANT_AUTHORIZATION_PIPELINE: TokenHelper.createToken<BaseAuthorizationStrategy<IRequest>>(
     TOKENS.TENANT_AUTHORIZATION_PIPELINE,
   ),
+  /** @description Token used to register and resolve the UnitOfWork instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  UNIT_OF_WORK: TokenHelper.createToken<IUnitOfWork>(TOKENS.UNIT_OF_WORK),
   /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container.
    *
    * @author Xeno

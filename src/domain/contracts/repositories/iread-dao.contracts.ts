@@ -26,7 +26,7 @@ export interface IReadDao<T> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   findById(
-    id: string,
+    id: string | number,
     ctx: UserContext,
     signal: Optional<AbortSignal>,
   ): Promise<ResultType<Optional<T>>>
