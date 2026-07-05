@@ -1,5 +1,5 @@
 import { TokenHelper } from '@xeno/core'
-import type { BaseController, ReadDao, Repository, IReadDataSource, IWriteDataSource, IMapper } from '@xeno/core'
+import type { BaseController, ReadDao, Repository, IReadDataSource, IWriteDataSource, IMapper, BaseHandler, ICommand } from '@xeno/core'
 import { User, UserProps } from './entity/user'
 import { UserDto } from './schema'
 
@@ -15,3 +15,5 @@ export const USER_MAPPER_TOKEN = TokenHelper.createToken<IMapper<User, UserDto>>
 export const UNAUTHORIZED_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<null, null>>('UNAUTHORIZED_CONTROLLER_TOKEN')
 export const SAVE_USER_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<UserProps, UserDto>>('SAVE_USER_CONTROLLER_TOKEN')
 export const FIND_USER_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<{id: string}, User>>('FIND_USER_CONTROLLER_TOKEN')
+export const USER_TRANSACTION_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<null, void>>('USER_TRANSACTION_CONTROLLER_TOKEN')
+export const USER_TRANSACTION_COMMAND_HANDLER_TOKEN = TokenHelper.createToken<BaseHandler<ICommand<null>, void>>('UserTransactionCommand')

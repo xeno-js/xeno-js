@@ -2,7 +2,7 @@ import 'dotenv/config'
 import fastify from 'fastify'
 import { INJECTION_TOKENS } from '@xeno/core'
 import { bootstrap } from './bootstrap'
-import { UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN } from './tokens'
+import { UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, USER_TRANSACTION_CONTROLLER_TOKEN } from './tokens'
 import { UserProps } from './entity/user'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -22,6 +22,7 @@ async function runDemo() {
         const saveUserController = container.resolve(SAVE_USER_CONTROLLER_TOKEN)
         const findUserController = container.resolve(FIND_USER_CONTROLLER_TOKEN)
         const unauthController = container.resolve(UNAUTHORIZED_CONTROLLER_TOKEN)
+        const userTransactionController = container.resolve(USER_TRANSACTION_CONTROLLER_TOKEN)
 
         console.log('✅ Middleware and Controllers resolved from the container.')
         // 3. Create a Fastify instance to handle HTTP requests
@@ -37,6 +38,18 @@ async function runDemo() {
                 return await saveUserController.handle(payload)
             })
 
+            return reply
+                .status(responseDto.status)
+                .type('application/json')
+                .send(responseDto.data)
+        })
+
+        app.patch('/api/user/update', async (request, reply) => {
+            // 4. Execute the middleware to handle the request context and authentication, then call the PingController's handle method with the request payload.
+            const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+                const payload = request.body as UserProps
+                return await userTransactionController.handle(null)
+            })
             return reply
                 .status(responseDto.status)
                 .type('application/json')

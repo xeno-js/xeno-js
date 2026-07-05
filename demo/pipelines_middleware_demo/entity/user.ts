@@ -1,4 +1,4 @@
-import { Entity } from '@xeno/core'
+import { Entity, UniqueId } from '@xeno/core'
 
 export interface UserProps {
     name: string
@@ -9,7 +9,7 @@ export interface UserProps {
 }
 
 export class User extends Entity<UserProps> {
-    constructor(props: UserProps) {
-        super(props)
+    constructor(props: UserProps, id?: string) {
+        super(props, id)
     }
 }

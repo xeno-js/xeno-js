@@ -9,7 +9,7 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
-        const result = await this._db.select().from(users).where(and(eq(users.id.table, id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).limit(1).execute();
+        const result = await this._db.select().from(users).where(and(eq(users.id, id))).limit(1).execute();
         return result.length > 0 ? result[0] : undefined;
     }
 
@@ -28,13 +28,13 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
-        await this._db.delete(users).where(and(eq(users.id.table, dto.id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
+        await this._db.delete(users).where(and(eq(users.id, dto.id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
     }
 
-    public async update(id: string, dto: Partial<UserDto>, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void> {
+    public async update(id: string | number, dto: Partial<UserDto>, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
-        await this._db.update(users).set(dto).where(and(eq(users.id.table, id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
+        await this._db.update(users).set(dto).where(and(eq(users.id, id))).execute();
     }
 }

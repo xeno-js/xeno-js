@@ -1,9 +1,9 @@
 import { AppBuilder, INJECTION_TOKENS, LOG_LEVEL, ReadDao, Repository, TokenHelper } from '@xeno/core'
 import type { IServiceContainer, IHandler, ICommand } from '@xeno/core'
-import { USER_REPOSITORY, USER_READ_REPOSITORY, USER_DS_TOKEN, USER_READ_DS_TOKEN, USER_MAPPER_TOKEN, UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN } from './tokens'
-import { UserCommandHandler, UnauthorizedCommandHandler } from './cqrs/command.handler'
+import { USER_REPOSITORY, USER_READ_REPOSITORY, USER_DS_TOKEN, USER_READ_DS_TOKEN, USER_MAPPER_TOKEN, UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, USER_TRANSACTION_CONTROLLER_TOKEN, USER_TRANSACTION_COMMAND_HANDLER_TOKEN } from './tokens'
+import { UserCommandHandler, UnauthorizedCommandHandler, UserTransactionCommandHandler } from './cqrs/command.handler'
 import { UserQueryHandler } from './cqrs/query.handler'
-import { SaveUserController, FindUserController, UnauthorizedController } from './controllers/controller'
+import { SaveUserController, FindUserController, UnauthorizedController, UserTransactionController } from './controllers/controller'
 import { UserCommand } from './cqrs/command'
 import { User } from './entity/user'
 import { UserQuery } from './cqrs/query'
@@ -75,6 +75,12 @@ export async function bootstrap(): Promise<IServiceContainer> {
                 const tenantStrategy = c.resolve(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
                 return new UnauthorizedCommandHandler(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), [userStrategy, tenantStrategy])
             })
+            services.addScopedFactory(USER_TRANSACTION_COMMAND_HANDLER_TOKEN, (c) => {
+                const requestcontext = c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
+                const repository = c.resolve(USER_REPOSITORY)
+                const uow = c.resolve(INJECTION_TOKENS.UNIT_OF_WORK)
+                return new UserTransactionCommandHandler(uow, repository, requestcontext)
+            })
 
             // REGISTER CONTROLLERS
             services.addTransientFactory(SAVE_USER_CONTROLLER_TOKEN, (c) => {
@@ -82,6 +88,9 @@ export async function bootstrap(): Promise<IServiceContainer> {
             })
             services.addTransientFactory(FIND_USER_CONTROLLER_TOKEN, (c) => {
                 return new FindUserController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
+            })
+            services.addTransientFactory(USER_TRANSACTION_CONTROLLER_TOKEN, (c) => {
+                return new UserTransactionController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
             })
             services.addTransient(UNAUTHORIZED_CONTROLLER_TOKEN, UnauthorizedController, [INJECTION_TOKENS.REQUEST_CONTEXT, INJECTION_TOKENS.MEDIATOR])
         })

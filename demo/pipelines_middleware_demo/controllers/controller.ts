@@ -31,6 +31,23 @@ export class FindUserController extends BaseController<{id: string}, User> {
     }
 }
 
+export class UserTransactionController extends BaseController<null, void> {
+    public async handle(_request: null): Promise<ResponseDto<void>> {
+        const command: ICommand<null> = {
+            intent: 'UserTransactionCommand',
+            type: 'COMMAND',
+            payload: null
+        }
+
+        const result = await this._send(command)
+        if (!result.isOk()) {
+            return this.fail(result.getErrorOrThrow(), 'Transaction failed')
+        }
+
+        return this.ok(result.getValueOrThrow()!, STATUS_CODES.OK) // 200 OK
+    }
+}
+
 export class UnauthorizedController extends BaseController<null, null> {
     public async handle(_request: null): Promise<ResponseDto<null>> {
         const cmd: ICommand<null> = {

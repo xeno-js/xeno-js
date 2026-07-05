@@ -26,15 +26,15 @@ export class UserMapper implements IMapper<User, UserDto> {
         };
     }
 
-    public toPartialDto(entity: User): Partial<UserDto> {
-        const props = entity.getProps();
+    public toPartialDto(entity: Partial<User>): Partial<UserDto> {
+        const props = entity.getProps ? entity.getProps() : {} as UserProps;
 
         return {
             name: props.name,
             email: props.email,
             password: props.password,
-            tenantId: props.tenantId,
-            userId: props.userId
+            userId: props.userId,
+            tenantId: props.tenantId
         };
     }
 }
