@@ -1,12 +1,29 @@
-import { BaseHandler } from "@/application"
-import { AppError, ICommand, IHandler, Result, type ResultType } from "@/domain"
-import { PingCommand } from "./command"
+import { BaseHandler, AppError, ExecutionContext, ICommand, IHandler, IRepository, IRequestContext, IStrategy, Result, GuidHelper, type ResultType, StringHelper } from "@xeno/core"
 
-export class PingCommandHandler implements IHandler<ICommand<{ echoed: string }>, { echoed: string }> {
-    public async handle(request: PingCommand, _signal?: AbortSignal): Promise<ResultType<{ echoed: string }>> {
-        console.log(`[CQRS: Command] 🟢 Received PingCommand with message: "${request.message}"`)
+import { UserCommand } from "./command"
+import { User } from "../entity/user"
 
-        return Result.ok({ echoed: request.message })
+export class UserCommandHandler extends BaseHandler<UserCommand, void> {
+    constructor(
+        private readonly _repository: IRepository<User>,
+        requestContext: IRequestContext<ExecutionContext>,
+        strategies: IStrategy<UserCommand>[] = []//In a real-world scenario, you might want to inject specific strategies for handling the UserCommand, such as validation or logging strategies.
+    ) {
+        super(requestContext, strategies)
+    }
+
+    public async handle(request: UserCommand, signal: AbortSignal): Promise<ResultType<void>> {
+        console.log(`[CQRS: Command] 🟢 Received UserCommand "${StringHelper.safeStringify(request.payload)}"`)
+
+        const user = new User(request.payload)
+
+        const result = await this._repository.save(user, signal)
+
+        if(!result.isOk()) {
+            return Result.fail(result.getErrorOrThrow())
+        }
+
+        return result
     }
 }
 

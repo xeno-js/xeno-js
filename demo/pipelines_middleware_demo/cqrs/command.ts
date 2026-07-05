@@ -1,8 +1,11 @@
 import { REQUEST_TYPE, type ICommand } from '@xeno/core'
+import { UserProps } from '../entity/user'
 
-export class PingCommand implements ICommand<{ echoed: string }> {
-    public readonly intent = 'PingCommand'
+export class UserCommand implements ICommand<UserProps> {
+    public readonly intent = 'UserCommand'
     public readonly type = REQUEST_TYPE.COMMAND
 
-    constructor(public readonly message: string) { }
+    constructor(
+        public readonly payload: UserProps
+    ) { }
 }

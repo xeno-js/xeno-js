@@ -1,15 +1,15 @@
-import { type ICachedQuery, type ICacheableOptions, REQUEST_TYPE } from '@xeno/core'
+import { type IQuery, type ICacheableOptions, REQUEST_TYPE } from '@xeno/core'
 
-export class GetStatusQuery implements ICachedQuery<{ status: string; uptime: number }> {
-    public readonly intent = 'GetStatusQuery'
+export class UserQuery implements IQuery<{ id: string }> {
+    public readonly intent = 'UserQuery'
     public readonly type = REQUEST_TYPE.QUERY
-    public readonly readCriteria = { where: [], orderBy: undefined, limit: undefined, offset: undefined, cols: [] }
     public readonly cacheOptions: ICacheableOptions
+    
 
-    constructor(public readonly verbose: boolean) {
+    constructor(public readonly payload: { id: string }) {
         this.cacheOptions = {
-            cacheTtlSeconds: 60, // Cache for 60 seconds
-            cacheKey: `GetStatusQuery:${verbose}`, // Unique cache key based on the verbose flag
+            ttl: 60, // Cache for 60 seconds
+            cacheKey: `UserQuery:${payload.id}`, // Unique cache key based on the payload
             bypassCache: false, // Do not bypass cache
             consistentRead: false // Do not require consistent read
         }

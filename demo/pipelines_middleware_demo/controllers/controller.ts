@@ -1,44 +1,33 @@
-import { AppError, BaseController, ICommand, ResponseDto, STATUS_CODES } from '@xeno/core'
-import { PingCommand } from '../cqrs/command'
-import { GetStatusQuery } from '../cqrs/query'
+import { AppError, BaseController, ICommand, ResponseDto, STATUS_CODES, StringHelper } from '@xeno/core'
+import type { UserDto } from '../schema'
+import { UserCommand } from '../cqrs/command'
+import { UserQuery } from '../cqrs/query'
+import { User, UserProps } from '../entity/user'
 
-export class PingController extends BaseController<{ message: string; }, { echoed: string }> {
-    public async handle(request: { message: string; }): Promise<ResponseDto<{ echoed: string }>> {
-        const command = new PingCommand(request.message)
+export class SaveUserController extends BaseController<UserProps, UserDto> {
+    public async handle(request: UserProps): Promise<ResponseDto<UserDto>> {
+        const command = new UserCommand(request)
         const result = await this._send(command)
 
         if (!result.isOk()) {
-            return this.fail(result.getErrorOrThrow(), 'Failed to process ping')
+            return this.fail(result.getErrorOrThrow(), `Failed to process user "${StringHelper.safeStringify(request)}"`)
         }
 
         return this.ok(result.getValueOrThrow()!, STATUS_CODES.CREATED) // 201 Created
     }
 }
 
-export class StatusController extends BaseController<{ verbose: boolean; }, { status: string; uptime: number }> {
-    public async handle(request: { verbose: boolean; }): Promise<ResponseDto<{ status: string; uptime: number }>> {
-        const query = new GetStatusQuery(request.verbose)
+export class FindUserController extends BaseController<{id: string}, User> {
+    public async handle(request: { id: string}): Promise<ResponseDto<User>> {
+        const query = new UserQuery({ id: request.id })
         const result = await this._query(query)
 
         if (!result.isOk()) {
-            console.error(`[StatusController] ❌ Error processing GetStatusQuery: ${result.getErrorOrThrow()}`)
-            return this.fail(result.getErrorOrThrow(), 'Failed to retrieve status')
+            console.error(`[UserController] ❌ Error processing UserQuery: ${result.getErrorOrThrow()}`)
+            return this.fail(result.getErrorOrThrow(), `User with id: "${request.id}" not found`)
         }
 
         return this.ok(result.getValueOrThrow()!, STATUS_CODES.OK) // 200 OK
-    }
-}
-
-export class ErrorController extends BaseController<null, null> {
-    public async handle(_request: null): Promise<ResponseDto<null>> {
-        return this.fail(AppError.create({
-            name: 'SimulatedError',
-            code: 'SIMULATED_ERROR',
-            status: STATUS_CODES.INTERNAL_SERVER_ERROR,
-            message: 'This is a simulated error for demonstration purposes.',
-            cause: null,
-            header: { ['X-Demo-Error']: ['SimulatedError'] }
-        }), 'Simulated error for demonstration purposes')
     }
 }
 
@@ -47,6 +36,7 @@ export class UnauthorizedController extends BaseController<null, null> {
         const cmd: ICommand<null> = {
             intent: 'UnauthorizedAccessCommand',
             type: 'COMMAND',
+            payload: null
         }
 
         const result = await this._send(cmd)
@@ -54,6 +44,6 @@ export class UnauthorizedController extends BaseController<null, null> {
             return this.fail(result.getErrorOrThrow(), 'Unauthorized access')
         }
 
-        return this.ok(result.getValueOrThrow()!, STATUS_CODES.FORBIDDEN) // 403 Forbidden
+        return this.ok(result.getValueOrThrow()!, STATUS_CODES.UNAUTHORIZED) // 401 Unauthorized
     }
 }

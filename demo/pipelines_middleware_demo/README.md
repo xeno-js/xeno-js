@@ -1,117 +1,170 @@
-# CQRS Implementation Guide - Xeno Framework
+# Demo 02 - CQRS & Security Middleware Architecture with Xeno
 
-This project demonstrates the implementation of the **CQRS (Command Query
-Responsibility Segregation)** pattern using the `xeno` framework. The
-architecture focuses on decoupling write operations (Commands) from read
-operations (Queries), ensuring a clean, maintainable, and scalable codebase.
+This demonstration project showcases how to configure and run an asynchronous,
+contract-driven CQRS application using the **Xeno** framework. It establishes an
+enterprise-grade ingress configuration using Fastify as the transport server,
+protected by integrated context-tracking, identity propagation, authorization
+policies, and command idempotency middleware layers.
 
-## 🏗️ Architectural Overview
+---
 
-The system follows a strict flow to handle requests:
+## Prerequisites
 
-1. **Entry Point (`index.ts`)**: Fastify handles HTTP requests and invokes the
-   application middleware.
-2. **Controller (`controller.ts`)**: Acts as a bridge, transforming HTTP inputs
-   into domain-agnostic `Commands` or `Queries`.
-3. **Mediator**: The engine that routes requests to the appropriate handlers and
-   executes pipeline behaviors (middlewares).
-4. **Handlers**: Contain the actual business logic to process the request.
-5. **Dependency Injection**: Managed by `AppBuilder`, using `tokens.ts` for
-   clean service resolution.
+Before setting up and running this application, ensure you have the following
+installed on your machine:
 
-## 🚀 Getting Started
+- **Node.js** (v20.0.0 or higher recommended)
+- **npm** (comes bundled with Node.js)
+- An active database node compatible with Drizzle ORM (e.g., PostgreSQL
+  instance)
 
-### 1. Prerequisites
+---
 
-- Node.js (v20+)
-- `xeno` framework (linked via file path in `package.json`)
+## Installation & Setup Manual
 
-### 2. Implementation Steps
+Follow these sequential steps to initialize, configure, and launch the
+application kernel locally:
 
-#### A. Define the Request (`command.ts` / `query.ts`)
+### 1. Configure Environment Variables
 
-Create a class implementing `ICommand` or `IQuery`. Each class **must** define a
-unique `intent` string.
+Create a `.env` configuration file from .env.example in the root of the
+`pipelines_middleware_demo` directory. Add your database access credentials:
 
-```typescript
-export class PingCommand implements ICommand<{ echoed: string }> {
-  public readonly intent = 'PingCommand' // Unique identifier
-  public readonly type = REQUEST_TYPE.COMMAND
-  constructor(
-    public readonly message: string,
-    public readonly signal: AbortSignal,
-  ) {}
-}
+```env
+DATABASE_URL=postgres://username:password@localhost:5432/your_database_name
+
 ```
 
-#### B. Create the Handler (`command.handler.ts`)
+_Note: The system bootstrap engine requires a defined `DATABASE_URL` string
+variable; leaving it undefined will cause an immediate compilation crash during
+initialization._
 
-Implement the `IHandler` interface. The `handle` method contains your business
-logic.
+### 2. Install Dependencies
 
-```typescript
-export class PingCommandHandler implements IHandler<
-  PingCommand,
-  { echoed: string }
-> {
-  public async handle(request: PingCommand) {
-    return Result.ok({ echoed: request.message })
-  }
-}
+Navigate into the project workspace directory and invoke the package
+installation command:
+
+```bash
+npm install
+
 ```
 
-#### C. Register Tokens (`tokens.ts`)
+This setups the required runtime environment dependencies, mapping Fastify for
+routing, Dotenv for configuration, and TSX for execution without dynamic
+compilation steps.
 
-Use `TokenHelper` to create a registration token. **Crucial:** The token
-description _must_ match the `intent` defined in your Command/Query class to
-ensure the Mediator can resolve the handler correctly.
+### 3. Sync the Database Schema
 
-```typescript
-export const PING_HANDLER_TOKEN =
-  TokenHelper.createToken<IHandler<PingCommand, any>>('PingCommand')
+Apply the object schema tables directly to your database instance using Drizzle
+Kit push macros:
+
+```bash
+npm run db:push
+
 ```
 
-#### D. Bootstrap the Container (`bootstrap.ts`)
+### 4. Launch the Active Run Loop
 
-Register your handlers and controllers in the `AppBuilder`.
+Start the Fastify transport server engine in local development execution mode:
 
-```typescript
-builder.addServices((services) => {
-  services.addTransient(PING_HANDLER_TOKEN, PingCommandHandler, [])
-  // Register controllers with Mediator injection
-  services.addTransientFactory(
-    PING_CONTROLLER_TOKEN,
-    (c) => new PingController(c.resolve(INJECTION_TOKENS.MEDIATOR)),
-  )
-})
+```bash
+npm start
+
 ```
 
-#### E. Handle the HTTP Request (`index.ts`)
+Upon a successful initialization sequence, you should observe the following
+confirmations printed to your terminal shell:
 
-Use the `middleware` to wrap the request, which automatically manages the
-execution context (identity, tracing, etc.).
+```text
+⚙️ Initialized Xeno Container...
+🚀 Starting Fastify server on http://localhost:3000...
+✅ Middleware and Controllers resolved from the container.
+✅ Fastify instance created. Setting up routes...
+✅ Routes set up. Ready to accept requests.
+🚀 Execution Demo 02 running on http://localhost:3000
 
-```typescript
-const responseDto = await middleware.execute(
-  request.headers as any,
-  async () => {
-    return await pingController.handle(payload)
-  },
-)
 ```
 
-## 🛠️ Best Practices
+---
 
-- **Never bypass the Mediator**: Always use the Mediator to send
-  commands/queries to maintain the pipeline integrity.
-- **Token Consistency**: Always double-check that the `intent` property matches
-  the string used in `TokenHelper.createToken`.
-- **Async Safety**: Always pass the `AbortSignal` through the layers to ensure
-  the application remains responsive and can cancel long-running operations.
+## API Documentation & Controller Usage Examples
 
-## 📂 Project Structure
+The transport server maps incoming connections to three distinct controllers,
+executing each path within the protected request-scoped context pipeline.
+Because the authorization subsystem is enabled, certain routes validate identity
+configurations such as security keys, user roles, or fine-grained action
+permissions before processing intent commands.
 
-- `cqrs/`: Contains command/query definitions and their respective handlers.
-- `controllers/`: Handles incoming HTTP traffic and Mediator calls.
-- `bootstrap.ts`: Dependency injection configuration.
-- `tokens.ts`: Centralized registry of DI tokens.
+### 1. Save User Controller (`POST /api/user/save`)
+
+- **Controller Implementation**: `SaveUserController`
+- **Behavior**: Receives raw `UserProps` input, builds a type-safe `UserCommand`
+  intent contract, passes it to the Mediator bus, and returns an HTTP
+  `201 Created` status code upon a successful commit.
+- **Configured Policies**: Enforces command idempotency locking parameters for a
+  duration ceiling of 30 seconds.
+
+#### Sample cURL Request:
+
+```bash
+curl -X POST http://localhost:3000/api/user/save \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer mock-valid-jwt-token" \
+  -H "x-correlation-id: 550e8400-e29b-41d4-a716-446655440000" \
+  -H "x-request-id: 740f9311-b38c-52e5-b827-557766551111" \
+  -d '{
+    "userId": "user-123",
+    "tenantId": "tenant-456",
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "password": "password123"
+  }'
+
+```
+
+---
+
+### 2. Find User Controller (`GET /api/user/:id`)
+
+- **Controller Implementation**: `FindUserController`
+- **Behavior**: Extrapolates the target identifier string parameter from the
+  route pattern path, dispatches a read-only `UserQuery` contract down the
+  mediator bus, and resolves a standardized HTTP `200 OK` model payload.
+- **Configured Policies**: Security rules evaluate client identity states to
+  verify the inclusion of the `read` permission claim signature.
+
+#### Sample cURL Request:
+
+```bash
+curl -X GET http://localhost:3000/api/user/user-123 \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer mock-valid-jwt-token" \
+  -H "x-correlation-id: 550e8400-e29b-41d4-a716-446655440000" \
+  -H "x-request-id: 981a2422-c49d-63f6-c938-668877662222"
+
+```
+
+---
+
+### 3. Simulated Unauthorized Controller (`GET /api/unauthorized`)
+
+- **Controller Implementation**: `UnauthorizedController`
+- **Behavior**: Triggers a simulated execution pathway mapping an
+  `UnauthorizedAccessCommand` contract.
+- **Configured Policies**: The authorization middleware evaluates access
+  criteria, requiring the user payload to match the `admin` role and provide
+  both `read` and `write` permission claims. If incoming identity headers omit
+  these credentials, the framework catches the policy failure early within the
+  execution behavior chain, short-circuiting to return an HTTP
+  `401 Unauthorized` outcome.
+
+#### Sample cURL Request (Triggers Access Violation):
+
+```bash
+curl -X GET http://localhost:3000/api/unauthorized \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer mock-guest-token" \
+  -H "x-correlation-id: 550e8400-e29b-41d4-a716-446655440000" \
+  -H "x-request-id: 112b3533-d50e-74a7-d049-779988773333"
+
+```

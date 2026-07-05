@@ -5,7 +5,9 @@
   "description": "Demo 02 - CQRS with @xeno",
   "type": "module",
   "scripts": {
-    "start": "tsx index.ts"
+    "start": "tsx main.ts",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@xeno/core": "file:../../",

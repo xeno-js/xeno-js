@@ -42,15 +42,6 @@ policy rings.
 - 👉
   **[Explore HTTP Core & Resilience Implementation](./http_core_demo/README.md)**
 
-### 3. `database_drizzle_demo/`
-
-Reviews automated data mapper isolation, strongly-typed repository components,
-transactional units of work, and Fluent Filter compilation grids interfacing
-with PostgreSQL via Drizzle ORM.
-
-- 👉
-  **[Explore Database & Persistence Implementation](./database_drizzle_demo/README.md)**
-
 ---
 
 ## 🏃 How to Run the Demos
