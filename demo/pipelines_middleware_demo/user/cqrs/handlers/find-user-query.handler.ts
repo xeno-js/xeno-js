@@ -25,7 +25,6 @@ export class FindUserQueryHandler extends BaseHandler<IQuery<{ id: string }>, Us
         const result = await this._query.findById(request.payload.id, ctx, signal)
 
         if(!result.isOk()) {
-            console.log(result)
             return Result.fail(result.getErrorOrThrow())
         }
 

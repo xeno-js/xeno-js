@@ -18,7 +18,6 @@ export class UserReadDatasource implements IUserDataSource {
 
         AppError.throwIfAborted(signal, 'UserReadDatasource.findById');
         const user = await this._dbContext.select().from(users).where(eq(users.id, id)).limit(1).execute();
-        console.log(user)
         return Enumerable.firstOrDefault(user);
     }
 
