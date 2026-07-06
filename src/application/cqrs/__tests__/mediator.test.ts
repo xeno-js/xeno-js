@@ -96,7 +96,22 @@ describe('Mediator', () => {
   })
 
   it('throws when no handler token is registered for request intent', async () => {
+    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<string>, string>>(
+      TOKENS.COMMAND_PIPELINES_BEHAVIOR,
+    )
+    const mockPipeline: IPipelineBehavior<ICommand<string>, string> = {
+      handle: async (_request, next) => next(),
+    }
+
     const { scope, resolveMock } = createScope()
+
+    resolveMock.mockImplementation((token) => {
+      if (token === pipelineToken) {
+        return mockPipeline
+      }
+      return undefined
+    })
+
     const { requestContext } = createRequestContext({ scope } as ExecutionContext)
     const mediator = new Mediator(requestContext)
 
@@ -107,10 +122,10 @@ describe('Mediator', () => {
     }
 
     await expect(mediator.send(command, new AbortController().signal)).rejects.toThrow(
-      `No handler registered for request intent: ${command.intent}`,
+      `errors.handler_not_found`,
     )
 
-    expect(resolveMock).not.toHaveBeenCalled()
+    expect(resolveMock).toHaveBeenCalledWith(pipelineToken)
   })
 
   it('resolves handler and command pipeline then executes next delegate via send', async () => {
@@ -154,8 +169,8 @@ describe('Mediator', () => {
     const signal = new AbortController().signal
     const result = await mediator.send(command, signal)
 
-    expect(resolveMock).toHaveBeenNthCalledWith(1, handlerToken)
-    expect(resolveMock).toHaveBeenNthCalledWith(2, pipelineToken)
+    expect(resolveMock).toHaveBeenNthCalledWith(1, pipelineToken)
+    expect(resolveMock).toHaveBeenNthCalledWith(2, handlerToken)
     expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
     expect(handlerHandleSpy).toHaveBeenCalledWith(command, signal)
     expect(result.isOk()).toBe(true)
@@ -205,8 +220,8 @@ describe('Mediator', () => {
 
     const result = await mediator.query(query, signal)
 
-    expect(resolveMock).toHaveBeenNthCalledWith(1, handlerToken)
-    expect(resolveMock).toHaveBeenNthCalledWith(2, pipelineToken)
+    expect(resolveMock).toHaveBeenNthCalledWith(1, pipelineToken)
+    expect(resolveMock).toHaveBeenNthCalledWith(2, handlerToken)
     expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
     expect(handlerHandleSpy).toHaveBeenCalledWith(query, signal)
     expect(result.isOk()).toBe(true)

@@ -105,17 +105,24 @@ export class Mediator implements IMediator {
         }),
       )
 
-    const token = TokenHelper.get<IHandler<ICommand<TRequest>, TResponse>>(request.intent)
-    if (!Guards.isDefined(token))
-      throw new Error(`No handler registered for request intent: ${request.intent}`)
-
-    const handler = scope.resolve(token)
-
     const pipelines = scope.resolve(
       TokenHelper.createToken<IPipelineBehavior<ICommand<TRequest>, TResponse>>(pipelineToken),
     )
 
-    const next: Delegate<TResponse> = () => handler.handle(request, signal)
+    const next: Delegate<TResponse> = () => {
+      const token = TokenHelper.get<IHandler<ICommand<TRequest>, TResponse>>(request.intent)
+      if (!Guards.isDefined(token))
+        AppError.throw({
+          code: ERROR_CODES.HANDLER_NOT_FOUND,
+          status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+          name: request.intent,
+          message: ERROR_CODE_MESSAGES[ERROR_CODES.HANDLER_NOT_FOUND],
+          cause: new Error(`No handler registered for request intent: ${request.intent}`),
+        })
+
+      const handler = scope.resolve(token)
+      return handler.handle(request, signal)
+    }
 
     return pipelines.handle(request, next)
   }
