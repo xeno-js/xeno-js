@@ -29,6 +29,11 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * Constructs a new instance of the BaseController class.
    * @param _requestContext - An instance of IRequestContext used to manage the execution context for requests.
    * @param _mediator - An instance of IMediator used to facilitate communication between different parts of the application.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,
@@ -41,6 +46,8 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * Helper to return a successful 200/201 response.
    * @param data - The data to include in the response.
    * @param status - The HTTP status code (default is 200).
+   * @param meta - Optional metadata to include in the response.
+   * @param headers - Optional headers to include in the response.
    * @returns A ResponseDto containing the data and status.
    *
    * @author Xeno
@@ -48,8 +55,13 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  protected ok<T>(data: T, status = 200): ResponseDto<T> {
-    return HttpHelper.success(data, status)
+  protected ok<T>(
+    data: T,
+    status = 200,
+    meta: Optional<Dictionary> = {},
+    headers: Optional<Dictionary<string[]>> = {},
+  ): ResponseDto<T> {
+    return HttpHelper.success(data, status, meta, headers)
   }
 
   /**
@@ -57,6 +69,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * into a standardized ErrorResponseDto.
    * @param error - The AppError instance representing the error.
    * @param details - Optional additional details about the error.
+   * @param headers - Optional headers to include in the error response.
    * @returns A ResponseDto representing the error response.
    *
    * @author Xeno
@@ -64,7 +77,11 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  protected fail(error: AppError, details: Optional<string>): ResponseDto<TResponse> {
+  protected fail(
+    error: AppError,
+    details: Optional<string>,
+    headers: Optional<Dictionary<string[]>> = {},
+  ): ResponseDto<TResponse> {
     const { context } = this._requestContext.getContext() ?? {}
 
     const customHeaders = error['header'] as Optional<Dictionary<string[]>>
@@ -87,6 +104,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
       {
         'Content-Type': [context?.network.formatIndicator ?? 'application/json'],
         ...customHeaders,
+        ...headers,
       },
     )
   }
