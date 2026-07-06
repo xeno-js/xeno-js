@@ -1,5 +1,6 @@
-import type { IModule, IServiceContainer } from '@/domain'
+import type { IModule, IServiceContainer, ITransactionState } from '@/domain'
 
+import type { DbContext } from '../db/db.types'
 import type { DbConfig } from './config/db.config'
 
 /**
@@ -13,13 +14,36 @@ import type { DbConfig } from './config/db.config'
 export class DbModule implements IModule<DbConfig> {
   async configure(container: IServiceContainer, opts: DbConfig): Promise<void> {
     const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
+    const { TokenHelper } = await import('@/shared')
 
     const { DbClientFactory } = await import('../factories/db-client.factory')
-    container.addScopedFactory(INJECTION_TOKENS.DB_CONTEXT, () => {
-      return new DbClientFactory().create(opts)
+    const db = new DbClientFactory().create(opts)
+
+    const { TransactionState } = await import('../transaction/transaction-state')
+    const tokenState = TokenHelper.createToken<ITransactionState<DbContext>>('TransactionState')
+
+    container.addScopedFactory(tokenState, () => {
+      return new TransactionState<DbContext>(db)
     })
 
     const { UnitOfWork } = await import('../transaction/unit-of-work')
-    container.addScoped(INJECTION_TOKENS.UNIT_OF_WORK, UnitOfWork, [INJECTION_TOKENS.DB_CONTEXT])
+    container.addScopedFactory(INJECTION_TOKENS.UNIT_OF_WORK, (c) => {
+      const ttx = c.resolve<ITransactionState<DbContext>>(tokenState)
+      return new UnitOfWork(db, ttx)
+    })
+
+    container.addScopedFactory(INJECTION_TOKENS.DB_CONTEXT, (c) => {
+      const ttx = c.resolve<ITransactionState<DbContext>>(tokenState)
+
+      return new Proxy(db, {
+        get(_target, prop, receiver) {
+          if (prop === 'transaction') {
+            return ttx.state?.transaction.bind(ttx.state)
+          }
+
+          return Reflect.get(ttx.state!, prop, receiver) as DbContext
+        },
+      })
+    })
   }
 }

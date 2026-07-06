@@ -79,7 +79,7 @@ export interface UserContext {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  readonly userId: Guid
+  readonly userId: Optional<Guid>
 
   /**
    * The tenant ID associated with the user, if applicable. This is useful in multi-tenant applications to identify which tenant the user belongs to.

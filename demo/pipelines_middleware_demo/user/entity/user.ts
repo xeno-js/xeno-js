@@ -9,7 +9,7 @@ export interface UserProps {
 }
 
 export class User extends Entity<UserProps> {
-    constructor(props: UserProps, id?: string) {
+    constructor(props: UserProps, id?: UniqueId) {
         super(props, id)
     }
 }

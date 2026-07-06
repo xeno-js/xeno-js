@@ -20,6 +20,12 @@ const userContext: UserContext = {
   tenantId: '6fdeff88-9f53-4c58-b24f-2e2db77d95ce',
 }
 
+class TestRepository extends Repository<Entity, Dto> {
+  constructor(dataSource: IWriteDataSource<Dto>, mapper: IMapper<Entity, Dto>) {
+    super(dataSource, mapper)
+  }
+}
+
 function makeDeps() {
   const findByIdMock = vi.fn()
   const findMock = vi.fn()
@@ -66,7 +72,7 @@ describe('Repository', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findByIdMock.mockResolvedValue(undefined)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.findById('1', userContext, signal)
 
@@ -80,7 +86,7 @@ describe('Repository', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findByIdMock.mockResolvedValue(null)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.findById('1', userContext, signal)
 
@@ -98,7 +104,7 @@ describe('Repository', () => {
     mocks.findByIdMock.mockResolvedValue(dto)
     mocks.toEntityMock.mockReturnValue(entity)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.findById('1', userContext, signal)
 
@@ -113,7 +119,7 @@ describe('Repository', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
 
     await expect(repo.findById('1', userContext, abortController.signal)).rejects.toThrowError()
     expect(mocks.findByIdMock).not.toHaveBeenCalled()
@@ -134,7 +140,7 @@ describe('Repository', () => {
     mocks.findMock.mockResolvedValue(dtos)
     mocks.toEntityMock.mockReturnValueOnce(entities[0]).mockReturnValueOnce(entities[1])
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.find(dtos[0].fullName, userContext, signal)
 
@@ -148,7 +154,7 @@ describe('Repository', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findMock.mockResolvedValue([])
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.find('123', userContext, signal)
 
@@ -162,7 +168,7 @@ describe('Repository', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
 
     await expect(repo.find('123', userContext, abortController.signal)).rejects.toThrowError()
     expect(mocks.findMock).not.toHaveBeenCalled()
@@ -176,7 +182,7 @@ describe('Repository', () => {
 
     mocks.toDtoMock.mockReturnValue(dto)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.save(entity, signal)
 
@@ -192,7 +198,7 @@ describe('Repository', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
 
     await expect(repo.save(entity, abortController.signal)).rejects.toThrowError()
     expect(mocks.toDtoMock).toHaveBeenCalled()
@@ -206,7 +212,7 @@ describe('Repository', () => {
 
     mocks.toDtoMock.mockReturnValue(dto)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.delete(entity, userContext, signal)
 
@@ -222,7 +228,7 @@ describe('Repository', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
 
     await expect(repo.delete(entity, userContext, abortController.signal)).rejects.toThrowError()
     expect(mocks.toDtoMock).toHaveBeenCalled()
@@ -236,7 +242,7 @@ describe('Repository', () => {
 
     mocks.toPartialDtoMock.mockReturnValue(partialDto)
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await repo.update('1', partialEntity, userContext, signal)
 
@@ -252,7 +258,7 @@ describe('Repository', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const repo = new Repository<Entity, Dto>(dataSource, mapper)
+    const repo = new TestRepository(dataSource, mapper)
 
     await expect(
       repo.update('1', partialEntity, userContext, abortController.signal),

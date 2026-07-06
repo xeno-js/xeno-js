@@ -20,6 +20,12 @@ const userContext: UserContext = {
   tenantId: '6fdeff88-9f53-4c58-b24f-2e2db77d95ce',
 }
 
+class TestReadDao extends ReadDao<Entity, Dto> {
+  constructor(dataSource: IReadDataSource<Dto>, mapper: IMapper<Entity, Dto>) {
+    super(dataSource, mapper)
+  }
+}
+
 function makeDeps() {
   const findByIdMock = vi.fn()
   const findMock = vi.fn()
@@ -51,7 +57,7 @@ describe('ReadDao', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findByIdMock.mockResolvedValue(undefined)
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await dao.findById('1', userContext, signal)
 
@@ -65,7 +71,7 @@ describe('ReadDao', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findByIdMock.mockResolvedValue(null)
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await dao.findById('1', userContext, signal)
 
@@ -83,7 +89,7 @@ describe('ReadDao', () => {
     mocks.findByIdMock.mockResolvedValue(dto)
     mocks.toEntityMock.mockReturnValue(entity)
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await dao.findById('1', userContext, signal)
 
@@ -98,7 +104,7 @@ describe('ReadDao', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
 
     await expect(dao.findById('1', userContext, abortController.signal)).rejects.toThrowError()
     expect(mocks.findByIdMock).not.toHaveBeenCalled()
@@ -119,7 +125,7 @@ describe('ReadDao', () => {
     mocks.findMock.mockResolvedValue(dtos)
     mocks.toEntityMock.mockReturnValueOnce(entities[0]).mockReturnValueOnce(entities[1])
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
     const result = await dao.find(dtos[0].fullName, userContext, signal)
 
@@ -133,7 +139,7 @@ describe('ReadDao', () => {
     const { dataSource, mapper, mocks } = makeDeps()
     mocks.findMock.mockResolvedValue([])
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
     const result = await dao.find('123', userContext, undefined)
 
     expect(result.isOk()).toBe(true)
@@ -146,7 +152,7 @@ describe('ReadDao', () => {
     const abortController = new AbortController()
     abortController.abort()
 
-    const dao = new ReadDao<Entity, Dto>(dataSource, mapper)
+    const dao = new TestReadDao(dataSource, mapper)
 
     await expect(dao.find('123', userContext, abortController.signal)).rejects.toThrowError()
     expect(mocks.findMock).not.toHaveBeenCalled()

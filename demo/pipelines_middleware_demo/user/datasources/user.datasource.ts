@@ -1,6 +1,6 @@
 import type { IWriteDataSource, DbContext, Optional, UserContext } from '@xeno/core'
-import { and, eq } from 'drizzle-orm';
-import { UserDto, users } from '../schema';
+import { and, AppError, Enumerable, eq } from '@xeno/core';
+import { UserDto, users } from '../../schema';
 
 export class UserDataSource implements IWriteDataSource<UserDto> {
     constructor(private _db: DbContext<UserDto>) {}
@@ -9,18 +9,22 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
+        AppError.throwIfAborted(signal, 'UserDataSource.findById');
         const result = await this._db.select().from(users).where(and(eq(users.id, id))).limit(1).execute();
-        return result.length > 0 ? result[0] : undefined;
+        return Enumerable.firstOrDefault(result);
     }
 
-    public async find(name: string, ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto[]> {
+    public async find(props: { name: string, email: string }, ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto[]> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
-        return await this._db.select().from(users).where(and(eq(users.name, name), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
+        AppError.throwIfAborted(signal, 'UserDataSource.find');
+        return this._db.select().from(users).where(and(eq(users.name, props.name), eq(users.email, props.email))).execute(); // in a real-world scenario, you might want to add more sophisticated filtering and pagination logic here, such as multi teant support, sorting, and filtering based on various user properties.
+        // eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId)
     }
 
     public async insert(dto: UserDto, signal: Optional<AbortSignal>): Promise<void> {
+        AppError.throwIfAborted(signal, 'UserDataSource.insert');
         await this._db.insert(users).values(dto).execute();
     }
 
@@ -28,6 +32,7 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
+        AppError.throwIfAborted(signal, 'UserDataSource.delete');
         await this._db.delete(users).where(and(eq(users.id, dto.id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
     }
 
@@ -35,6 +40,7 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
         if(!ctx.tenantId)
             throw new Error('Tenant ID is required in the user context.');
 
+        AppError.throwIfAborted(signal, 'UserDataSource.update');
         await this._db.update(users).set(dto).where(and(eq(users.id, id))).execute();
     }
 }

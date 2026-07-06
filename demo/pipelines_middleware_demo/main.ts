@@ -2,8 +2,8 @@ import 'dotenv/config'
 import fastify from 'fastify'
 import { INJECTION_TOKENS } from '@xeno/core'
 import { bootstrap } from './bootstrap'
-import { UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, USER_TRANSACTION_CONTROLLER_TOKEN } from './tokens'
-import { UserProps } from './entity/user'
+import { UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, UPDATE_USER_CONTROLLER_TOKEN } from './tokens'
+import { UserProps } from './user/entity/user'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN DEMO FUNCTION
@@ -22,7 +22,7 @@ async function runDemo() {
         const saveUserController = container.resolve(SAVE_USER_CONTROLLER_TOKEN)
         const findUserController = container.resolve(FIND_USER_CONTROLLER_TOKEN)
         const unauthController = container.resolve(UNAUTHORIZED_CONTROLLER_TOKEN)
-        const userTransactionController = container.resolve(USER_TRANSACTION_CONTROLLER_TOKEN)
+        const updateUserController = container.resolve(UPDATE_USER_CONTROLLER_TOKEN)
 
         console.log('✅ Middleware and Controllers resolved from the container.')
         // 3. Create a Fastify instance to handle HTTP requests
@@ -44,11 +44,12 @@ async function runDemo() {
                 .send(responseDto.data)
         })
 
-        app.patch('/api/user/update', async (request, reply) => {
+        app.patch('/api/user/update/:id', async (request, reply) => {
             // 4. Execute the middleware to handle the request context and authentication, then call the PingController's handle method with the request payload.
             const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
-                const payload = request.body as UserProps
-                return await userTransactionController.handle(null)
+                const { id } = request.params as any
+                const payload = { id: id ?? '123', ...request.body as UserProps } as UserProps & { id: string }
+                return await updateUserController.handle(payload)
             })
             return reply
                 .status(responseDto.status)
@@ -99,6 +100,7 @@ async function runDemo() {
             console.log('🚀 Execution Demo 02 running on http://localhost:3000')
             console.log('👉 POST /api/user/save (Command: {name: "John Doe", email: "john.doe@example.com", password: "password123", userId: "user-123", tenantId: "tenant-456"})')
             console.log('👉 GET  /api/user/:id  (Query: api/user/1)')
+            console.log('👉 PATCH /api/user/update/:id (Command: {name: "John Doe Updated", email: "john.doe.updated@example.com", password: "newpassword123", userId: "user-123", tenantId: "tenant-456"})')
             console.log('👉 GET  /api/unauthorized   (Simulated unauthorized endpoint)')
         } catch (err) {
             console.error('Error starting Fastify server:', err)

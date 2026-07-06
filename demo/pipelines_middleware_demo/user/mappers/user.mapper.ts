@@ -1,5 +1,5 @@
 import type { IMapper } from '@xeno/core';
-import { UserDto } from '../schema';
+import { UserDto } from '../../schema';
 import { User, UserProps } from '../entity/user';
 
 export class UserMapper implements IMapper<User, UserDto> {
