@@ -1,4 +1,5 @@
 import type { ResultType } from '../../results/result.types'
+import type { IRequest } from './cqrs_types'
 
 /**
  * @description A delegate function type that represents the next step in the pipeline behavior. It returns a promise that resolves to a ResultType, which can be either a successful result or an error. This delegate is used to invoke the next behavior in the pipeline or the actual request handler, allowing for a chain of behaviors to be executed in a structured manner.
@@ -25,7 +26,7 @@ export type Delegate<TResult> = () => Promise<ResultType<TResult>>
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IPipelineBehavior<TInput, TResult> {
+export interface IPipelineBehavior<TInput extends IRequest<unknown, TResult>, TResult> {
   /**
    * @description Handles the processing of a request within the pipeline. This method is responsible for executing any pre-processing logic, invoking the next behavior in the pipeline, and performing any post-processing logic. It ensures that the request is handled in a structured manner, allowing for cross-cutting concerns to be applied consistently.
    * @param request - The input request to be processed by the pipeline behavior.

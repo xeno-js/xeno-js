@@ -1,4 +1,11 @@
-import type { ExecutionContext, IHandler, IRequestContext, IStrategy, ResultType } from '@/domain'
+import type {
+  ExecutionContext,
+  IHandler,
+  IRequest,
+  IRequestContext,
+  IStrategy,
+  ResultType,
+} from '@/domain'
 import { Guards, type Guid, type Optional, type UserContext } from '@/shared'
 
 /**
@@ -10,7 +17,10 @@ import { Guards, type Guid, type Optional, type UserContext } from '@/shared'
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
-export abstract class BaseHandler<TRequest, TResponse> implements IHandler<TRequest, TResponse> {
+export abstract class BaseHandler<
+  TRequest extends IRequest<unknown, TResponse>,
+  TResponse,
+> implements IHandler<TRequest, TResponse> {
   constructor(
     private readonly _requestContext: IRequestContext<ExecutionContext>,
     private readonly _strategies: IStrategy<TRequest>[] = [],

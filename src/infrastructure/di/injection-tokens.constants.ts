@@ -4,6 +4,7 @@ import type {
   IAuthService,
   IBaseMapper,
   ICache,
+  ICommand,
   IConcurrencyService,
   Identity,
   IFactory,
@@ -15,6 +16,7 @@ import type {
   IMiddleware,
   IPipelineBehavior,
   IPolicyRegistry,
+  IQuery,
   IRequest,
   IRequestContext,
   IServiceContainer,
@@ -96,7 +98,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  COMMAND_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  COMMAND_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<ICommand, unknown>>(
     TOKENS.COMMAND_PIPELINES_BEHAVIOR,
   ),
   /** @description Token used to register and resolve the CompositePipeline instance in the dependency injection container.
@@ -106,7 +108,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  COMPOSITE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  COMPOSITE_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IQuery, unknown>>(
     TOKENS.COMPOSITE_PIPELINE,
   ),
   /** @description Token used to register and resolve the ConcurrencyRetryPipeline instance in the dependency injection container.
@@ -116,7 +118,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  CONCURRENCY_RETRY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  CONCURRENCY_RETRY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<ICommand, unknown>>(
     TOKENS.CONCURRENCY_RETRY_PIPELINE,
   ),
   /** @description Token used to register and resolve the ConcurrencyService instance in the dependency injection container.
@@ -168,7 +170,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  IDEMPOTENCY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  IDEMPOTENCY_PIPELINE: TokenHelper.createToken<IPipelineBehavior<ICommand, unknown>>(
     TOKENS.IDEMPOTENCY_PIPELINE,
   ),
   /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container.
@@ -264,7 +266,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  QUERY_CACHING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  QUERY_CACHING_PIPELINE: TokenHelper.createToken<IPipelineBehavior<IQuery, unknown>>(
     TOKENS.QUERY_CACHING_PIPELINE,
   ),
   /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container.
@@ -274,7 +276,7 @@ export const INJECTION_TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  QUERY_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IRequest, unknown>>(
+  QUERY_PIPELINES_BEHAVIOR: TokenHelper.createToken<IPipelineBehavior<IQuery, unknown>>(
     TOKENS.QUERY_PIPELINES_BEHAVIOR,
   ),
   /** @description Token used to register and resolve the RequestContext instance in the dependency injection container.

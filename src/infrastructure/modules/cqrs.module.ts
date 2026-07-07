@@ -1,4 +1,4 @@
-import type { IModule, IServiceContainer } from '@/domain'
+import type { ICommand, IModule, IQuery, IServiceContainer } from '@/domain'
 import { Guards } from '@/shared'
 
 import type { PipelineConfig } from './config/pipeline.config'
@@ -67,12 +67,12 @@ export class CqrsModule implements IModule<PipelineConfig> {
     const { CompositePipeline } = await import('@/application')
     container.addSingletonFactory(INJECTION_TOKENS.COMMAND_PIPELINES_BEHAVIOR, (resolver) => {
       const resolvedCommandPipelines = commandPipelines.map((token) => resolver.resolve(token))
-      return new CompositePipeline(resolvedCommandPipelines)
+      return new CompositePipeline<ICommand<unknown>, unknown>(resolvedCommandPipelines)
     })
 
     container.addSingletonFactory(INJECTION_TOKENS.QUERY_PIPELINES_BEHAVIOR, (resolver) => {
       const resolvedQueryPipelines = queryPipelines.map((token) => resolver.resolve(token))
-      return new CompositePipeline(resolvedQueryPipelines)
+      return new CompositePipeline<IQuery<unknown>, unknown>(resolvedQueryPipelines)
     })
   }
 }

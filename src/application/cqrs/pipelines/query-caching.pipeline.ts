@@ -11,10 +11,10 @@ import { Guards } from '@/shared'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class QueryCachingPipeline<TInput extends IQuery, TResult> implements IPipelineBehavior<
-  TInput,
-  TResult
-> {
+export class QueryCachingPipeline<
+  TInput extends IQuery<unknown, TResult>,
+  TResult,
+> implements IPipelineBehavior<TInput, TResult> {
   /**
    * @description Constructs a new instance of the QueryCachingPipeline class, which requires an ICache implementation for interacting with the cache and an ILogger for logging cache-related operations and errors. The constructor initializes the dependencies needed for the caching behavior to function properly within the CQRS pipeline.
    * @param _cacheService An instance of ICache used for interacting with the cache, including retrieving and storing cached responses based on cache keys.

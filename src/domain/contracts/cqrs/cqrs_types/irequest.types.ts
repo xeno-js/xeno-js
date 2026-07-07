@@ -9,8 +9,8 @@ import type { RequestType } from '@/shared'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IRequest<TRequest = unknown> {
-  readonly $type?: TRequest
+export interface IRequest<TRequest = unknown, TResponse = unknown> {
+  readonly $type?: TResponse
   /** @description The intent of the request, which can be used to describe the purpose or action associated with the request.
    *
    * @author Xeno

@@ -13,7 +13,7 @@ import type { IRequest } from './irequest.types'
    */
 
 /**
- * @description An interface representing a paginated query request, which extends the ICommand interface and includes pagination parameters.
+ * @description An interface representing a paginated query request, which extends the IQuery interface and includes pagination parameters.
 
    * 
    * @author Xeno
@@ -21,15 +21,17 @@ import type { IRequest } from './irequest.types'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IQuery<TResponse = unknown> extends IRequest<TResponse> {
+export interface IQuery<TRequest = unknown, TResponse = unknown> extends IRequest<
+  TRequest,
+  TResponse
+> {
   /**
    * @description Cache options for the query, including cache key, TTL, and bypass flags.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly cacheOptions: ICacheableOptions
 }

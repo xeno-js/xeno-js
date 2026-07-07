@@ -24,10 +24,10 @@ const defaultThresholdMs = 500
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class PerformancePipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
-  TInput,
-  TResult
-> {
+export class PerformancePipeline<
+  TInput extends IRequest<unknown, TResult>,
+  TResult,
+> implements IPipelineBehavior<TInput, TResult> {
   /**
    * @description Threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value is set through the constructor and must be a positive integer.
   

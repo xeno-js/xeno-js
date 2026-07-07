@@ -51,10 +51,10 @@ export class Mediator implements IMediator {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   async send<TRequest, TResponse>(
-    request: ICommand<TRequest>,
+    request: ICommand<TRequest, TResponse>,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
-    return this.process(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR, signal)
+    return this.process<TRequest, TResponse>(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR, signal)
   }
 
   /**
@@ -66,10 +66,10 @@ export class Mediator implements IMediator {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   async query<TRequest, TResponse>(
-    request: IQuery<TRequest>,
+    request: IQuery<TRequest, TResponse>,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
-    return this.process(request, TOKENS.QUERY_PIPELINES_BEHAVIOR, signal)
+    return this.process<TRequest, TResponse>(request, TOKENS.QUERY_PIPELINES_BEHAVIOR, signal)
   }
 
   /**
@@ -86,7 +86,7 @@ export class Mediator implements IMediator {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private async process<TRequest, TResponse>(
-    request: IRequest<TRequest>,
+    request: IRequest<TRequest, TResponse>,
     pipelineToken: string,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
@@ -106,11 +106,15 @@ export class Mediator implements IMediator {
       )
 
     const pipelines = scope.resolve(
-      TokenHelper.createToken<IPipelineBehavior<ICommand<TRequest>, TResponse>>(pipelineToken),
+      TokenHelper.createToken<IPipelineBehavior<IRequest<TRequest, TResponse>, TResponse>>(
+        pipelineToken,
+      ),
     )
 
     const next: Delegate<TResponse> = () => {
-      const token = TokenHelper.get<IHandler<ICommand<TRequest>, TResponse>>(request.intent)
+      const token = TokenHelper.get<IHandler<IRequest<TRequest, TResponse>, TResponse>>(
+        request.intent,
+      )
       if (!Guards.isDefined(token))
         AppError.throw({
           code: ERROR_CODES.HANDLER_NOT_FOUND,

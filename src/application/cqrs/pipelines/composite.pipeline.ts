@@ -8,10 +8,10 @@ import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@/domain
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
-export class CompositePipeline<TInput extends IRequest, TResult> implements IPipelineBehavior<
-  TInput,
-  TResult
-> {
+export class CompositePipeline<
+  TInput extends IRequest<unknown, TResult>,
+  TResult,
+> implements IPipelineBehavior<TInput, TResult> {
   /**
    * @description Constructs a new instance of the CompositePipeline class, which takes an optional array of IPipelineBehavior instances. If no behaviors are provided, it initializes with an empty array. The composite pipeline will execute each behavior in the order they were provided, allowing for a flexible and modular approach to handling requests in a CQRS architecture.
    * @param _pipelines An optional array of IPipelineBehavior instances that represent the individual behaviors to be combined into the composite pipeline.

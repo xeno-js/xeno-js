@@ -15,7 +15,8 @@ class TestController extends BaseController<string, string> {
 
   // Implementazione minima richiesta dall'abstract
   async handle(request: string): Promise<ResponseDto<string>> {
-    return this.ok(request)
+    const response = `Handled request with intent: ${request}`
+    return this.ok(response)
   }
 
   // Metodi pubblici per testare i protetti
@@ -27,11 +28,11 @@ class TestController extends BaseController<string, string> {
     return this.fail(error, details)
   }
 
-  public exposeQuery(request: IQuery<string>) {
+  public exposeQuery(request: IQuery<string, string>) {
     return this._query(request)
   }
 
-  public exposeSend(request: ICommand<string>) {
+  public exposeSend(request: ICommand<string, string>) {
     return this._send(request)
   }
 }
@@ -93,7 +94,7 @@ describe('BaseController', () => {
     const queryMock = vi.fn().mockResolvedValue(expected)
     mockMediator.query = queryMock
 
-    const request: IQuery<string> = {
+    const request: IQuery<string, string> = {
       intent: 'TestQuery',
       type: REQUEST_TYPE.QUERY,
       payload: 'query-payload',
@@ -112,7 +113,7 @@ describe('BaseController', () => {
     const sendMock = vi.fn().mockResolvedValue(expected)
     mockMediator.send = sendMock
 
-    const request: ICommand<string> = {
+    const request: ICommand<string, string> = {
       intent: 'TestCommand',
       type: REQUEST_TYPE.COMMAND,
       payload: 'command-payload',

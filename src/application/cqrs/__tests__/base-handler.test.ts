@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, IRequestContext, IStrategy, ResultType } from '@/domain'
+import type { ExecutionContext, IRequest, IRequestContext, IStrategy, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
 import type { Guid } from '@/shared'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, STATUS_CODES } from '@/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, REQUEST_TYPE, STATUS_CODES } from '@/shared'
 
 import { BaseHandler } from '../base-handler'
 
-interface TestRequest {
+interface TestRequest extends IRequest<string, TestResponse> {
   requestId: string
 }
 interface TestResponse {
@@ -69,7 +69,12 @@ describe('BaseHandler', () => {
   let request: TestRequest
 
   beforeEach(() => {
-    request = { requestId: 'r-1' }
+    request = {
+      requestId: 'r-1',
+      intent: 'TestIntent',
+      type: REQUEST_TYPE.COMMAND,
+      payload: 'test-payload',
+    }
   })
 
   it('returns the identity when context exists', async () => {
