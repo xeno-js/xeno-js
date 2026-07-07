@@ -6,18 +6,12 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
     constructor(private _db: DbContext<UserDto>) {}
 
     public async findById(id: string | number, ctx: UserContext, signal: Optional<AbortSignal>): Promise<Optional<UserDto>> {
-        if(!ctx.tenantId)
-            throw new Error('Tenant ID is required in the user context.');
-
         AppError.throwIfAborted(signal, 'UserDataSource.findById');
         const result = await this._db.select().from(users).where(and(eq(users.id, id))).limit(1).execute();
         return Enumerable.firstOrDefault(result);
     }
 
     public async find(props: { name: string, email: string }, ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto[]> {
-        if(!ctx.tenantId)
-            throw new Error('Tenant ID is required in the user context.');
-
         AppError.throwIfAborted(signal, 'UserDataSource.find');
         return this._db.select().from(users).where(and(eq(users.name, props.name), eq(users.email, props.email))).execute(); // in a real-world scenario, you might want to add more sophisticated filtering and pagination logic here, such as multi teant support, sorting, and filtering based on various user properties.
         // eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId)
@@ -29,17 +23,11 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
     }
 
     public async delete(dto: UserDto, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void> {
-        if(!ctx.tenantId)
-            throw new Error('Tenant ID is required in the user context.');
-
         AppError.throwIfAborted(signal, 'UserDataSource.delete');
         await this._db.delete(users).where(and(eq(users.id, dto.id), eq(users.tenantId, ctx.tenantId), eq(users.userId, ctx.userId))).execute();
     }
 
     public async update(id: string | number, dto: Partial<UserDto>, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void> {
-        if(!ctx.tenantId)
-            throw new Error('Tenant ID is required in the user context.');
-
         AppError.throwIfAborted(signal, 'UserDataSource.update');
         await this._db.update(users).set(dto).where(and(eq(users.id, id))).execute();
     }

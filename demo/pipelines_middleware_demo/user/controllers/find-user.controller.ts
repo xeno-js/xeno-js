@@ -8,7 +8,7 @@ export class FindUserController extends BaseController<{id: string}, User> {
         const result = await this._query(query)
 
         if (!result.isOk()) {
-            return this.fail(result.getErrorOrThrow(), `User with id: "${request.id}" not found`)
+            return this.fail(result.getErrorOrThrow(), `An error occurred while processing the request for user with id ${request.id}.`, {})
         }
 
         return this.ok(result.getValueOrThrow()!, STATUS_CODES.OK) // 200 OK

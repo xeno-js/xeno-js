@@ -73,7 +73,7 @@ export async function bootstrap(): Promise<IServiceContainer> {
                 return new SaveUserCommandHandler(repository, requestcontext)
             })
             services.addScoped(TokenHelper.createToken<IHandler<UserQuery, User>>('UserQuery'), FindUserQueryHandler, [USER_READ_REPOSITORY, INJECTION_TOKENS.REQUEST_CONTEXT])
-            services.addScopedFactory(TokenHelper.createToken<IHandler<ICommand<null>, null>>('UnauthorizedAccessCommand'), (c) => {
+            services.addScopedFactory(TokenHelper.createToken<IHandler<ICommand<null, null>, null>>('UnauthorizedAccessCommand'), (c) => {
                 const userStrategy = c.resolve(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
                 const tenantStrategy = c.resolve(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
                 return new UnauthorizedCommandHandler(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), [userStrategy, tenantStrategy])

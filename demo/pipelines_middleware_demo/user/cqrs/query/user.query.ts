@@ -1,6 +1,8 @@
 import { type IQuery, type ICacheableOptions, REQUEST_TYPE } from '@xeno/core'
 
-export class UserQuery implements IQuery<{ id: string }> {
+import type { User } from '../../entity/user'
+
+export class UserQuery implements IQuery<{ id: string }, User> {
     public readonly intent = 'UserQuery'
     public readonly type = REQUEST_TYPE.QUERY
     public readonly cacheOptions: ICacheableOptions

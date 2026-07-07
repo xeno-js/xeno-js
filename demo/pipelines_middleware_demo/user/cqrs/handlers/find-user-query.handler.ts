@@ -1,8 +1,8 @@
-import { AppError, BaseHandler, ExecutionContext, GuidHelper, IQuery, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
+import { AppError, BaseHandler, ExecutionContext, GuidHelper, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
 import { UserQuery } from "../query/user.query"
 import { User } from "../../entity/user";
 
-export class FindUserQueryHandler extends BaseHandler<IQuery<{ id: string }>, User> {
+export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
     constructor(
         private readonly _query: IReadDao<User>,
         requestContext: IRequestContext<ExecutionContext>,
