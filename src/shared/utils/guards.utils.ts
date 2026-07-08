@@ -25,7 +25,7 @@ export const Guards = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   isDefined<TValue>(value: Maybe<TValue>): value is TValue {
-    return value !== null && value !== undefined && !Number.isNaN(value)
+    return value !== null && value !== undefined && value !== '' && !Number.isNaN(value)
   },
 
   /**
