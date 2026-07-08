@@ -49,4 +49,12 @@ export interface NetworkContext {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly path: Optional<string>
+  /** A boolean flag indicating whether the request is public or requires authentication and authorization checks. This can be used to determine if certain security measures should be applied to the request.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly isPublic: boolean
 }

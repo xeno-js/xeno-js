@@ -1,4 +1,4 @@
-import type { ResponseDto } from '@/shared'
+import type { HttpMethod, ResponseDto } from '@/shared'
 
 /**
  * @description The IMiddleware interface defines the contract for middleware components that process incoming HTTP requests. Implementing classes must provide an execute method that takes an HttpRequest as input and returns a Promise of a ResponseDto, which can either be a successful response or an error response. This design allows for flexible middleware implementations that can perform various tasks such as authentication, logging, request transformation, or response generation.
@@ -9,7 +9,7 @@ import type { ResponseDto } from '@/shared'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IMiddleware<TRequest = unknown> {
+export interface IMiddleware<THeaders = unknown> {
   /**
    * @description The execute method processes an incoming HTTP request and returns a ResponseDto that can either be a successful response or an error response. This allows for flexible middleware implementations that can either modify the request, perform side effects, or generate a response directly.
    * @param path The path of the incoming HTTP request. This allows middleware to perform actions based on the request path, such as routing, logging, or applying specific middleware logic.
@@ -24,8 +24,8 @@ export interface IMiddleware<TRequest = unknown> {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   execute<T>(
-    path: string,
-    req: TRequest,
+    req: { method: HttpMethod; path: string },
+    headers: THeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>>
 }

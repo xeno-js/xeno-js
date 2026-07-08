@@ -27,12 +27,4 @@ export interface IRequest<TResponse = unknown> {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly type: RequestType
-  /** @description An optional flag indicating whether the request is public or requires authentication. If set to true, the request can be accessed without authentication; otherwise, it may require user credentials or authorization.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  readonly isPublic?: boolean
 }
