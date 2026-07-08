@@ -11,8 +11,7 @@ import type { Optional, UserContext } from '@/shared'
    */
 export interface IWriteDataSource<TDto> {
   /**
-   * Executes a SQL query and returns the result as an array of objects.
-   * @param filter The filter criteria to apply when querying the database.
+   * @description Finds entities This method takes a filter object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities. The implementation of this method is responsible for constructing the appropriate query based on the provided filter and handling any necessary data transformations before returning the results.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the query operation.
    * @returns A promise that resolves to an array of objects representing the rows returned by the query.
@@ -23,7 +22,7 @@ export interface IWriteDataSource<TDto> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(filter: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<TDto[]>
+  findAll(ctx: UserContext, signal: Optional<AbortSignal>): Promise<TDto[]>
 
   /**
    * Executes a SQL query and returns the result as an array of objects.
@@ -45,7 +44,7 @@ export interface IWriteDataSource<TDto> {
   ): Promise<Optional<TDto>>
 
   /**
-   * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
+   * @description Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE). This method takes a data transfer object (DTO) containing the data to be inserted into the database and an optional AbortSignal for cancellation. It returns a promise that resolves when the command has been executed successfully. The implementation of this method is responsible for constructing the appropriate SQL command based on the provided DTO and handling any necessary data transformations before executing the command.
    * @param dto The data transfer object containing the data to be inserted into the database.
    * @param signal An optional AbortSignal to allow cancellation of the insert operation.
    * @returns A promise that resolves when the command has been executed successfully.
@@ -59,7 +58,7 @@ export interface IWriteDataSource<TDto> {
   insert(dto: TDto, signal: Optional<AbortSignal>): Promise<void>
 
   /**
-   * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
+   * @description Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE). This method takes a data transfer object (DTO) containing the data to be deleted from the database, a user context, and an optional AbortSignal for cancellation. It returns a promise that resolves when the command has been executed successfully. The implementation of this method is responsible for constructing the appropriate SQL command based on the provided DTO and handling any necessary data transformations before executing the command.
    * @param dto The data transfer object containing the data to be deleted from the database.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the delete operation.
@@ -74,7 +73,7 @@ export interface IWriteDataSource<TDto> {
   delete(dto: TDto, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void>
 
   /**
-   * Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE).
+   * @description Executes a SQL command that does not return any rows (e.g., INSERT, UPDATE, DELETE). This method takes a data transfer object (DTO) containing the data to be updated in the database, a user context, and an optional AbortSignal for cancellation. It returns a promise that resolves when the command has been executed successfully. The implementation of this method is responsible for constructing the appropriate SQL command based on the provided DTO and handling any necessary data transformations before executing the command.
    * @param dto The data transfer object containing the data to be updated in the database.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the update operation.

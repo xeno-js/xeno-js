@@ -11,8 +11,7 @@ import type { Optional, UserContext } from '@/shared'
    */
 export interface IReadDataSource<TDto> {
   /**
-   * Executes a SQL query and returns the result as an array of objects.
-   * @param filter The filter criteria to apply when querying the database.
+   * @description Finds entities. This method takes an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities. The implementation of this method is responsible for constructing the appropriate query and handling any necessary data transformations before returning the results.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the query operation.
    * @returns A promise that resolves to an array of objects representing the rows returned by the query.
@@ -23,10 +22,10 @@ export interface IReadDataSource<TDto> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(filters: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<TDto[]>
+  findAll(ctx: UserContext, signal: Optional<AbortSignal>): Promise<TDto[]>
 
   /**
-   * Executes a SQL query and returns the result as an array of objects.
+   * @description Finds an entity by its unique identifier. This method takes an optional AbortSignal for cancellation. It returns a promise that resolves to the entity if found, or null if not found. The implementation of this method is responsible for constructing the appropriate query and handling any necessary data transformations before returning the result.
    * @param id The unique identifier of the entity to retrieve.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal to allow cancellation of the query operation.

@@ -19,10 +19,7 @@ import type { IRequest } from './irequest.types'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface ICommand<TRequest = unknown, TResponse = unknown> extends IRequest<
-  TRequest,
-  TResponse
-> {
+export interface ICommand<TResponse = unknown> extends IRequest<TResponse> {
   /** @description An optional property to specify the expected response type of the command, which can be used for type inference and validation in command handlers.
    *
    * @author Xeno

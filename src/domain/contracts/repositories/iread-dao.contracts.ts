@@ -33,7 +33,6 @@ export interface IReadDao<T> {
 
   /**
    * @description Finds entities based on a filter. This method takes a filter object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the filter criteria. The implementation of this method is responsible for constructing the appropriate query based on the provided filter and handling any necessary data transformations before returning the results.
-   * @param filter The filter criteria to apply when querying the database.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to an array of entities that match the filter criteria.
@@ -44,5 +43,5 @@ export interface IReadDao<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(filter: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
+  findAll(ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 }

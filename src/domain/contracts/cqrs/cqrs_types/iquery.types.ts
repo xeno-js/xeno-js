@@ -21,10 +21,7 @@ import type { IRequest } from './irequest.types'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IQuery<TRequest = unknown, TResponse = unknown> extends IRequest<
-  TRequest,
-  TResponse
-> {
+export interface IQuery<TResponse = unknown> extends IRequest<TResponse> {
   /**
    * @description Cache options for the query, including cache key, TTL, and bypass flags.
    *

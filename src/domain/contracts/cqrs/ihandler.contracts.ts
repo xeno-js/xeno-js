@@ -13,7 +13,7 @@ import type { IRequest } from './cqrs_types'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IHandler<TRequest extends IRequest<unknown, TResponse>, TResponse> {
+export interface IHandler<TRequest extends IRequest<TResponse>, TResponse> {
   /**
    * Handles a request and returns a response. This method is asynchronous and returns a Promise.
    * @param request - The request to be handled, of type TRequest.

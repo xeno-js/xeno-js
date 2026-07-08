@@ -45,7 +45,6 @@ export interface IRepository<T> {
 
   /**
    * @description Finds entities based on the user context. This method takes a user context and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities that match the context. The implementation of this method is responsible for constructing the appropriate query based on the provided context and handling any necessary data transformations before returning the results.
-   * @param filter The filter criteria to apply when querying the database.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.
    * @param signal An optional AbortSignal for cancellation.
    * @returns A promise that resolves to an array of entities that match the context.
@@ -56,7 +55,7 @@ export interface IRepository<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  find(filter: unknown, ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
+  findAll(ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>>
 
   /**
    * @description Updates entities based on the user context. This method takes a user context and an optional AbortSignal for cancellation. It returns a promise that resolves when the update operation is complete.
