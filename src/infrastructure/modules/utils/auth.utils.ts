@@ -34,20 +34,24 @@ export const AuthUtils = Object.freeze({
     const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
     const strategies = []
 
-    const { UserAuthorizationStrategy } = await import('@/application')
-    container.addSingleton(
-      INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE,
-      UserAuthorizationStrategy,
-      [INJECTION_TOKENS.REQUEST_CONTEXT],
-    )
+    if (opts.userId) {
+      const { UserAuthorizationStrategy } = await import('@/application')
+      container.addSingleton(
+        INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE,
+        UserAuthorizationStrategy,
+        [INJECTION_TOKENS.REQUEST_CONTEXT],
+      )
+      strategies.push(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
+    }
 
-    if (opts.tenant) {
+    if (opts.tenantId) {
       const { TenantAuthorizationStrategy } = await import('@/application')
       container.addSingleton(
         INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE,
         TenantAuthorizationStrategy,
         [INJECTION_TOKENS.REQUEST_CONTEXT],
       )
+      strategies.push(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
     }
 
     if (Guards.isDefined(opts.policies)) {

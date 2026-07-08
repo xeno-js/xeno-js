@@ -32,7 +32,8 @@ describe('AppBuilder – full smoke test', () => {
       })
       .addPipeline((config) => {
         config.performance.thresholdMs = 100
-        config.authorization.tenant = true
+        config.authorization.userId = true
+        config.authorization.tenantId = true
         config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
         config.commandBus.concurrency = {
           maxRetries: 3,

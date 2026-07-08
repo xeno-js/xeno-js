@@ -46,8 +46,8 @@ export class AppBuilder {
   private _pipelineConfig: PipelineConfig = {
     performance: { thresholdMs: 500 },
     authorization: {
-      isEnabled: false,
-      tenant: false,
+      userId: false,
+      tenantId: false,
       policies: undefined,
       customAuthorizationStrategy: undefined,
     },

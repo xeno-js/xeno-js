@@ -38,14 +38,14 @@ export interface PipelineConfig {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   authorization: {
-    /** @description Flag to enable or disable authorization features. If set to true, the authorization pipeline will include specific behaviors based on the specified configuration, such as tenant-based checks, policy evaluations, and role/permission validations. If set to false or not defined, the authorization pipeline will operate without these additional features, allowing commands and queries to be processed without access control checks.
+    /** @description Flag to enable user-based authorization. If set to true, the authorization pipeline will include a strategy that checks if the user is authorized to perform the command or query based on their user ID. This is typically used in applications where actions are restricted to specific users, ensuring that only the intended user can execute certain operations.
      *
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/xeno-js
      */
-    isEnabled: boolean
+    userId: boolean
     /** @description Flag to enable tenant-based authorization. If set to true, the authorization pipeline will include a strategy that checks if the user belongs to the appropriate tenant for the command or query being executed. This is typically used in multi-tenant applications to ensure that users can only access resources and perform actions within their own tenant context.
      *
      * @author Xeno
@@ -53,7 +53,7 @@ export interface PipelineConfig {
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/xeno-js
      */
-    tenant: boolean
+    tenantId: boolean
     /** @description Configuration for policy-based authorization, allowing the definition of a policy registry and the option to enable role-based or permission-based checks. If policy-based authorization is enabled, the authorization pipeline will include a strategy that evaluates the defined policies for each command or query, ensuring that users meet the necessary criteria based on their roles and permissions. The policy registry allows for central management of authorization policies, making it easier to maintain and update access rules across the application.
      *
      * @author Xeno

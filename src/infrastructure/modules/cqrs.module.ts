@@ -42,11 +42,9 @@ export class CqrsModule implements IModule<PipelineConfig> {
       pipelines.push(INJECTION_TOKENS.PERFORMANCE_PIPELINE)
     }
 
-    if (opts.authorization.isEnabled) {
-      const { AuthUtils } = await import('./utils/auth.utils')
-      const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
-      pipelines.push(...authPipelines)
-    }
+    const { AuthUtils } = await import('./utils/auth.utils')
+    const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
+    pipelines.push(...authPipelines)
 
     const { ValidationUtils } = await import('./utils/validation.utils')
     const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)

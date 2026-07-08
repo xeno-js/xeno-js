@@ -28,13 +28,13 @@ class TestReadDao extends ReadDao<Entity, Dto> {
 
 function makeDeps() {
   const findByIdMock = vi.fn()
-  const findMock = vi.fn()
+  const findAllMock = vi.fn()
 
   const toEntityMock = vi.fn()
 
   const dataSource = {
     findById: findByIdMock,
-    find: findMock,
+    findAll: findAllMock,
   } as unknown as IReadDataSource<Dto>
 
   const mapper = {
@@ -46,7 +46,7 @@ function makeDeps() {
     mapper,
     mocks: {
       findByIdMock,
-      findMock,
+      findAllMock,
       toEntityMock,
     },
   }
@@ -111,7 +111,7 @@ describe('ReadDao', () => {
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
-  it('find maps every dto to entity and returns ok(list)', async () => {
+  it('findAll maps every dto to entity and returns ok(list)', async () => {
     const { dataSource, mapper, mocks } = makeDeps()
     const dtos: Dto[] = [
       { id: '1', fullName: 'Alice' },
@@ -122,40 +122,40 @@ describe('ReadDao', () => {
       { id: '2', name: 'Bob' },
     ]
 
-    mocks.findMock.mockResolvedValue(dtos)
+    mocks.findAllMock.mockResolvedValue(dtos)
     mocks.toEntityMock.mockReturnValueOnce(entities[0]).mockReturnValueOnce(entities[1])
 
     const dao = new TestReadDao(dataSource, mapper)
     const signal = undefined as Optional<AbortSignal>
-    const result = await dao.find(dtos[0].fullName, userContext, signal)
+    const result = await dao.findAll(userContext, signal)
 
-    expect(mocks.findMock).toHaveBeenCalledWith(dtos[0].fullName, userContext, signal)
+    expect(mocks.findAllMock).toHaveBeenCalledWith(userContext, signal)
     expect(mocks.toEntityMock).toHaveBeenCalledTimes(2)
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual(entities)
   })
 
-  it('find returns ok(empty list) when datasource returns no records', async () => {
+  it('findAll returns ok(empty list) when datasource returns no records', async () => {
     const { dataSource, mapper, mocks } = makeDeps()
-    mocks.findMock.mockResolvedValue([])
+    mocks.findAllMock.mockResolvedValue([])
 
     const dao = new TestReadDao(dataSource, mapper)
-    const result = await dao.find('123', userContext, undefined)
+    const result = await dao.findAll(userContext, undefined)
 
     expect(result.isOk()).toBe(true)
     expect(result.getValueOrThrow()).toEqual([])
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 
-  it('find throws when signal is already aborted', async () => {
+  it('findAll throws when signal is already aborted', async () => {
     const { dataSource, mapper, mocks } = makeDeps()
     const abortController = new AbortController()
     abortController.abort()
 
     const dao = new TestReadDao(dataSource, mapper)
 
-    await expect(dao.find('123', userContext, abortController.signal)).rejects.toThrowError()
-    expect(mocks.findMock).not.toHaveBeenCalled()
+    await expect(dao.findAll(userContext, abortController.signal)).rejects.toThrowError()
+    expect(mocks.findAllMock).not.toHaveBeenCalled()
     expect(mocks.toEntityMock).not.toHaveBeenCalled()
   })
 })

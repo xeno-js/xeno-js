@@ -44,13 +44,9 @@ export abstract class ReadDao<T, TDto> implements IReadDao<T> {
     return Result.ok(entity)
   }
 
-  public async find(
-    filter: unknown,
-    ctx: UserContext,
-    signal: Optional<AbortSignal>,
-  ): Promise<ResultType<T[]>> {
-    AppError.throwIfAborted(signal, 'ReadDao.find')
-    const results = await this._dataSource.find(filter, ctx, signal)
+  public async findAll(ctx: UserContext, signal: Optional<AbortSignal>): Promise<ResultType<T[]>> {
+    AppError.throwIfAborted(signal, 'ReadDao.findAll')
+    const results = await this._dataSource.findAll(ctx, signal)
     const entities = results.map((result) => this._mapper.toEntity(result))
     return Result.ok(entities)
   }
