@@ -60,12 +60,13 @@ describe('TenantAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � tenantId validation', () => {
-    it('returns true when tenantId is undefined', async () => {
+    it('returns AUTHORIZATION_FAILED when tenantId is undefined', async () => {
       const strategy = new TenantAuthorizationStrategy(makeRequestContext(undefined))
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
+      expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.UNAUTHORIZED)
     })
 
     it('returns AUTHORIZATION_FAILED when tenantId is empty string', async () => {

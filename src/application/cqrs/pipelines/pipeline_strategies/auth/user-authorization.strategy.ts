@@ -30,9 +30,9 @@ export class UserAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
     command: IRequest,
     auth: Identity,
   ): Promise<Result<void, AppError>> {
-    if (!Guards.isDefined(auth.userId)) return Result.ok()
+    if (Guards.isDefined(command.isPublic) && command.isPublic) return Result.ok()
 
-    if (!GuidHelper.isValidGuid(auth.userId))
+    if (Guards.isNullOrEmpty(auth.userId) || !GuidHelper.isValidGuid(auth.userId))
       return Result.fail(AppError.unauthorized(command.intent, 'User is not authenticated.'))
 
     return Result.ok()

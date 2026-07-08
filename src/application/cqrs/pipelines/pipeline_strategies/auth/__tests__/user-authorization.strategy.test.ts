@@ -8,7 +8,7 @@ import { UserAuthorizationStrategy } from '../user-authorization.strategy'
 const VALID_GUID = '550e8400-e29b-41d4-a716-446655440000'
 
 const makeRequest = (intent = 'TestCommand'): IRequest =>
-  ({ intent, type: 'COMMAND', signal: undefined }) as unknown as IRequest
+  ({ intent, type: 'COMMAND', signal: undefined, isPublic: false }) as unknown as IRequest
 
 const makeRequestContext = (userId?: string): IRequestContext<ExecutionContext> =>
   ({
@@ -60,15 +60,16 @@ describe('UserAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � userId validation', () => {
-    it('returns true when userId is undefined', async () => {
+    it('returns AUTHORIZATION_FAILED when userId is undefined', async () => {
       const strategy = new UserAuthorizationStrategy(makeRequestContext(undefined))
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
+      expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.UNAUTHORIZED)
     })
 
-    it('returns true when userId is empty string', async () => {
+    it('returns AUTHORIZATION_FAILED when userId is empty string', async () => {
       const strategy = new UserAuthorizationStrategy(makeRequestContext(''))
 
       const result = await strategy.execute(request)
