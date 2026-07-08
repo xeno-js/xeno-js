@@ -33,9 +33,12 @@ export abstract class BaseAuthorizationStrategy<
 
   public async execute(request: IRequest): Promise<ResultType<void>> {
     const { context } = this._requestContext.getContext() ?? {}
+
     if (!Guards.isDefined(context)) {
       return Result.fail(AppError.unauthorized(request.intent, 'User is not authenticated.'))
     }
+
+    if (context.network.isPublic) return Result.ok()
 
     return await this.performAuthorizationCheck(request, context.identity)
   }
