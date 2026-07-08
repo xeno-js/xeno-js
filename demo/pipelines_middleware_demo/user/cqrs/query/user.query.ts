@@ -23,7 +23,6 @@ export class FindAllUsersQuery implements IQuery<User[]> {
     public readonly intent = 'FindAllUsersQuery'
     public readonly type = REQUEST_TYPE.QUERY
     public readonly cacheOptions: ICacheableOptions
-    public readonly isPublic = true
 
     constructor() {
         this.cacheOptions = {

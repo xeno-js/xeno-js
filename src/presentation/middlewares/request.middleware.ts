@@ -7,7 +7,7 @@ import type {
   IServiceExtractor,
   IServiceScope,
 } from '@/domain'
-import type { Guid, HttpHeaders, Metadata, Optional, ResponseDto } from '@/shared'
+import type { Guid, HttpHeaders, HttpMethod, Metadata, Optional, ResponseDto } from '@/shared'
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
@@ -31,6 +31,7 @@ import { ContextMapper } from '../mappers/context.mapper'
 export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   /**
    * @description Constructs a new instance of the RequestContextMiddleware class, which is responsible for handling the request context in the middleware chain. It takes several dependencies as parameters, including an IRequestContext for managing the execution context, an IServiceExtractor for extracting metadata from HTTP headers, an IGateKeeper for performing authentication, and an IServiceContainer for managing service scopes and dependencies. These dependencies are essential for the middleware to function correctly, allowing it to extract necessary information from incoming requests, authenticate users, and set up the execution context for downstream processing.
+   * @param _routesRegistry A record that maps request paths to their corresponding HTTP methods and indicates whether each route is public or requires authentication. This registry is used to determine the access level of incoming requests and whether authentication checks should be performed.
    * @param _requestContext An instance of IRequestContext used to manage the execution context for the request. This context allows the middleware to set and retrieve contextual information that can be accessed by downstream handlers, controllers, or use cases during the processing of the request.
    * @param _extractor An instance of IServiceExtractor used to extract metadata from the incoming HTTP request headers. This extractor is responsible for parsing the headers and retrieving relevant information such as correlation IDs, request IDs, authentication tokens, client IP addresses, and tracing span IDs, which are essential for building the ExecutionContext.
    * @param _gateKeeper An instance of IGateKeeper used to perform authentication. This component is responsible for validating the authentication token extracted from the request headers and returning the authentication result, which includes the identity of the authenticated user if the authentication is successful.
@@ -43,6 +44,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
+    private readonly _routesRegistry: Record<`/${string}`, Record<HttpMethod, 'isPublic'>>,
     private readonly _requestContext: IRequestContext<ExecutionContext>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
     private readonly _gateKeeper: IGateKeeper,
@@ -50,10 +52,13 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   ) {}
 
   public async execute<T>(
-    path: string,
+    req: { method: HttpMethod; path: string },
     headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
+    const methodRegistry: Optional<Record<HttpMethod, 'isPublic'>> =
+      this._routesRegistry[req.path as `/${string}`]
+    const isPublic = methodRegistry?.[req.method] === 'isPublic'
     let correlationId = GuidHelper.generate()
     let requestId = GuidHelper.generate()
     let spanId: Guid = correlationId
@@ -85,7 +90,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
               code: error.code,
               message: error.message,
               details: undefined,
-              path,
+              path: req.path,
             },
             correlationId: metadata.correlationId!,
             requestId: metadata.requestId!,
@@ -103,7 +108,8 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
         metadata,
         identity: authResult.getValueOrThrow()!,
         scope,
-        path,
+        path: req.path,
+        isPublic,
       })
 
       return await this._requestContext.runAsync(executionContext, async () => {
@@ -117,7 +123,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
             code: ERROR_CODES.SYSTEM_ERROR,
             message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
             details: error instanceof Error ? error.message : String(error),
-            path,
+            path: req.path,
           },
           correlationId,
           requestId,

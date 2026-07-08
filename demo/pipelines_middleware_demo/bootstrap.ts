@@ -24,7 +24,12 @@ export async function bootstrap(): Promise<IServiceContainer> {
 
     builder
         .addContext()
-        .addMiddlewares()
+        .addMiddlewares(opts => {
+            opts.publicRoutes = {
+                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
+                '/api/user/:id': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
+            }
+        })
         .addPipeline((config) => {
             config.authorization.userId = true
             config.authorization.tenantId = true

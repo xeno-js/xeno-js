@@ -32,9 +32,11 @@ async function runDemo() {
         console.log('✅ Fastify instance created. Setting up routes...')
         // ─── ENDPOINT 1: COMMAND ──────────────────────────────────────────
         app.post('/api/user', async (request, reply) => {
-
+            const headers = {
+                ...request.headers
+            } as any
             // 4. Execute the middleware to handle the request context and authentication, then call the PingController's handle method with the request payload.
-            const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+            const responseDto = await middleware.execute({ path: request.url, method: request.method } as any, headers, async () => {
                 const payload = request.body as UserProps
                 return await saveUserController.handle(payload)
             })
@@ -46,8 +48,11 @@ async function runDemo() {
         })
 
         app.patch('/api/user/:id', async (request, reply) => {
+            const headers = {
+                ...request.headers
+            } as any
             // 4. Execute the middleware to handle the request context and authentication, then call the PingController's handle method with the request payload.
-            const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+            const responseDto = await middleware.execute({ path: request.url, method: request.method } as any, headers, async () => {
                 const { id } = request.params as any
                 const payload = { id: id ?? '123', ...request.body as UserProps } as UserProps & { id: string }
                 return await updateUserController.handle(payload)
@@ -60,9 +65,11 @@ async function runDemo() {
 
         // ─── ENDPOINT 2: QUERY ────────────────────────────────────────────
         app.get('/api/user/:id', async (request, reply) => {
-
+            const headers = {
+                ...request.headers
+            } as any
             // 4. Execute the middleware to handle the request context and authentication, then call the StatusController's handle method with the request payload.
-            const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+            const responseDto = await middleware.execute({ path: request.url, method: request.method } as any, headers, async () => {
                 const { id } = request.params as any
                 const payload = { id: id ?? '123' }
                 return await findUserController.handle(payload)
@@ -75,8 +82,11 @@ async function runDemo() {
         })
 
         app.get('/api/user', async (request, reply) => {
+            const headers = {
+                ...request.headers
+            } as any
             // 4. Execute the middleware to handle the request context and authentication, then call the StatusController's handle method with the request payload.
-            const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+            const responseDto = await middleware.execute({ path: request.url, method: request.method } as any, headers, async () => {
                 return await findAllUsersController.handle()
             })
 
@@ -89,7 +99,7 @@ async function runDemo() {
         app.get('/api/unauthorized', async (request, reply) => {
             // 4. Execute the middleware to handle the request context and authentication, then call the ErrorController's handle method with the request payload.
             try {
-                const responseDto = await middleware.execute(request.url as any, request.headers as any, async () => {
+                const responseDto = await middleware.execute({ path: request.url, method: request.method } as any, request.headers as any, async () => {
                     return await unauthController.handle(null)
                 })
                 return reply

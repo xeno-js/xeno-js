@@ -14,6 +14,7 @@ interface ContextMapperSource {
   readonly identity: Identity
   readonly scope: IServiceScope
   readonly path: string
+  readonly isPublic: boolean
 }
 
 export const ContextMapper: IBaseMapper<ContextMapperSource, ExecutionContext> = Object.freeze({
@@ -26,7 +27,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, ExecutionContext> =
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   map: (source: ContextMapperSource): ExecutionContext => {
-    const { metadata, identity, path, scope } = source
+    const { metadata, identity, path, scope, isPublic } = source
 
     const network: NetworkContext = {
       requestId: metadata.requestId!,
@@ -34,6 +35,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, ExecutionContext> =
       userAgent: metadata.userAgent,
       formatIndicator: metadata.formatIndicator,
       path,
+      isPublic,
     }
     const tracing: TracingContext = {
       correlationId: metadata.correlationId!,
