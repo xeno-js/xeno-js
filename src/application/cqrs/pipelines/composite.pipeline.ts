@@ -9,7 +9,7 @@ import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@/domain
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class CompositePipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**

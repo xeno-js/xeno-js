@@ -19,7 +19,7 @@ import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class IdempotencyPipeline<
-  TInput extends ICommand<unknown, TResult>,
+  TInput extends ICommand<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /** @description TTL (time-to-live) in seconds for locks acquired in the idempotency mechanism. This value determines how long a lock will be held for a given command ID when it is being processed. If a lock is not released within this time frame, it will automatically expire, allowing other instances of the command to be processed. The default value is set to 300 seconds (5 minutes), which provides a reasonable balance between allowing sufficient time for command processing and preventing long-term locks that could lead to delays in processing subsequent commands with the same ID. This value can be overridden by providing a different lockTtlSeconds value when constructing the IdempotencyPipeline instance.

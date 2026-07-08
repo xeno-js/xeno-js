@@ -25,7 +25,7 @@ const defaultThresholdMs = 500
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class PerformancePipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**

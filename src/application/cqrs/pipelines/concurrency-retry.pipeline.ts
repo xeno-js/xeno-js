@@ -12,7 +12,7 @@ import { DEFAULT_CONCURRENCY, ERROR_CODES, Guards, PromiseHelper, STATUS_CODES }
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class ConcurrencyRetryPipeline<
-  TInput extends ICommand<unknown, TResult>,
+  TInput extends ICommand<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**

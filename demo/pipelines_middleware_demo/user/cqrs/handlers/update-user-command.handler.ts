@@ -8,9 +8,8 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
         private readonly _uow: IUnitOfWork,
         private readonly _repository: IRepository<User>,
         requestContext: IRequestContext<ExecutionContext>,
-        strategies: IStrategy<UpdateUserCommand>[] = []//In a real-world scenario, you might want to inject specific strategies for handling the UpdateUserCommand, such as validation or logging strategies.
     ) {
-        super(requestContext, strategies)
+        super(requestContext)
     }
     public async handle(request: UpdateUserCommand, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
         console.log(`[CQRS: Command] 🟢 Received UpdateUserCommand with intent: "${request.intent}"`)
@@ -19,7 +18,7 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
                 userId: GuidHelper.generate(), // In a real-world scenario, you would retrieve the actual user ID from the request context or authentication token.
                 tenantId: GuidHelper.generate(), // In a real-world scenario, you would retrieve the actual tenant ID from the request context or authentication token.
             }
-            const result = await this._repository.findById(request.payload.id, ctx, signal)
+            const result = await this._repository.findById(request.props.id, ctx, signal)
             if (!result.isOk() || !Guards.isDefined(result.getValueOrThrow()))
                 AppError.throw({
                     code: ERROR_CODES.NOT_FOUND,
@@ -33,10 +32,10 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
 
             const partial = new User({
                 ...userEntity!.getProps(),
-                ...request.payload // Merge the existing properties with the new properties from the request payload
+                ...request.props // Merge the existing properties with the new properties from the request props
             })
 
-            await this._repository.update(request.payload.id, partial, ctx, signal)
+            await this._repository.update(request.props.id, partial, ctx, signal)
             // Simulate an error to test transaction rollback
             // Uncomment the following lines to simulate an error and test transaction rollback
             // AppError.throw({

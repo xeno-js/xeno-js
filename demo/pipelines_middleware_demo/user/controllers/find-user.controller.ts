@@ -4,7 +4,7 @@ import { User } from '../entity/user'
 
 export class FindUserController extends BaseController<{id: string}, User> {
     public async handle(request: { id: string}): Promise<ResponseDto<User>> {
-        const query = new UserQuery({ id: request.id })
+        const query = new UserQuery(request.id)
         const result = await this._query(query)
 
         if (!result.isOk()) {

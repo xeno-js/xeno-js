@@ -12,7 +12,7 @@ import { Result } from '@/domain'
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class AuthorizationPipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**

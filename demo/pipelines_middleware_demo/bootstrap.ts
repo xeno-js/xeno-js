@@ -1,18 +1,19 @@
 import { AppBuilder, INJECTION_TOKENS, LOG_LEVEL, TokenHelper } from '@xeno/core'
 import type { IServiceContainer, IHandler, ICommand } from '@xeno/core'
-import { USER_REPOSITORY, USER_READ_REPOSITORY, USER_DS_TOKEN, USER_READ_DS_TOKEN, USER_MAPPER_TOKEN, UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, UPDATE_USER_COMMAND_HANDLER_TOKEN, UPDATE_USER_CONTROLLER_TOKEN } from './tokens'
+import { USER_REPOSITORY, USER_READ_REPOSITORY, USER_DS_TOKEN, USER_READ_DS_TOKEN, USER_MAPPER_TOKEN, UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, UPDATE_USER_COMMAND_HANDLER_TOKEN, UPDATE_USER_CONTROLLER_TOKEN, FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN } from './tokens'
 import { SaveUserCommandHandler, FindUserQueryHandler, UpdateUserCommandHandler } from './user/cqrs/handlers/index'
 import { UnauthorizedCommandHandler } from './unauthorized/handlers/unauthorized.handler'
-import { SaveUserController, FindUserController, UpdateUserController } from './user/controllers/index'
+import { SaveUserController, FindUserController, UpdateUserController, FindAllUserController } from './user/controllers/index'
 import { UnauthorizedController } from './unauthorized/controllers/unauthorized.controller'
 import { SaveUserCommand } from './user/cqrs/commands/user.command'
 import { User } from './user/entity/user'
-import { UserQuery } from './user/cqrs/query/user.query'
+import { FindAllUsersQuery, UserQuery } from './user/cqrs/query/user.query'
 import { UserMapper } from './user/mappers/user.mapper'
 import { UserDataSource } from './user/datasources/user.datasource'
 import { UserReadDatasource } from './user/datasources/user.read-datasource'
 import { UserReadRepository } from './user/repositories/user-read.repository'
 import { UserWriteRepository } from './user/repositories/user-write.repository'
+import { FindAllUsersQueryHandler } from './user/cqrs/handlers/find-all-user.handler'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO BOOTSTRAP FUNCTION
@@ -25,8 +26,8 @@ export async function bootstrap(): Promise<IServiceContainer> {
         .addContext()
         .addMiddlewares()
         .addPipeline((config) => {
-            config.authorization.isEnabled = true
-            config.authorization.tenant = true
+            config.authorization.userId = true
+            config.authorization.tenantId = true
             config.authorization.policies = {
                 'UnauthorizedAccessCommand': {
                     roles: ['guest'],
@@ -73,10 +74,9 @@ export async function bootstrap(): Promise<IServiceContainer> {
                 return new SaveUserCommandHandler(repository, requestcontext)
             })
             services.addScoped(TokenHelper.createToken<IHandler<UserQuery, User>>('UserQuery'), FindUserQueryHandler, [USER_READ_REPOSITORY, INJECTION_TOKENS.REQUEST_CONTEXT])
-            services.addScopedFactory(TokenHelper.createToken<IHandler<ICommand<null, null>, null>>('UnauthorizedAccessCommand'), (c) => {
-                const userStrategy = c.resolve(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
-                const tenantStrategy = c.resolve(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
-                return new UnauthorizedCommandHandler(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), [userStrategy, tenantStrategy])
+            services.addScoped(TokenHelper.createToken<IHandler<FindAllUsersQuery, User[]>>('FindAllUsersQuery'), FindAllUsersQueryHandler, [USER_READ_REPOSITORY, INJECTION_TOKENS.REQUEST_CONTEXT])
+            services.addScopedFactory(TokenHelper.createToken<IHandler<ICommand<null>, null>>('UnauthorizedAccessCommand'), (c) => {
+                return new UnauthorizedCommandHandler(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT))
             })
             services.addScopedFactory(UPDATE_USER_COMMAND_HANDLER_TOKEN, (c) => {
                 const requestcontext = c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
@@ -96,6 +96,7 @@ export async function bootstrap(): Promise<IServiceContainer> {
                 return new UpdateUserController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
             })
             services.addTransient(UNAUTHORIZED_CONTROLLER_TOKEN, UnauthorizedController, [INJECTION_TOKENS.REQUEST_CONTEXT, INJECTION_TOKENS.MEDIATOR])
+            services.addTransient(FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN, FindAllUserController, [INJECTION_TOKENS.REQUEST_CONTEXT, INJECTION_TOKENS.MEDIATOR])
         })
 
     return await builder.build()

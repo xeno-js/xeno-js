@@ -2,10 +2,9 @@ import { BaseController, ICommand, ResponseDto, STATUS_CODES } from '@xeno/core'
 
 export class UnauthorizedController extends BaseController<null, null> {
     public async handle(_request: null): Promise<ResponseDto<null>> {
-        const cmd: ICommand<null, null> = {
+        const cmd: ICommand<null> = {
             intent: 'UnauthorizedAccessCommand',
-            type: 'COMMAND',
-            payload: null
+            type: 'COMMAND'
         }
 
         const result = await this._send(cmd)

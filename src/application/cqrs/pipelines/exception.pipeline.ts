@@ -13,7 +13,7 @@ import { ERROR_CODE_MESSAGES, ERROR_CODES, STATUS_CODES } from '@/shared'
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
 export class ExceptionPipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {

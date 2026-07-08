@@ -18,10 +18,10 @@ export class UserWriteRepository extends Repository<User, UserDto> implements IU
     public async findByUserId(userId: string, ctx: UserContext, signal: Optional<AbortSignal>): Promise<User | null> {
         // Implement your logic to find a user by userId here
         // For demonstration, returning a dummy user
-        const userDto = await this.datasource.find({ name: '', email: '' }, ctx, signal);
-        if (!userDto || userDto.length === 0) {
+        const userDto = await this.datasource.findById(userId, ctx, signal);
+        if (!userDto) {
             return null;
         }
-        return this.mapper.toEntity(userDto[0]);
+        return this.mapper.toEntity(userDto);
     }
 }

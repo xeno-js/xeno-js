@@ -10,7 +10,7 @@ import { Result } from '@/domain'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class ValidationPipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /** @description Constructs a new instance of the ValidationPipeline class, which takes an array of IStrategy instances as validators. These validators are used to perform validation checks on the incoming requests. The constructor initializes the pipeline with the provided validators, allowing it to execute the validation logic when handling requests in the CQRS pipeline.

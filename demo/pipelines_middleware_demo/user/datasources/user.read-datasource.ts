@@ -21,11 +21,11 @@ export class UserReadDatasource implements IUserDataSource {
         return Enumerable.firstOrDefault(user);
     }
 
-    public async find(name: string, _ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto[]> {
+    public async findAll(_ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto[]> {
         // Implement your logic to find users here
         // For demonstration, returning all users
-        AppError.throwIfAborted(signal, 'UserReadDatasource.find');
-        const usersList = await this._dbContext.select().from(users).where(eq(users.name, name)).execute();
+        AppError.throwIfAborted(signal, 'UserReadDatasource.findAll');
+        const usersList = await this._dbContext.select().from(users);
         return usersList;
     }
 

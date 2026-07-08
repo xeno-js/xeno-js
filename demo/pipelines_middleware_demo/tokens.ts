@@ -19,3 +19,4 @@ export const SAVE_USER_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController
 export const FIND_USER_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<{id: string}, User>>('FIND_USER_CONTROLLER_TOKEN')
 export const UPDATE_USER_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<UserProps & { id: string }, void>>('UPDATE_USER_CONTROLLER_TOKEN')
 export const UPDATE_USER_COMMAND_HANDLER_TOKEN = TokenHelper.createToken<BaseHandler<UpdateUserCommand, void>>('UpdateUserCommand')
+export const FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN = TokenHelper.createToken<BaseController<void, User[]>>('FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN')

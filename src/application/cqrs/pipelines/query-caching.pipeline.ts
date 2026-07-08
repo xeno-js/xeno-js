@@ -12,7 +12,7 @@ import { Guards } from '@/shared'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class QueryCachingPipeline<
-  TInput extends IQuery<unknown, TResult>,
+  TInput extends IQuery<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**

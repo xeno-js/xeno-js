@@ -50,11 +50,11 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  async send<TRequest, TResponse>(
-    request: ICommand<TRequest, TResponse>,
+  async send<TResponse>(
+    request: ICommand<TResponse>,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
-    return this.process<TRequest, TResponse>(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR, signal)
+    return this.process<TResponse>(request, TOKENS.COMMAND_PIPELINES_BEHAVIOR, signal)
   }
 
   /**
@@ -65,11 +65,11 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  async query<TRequest, TResponse>(
-    request: IQuery<TRequest, TResponse>,
+  async query<TResponse>(
+    request: IQuery<TResponse>,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
-    return this.process<TRequest, TResponse>(request, TOKENS.QUERY_PIPELINES_BEHAVIOR, signal)
+    return this.process<TResponse>(request, TOKENS.QUERY_PIPELINES_BEHAVIOR, signal)
   }
 
   /**
@@ -85,8 +85,8 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  private async process<TRequest, TResponse>(
-    request: IRequest<TRequest, TResponse>,
+  private async process<TResponse>(
+    request: IRequest<TResponse>,
     pipelineToken: string,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
@@ -106,15 +106,11 @@ export class Mediator implements IMediator {
       )
 
     const pipelines = scope.resolve(
-      TokenHelper.createToken<IPipelineBehavior<IRequest<TRequest, TResponse>, TResponse>>(
-        pipelineToken,
-      ),
+      TokenHelper.createToken<IPipelineBehavior<IRequest<TResponse>, TResponse>>(pipelineToken),
     )
 
     const next: Delegate<TResponse> = () => {
-      const token = TokenHelper.get<IHandler<IRequest<TRequest, TResponse>, TResponse>>(
-        request.intent,
-      )
+      const token = TokenHelper.get<IHandler<IRequest<TResponse>, TResponse>>(request.intent)
       if (!Guards.isDefined(token))
         AppError.throw({
           code: ERROR_CODES.HANDLER_NOT_FOUND,

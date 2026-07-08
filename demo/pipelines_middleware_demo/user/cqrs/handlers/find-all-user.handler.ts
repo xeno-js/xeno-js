@@ -1,8 +1,8 @@
-import { AppError, BaseHandler, ExecutionContext, GuidHelper, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
-import { UserQuery } from "../query/user.query"
+import { BaseHandler, ExecutionContext, GuidHelper, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
+import { FindAllUsersQuery } from "../query/user.query"
 import { User } from "../../entity/user";
 
-export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
+export class FindAllUsersQueryHandler extends BaseHandler<FindAllUsersQuery, User[]> {
     constructor(
         private readonly _query: IReadDao<User>,
         requestContext: IRequestContext<ExecutionContext>
@@ -10,8 +10,8 @@ export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
         super(requestContext)
     }
 
-    public async handle(request: UserQuery, signal: AbortSignal): Promise<ResultType<User>> {
-        console.log(`[CQRS: Query] 🔵 Received UserQuery. ID: ${request.id}`)
+    public async handle(_request: FindAllUsersQuery, signal: AbortSignal): Promise<ResultType<User[]>> {
+        console.log(`[CQRS: Query] 🔵 Received FindAllUsersQuery.`)
 
         // Create a context object with userId and tenantId, generating new GUIDs if they are not present
         // This ensures that the query is executed within the correct user context
@@ -20,14 +20,13 @@ export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
             userId: GuidHelper.generate(),
             tenantId: GuidHelper.generate()
         }
+        const result = await this._query.findAll(ctx, signal)
 
-        const result = await this._query.findById(request.id, ctx, signal)
-
-        if(!result.isOk()) {
+        if (!result.isOk()) {
             return Result.fail(result.getErrorOrThrow())
         }
 
-        const user = result.getValueOrThrow()
-        return Result.ok(user)
+        const users = result.getValueOrThrow()
+        return Result.ok(users)
     }
 }

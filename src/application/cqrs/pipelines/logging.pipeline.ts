@@ -14,7 +14,7 @@ import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from 
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class LoggingPipeline<
-  TInput extends IRequest<unknown, TResult>,
+  TInput extends IRequest<TResult>,
   TResult,
 > implements IPipelineBehavior<TInput, TResult> {
   /**
