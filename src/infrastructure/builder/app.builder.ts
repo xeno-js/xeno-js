@@ -11,6 +11,7 @@ import type {
   LoggerConfig,
   PipelineConfig,
 } from '../modules/config'
+import type { MiddlewareConfig } from '../modules/config/middleware.config'
 
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
@@ -61,6 +62,7 @@ export class AppBuilder {
     },
     queryBus: { isEnabled: false },
   }
+  private _middlewareConfig: MiddlewareConfig = { publicRoutes: undefined }
 
   // --- Module Queuing Flags ---
   private _isContextModuleQueued = false
@@ -85,8 +87,9 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addMiddlewares(): this {
-    this._queueMiddlewareModule()
+  public addMiddlewares(setupAction?: SetupAction<MiddlewareConfig>): this {
+    if (Guards.isDefined(setupAction)) setupAction(this._middlewareConfig)
+    this._queueMiddlewareModule(this._middlewareConfig)
     return this
   }
 
@@ -412,7 +415,7 @@ export class AppBuilder {
     if (this._isPipelineModuleQueued) return
     this._isPipelineModuleQueued = true
 
-    this._queueMiddlewareModule()
+    this._queueMiddlewareModule(this._middlewareConfig)
 
     this._modules.push({
       name: 'CqrsModule',
@@ -433,7 +436,7 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  private _queueMiddlewareModule(): void {
+  private _queueMiddlewareModule(opts: MiddlewareConfig): void {
     if (this._isMiddlewareModuleQueued) return
     this._isMiddlewareModuleQueued = true
 
@@ -444,7 +447,7 @@ export class AppBuilder {
       action: async () => {
         const { MiddlewareModule } = await import('../modules/middleware.module')
         const middlewareModule = new MiddlewareModule()
-        await middlewareModule.configure(this._container)
+        await middlewareModule.configure(this._container, opts)
       },
     })
   }

@@ -1,5 +1,7 @@
 import type { ExecutionContext, IMiddleware, IModule, IServiceContainer } from '@/domain'
-import type { HttpHeaders } from '@/shared'
+import type { HttpHeaders, HttpMethod } from '@/shared'
+
+import type { MiddlewareConfig } from './config/middleware.config'
 
 /**
  * @description MiddlewareModule is responsible for registering essential services and middlewares that are fundamental to the application's operation. This includes setting up the logging infrastructure and the request context middleware. By implementing the IModule interface, MiddlewareModule can be easily integrated into the application's dependency injection container, allowing it to configure necessary services and middlewares during the application startup phase.
@@ -11,7 +13,7 @@ import type { HttpHeaders } from '@/shared'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class MiddlewareModule implements IModule {
-  async configure(container: IServiceContainer): Promise<void> {
+  async configure(container: IServiceContainer, opts: MiddlewareConfig): Promise<void> {
     const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
 
     const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
@@ -35,11 +37,21 @@ export class MiddlewareModule implements IModule {
       return factory
     })
 
+    const { TokenHelper } = await import('@/shared')
+    const registryToken =
+      TokenHelper.createToken<Record<`/${string}`, Record<HttpMethod, 'isPublic'>>>(
+        'ROUTES_REGISTRY',
+      )
+    container.addSingletonFactory(registryToken, () => {
+      return opts.publicRoutes ?? {}
+    })
+
     const { RequestContextMiddleware } = await import('@/presentation')
     container.addSingleton<IMiddleware<HttpHeaders>>(
       INJECTION_TOKENS.MIDDLEWARE,
       RequestContextMiddleware,
       [
+        registryToken,
         INJECTION_TOKENS.REQUEST_CONTEXT,
         INJECTION_TOKENS.SERVICE_EXTRACTOR,
         INJECTION_TOKENS.GATE_KEEPER,
