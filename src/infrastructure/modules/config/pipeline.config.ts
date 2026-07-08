@@ -1,7 +1,7 @@
 import type { ZodType } from 'zod'
 
 import type { IRequest, IStrategy } from '@/domain'
-import type { AuthPolicy, InjectionToken, Optional } from '@/shared'
+import type { AuthPolicy, Dictionary, InjectionToken, Optional } from '@/shared'
 
 /**
  * @description PipelineConfig defines the configuration options for the CQRS pipelines in the application. It includes settings for performance monitoring, authorization, validation, command bus, and query bus. Each section allows for enabling or disabling specific features and providing additional configuration details as needed. This configuration is used by the CqrsModule to set up the appropriate middleware and services in the dependency injection container based on the specified options.
@@ -61,7 +61,7 @@ export interface PipelineConfig {
      * @since 2025-09-30
      * @link https://github.com/Mattia-Carcione/xeno-js
      */
-    policies: Optional<Record<string, AuthPolicy>>
+    policies: Optional<Dictionary<AuthPolicy>>
     /** @description An optional array of custom authorization strategies defined via injection tokens. If provided, these strategies will be included in the authorization pipeline and evaluated for each command or query, allowing for custom logic to determine if a user is authorized to perform a specific action. This provides flexibility in implementing application-specific access rules that may not fit into standard tenant-based or policy-based checks. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is authorized.
      *
      * @author Xeno
@@ -141,7 +141,7 @@ export interface ZodConfig {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  schemas: Record<string, ZodType>
+  schemas: Dictionary<ZodType>
 }
 
 /** @description Configuration for idempotency, allowing the definition of TTLs for locks and processed results. If enabled, the command bus pipeline will include specific behaviors to handle idempotency, such as acquiring locks to ensure that a command with the same ID is processed only once and storing the results of processed commands for a defined period. The configuration includes specific details for TTLs, such as the duration of the lock and the duration for which processed results are retained, providing granular control over how idempotency is managed within the application.
