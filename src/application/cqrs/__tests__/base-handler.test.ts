@@ -37,6 +37,7 @@ const makeExecutionContext = (): ExecutionContext => ({
       userAgent: 'vitest',
       formatIndicator: 'json',
       path: '/test',
+      isPublic: false,
     },
     tracing: {
       correlationId: 'corr-1' as unknown as Guid,

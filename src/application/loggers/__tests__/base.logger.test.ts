@@ -27,6 +27,7 @@ const makeExecutionContext = (): ExecutionContext => ({
       userAgent: 'Mozilla/5.0',
       formatIndicator: 'json',
       path: '/api/test',
+      isPublic: false,
     },
     tracing: {
       correlationId: 'req-1' as unknown as Guid,

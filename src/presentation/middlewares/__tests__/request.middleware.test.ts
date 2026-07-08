@@ -1,4 +1,4 @@
-﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type {
   ExecutionContext,
@@ -8,7 +8,7 @@ import type {
   IServiceExtractor,
   IServiceScope,
 } from '@/domain'
-import type { HttpHeaders, Metadata } from '@/shared'
+import type { HttpHeaders, HttpMethod, Metadata } from '@/shared'
 import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { AppError } from '../../../domain/errors/app-error'
@@ -78,6 +78,7 @@ const fakeIdentity = {
 }
 const headers: HttpHeaders = { authorization: 'Bearer tok' }
 const path = '/api/test'
+const method: HttpMethod = 'GET'
 
 // --- Tests --------------------------------------------------------------------
 
@@ -96,6 +97,7 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
@@ -105,7 +107,7 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
 
-    const response = await middleware.execute(path, headers, next)
+    const response = await middleware.execute({ method, path }, headers, next)
 
     expect(response.ok).toBe(true)
     expect(next).toHaveBeenCalledOnce()
@@ -121,13 +123,14 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, next)
+    const response = await middleware.execute({ method, path }, headers, next)
 
     expect(response.ok).toBe(true)
   })
@@ -139,13 +142,14 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, next)
+    const response = await middleware.execute({ method, path }, headers, next)
 
     expect(response.ok).toBe(true)
   })
@@ -168,13 +172,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, next)
+    await middleware.execute({ method, path }, headers, next)
 
     expect(runAsyncSpy).toHaveBeenCalledOnce()
     expect(capturedCtx).toBeDefined()
@@ -190,13 +195,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, next)
+    await middleware.execute({ method, path }, headers, next)
 
     expect(scopeFactory.mocks.disposeMock).toHaveBeenCalledOnce()
   })
@@ -213,13 +219,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.fail(authError))
     const next = vi.fn()
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, next)
+    const response = await middleware.execute({ method, path }, headers, next)
 
     expect(response.ok).toBe(false)
     expect((response.data as { error?: { code: string } }).error?.code).toBe(
@@ -239,13 +246,14 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = makeGateKeeper(Result.fail(authError))
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, vi.fn())
+    await middleware.execute({ method, path }, headers, vi.fn())
 
     expect(factoryFactory.mocks.createMock).not.toHaveBeenCalled()
     expect(scopeFactory.mocks.disposeMock).not.toHaveBeenCalled()
@@ -259,13 +267,14 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, vi.fn())
+    const response = await middleware.execute({ method, path }, headers, vi.fn())
 
     expect(response.ok).toBe(false)
     expect((response.data as { error?: { code: string } }).error?.code).toBe(
@@ -277,13 +286,14 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = { authenticate: vi.fn().mockRejectedValue(new Error('auth crash')) }
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, vi.fn())
+    const response = await middleware.execute({ method, path }, headers, vi.fn())
 
     expect(response.ok).toBe(false)
     expect((response.data as { error?: { code: string } }).error?.code).toBe(
@@ -299,13 +309,14 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, vi.fn())
+    const response = await middleware.execute({ method, path }, headers, vi.fn())
 
     expect((response.data as { error?: { details: string } }).error?.details).toBe('detail msg')
   })
@@ -319,13 +330,14 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, vi.fn())
+    const response = await middleware.execute({ method, path }, headers, vi.fn())
 
     expect((response.data as { error?: { details: string } }).error?.details).toBe('string error')
   })
@@ -337,13 +349,14 @@ describe('RequestContextMiddleware', () => {
       throw new Error('runAsync error')
     })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, vi.fn())
+    const response = await middleware.execute({ method, path }, headers, vi.fn())
 
     expect(response.ok).toBe(false)
     expect((response.data as { error?: { code: string } }).error?.code).toBe(
@@ -374,13 +387,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, next)
+    await middleware.execute({ method, path }, headers, next)
 
     expect(capturedCtx).toBeDefined()
     expect(capturedCtx!.context.messaging?.returnAddress).toBe('return-addr')
@@ -408,13 +422,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, next)
+    await middleware.execute({ method, path }, headers, next)
 
     expect(capturedCtx).toBeDefined()
     expect(capturedCtx!.context.tracing.parentSpanId).toBe('parent-span-123')
@@ -429,13 +444,14 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    const response = await middleware.execute(path, headers, next)
+    const response = await middleware.execute({ method, path }, headers, next)
 
     expect(response.status).toBe(200)
   })
@@ -457,13 +473,14 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const middleware = new RequestContextMiddleware(
+      {},
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
       factoryFactory.factory,
     )
 
-    await middleware.execute(path, headers, next)
+    await middleware.execute({ method, path }, headers, next)
 
     expect(capturedCtx).toBeDefined()
     expect(capturedCtx!.context.network.userAgent).toBe('Mozilla/5.0')
