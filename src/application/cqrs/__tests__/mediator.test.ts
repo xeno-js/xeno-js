@@ -57,7 +57,6 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'AbortCommand',
       type: REQUEST_TYPE.COMMAND,
-      payload: 'test-payload',
     }
 
     const result = await mediator.send(command, abortController.signal)
@@ -79,7 +78,6 @@ describe('Mediator', () => {
     const command: ICommand<string> = {
       intent: 'ScopeMissingCommand',
       type: REQUEST_TYPE.COMMAND,
-      payload: 'test-payload',
     }
 
     const result = await mediator.send(command, new AbortController().signal)
@@ -96,10 +94,10 @@ describe('Mediator', () => {
   })
 
   it('throws when no handler token is registered for request intent', async () => {
-    const pipelineToken = TokenHelper.createToken<
-      IPipelineBehavior<ICommand<string, string>, string>
-    >(TOKENS.COMMAND_PIPELINES_BEHAVIOR)
-    const mockPipeline: IPipelineBehavior<ICommand<string, string>, string> = {
+    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<string>, string>>(
+      TOKENS.COMMAND_PIPELINES_BEHAVIOR,
+    )
+    const mockPipeline: IPipelineBehavior<ICommand<string>, string> = {
       handle: async (_request, next) => next(),
     }
 
@@ -115,10 +113,9 @@ describe('Mediator', () => {
     const { requestContext } = createRequestContext({ scope } as ExecutionContext)
     const mediator = new Mediator(requestContext)
 
-    const command: ICommand<string, string> = {
+    const command: ICommand<string> = {
       intent: 'NoHandlerIntent',
       type: REQUEST_TYPE.COMMAND,
-      payload: 'test-payload',
     }
 
     await expect(mediator.send(command, new AbortController().signal)).rejects.toThrow(
@@ -129,25 +126,22 @@ describe('Mediator', () => {
   })
 
   it('resolves handler and command pipeline then executes next delegate via send', async () => {
-    const command: ICommand<string, string> = {
+    const command: ICommand<string> = {
       intent: 'CommandIntent',
       type: REQUEST_TYPE.COMMAND,
-      payload: 'test-payload',
     }
 
-    const handlerToken = TokenHelper.createToken<IHandler<ICommand<string, string>, string>>(
-      command.intent,
+    const handlerToken = TokenHelper.createToken<IHandler<ICommand<string>, string>>(command.intent)
+    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<string>, string>>(
+      TOKENS.COMMAND_PIPELINES_BEHAVIOR,
     )
-    const pipelineToken = TokenHelper.createToken<
-      IPipelineBehavior<ICommand<string, string>, string>
-    >(TOKENS.COMMAND_PIPELINES_BEHAVIOR)
 
-    const handler: IHandler<ICommand<string, string>, string> = {
+    const handler: IHandler<ICommand<string>, string> = {
       handle: async () => Result.ok('command-ok'),
     }
     const handlerHandleSpy = vi.spyOn(handler, 'handle')
 
-    const pipeline: IPipelineBehavior<ICommand<string, string>, string> = {
+    const pipeline: IPipelineBehavior<ICommand<string>, string> = {
       handle: async (_request, next) => next(),
     }
     const pipelineHandleSpy = vi.spyOn(pipeline, 'handle')
@@ -180,26 +174,23 @@ describe('Mediator', () => {
   })
 
   it('resolves handler and query pipeline then executes next delegate via query', async () => {
-    const query: IQuery<number, number> = {
+    const query: IQuery<number> = {
       intent: 'QueryIntent',
       type: REQUEST_TYPE.QUERY,
-      payload: 0,
       cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
     }
 
-    const handlerToken = TokenHelper.createToken<IHandler<IQuery<number, number>, number>>(
-      query.intent,
+    const handlerToken = TokenHelper.createToken<IHandler<IQuery<number>, number>>(query.intent)
+    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<IQuery<number>, number>>(
+      TOKENS.QUERY_PIPELINES_BEHAVIOR,
     )
-    const pipelineToken = TokenHelper.createToken<
-      IPipelineBehavior<IQuery<number, number>, number>
-    >(TOKENS.QUERY_PIPELINES_BEHAVIOR)
 
-    const handler: IHandler<IQuery<number, number>, number> = {
+    const handler: IHandler<IQuery<number>, number> = {
       handle: async () => Result.ok(42),
     }
     const handlerHandleSpy = vi.spyOn(handler, 'handle')
 
-    const pipeline: IPipelineBehavior<IQuery<number, number>, number> = {
+    const pipeline: IPipelineBehavior<IQuery<number>, number> = {
       handle: async (_request, next) => next(),
     }
     const pipelineHandleSpy = vi.spyOn(pipeline, 'handle')

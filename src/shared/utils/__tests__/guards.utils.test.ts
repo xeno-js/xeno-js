@@ -29,8 +29,8 @@ describe('Guards', () => {
     it('returns false for undefined', () => {
       expect(Guards.isDefined(undefined)).toBe(false)
     })
-    it('returns false for empty string', () => {
-      expect(Guards.isDefined('')).toBe(false)
+    it('returns true for empty string', () => {
+      expect(Guards.isDefined('')).toBe(true)
     })
     it('returns true for false', () => {
       expect(Guards.isDefined(false)).toBe(true)

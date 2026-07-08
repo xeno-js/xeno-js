@@ -6,10 +6,9 @@ import { REQUEST_TYPE } from '@/shared'
 
 import { ValidationPipeline } from '../validation.pipeline'
 
-const request: IRequest<{ id: string }, string> = {
+const request: IRequest<string> = {
   intent: 'test',
   type: REQUEST_TYPE.COMMAND,
-  payload: { id: 'test-id' },
 }
 
 function makeAppError(): AppError {
@@ -32,7 +31,7 @@ function makeValidator(result: Awaited<ReturnType<IStrategy<IRequest, boolean>['
 
 describe('ValidationPipeline', () => {
   it('calls next when there are no validators', async () => {
-    const pipeline = new ValidationPipeline<IRequest<unknown, string>, string>([])
+    const pipeline = new ValidationPipeline<IRequest<string>, string>([])
     const next: Delegate<string> = vi.fn().mockResolvedValue(Result.ok('done'))
 
     const result = await pipeline.handle(request, next)
@@ -44,7 +43,7 @@ describe('ValidationPipeline', () => {
   it('calls next when all validators pass', async () => {
     const { strategy: v1, executeMock: exec1 } = makeValidator(Result.ok(true))
     const { strategy: v2, executeMock: exec2 } = makeValidator(Result.ok(true))
-    const pipeline = new ValidationPipeline<IRequest<unknown, string>, string>([v1, v2])
+    const pipeline = new ValidationPipeline<IRequest<string>, string>([v1, v2])
     const next: Delegate<string> = vi.fn().mockResolvedValue(Result.ok('done'))
 
     const result = await pipeline.handle(request, next)
@@ -59,7 +58,7 @@ describe('ValidationPipeline', () => {
     const error = makeAppError()
     const { strategy: v1 } = makeValidator(Result.fail(error))
     const { strategy: v2, executeMock: exec2 } = makeValidator(Result.ok(true))
-    const pipeline = new ValidationPipeline<IRequest<unknown, string>, string>([v1, v2])
+    const pipeline = new ValidationPipeline<IRequest<string>, string>([v1, v2])
     const next: Delegate<string> = vi.fn()
 
     const result = await pipeline.handle(request, next)
@@ -75,7 +74,7 @@ describe('ValidationPipeline', () => {
     const { strategy: v1 } = makeValidator(Result.ok(true))
     const { strategy: v2 } = makeValidator(Result.fail(error))
     const { strategy: v3, executeMock: exec3 } = makeValidator(Result.ok(true))
-    const pipeline = new ValidationPipeline<IRequest<unknown, string>, string>([v1, v2, v3])
+    const pipeline = new ValidationPipeline<IRequest<string>, string>([v1, v2, v3])
     const next: Delegate<string> = vi.fn()
 
     const result = await pipeline.handle(request, next)
@@ -89,7 +88,7 @@ describe('ValidationPipeline', () => {
   it('returns the result of next when single validator passes', async () => {
     const { strategy: v1 } = makeValidator(Result.ok(true))
     const expected = Result.ok('expected-value')
-    const pipeline = new ValidationPipeline<IRequest<unknown, string>, string>([v1])
+    const pipeline = new ValidationPipeline<IRequest<string>, string>([v1])
     const next: Delegate<string> = vi.fn().mockResolvedValue(expected)
 
     const result = await pipeline.handle(request, next)

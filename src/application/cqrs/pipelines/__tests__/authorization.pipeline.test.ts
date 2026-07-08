@@ -12,7 +12,7 @@ describe('AuthorizationPipeline', () => {
 
   beforeEach(() => {
     mockNext = vi.fn().mockResolvedValue(Result.ok('success'))
-    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND', payload: { id: 'test-id' } }
+    mockRequest = { intent: 'TEST_INTENT', type: 'COMMAND' }
   })
 
   it('should call next() if all strategies succeed', async () => {

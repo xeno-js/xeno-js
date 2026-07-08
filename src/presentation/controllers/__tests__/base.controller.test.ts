@@ -28,11 +28,11 @@ class TestController extends BaseController<string, string> {
     return this.fail(error, details)
   }
 
-  public exposeQuery(request: IQuery<string, string>) {
+  public exposeQuery(request: IQuery<string>) {
     return this._query(request)
   }
 
-  public exposeSend(request: ICommand<string, string>) {
+  public exposeSend(request: ICommand<string>) {
     return this._send(request)
   }
 }
@@ -94,10 +94,9 @@ describe('BaseController', () => {
     const queryMock = vi.fn().mockResolvedValue(expected)
     mockMediator.query = queryMock
 
-    const request: IQuery<string, string> = {
+    const request: IQuery<string> = {
       intent: 'TestQuery',
       type: REQUEST_TYPE.QUERY,
-      payload: 'query-payload',
       cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
     }
 
@@ -113,10 +112,9 @@ describe('BaseController', () => {
     const sendMock = vi.fn().mockResolvedValue(expected)
     mockMediator.send = sendMock
 
-    const request: ICommand<string, string> = {
+    const request: ICommand<string> = {
       intent: 'TestCommand',
       type: REQUEST_TYPE.COMMAND,
-      payload: 'command-payload',
     }
 
     const result = await controller.exposeSend(request)

@@ -6,10 +6,9 @@ import { REQUEST_TYPE } from '@/shared'
 
 import { CompositePipeline } from '../composite.pipeline'
 
-const mockRequest: IRequest<{ id: string }, string> = {
+const mockRequest: IRequest<string> = {
   intent: 'TestIntent',
   type: REQUEST_TYPE.COMMAND,
-  payload: { id: 'test-id' },
 }
 
 const makeResult = (value: string) => Result.ok(value) as ResultType<string>
@@ -25,7 +24,7 @@ describe('CompositePipeline', () => {
     })
 
     it('creates instance with provided pipelines', () => {
-      const behavior: IPipelineBehavior<IRequest<unknown, string>, string> = {
+      const behavior: IPipelineBehavior<IRequest<string>, string> = {
         handle: vi.fn(),
       }
       expect(() => new CompositePipeline([behavior])).not.toThrow()
@@ -34,7 +33,7 @@ describe('CompositePipeline', () => {
 
   describe('handle', () => {
     it('calls next directly when no pipelines', async () => {
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>()
+      const pipeline = new CompositePipeline<IRequest<string>, string>()
       const next = vi.fn().mockResolvedValue(makeResult('value'))
       const result = await pipeline.handle(mockRequest, next)
       expect(next).toHaveBeenCalledOnce()
@@ -44,12 +43,12 @@ describe('CompositePipeline', () => {
 
     it('executes single behavior wrapping next', async () => {
       const callOrder: string[] = []
-      const handleSpy = vi.fn(async (_req: IRequest<unknown, string>, n: Delegate<string>) => {
+      const handleSpy = vi.fn(async (_req: IRequest<string>, n: Delegate<string>) => {
         callOrder.push('behavior')
         return n()
       })
-      const behavior: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: handleSpy }
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([behavior])
+      const behavior: IPipelineBehavior<IRequest<string>, string> = { handle: handleSpy }
+      const pipeline = new CompositePipeline<IRequest<string>, string>([behavior])
       const next = vi.fn().mockImplementation(() => {
         callOrder.push('next')
         return Promise.resolve(makeResult('done'))
@@ -64,10 +63,8 @@ describe('CompositePipeline', () => {
     it('executes multiple behaviors in correct order (first to last)', async () => {
       const callOrder: string[] = []
 
-      const makeBehavior = (
-        label: string,
-      ): IPipelineBehavior<IRequest<unknown, string>, string> => ({
-        handle: vi.fn(async (_req: IRequest<unknown, string>, n: Delegate<string>) => {
+      const makeBehavior = (label: string): IPipelineBehavior<IRequest<string>, string> => ({
+        handle: vi.fn(async (_req: IRequest<string>, n: Delegate<string>) => {
           callOrder.push(label)
           return n()
         }),
@@ -77,7 +74,7 @@ describe('CompositePipeline', () => {
       const b2 = makeBehavior('b2')
       const b3 = makeBehavior('b3')
 
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([b1, b2, b3])
+      const pipeline = new CompositePipeline<IRequest<string>, string>([b1, b2, b3])
       const next = vi.fn().mockImplementation(() => {
         callOrder.push('final')
         return Promise.resolve(makeResult('ok'))
@@ -90,12 +87,12 @@ describe('CompositePipeline', () => {
     })
 
     it('passes request to each behavior', async () => {
-      const b1Handle = vi.fn((_req: IRequest<unknown, string>, n: Delegate<string>) => n())
-      const b2Handle = vi.fn((_req: IRequest<unknown, string>, n: Delegate<string>) => n())
-      const b1: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b1Handle }
-      const b2: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b2Handle }
+      const b1Handle = vi.fn((_req: IRequest<string>, n: Delegate<string>) => n())
+      const b2Handle = vi.fn((_req: IRequest<string>, n: Delegate<string>) => n())
+      const b1: IPipelineBehavior<IRequest<string>, string> = { handle: b1Handle }
+      const b2: IPipelineBehavior<IRequest<string>, string> = { handle: b2Handle }
 
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([b1, b2])
+      const pipeline = new CompositePipeline<IRequest<string>, string>([b1, b2])
       const next = vi.fn().mockResolvedValue(makeResult('x'))
 
       await pipeline.handle(mockRequest, next)
@@ -107,11 +104,11 @@ describe('CompositePipeline', () => {
     it('short-circuits when a behavior returns failure without calling next', async () => {
       const failResult = Result.fail({ message: 'blocked' } as never) as ResultType<string>
       const b1Handle = vi.fn().mockResolvedValue(failResult)
-      const b2Handle = vi.fn((_req: IRequest<unknown, string>, n: Delegate<string>) => n())
-      const b1: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b1Handle }
-      const b2: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b2Handle }
+      const b2Handle = vi.fn((_req: IRequest<string>, n: Delegate<string>) => n())
+      const b1: IPipelineBehavior<IRequest<string>, string> = { handle: b1Handle }
+      const b2: IPipelineBehavior<IRequest<string>, string> = { handle: b2Handle }
 
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([b1, b2])
+      const pipeline = new CompositePipeline<IRequest<string>, string>([b1, b2])
       const next = vi.fn().mockResolvedValue(makeResult('never'))
 
       const result = await pipeline.handle(mockRequest, next)
@@ -123,9 +120,9 @@ describe('CompositePipeline', () => {
 
     it('propagates thrown errors from a behavior', async () => {
       const b1Handle = vi.fn().mockRejectedValue(new Error('boom'))
-      const b1: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b1Handle }
+      const b1: IPipelineBehavior<IRequest<string>, string> = { handle: b1Handle }
 
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([b1])
+      const pipeline = new CompositePipeline<IRequest<string>, string>([b1])
       const next = vi.fn()
 
       await expect(pipeline.handle(mockRequest, next)).rejects.toThrow('boom')
@@ -133,10 +130,10 @@ describe('CompositePipeline', () => {
 
     it('returns result from next when behavior delegates', async () => {
       const expected = makeResult('delegated')
-      const b1Handle = vi.fn((_req: IRequest<unknown, string>, n: Delegate<string>) => n())
-      const b1: IPipelineBehavior<IRequest<unknown, string>, string> = { handle: b1Handle }
+      const b1Handle = vi.fn((_req: IRequest<string>, n: Delegate<string>) => n())
+      const b1: IPipelineBehavior<IRequest<string>, string> = { handle: b1Handle }
 
-      const pipeline = new CompositePipeline<IRequest<unknown, string>, string>([b1])
+      const pipeline = new CompositePipeline<IRequest<string>, string>([b1])
       const next = vi.fn().mockResolvedValue(expected)
 
       const result = await pipeline.handle(mockRequest, next)

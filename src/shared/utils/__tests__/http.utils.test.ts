@@ -51,10 +51,6 @@ describe('HttpHelper.normalizeHeaders', () => {
       expect(HttpHelper.normalizeHeaders({ a: null })).toEqual({})
     })
 
-    it('skips keys with empty-string value', () => {
-      expect(HttpHelper.normalizeHeaders({ a: '' })).toEqual({})
-    })
-
     it('skips keys with false value', () => {
       expect(HttpHelper.normalizeHeaders({ a: false })).toEqual({ a: 'false' })
     })

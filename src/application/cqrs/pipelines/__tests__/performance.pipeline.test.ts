@@ -20,7 +20,6 @@ const createLogger = () => {
 const mockRequest: IRequest<{ id: string }> = {
   intent: 'TestIntent',
   type: REQUEST_TYPE.COMMAND,
-  payload: { id: 'test-id' },
 }
 
 describe('PerformancePipeline', () => {

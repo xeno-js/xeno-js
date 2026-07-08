@@ -11,7 +11,6 @@ describe('ExceptionPipeline', () => {
   const mockRequest: IRequest<{ id: string }> = {
     intent: 'TestIntent',
     type: 'COMMAND',
-    payload: { id: 'test-id' },
   }
 
   it('should return the result successfully when next() does not throw', async () => {

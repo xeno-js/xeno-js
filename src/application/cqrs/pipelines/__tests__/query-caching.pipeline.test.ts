@@ -35,7 +35,6 @@ const createLogger = () => {
 const makeRequest = (overrides?: Partial<IQuery['cacheOptions']>): IQuery<{ id: string }> => ({
   intent: 'TestQuery',
   type: REQUEST_TYPE.QUERY,
-  payload: { id: 'test-id' },
   cacheOptions: {
     cacheKey: 'test-key',
     ttl: 60,

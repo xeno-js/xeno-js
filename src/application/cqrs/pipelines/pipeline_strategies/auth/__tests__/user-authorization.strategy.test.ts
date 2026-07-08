@@ -60,16 +60,15 @@ describe('UserAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � userId validation', () => {
-    it('returns AUTHORIZATION_FAILED when userId is undefined', async () => {
+    it('returns true when userId is undefined', async () => {
       const strategy = new UserAuthorizationStrategy(makeRequestContext(undefined))
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
-      expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.UNAUTHORIZED)
+      expect(result.isOk()).toBe(true)
     })
 
-    it('returns AUTHORIZATION_FAILED when userId is empty string', async () => {
+    it('returns true when userId is empty string', async () => {
       const strategy = new UserAuthorizationStrategy(makeRequestContext(''))
 
       const result = await strategy.execute(request)

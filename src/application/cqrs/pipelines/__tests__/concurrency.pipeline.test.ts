@@ -26,7 +26,6 @@ describe('ConcurrencyRetryPipeline', () => {
   const mockRequest: IRequest<{ id: string }> = {
     intent: 'TestCommand',
     type: 'COMMAND',
-    payload: { id: 'test-id' },
   }
 
   beforeEach(() => {
