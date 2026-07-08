@@ -15,7 +15,7 @@ export class HttpCoreModule implements IModule<HttpCoreConfig> {
   async configure(container: IServiceContainer, opts: HttpCoreConfig): Promise<void> {
     const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
 
-    const { HttpUtils } = await import('../modules/utils/http.utils')
+    const { HttpUtils } = await import('./utils/http.utils')
     await HttpUtils.addAxios(container, opts.http)
     await HttpUtils.addResilience(container, opts.resilience)
 

@@ -1,5 +1,5 @@
 import type { Optional } from '../types/common.types'
-import { Guards } from '../utils/guards.utils'
+import { Guards } from './guards.utils'
 
 /**
  * @file enumerable.utils.ts
