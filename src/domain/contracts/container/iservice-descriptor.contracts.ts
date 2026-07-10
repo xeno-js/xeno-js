@@ -1,5 +1,4 @@
-import type { Constructor, InjectionToken, Optional } from '@/shared'
-
+import type { ApplicationRegistry } from '../../config'
 import type { IServiceProvider } from './iservice-container.contracts'
 
 /**
@@ -34,9 +33,12 @@ export type Lifetime = 'singleton' | 'transient' | 'scoped'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface ServiceDescriptor<T> {
+export interface ServiceDescriptor<
+  T,
+  TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
+> {
   /**
-   * @description The concrete class to instantiate for this service.
+   * @description The injection token that uniquely identifies this service registration.
   
    * 
    * @author Xeno
@@ -44,18 +46,7 @@ export interface ServiceDescriptor<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly implementation?: Constructor<T>
-  /**
-   * @description Ordered array of injection tokens whose resolved values will be passed
-   * as constructor arguments when instantiating the service.
-  
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
-  readonly dependencies?: readonly InjectionToken<unknown>[]
+  readonly token: keyof TRegistry
   /**
    * @description The lifetime of the service, determining how instances are
    * managed and cached by the container.
@@ -68,8 +59,8 @@ export interface ServiceDescriptor<T> {
    */
   readonly lifetime: Lifetime
   /**
-   * @description Optional factory function to create the service instance.
-   * If provided, this factory will be used instead of the constructor.
+   * @description Factory function to create the service instance.
+   * This factory will be used instead of the constructor.
   
    * 
    * @author Xeno
@@ -77,5 +68,5 @@ export interface ServiceDescriptor<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  readonly factory?: Optional<(container: IServiceProvider) => T>
+  readonly factory: (container: IServiceProvider<TRegistry>) => T
 }

@@ -1,3 +1,4 @@
+export type * from './config/index'
 export type * from './contracts/index'
 export * from './entities/index'
 export * from './errors/index'

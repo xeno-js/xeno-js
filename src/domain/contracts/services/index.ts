@@ -1,5 +1,6 @@
 export type * from './auth/index'
 export type * from './concurrency/index'
 export type * from './extractors/index'
+export type * from './matchers/index'
 export type * from './resiliences/index'
 export type * from './validators/index'

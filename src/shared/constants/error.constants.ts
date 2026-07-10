@@ -127,6 +127,15 @@ export const ERROR_CODES = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   HANDLER_NOT_FOUND: 'HANDLER_NOT_FOUND',
+
+  /** @description No pipeline behavior was found for the given request type.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  PIPELINE_NOT_AVAILABLE: 'PIPELINE_NOT_AVAILABLE',
 } as const)
 
 /** @description Inferred union of every valid ERROR_CODES value.
@@ -308,4 +317,5 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, string> = Object.freeze({
   [ERROR_CODES.CONFLICT]: 'errors.conflict',
   [ERROR_CODES.NOT_FOUND]: 'errors.not_found',
   [ERROR_CODES.HANDLER_NOT_FOUND]: 'errors.handler_not_found',
+  [ERROR_CODES.PIPELINE_NOT_AVAILABLE]: 'errors.pipeline_not_available',
 } as const)

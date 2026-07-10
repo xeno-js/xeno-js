@@ -1,5 +1,6 @@
 import type { Optional } from '@/shared'
 
+import type { ApplicationRegistry } from '../../config'
 import type { IServiceContainer } from '../container/iservice-container.contracts'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -15,7 +16,10 @@ import type { IServiceContainer } from '../container/iservice-container.contract
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IModule<TOptions = unknown> {
+export interface IModule<
+  TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
+  TOptions = unknown,
+> {
   /**
    * @description Configures the module with the provided options.
    *
@@ -28,5 +32,5 @@ export interface IModule<TOptions = unknown> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  configure(container: IServiceContainer, opts?: Optional<TOptions>): Promise<void>
+  configure(container: IServiceContainer<TRegistry>, opts?: Optional<TOptions>): Promise<void>
 }

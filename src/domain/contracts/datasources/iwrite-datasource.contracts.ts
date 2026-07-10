@@ -1,5 +1,7 @@
 import type { Optional, UserContext } from '@/shared'
 
+import type { IDisposable } from '../disposables'
+
 /**
  * @description Interface representing a data source for performing database operations. This interface defines the contract for executing SQL queries and commands against a database, including methods for finding records based on filters and unique identifiers, as well as inserting and deleting records. The IWriteDataSource interface is designed to be implemented by classes that provide specific data access logic, allowing for separation of concerns and easier testing. It extends the IReadDataSource interface, which includes basic read operations, and adds methods for write operations such as insert and delete.
 
@@ -9,7 +11,7 @@ import type { Optional, UserContext } from '@/shared'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export interface IWriteDataSource<TDto> {
+export interface IWriteDataSource<TDto> extends IDisposable {
   /**
    * @description Finds entities This method takes a filter object and an optional AbortSignal for cancellation. It returns a promise that resolves to an array of entities. The implementation of this method is responsible for constructing the appropriate query based on the provided filter and handling any necessary data transformations before returning the results.
    * @param ctx The context of the authenticated user, which may be used for authorization and auditing purposes.

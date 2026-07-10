@@ -50,8 +50,7 @@ export type Maybe<T> = T | null | undefined
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) => T
+export type Constructor<T, TArgs extends Dictionary[] = Dictionary[]> = new (...args: TArgs) => T
 
 /**
  * @description Represents an abstract class that cannot be instantiated directly.
@@ -66,8 +65,7 @@ export type Constructor<T, TArgs extends any[] = any[]> = new (...args: TArgs) =
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AbstractConstructor<T> = abstract new (...args: any[]) => T
+export type AbstractConstructor<T> = abstract new (...args: Dictionary[]) => T
 
 // ─── Object / Record Helpers ──────────────────────────────────────────────────
 
@@ -237,3 +235,18 @@ export type Guid = `${string}-${string}-${string}-${string}-${string}`
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export type SetupAction<T> = (options: T) => void
+
+/**
+ * @description Represents a valid HTTP path.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
+export type Path =
+  | `/${string}`
+  | `/${string}/${string}`
+  | `/${string}/${string}/${string}`
+  | `/${string}/${string}/${string}/${string}`
+  | `/${string}/${string}/${string}/${string}/${string}`
