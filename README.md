@@ -152,10 +152,10 @@ type MyRegistry = XenoRegistry<{ /** Your Db Schema here **/}, {
 
 // Create the root IoC container context
 export const xeno = new AppBuilder<MyRegistry>()
-        // Configure middleware and PUBLIC routes
+        // Configure middleware and only PUBLIC routes
         .addMiddlewares(opts => {
             opts.publicRoutes = {
-                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
+                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic' },
                 '/api/user/:id': { GET: 'isPublic' },
             }
         })
