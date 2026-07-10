@@ -1,6 +1,6 @@
-import type { IServiceContainer } from '@/domain'
+import type { HttpConfig, IServiceContainer, ResilienceConfig } from '@/domain'
 
-import type { HttpConfig, ResilienceConfig } from '../config'
+import type { XenoRegistry } from '../../xeno-registry'
 
 /**
  * @description Utility functions for configuring HTTP clients and resilience features in the service container.
@@ -22,30 +22,51 @@ export const HttpUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  addAxios: async (container: IServiceContainer, opts: HttpConfig): Promise<void> => {
+  async addAxios<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: HttpConfig<TRegistry>,
+  ): Promise<void> {
     const { AxiosFactory } = await import('../../factories/axios.factory')
-    container.addSingletonFactory(opts.token, () => {
+    const { Guards } = await import('@/shared')
+    if (!Guards.isDefined(opts.token)) {
+      throw new Error('HttpConfig.token is required and must be defined.')
+    }
+
+    container.addSingleton(opts.token, () => {
       const factory = new AxiosFactory()
-      return factory.create(opts.client)
+      const instance = factory.create(opts.client)
+      if (
+        !Guards.hasMethod(instance, 'get') ||
+        !Guards.hasMethod(instance, 'post') ||
+        !Guards.hasMethod(instance, 'put') ||
+        !Guards.hasMethod(instance, 'patch') ||
+        !Guards.hasMethod(instance, 'delete')
+      ) {
+        throw new Error(
+          'The created HTTP client instance does not implement the required methods of IHttpClient.',
+        )
+      }
+      return instance as unknown as TRegistry[typeof opts.token]
     })
   },
   /**
    * @description Utility function to add resilience features to the service container. It takes a ResilienceConfig object that specifies whether resilience features are enabled and provides the necessary settings for implementing resilience strategies such as retries, circuit breakers, and timeouts. If resilience is enabled, it registers a singleton factory in the service container that creates an instance of the resilience client based on the provided configuration.
    * @param container - The service container to register the resilience client with.
    * @param opts - The ResilienceConfig options that determine whether resilience features are enabled and provide the necessary settings for implementing resilience strategies.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  addResilience: async (container: IServiceContainer, opts: ResilienceConfig): Promise<void> => {
-    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-
+  async addResilience<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: ResilienceConfig,
+  ): Promise<void> {
+    const { TOKENS } = await import('@/shared')
     const { CockatielResilienceFactory } =
       await import('../../factories/cockatiel-resilience.factory')
-    container.addSingletonFactory(INJECTION_TOKENS.RESILIENCE_CLIENT, () => {
+    container.addSingleton(TOKENS.RESILIENCE_CLIENT, () => {
       const factory = new CockatielResilienceFactory()
       return factory.create(opts)
     })

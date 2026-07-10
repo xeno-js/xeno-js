@@ -1,7 +1,6 @@
-import type { IServiceContainer } from '@/domain'
-import { Guards } from '@/shared'
+import type { CacheConfig, IServiceContainer } from '@/domain'
 
-import type { CacheConfig } from '../config'
+import type { XenoRegistry } from '../../xeno-registry'
 
 /**
  * @description Utility functions for configuring caching in the service container.
@@ -24,9 +23,11 @@ export const CacheUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  addCache: async (container: IServiceContainer, opts: CacheConfig): Promise<void> => {
-    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-
+  async addCache<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: CacheConfig,
+  ): Promise<void> {
+    const { Guards, TOKENS } = await import('@/shared')
     if (!opts.inMemory && !Guards.isDefined(opts.redis)) {
       throw new Error(
         'No cache strategies are configured. Please provide at least one cache strategy.',
@@ -35,13 +36,13 @@ export const CacheUtils = Object.freeze({
 
     if (opts.inMemory || !Guards.isDefined(opts.redis)) {
       const { InMemoryCache } = await import('../../cache/in-memory.cache')
-      container.addSingleton(INJECTION_TOKENS.CACHE, InMemoryCache, [])
+      container.addSingleton(TOKENS.CACHE, () => new InMemoryCache())
       return
     }
 
     if (Guards.isDefined(opts.redis)) {
       const { RedisCacheFactory } = await import('../../factories/redis-cache.factory')
-      container.addSingletonFactory(INJECTION_TOKENS.CACHE, () => {
+      container.addSingleton(TOKENS.CACHE, () => {
         const config = opts.redis
         return new RedisCacheFactory().create(config!)
       })

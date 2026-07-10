@@ -1,17 +1,22 @@
-import type { IModule, IServiceContainer } from '@/domain'
-import type { InjectionToken, SetupAction } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
+import type { ZodType } from 'zod'
 
-import { ServiceContainer } from '../container/service-container'
 import type {
+  ApplicationRegistry,
   AuthClientConfig,
   CacheConfig,
   DbConfig,
   HttpCoreConfig,
+  IModule,
+  IServiceContainer,
   LoggerConfig,
+  MiddlewareConfig,
   PipelineConfig,
-} from '../modules/config'
-import type { MiddlewareConfig } from '../modules/config/middleware.config'
+} from '@/domain'
+import type { Optional, SetupAction } from '@/shared'
+import { Guards, LOG_LEVEL } from '@/shared'
+
+import { ServiceContainer } from '../container/service-container'
+import type { XenoRegistry } from '../xeno-registry'
 
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
@@ -23,6 +28,7 @@ import type { MiddlewareConfig } from '../modules/config/middleware.config'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 interface QueuedModule {
+  priority: number
   name: string
   action: () => Promise<void>
 }
@@ -37,14 +43,14 @@ interface QueuedModule {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class AppBuilder {
-  private readonly _container: ServiceContainer = new ServiceContainer()
+export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
+  private readonly _container: ServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
 
   // --- Module Configurations ---
   private readonly _modules: QueuedModule[] = []
 
   // --- Specific Configurations ---
-  private _pipelineConfig: PipelineConfig = {
+  private _pipelineConfig: PipelineConfig<TRegistry, ZodType> = {
     performance: { thresholdMs: 500 },
     authorization: {
       userId: false,
@@ -119,7 +125,7 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addLogger(setupAction?: SetupAction<LoggerConfig>): this {
+  public addLogger(setupAction?: SetupAction<LoggerConfig<TRegistry>>): this {
     if (this._isLoggerModuleQueued) return this
     this._isLoggerModuleQueued = true
     const config = {
@@ -128,10 +134,11 @@ export class AppBuilder {
       sentry: { config: undefined },
       pino: { config: undefined },
       customLoggers: undefined,
-    }
-    if (Guards.isDefined(setupAction)) setupAction(config)
+    } as unknown as Optional<LoggerConfig<ApplicationRegistry<unknown>>>
+    if (Guards.isDefined(setupAction) && Guards.isDefined(config)) setupAction(config)
 
     this._modules.push({
+      priority: 3,
       name: 'LoggerModule',
       action: async () => {
         const { LoggerUtils } = await import('../modules/utils/logger.utils')
@@ -156,6 +163,7 @@ export class AppBuilder {
     const config = { inMemory: true, redis: undefined }
     if (Guards.isDefined(setupAction)) setupAction(config)
     this._modules.push({
+      priority: 3,
       name: 'CacheModule',
       action: async () => {
         const { CacheUtils } = await import('../modules/utils/cache.utils')
@@ -176,12 +184,13 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addAuth(setupAction: SetupAction<AuthClientConfig>): this {
+  public addAuth(setupAction: SetupAction<AuthClientConfig<TRegistry>>): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
     const config = { url: '', key: '', options: undefined, customAuthService: undefined }
     setupAction(config)
     this._modules.push({
+      priority: 2,
       name: 'AuthModule',
       action: async () => {
         const { AuthUtils } = await import('../modules/utils/auth.utils')
@@ -208,6 +217,7 @@ export class AppBuilder {
     const config = { connectionString: '' }
     setupAction(config)
     this._modules.push({
+      priority: 4,
       name: 'DbModule',
       action: async () => {
         const { DbModule } = await import('../modules/db.module')
@@ -232,15 +242,11 @@ export class AppBuilder {
     if (this._isConcurrencyServiceQueued) return this
     this._isConcurrencyServiceQueued = true
     this._modules.push({
+      priority: 40,
       name: 'ConcurrencyServiceModule',
       action: async () => {
         const { PLimitConcurrencyService } = await import('../services/concurrency')
-        const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
-        this._container.addSingleton(
-          INJECTION_TOKENS.CONCURRENCY_SERVICE,
-          PLimitConcurrencyService,
-          [],
-        )
+        this._container.addSingleton('CONCURRENCY_SERVICE', () => new PLimitConcurrencyService())
       },
     })
     return this
@@ -261,7 +267,7 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addPipeline(setupAction?: SetupAction<PipelineConfig>): this {
+  public addPipeline(setupAction?: SetupAction<PipelineConfig<TRegistry>>): this {
     if (Guards.isDefined(setupAction)) {
       setupAction(this._pipelineConfig)
     }
@@ -284,18 +290,19 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addHttpCore(setupAction: SetupAction<HttpCoreConfig>): this {
+  public addHttpCore(setupAction: SetupAction<HttpCoreConfig<TRegistry>>): this {
     const config = {
       dataSourceToken: undefined as unknown,
       http: { token: undefined as unknown, client: {} },
       resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
-    } as unknown as HttpCoreConfig
+    } as unknown as HttpCoreConfig<TRegistry>
     setupAction(config)
     this._modules.push({
+      priority: 30,
       name: 'HttpCoreModule',
       action: async () => {
         const { HttpCoreModule } = await import('../modules/http-core.module')
-        const coreModule = new HttpCoreModule()
+        const coreModule = new HttpCoreModule<TRegistry>()
         await coreModule.configure(this._container, config)
       },
     })
@@ -316,8 +323,14 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  public addServices(setupAction: SetupAction<IServiceContainer>): this {
-    setupAction(this._container)
+  public addServices(setupAction: SetupAction<IServiceContainer<TRegistry>>): this {
+    this._modules.push({
+      priority: 99,
+      name: 'ClientServicesModule',
+      action: async () => {
+        setupAction(this._container)
+      },
+    })
     return this
   }
 
@@ -326,15 +339,16 @@ export class AppBuilder {
    * @param factory A factory function that creates the module instance.
    * @param opts Optional configuration options for the module.
    * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
+   *
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  public addModule<T>(name: string, factory: () => Promise<IModule<T>>, opts?: T): this {
+  public addModule<T>(name: string, factory: () => Promise<IModule<TRegistry, T>>, opts?: T): this {
     this._modules.push({
+      priority: 50,
       name,
       action: async () => {
         const module = await factory()
@@ -355,7 +369,7 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public resolve<T>(token: InjectionToken<T>): T {
+  public resolve<K extends keyof TRegistry>(token: K): TRegistry[K] {
     return this._container.resolve(token)
   }
 
@@ -373,9 +387,10 @@ export class AppBuilder {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public async build(): Promise<IServiceContainer> {
+  public async build(): Promise<IServiceContainer<TRegistry>> {
     console.info('⚙️ Bootstrapping application modules...')
-    for (const queued of this._modules) {
+    const sortedModules = this._modules.sort((a, b) => a.priority - b.priority)
+    for (const queued of sortedModules) {
       try {
         await queued.action()
       } catch (error) {
@@ -393,7 +408,6 @@ export class AppBuilder {
         throw new Error(`Bootstrap failed at [${queued.name}]: ${errorMessage}`, { cause: error })
       }
     }
-    this._container.validate()
     console.info('✅ Application modules bootstrapped successfully.')
     return this._container
   }
@@ -415,14 +429,18 @@ export class AppBuilder {
     if (this._isPipelineModuleQueued) return
     this._isPipelineModuleQueued = true
 
-    this._queueMiddlewareModule(this._middlewareConfig)
+    this._queueContextModule()
 
     this._modules.push({
+      priority: 5,
       name: 'CqrsModule',
       action: async () => {
         const { CqrsModule } = await import('../modules/cqrs.module')
-        const pipelineModule = new CqrsModule()
-        await pipelineModule.configure(this._container, this._pipelineConfig)
+        const pipelineModule = new CqrsModule<TRegistry>()
+        await pipelineModule.configure(this._container, {
+          ...this._pipelineConfig,
+          isLogger: this._isLoggerModuleQueued,
+        })
       },
     })
   }
@@ -443,11 +461,15 @@ export class AppBuilder {
     this._queueContextModule()
 
     this._modules.push({
+      priority: 3,
       name: 'MiddlewareModule',
       action: async () => {
         const { MiddlewareModule } = await import('../modules/middleware.module')
         const middlewareModule = new MiddlewareModule()
-        await middlewareModule.configure(this._container, opts)
+        await middlewareModule.configure(this._container, {
+          ...opts,
+          isAuth: this._isAuthModuleQueued,
+        })
       },
     })
   }
@@ -466,10 +488,11 @@ export class AppBuilder {
     this._isContextModuleQueued = true
 
     this._modules.push({
+      priority: 0,
       name: 'ContextModule',
       action: async () => {
         const { ContextModule } = await import('../modules/context.module')
-        const contextModule = new ContextModule()
+        const contextModule = new ContextModule<TRegistry>()
         await contextModule.configure(this._container)
       },
     })

@@ -1,4 +1,4 @@
-import type { ExecutionContext, ICache, IIdempotencyStore, IRequestContext } from '@/domain'
+import type { ICache, IIdempotencyStore, IIdentityAccessor } from '@/domain'
 import type { Optional } from '@/shared'
 import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
 
@@ -13,9 +13,9 @@ import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
    */
 export class IdempotencyStore implements IIdempotencyStore {
   /**
-   * @description Constructs a new instance of IdempotencyStore, accepting an instance of ICache for accessing the caching system and an instance of IRequestContext for obtaining the user's identity context. The IdempotencyStore uses the caching system to manage locks and results of idempotent commands, ensuring that commands with the same ID are processed only once. The identity context is used to build contextual keys, allowing for more granular management of idempotent commands in multi-tenant scenarios.
+   * @description Constructs a new instance of IdempotencyStore, accepting an instance of ICache for accessing the caching system and an instance of IIdentityAccessor for obtaining the user's identity context. The IdempotencyStore uses the caching system to manage locks and results of idempotent commands, ensuring that commands with the same ID are processed only once. The identity context is used to build contextual keys, allowing for more granular management of idempotent commands in multi-tenant scenarios.
    * @param _cache An instance of ICache that provides methods to interact with the underlying caching system, used to store locks and results of idempotent commands.
-   * @param _requestContext An instance of IRequestContext that allows access to the user's identity context, used to build contextual keys for idempotent commands, supporting multi-tenant scenarios.
+   * @param _identityAccessor An instance of IIdentityAccessor that allows access to the user's identity context, used to build contextual keys for idempotent commands, supporting multi-tenant scenarios.
   
    * 
    * @author Xeno
@@ -25,7 +25,7 @@ export class IdempotencyStore implements IIdempotencyStore {
    */
   constructor(
     private readonly _cache: ICache,
-    private readonly _requestContext: IRequestContext<ExecutionContext>,
+    private readonly _identityAccessor: IIdentityAccessor,
   ) {}
 
   public async acquireLock(requestId: string, ttlSeconds: number): Promise<boolean> {
@@ -79,11 +79,11 @@ export class IdempotencyStore implements IIdempotencyStore {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   private buildContextualKey(requestId: string): string {
-    const { context } = this._requestContext.getContext() ?? {}
+    const identity = this._identityAccessor.getIdentity()
 
     // AWS SaaS Factory Pattern: logical partitioning via tenant prefix keyspace
-    if (Guards.isDefined(context) && !Guards.isNullOrEmpty(context.identity.tenantId)) {
-      return `tenant:${context.identity.tenantId}:commands:${requestId}`
+    if (Guards.isDefined(identity) && !Guards.isNullOrEmpty(identity.tenantId)) {
+      return `tenant:${identity.tenantId}:commands:${requestId}`
     }
 
     return `commands:${requestId}`

@@ -9,12 +9,11 @@ import {
   wrap,
 } from 'cockatiel'
 
-import type { IFactory, IServiceResilience } from '@/domain'
+import type { IFactory, IServiceResilience, ResilienceConfig } from '@/domain'
 import { AppError } from '@/domain'
 import type { Optional } from '@/shared'
 import { Guards, RESILIENCE_DEFAULTS, STATUS_CODES } from '@/shared'
 
-import type { ResilienceConfig } from '../modules/config/resilience.config'
 import { ServiceResilience } from '../services/resiliences/resilience.service'
 
 /**

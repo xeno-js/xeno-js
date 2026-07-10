@@ -1,18 +1,15 @@
-import type { ILoggerClient, IServiceContainer } from '@/domain'
-import type { InjectionToken, Optional } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
+import type { ILoggerClient, IServiceContainer, IServiceScope, LoggerConfig } from '@/domain'
+import type { KeysOfType, Optional } from '@/shared'
 
-import type { LoggerConfig } from '../config'
-
+import type { XenoRegistry } from '../../xeno-registry'
 /**
  * @description LoggerUtils is a utility object that provides helper functions for the CoreModule. It includes the addLogger function, which is responsible for configuring and registering the logging services in the dependency injection container based on the provided LoggerConfig options. This function dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export const LoggerUtils = Object.freeze({
   /**
    * @description Configures and registers the logging services in the dependency injection container based on the provided LoggerConfig options. It dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
@@ -26,51 +23,58 @@ export const LoggerUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  addLogger: async (container: IServiceContainer, opts: Optional<LoggerConfig>): Promise<void> => {
-    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
+  async addLogger<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: Optional<LoggerConfig<XenoRegistry>>,
+  ): Promise<void> {
+    const loggerDependencies: KeysOfType<XenoRegistry, ILoggerClient>[] = []
 
-    const loggerDependencies: InjectionToken<ILoggerClient>[] = []
+    const { Guards, LOG_LEVEL, TOKENS } = await import('@/shared')
 
     if (!Guards.isDefined(opts) || opts.console) {
       const { ConsoleLogger } = await import('../../loggers/console.logger')
-      container.addSingletonFactory(
-        INJECTION_TOKENS.CONSOLE_LOGGER,
-        () => new ConsoleLogger(opts?.level),
-      )
-      loggerDependencies.push(INJECTION_TOKENS.CONSOLE_LOGGER)
+      container.addSingleton(TOKENS.CONSOLE_LOGGER, () => new ConsoleLogger(opts?.level))
+      loggerDependencies.push(TOKENS.CONSOLE_LOGGER)
     }
+
+    const customLoggerFactories: ((c: IServiceScope<TRegistry>) => ILoggerClient)[] = []
 
     if (Guards.isDefined(opts)) {
       if (Guards.isDefined(opts.sentry.config)) {
         const { SentryLoggerFactory } = await import('../../factories/sentry-logger.factory')
-        container.addSingletonFactory(INJECTION_TOKENS.SENTRY_LOGGER, () => {
+        container.addSingleton(TOKENS.SENTRY_LOGGER, () => {
           const factory = new SentryLoggerFactory()
           return factory.create(opts)
         })
-        loggerDependencies.push(INJECTION_TOKENS.SENTRY_LOGGER)
+        loggerDependencies.push(TOKENS.SENTRY_LOGGER)
       }
 
       if (Guards.isDefined(opts.pino.config)) {
         const { PinoLoggerFactory } = await import('../../factories/pino-logger.factory')
-        container.addSingletonFactory(INJECTION_TOKENS.PINO_LOGGER, () => {
+        container.addSingleton(TOKENS.PINO_LOGGER, () => {
           const factory = new PinoLoggerFactory()
           return factory.create(opts)
         })
-        loggerDependencies.push(INJECTION_TOKENS.PINO_LOGGER)
+        loggerDependencies.push(TOKENS.PINO_LOGGER)
       }
 
       if (!Guards.isNullOrEmpty(opts.customLoggers)) {
         const customLoggers = opts.customLoggers
-        customLoggers.forEach((logger) => {
-          loggerDependencies.push(logger)
+        customLoggers.forEach((f) => {
+          if (Guards.isDefined(f)) {
+            customLoggerFactories.push(f)
+          }
         })
       }
     }
 
     const { BaseLogger } = await import('@/application')
-    container.addSingletonFactory(INJECTION_TOKENS.LOGGER, (resolver) => {
-      const context = resolver.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
-      const resolvedDependencies = loggerDependencies.map((token) => resolver.resolve(token))
+    container.addSingleton(TOKENS.LOGGER, (c) => {
+      const context = c.resolve(TOKENS.CONTEXT_ACCESSOR)
+      const resolvedDependencies = [
+        ...loggerDependencies.map((token) => c.resolve(token)),
+        ...customLoggerFactories.map((factory) => factory(c)),
+      ]
       return new BaseLogger(context, opts?.level ?? LOG_LEVEL.DEBUG, resolvedDependencies)
     })
   },

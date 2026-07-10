@@ -1,6 +1,6 @@
-import type { ITransactionState, IUnitOfWork } from '@/domain'
+import type { IDisposable, ITransactionState, IUnitOfWork } from '@/domain'
 import { AppError } from '@/domain'
-import type { Optional } from '@/shared'
+import { Guards, type Optional } from '@/shared'
 
 import type { DbContext } from '../db/db.types'
 
@@ -13,7 +13,7 @@ import type { DbContext } from '../db/db.types'
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
-export class UnitOfWork implements IUnitOfWork {
+export class UnitOfWork implements IUnitOfWork, IDisposable {
   /**
    * Creates an instance of UnitOfWork.
    * @param _dbContext - The database context used for managing transactions.
@@ -41,5 +41,17 @@ export class UnitOfWork implements IUnitOfWork {
         this._ttx.state = null
       }
     })
+  }
+
+  async dispose(): Promise<void> {
+    if (Guards.isDefined(this._ttx.state)) {
+      try {
+        if (Guards.hasMethod(this._ttx.state, 'rollback')) {
+          await (this._ttx.state as DbContext & { rollback: () => Promise<void> }).rollback()
+        }
+      } finally {
+        this._ttx.state = null
+      }
+    }
   }
 }

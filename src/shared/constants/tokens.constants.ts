@@ -90,6 +90,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CONSOLE_LOGGER: 'CONSOLE_LOGGER',
+  /** @description Token used to register and resolve the ContextAccessor instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  CONTEXT_ACCESSOR: 'CONTEXT_ACCESSOR',
   /** @description Token used to register and resolve the DbContext instance in the dependency injection container.
    *
    * @author Xeno
@@ -130,6 +138,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   IDEMPOTENCY_STORE: 'IDEMPOTENCY_STORE',
+  /** @description Token used to register and resolve the IdentityAccessor instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  IDENTITY_ACCESSOR: 'IDENTITY_ACCESSOR',
   /** @description Token used to register and resolve the Logger instance in the dependency injection container.
    *
    * @author Xeno
@@ -225,7 +241,7 @@ export const TOKENS = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  REQUEST_CONTEXT_MIDDLEWARE: 'REQUEST_CONTEXT_MIDDLEWARE',
+  MIDDLEWARE: 'MIDDLEWARE',
   /** @description Token used to register and resolve the IServiceResilience instance in the dependency injection container.
    *
    * @author Xeno
@@ -322,4 +338,9 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   ZOD_VALIDATOR: 'ZOD_VALIDATOR',
+  SERVICE_SCOPE_ACCESSOR: 'SERVICE_SCOPE_ACCESSOR',
+  NETWORK_CONTEXT_ACCESSOR: 'NETWORK_CONTEXT_ACCESSOR',
+  USER_CONTEXT_FACTORY: 'USER_CONTEXT_FACTORY',
+  TRANSACTION_STATE: 'TRANSACTION_STATE',
+  ROUTE_MATCHER: 'ROUTE_MATCHER',
 } as const)

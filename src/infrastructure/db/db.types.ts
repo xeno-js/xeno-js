@@ -17,4 +17,4 @@ import type { Dictionary } from '@/shared'
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
-export type DbContext<T = unknown> = NodePgDatabase<Dictionary<T>>
+export type DbContext<TSchema extends Dictionary = Dictionary> = NodePgDatabase<TSchema>

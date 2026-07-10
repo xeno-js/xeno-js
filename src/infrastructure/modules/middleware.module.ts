@@ -1,62 +1,57 @@
-import type { ExecutionContext, IMiddleware, IModule, IServiceContainer } from '@/domain'
-import type { HttpHeaders, HttpMethod } from '@/shared'
+import type { IGateKeeper, IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
 
-import type { MiddlewareConfig } from './config/middleware.config'
+import type { XenoRegistry } from '../xeno-registry'
 
 /**
  * @description MiddlewareModule is responsible for registering essential services and middlewares that are fundamental to the application's operation. This includes setting up the logging infrastructure and the request context middleware. By implementing the IModule interface, MiddlewareModule can be easily integrated into the application's dependency injection container, allowing it to configure necessary services and middlewares during the application startup phase.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
+export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
+  TRegistry,
+  MiddlewareConfig
+> {
+  async configure(
+    container: IServiceContainer<TRegistry>,
+    opts: MiddlewareConfig & { isAuth: boolean },
+  ): Promise<void> {
+    const { TOKENS } = await import('@/shared')
 
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
-export class MiddlewareModule implements IModule {
-  async configure(container: IServiceContainer, opts: MiddlewareConfig): Promise<void> {
-    const { INJECTION_TOKENS } = await import('../di/injection-tokens.constants')
-
-    const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
-    container.addSingletonFactory(INJECTION_TOKENS.REQUEST_CONTEXT, () => {
-      const factory = new NodeRequestContextFactory<ExecutionContext>()
-      return factory.create()
-    })
-
-    const { NoAuthGateKeeper } = await import('@/application')
-    container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, NoAuthGateKeeper, [])
+    if (!opts.isAuth) {
+      const { NoAuthGateKeeper } = await import('@/application')
+      container.addSingleton(TOKENS.GATE_KEEPER, (): IGateKeeper => new NoAuthGateKeeper())
+    }
 
     const { BearerTokenExtractor } = await import('../services/extractors/extract-bearer.extractor')
-    container.addSingleton(INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR, BearerTokenExtractor, [])
+    container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
     const { HttpHeaderExtractor } = await import('../services/extractors/http-header.extractor')
-    container.addSingleton(INJECTION_TOKENS.SERVICE_EXTRACTOR, HttpHeaderExtractor, [
-      INJECTION_TOKENS.BEARER_TOKEN_EXTRACTOR,
-    ])
+    container.addSingleton(
+      TOKENS.SERVICE_EXTRACTOR,
+      (c) => new HttpHeaderExtractor(c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR)),
+    )
     const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
-    container.addSingletonFactory(INJECTION_TOKENS.SERVICE_SCOPE_FACTORY, () => {
-      const factory = new ServiceScopeFactory(container)
+    container.addSingleton(TOKENS.SERVICE_SCOPE_FACTORY, () => {
+      const factory = new ServiceScopeFactory<TRegistry>(container)
       return factory
     })
-
-    const { TokenHelper } = await import('@/shared')
-    const registryToken =
-      TokenHelper.createToken<Record<`/${string}`, Record<HttpMethod, 'isPublic'>>>(
-        'ROUTES_REGISTRY',
-      )
-    container.addSingletonFactory(registryToken, () => {
-      return opts.publicRoutes ?? {}
+    const { RegexRouteMatcher } = await import('../services/matchers/router-regex.matcher')
+    container.addSingleton(TOKENS.ROUTE_MATCHER, () => {
+      return new RegexRouteMatcher(opts.publicRoutes ?? {})
     })
 
     const { RequestContextMiddleware } = await import('@/presentation')
-    container.addSingleton<IMiddleware<HttpHeaders>>(
-      INJECTION_TOKENS.MIDDLEWARE,
-      RequestContextMiddleware,
-      [
-        registryToken,
-        INJECTION_TOKENS.REQUEST_CONTEXT,
-        INJECTION_TOKENS.SERVICE_EXTRACTOR,
-        INJECTION_TOKENS.GATE_KEEPER,
-        INJECTION_TOKENS.SERVICE_SCOPE_FACTORY,
-      ],
+    container.addSingleton(
+      TOKENS.MIDDLEWARE,
+      (c) =>
+        new RequestContextMiddleware(
+          c.resolve(TOKENS.ROUTE_MATCHER),
+          c.resolve(TOKENS.REQUEST_CONTEXT),
+          c.resolve(TOKENS.SERVICE_EXTRACTOR),
+          c.resolve(TOKENS.GATE_KEEPER),
+        ),
     )
   }
 }

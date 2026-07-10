@@ -1,4 +1,14 @@
-import type { Dictionary, Maybe, Optional } from './common.types'
+import type { Dictionary, Maybe, Optional, Path } from './common.types'
+
+/**
+ * @description RouteRegistry is a type that defines a mapping of HTTP paths to their corresponding HTTP methods and access levels. Each path can have multiple HTTP methods (like GET, POST, etc.), and each method is associated with an access level, which in this case is represented by the string 'isPublic'. This structure is useful for defining public routes in a web application, allowing developers to specify which routes are accessible without authentication.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
+export type RouteRegistry = Record<Path, Record<HttpMethod, 'isPublic'>>
 
 /**
  * @description Supported HTTP methods.

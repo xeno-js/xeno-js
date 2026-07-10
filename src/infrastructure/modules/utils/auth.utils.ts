@@ -1,8 +1,14 @@
-import type { IPipelineBehavior, IRequest, IServiceContainer } from '@/domain'
-import type { InjectionToken } from '@/shared'
-import { Guards } from '@/shared'
+import type { SupabaseClientOptions } from '@supabase/supabase-js'
+import type { ZodType } from 'zod'
 
-import type { AuthClientConfig, PipelineConfig } from '../config'
+import type {
+  AuthClientConfig,
+  IRequest,
+  IServiceContainer,
+  IStrategy,
+  PipelineConfig,
+} from '@/domain'
+import type { XenoRegistry } from '@/infrastructure'
 
 /**
  *  @description Utility functions for configuring authentication and authorization in the service container.
@@ -26,40 +32,39 @@ export const AuthUtils = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 
-  addAuthZ: async (
-    container: IServiceContainer,
-    opts: PipelineConfig['authorization'],
-  ): Promise<InjectionToken<IPipelineBehavior<IRequest, unknown>>[]> => {
-    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-    const pipelines: InjectionToken<IPipelineBehavior<IRequest, unknown>>[] = []
-    const strategies = []
+  async addAuthZ<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: PipelineConfig<TRegistry, ZodType>['authorization'],
+  ): Promise<(keyof TRegistry)[]> {
+    const { TOKENS } = await import('@/shared')
+    const pipelines: (keyof TRegistry)[] = []
+    type StrategiesToken = keyof TRegistry
+    const strategies: StrategiesToken[] = []
 
     if (opts.userId) {
       const { UserAuthorizationStrategy } = await import('@/application')
       container.addSingleton(
-        INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE,
-        UserAuthorizationStrategy,
-        [INJECTION_TOKENS.REQUEST_CONTEXT],
+        TOKENS.USER_AUTHORIZATION_PIPELINE,
+        (c) => new UserAuthorizationStrategy(c.resolve(TOKENS.CONTEXT_ACCESSOR)),
       )
-      strategies.push(INJECTION_TOKENS.USER_AUTHORIZATION_PIPELINE)
+      strategies.push(TOKENS.USER_AUTHORIZATION_PIPELINE)
     }
 
     if (opts.tenantId) {
       const { TenantAuthorizationStrategy } = await import('@/application')
       container.addSingleton(
-        INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE,
-        TenantAuthorizationStrategy,
-        [INJECTION_TOKENS.REQUEST_CONTEXT],
+        TOKENS.TENANT_AUTHORIZATION_PIPELINE,
+        (c) => new TenantAuthorizationStrategy(c.resolve(TOKENS.CONTEXT_ACCESSOR)),
       )
-      strategies.push(INJECTION_TOKENS.TENANT_AUTHORIZATION_PIPELINE)
+      strategies.push(TOKENS.TENANT_AUTHORIZATION_PIPELINE)
     }
-
+    const { Guards } = await import('@/shared')
     if (Guards.isDefined(opts.policies)) {
       const { PolicyRegistry } = await import('@/application')
-      container.addSingleton(INJECTION_TOKENS.POLICY_REGISTRY, PolicyRegistry, [])
+      container.addSingleton(TOKENS.POLICY_REGISTRY, () => new PolicyRegistry())
 
       const policyRegistry = opts.policies
-      const registryInstance = container.resolve(INJECTION_TOKENS.POLICY_REGISTRY)
+      const registryInstance = container.resolve(TOKENS.POLICY_REGISTRY)
       const Policies = new Set<string>()
       for (const [intent, policy] of Object.entries(policyRegistry)) {
         const intentLower = intent.toLowerCase()
@@ -77,37 +82,52 @@ export const AuthUtils = Object.freeze({
       if (Policies.has('roles')) {
         const { RoleAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
-          INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE,
-          RoleAuthorizationStrategy,
-          [INJECTION_TOKENS.POLICY_REGISTRY, INJECTION_TOKENS.REQUEST_CONTEXT],
+          TOKENS.ROLE_AUTHORIZATION_PIPELINE,
+          (c) =>
+            new RoleAuthorizationStrategy(
+              c.resolve(TOKENS.POLICY_REGISTRY),
+              c.resolve(TOKENS.CONTEXT_ACCESSOR),
+            ),
         )
-        strategies.push(INJECTION_TOKENS.ROLE_AUTHORIZATION_PIPELINE)
+        strategies.push(TOKENS.ROLE_AUTHORIZATION_PIPELINE)
       }
 
       if (Policies.has('permissions')) {
         const { PermissionAuthorizationStrategy } = await import('@/application')
         container.addSingleton(
-          INJECTION_TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
-          PermissionAuthorizationStrategy,
-          [INJECTION_TOKENS.POLICY_REGISTRY, INJECTION_TOKENS.REQUEST_CONTEXT],
+          TOKENS.PERMISSION_AUTHORIZATION_PIPELINE,
+          (c) =>
+            new PermissionAuthorizationStrategy(
+              c.resolve(TOKENS.POLICY_REGISTRY),
+              c.resolve(TOKENS.CONTEXT_ACCESSOR),
+            ),
         )
-        strategies.push(INJECTION_TOKENS.PERMISSION_AUTHORIZATION_PIPELINE)
+        strategies.push(TOKENS.PERMISSION_AUTHORIZATION_PIPELINE)
       }
     }
 
     if (!Guards.isNullOrEmpty(opts.customAuthorizationStrategy)) {
       const customStrategies = opts.customAuthorizationStrategy
-      for (const strategy of customStrategies) {
-        strategies.push(strategy)
-      }
+      customStrategies.forEach((strategyToken, index) => {
+        if (Guards.isDefined(strategyToken)) {
+          const token = `CUSTOM_AUTHORIZATION_STRATEGY_${index}` as keyof TRegistry
+
+          container.addSingleton(token, (c) => {
+            return strategyToken(c) as unknown as TRegistry[typeof token]
+          })
+          strategies.push(token)
+        }
+      })
     }
 
     const { AuthorizationPipeline } = await import('@/application')
-    const resolvedStrategies = strategies.map((strategy) => container.resolve(strategy))
-    container.addSingletonFactory(INJECTION_TOKENS.AUTHORIZATION_PIPELINE, () => {
+    container.addSingleton(TOKENS.AUTHORIZATION_PIPELINE, (c) => {
+      const resolvedStrategies = strategies.map(
+        (strategy) => c.resolve(strategy) as unknown as IStrategy<IRequest, void>,
+      )
       return new AuthorizationPipeline(resolvedStrategies)
     })
-    pipelines.push(INJECTION_TOKENS.AUTHORIZATION_PIPELINE)
+    pipelines.push(TOKENS.AUTHORIZATION_PIPELINE)
     return pipelines
   },
 
@@ -122,28 +142,32 @@ export const AuthUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  addAuthN: async (container: IServiceContainer, opts: AuthClientConfig): Promise<void> => {
-    const { INJECTION_TOKENS } = await import('../../di/injection-tokens.constants')
-
+  async addAuthN<TRegistry extends XenoRegistry = XenoRegistry>(
+    container: IServiceContainer<TRegistry>,
+    opts: AuthClientConfig<TRegistry, SupabaseClientOptions<'public'>>,
+  ): Promise<void> {
+    const { Guards, TOKENS } = await import('@/shared')
     if (Guards.isDefined(opts.customAuthService)) {
-      container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
-        return container.resolve(opts.customAuthService!)
+      container.addSingleton(TOKENS.AUTH_SERVICE, () => {
+        return opts.customAuthService!(container.createScope())
       })
     } else {
       const { SupabaseAuthServiceFactory } = await import('../../factories/supabase-auth.factory')
-      container.addSingletonFactory(INJECTION_TOKENS.AUTH_SERVICE, () => {
-        const factory = new SupabaseAuthServiceFactory()
+      container.addSingleton(TOKENS.AUTH_SERVICE, () => {
+        const factory = new SupabaseAuthServiceFactory<TRegistry>()
         return factory.create(opts)
       })
 
       const { ClaimsIdentityMapper } = await import('@/application')
-      container.addSingleton(INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER, ClaimsIdentityMapper, [])
+      container.addSingleton(TOKENS.CLAIMS_IDENTITY_MAPPER, () => new ClaimsIdentityMapper())
     }
 
     const { GateKeeper } = await import('@/application')
-    container.addSingleton(INJECTION_TOKENS.GATE_KEEPER, GateKeeper, [
-      INJECTION_TOKENS.AUTH_SERVICE,
-      INJECTION_TOKENS.CLAIMS_IDENTITY_MAPPER,
-    ])
+    container.addSingleton(TOKENS.GATE_KEEPER, (c) => {
+      return new GateKeeper(
+        c.resolve(TOKENS.AUTH_SERVICE),
+        c.resolve(TOKENS.CLAIMS_IDENTITY_MAPPER),
+      )
+    })
   },
 } as const)
