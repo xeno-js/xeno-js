@@ -12,8 +12,8 @@
     <a href="https://github.com/Mattia-Carcione/xeno-js/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/@xeno?style=flat-square" alt="License: ISC" />
     </a>
-    <a href="https://www.npmjs.com/package/@xeno">
-      <img src="https://img.shields.io/npm/v/@xeno?style=flat-square" alt="NPM Version" />
+    <a href="https://www.npmjs.com/package/@xeno/core">
+      <img src="https://img.shields.io/npm/v/@xeno/core?style=flat-square" alt="NPM Version" />
     </a>
     <a href="https://buymeacoffee.com/xenojs">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
@@ -23,91 +23,61 @@
 
 ---
 
-> ⚠️ **Beta Status**: `@xeno` is currently in **beta**. The API may undergo
+> ⚠️ **Beta Status**: `@xeno/core` is currently in **beta**. The API may undergo
 > breaking changes. To install the latest beta version, use:
-> `npm install @xeno@beta`
+> `npm install @xeno/core@beta`
 
 ---
 
-**The production-ready TypeScript accelerator. Multi-tenant CQRS, Drizzle ORM,
-and solid RBAC out of the box in a fluent API.** Build blazing-fast,
-serverless-ready APIs with the elegant DX of .NET, without the vendor lock-in of
-heavy frameworks.
+## What is Xeno?
+
+**Xeno** is an enterprise-grade, runtime-agnostic architectural framework for
+Node.js built natively with TypeScript. It provides structural primitives for
+implementing robust **Domain-Driven Design (DDD)** and **Command Query
+Responsibility Segregation (CQRS)** patterns. By shifting operational logic away
+from delivery mechanisms and transport frameworks, Xeno ensures your core
+application architecture remains pristine, testable, and completely isolated
+from external infrastructural churn.
 
 ---
 
-## 💡 Why Xeno?
+## 💡 Why Choose Xeno?
 
-Most modern Node.js frameworks rely on heavy abstractions through decorators and
-reflection. While they offer rapid setup, these approaches often lead to:
+Modern Node.js frameworks often tie business workflows tightly to HTTP server
+abstractions or rely heavily on experimental language features. Xeno fixes this
+with an emphasis on developer experience, type safety, and clean separation of
+concerns.
 
-- **"Hidden Magic"**: Debugging and tracing the execution flow becomes
-  difficult.
-- **Heavy Cold-Starts**: The computational cost of reflection drastically
-  reduces performance in serverless environments.
-- **Lock-in**: You become tightly coupled to the framework’s opinionated
-  architecture and toolset.
-
-**Xeno** inverts this paradigm. It is not a "cage," but an architectural
-accelerator that restores full control over your TypeScript stack.
-
-### Why choose Xeno?
-
-- **Zero Magic, Zero Decorators & Cloud Optimized**: Xeno avoids "magic"
-  meta-programming in favor of explicit, strongly-typed configuration. The
-  result is lightning-fast cold starts and a codebase that is straightforward to
-  debug because the code is exactly what you see. Its lightweight footprint
-  makes it perfect for serverless and edge computing environments (AWS Lambda,
-  Cloudflare Workers, Vercel Edge), allowing you to leverage highly
-  cost-effective cloud infrastructure without compromising performance.
-- **Transparent & DDD-First Architecture**: Xeno enforces a native "Clean
-  Architecture" (`domain`, `application`, `infrastructure`, `presentation`).
-  Every component is isolated, and the data flow (CQRS) is fully traceable,
-  eliminating the "black box" effect common in traditional frameworks.
-- **100% Agnostic & Decoupled**: Xeno acts as a Kernel. It doesn't force you
-  into a specific web server; it provides the business logic and execution
-  pipelines, leaving you free to choose your preferred transport layer (Express,
-  Hono, Fastify, or CLI). By strictly decoupling your business logic from
-  infrastructure, external libraries, and frameworks, Xeno ensures your core
-  domain remains highly testable, maintainable, and scalable. This isolation
-  allows you to swap, upgrade, or mock external components without ever
-  impacting your primary business logic.
-- **Install Only What You Need**: Xeno utilizes **Optional Peer Dependencies**.
-  You only install the external libraries you actually require. The framework is
-  designed to strictly lazy-load only the modules you enable in your
-  configuration, keeping your node_modules lean, preventing dependency bloat,
-  and reducing build sizes.
-- **Precision Engineering**: Configuration is handled via a fluent, type-safe
-  `AppBuilder`. Dependency management uses `TokenHelper` with nominal branding,
-  preventing cross-token resolution errors and ensuring the DI container remains
-  consistent and predictable.
-- **Enterprise-Ready Out of the Box**: Stop reinventing the wheel for complex
-  requirements. Xeno integrates native enterprise patterns:
-
-- **CQRS Pipelines**: Ready-to-use logic for Logging, Validation (Zod),
-  Idempotency, and Concurrency.
-- **Resilience**: Fault handling via configured `cockatiel` policies (Retry,
-  Circuit Breaker, Bulkhead).
-- **Database**: Powerful, typed abstraction via `Drizzle ORM`, ensuring
-  transactional integrity and performance.
-
-### An "Open" Framework
-
-Xeno hides nothing. Need a custom authorization strategy or a specific log
-driver? The modular approach via `IModule` allows you to extend the framework
-without fighting its conventions. It is designed for developers who understand
-their code and want a robust "backbone" framework that doesn't obstruct
-architectural choices.
-
-Xeno doesn't dictate how to write your business logic; it provides the
-enterprise-grade infrastructure to run it at peak performance.
+- **Zero Decorators**: Xeno eliminates reliance on experimental or unstable TS
+  decorator specifications (`reflect-metadata`). The IoC container
+  (`ServiceContainer`) uses pure, explicit functional factories that optimize
+  compilation speeds and eliminate runtime black-box behaviors.
+- **Complete Server Decoupling**: Xeno does not care if you use Fastify, Hono,
+  Express, Koa, or AWS Lambda. The presentation layer handles incoming data
+  using plain, primitive contracts, making migration or multi-runtime hosting
+  completely seamless.
+- **Pay-For-What-You-Use (Opt-in Modularity)**: Core dependencies are
+  strategically classified as optional peer dependencies. If your architecture
+  doesn't use Redis, Sentry, or Supabase, you do not pull them into your node
+  modules.
+- **Enterprise-Grade Resiliency & Cross-Cutting Pipelines**: Address complex
+  distributed patterns natively without code duplication. Xeno provides
+  out-of-the-box composite behaviors:
+  - **Idempotency**: Implements multi-tenant logic keyspaces matching advanced
+    SaaS factory patterns for logical partitioning.
+  - **Concurrency Control**: Mitigates thundering herd impacts via advanced
+    backoff retry strategies coupled with randomized jitter.
+  - **Resilience Policies**: Deep integration with circuit breakers, bulkheads,
+    and fallbacks.
+  - **Deterministic Type Safety**: Strong infrastructure validation strategies
+    using Zod schemas.
 
 ---
 
 ## 📖 Documentation & Getting Started
 
 To explore the architecture, programmatic configurations, and extension
-workflows of Xeno, read our full technical manuals located inside the main
+workflows of Xeno, read the full technical manuals located inside the main
 documentation hub:
 
 - **[Framework Documentation Repository](./docs/README.md)**
@@ -120,26 +90,17 @@ host building (`AppBuilder`), isolated request middleware lifecycles, functional
 
 ## 🚀 Live Executable Demos
 
-Before writing your first corporate use-case, inspect our fully operational
-reference environments designed to showcase decoupled enterprise topologies in
-action. Read the main entry point documentation at:
+Want to see how Xeno works? Check out the functional example application
+showcasing end-to-end command/query segregation, multi-tenant databases, and
+resilient schema handling.
 
-- **[Live Demos Directory Overview](./demo/README.md)**
-
-You can dive straight into the explicit source code modules of our specialized
+You can dive straight into the explicit source code modules of specialized
 sandbox environments:
 
 - **[`pipelines_middleware_demo/`](./demo/pipelines_middleware_demo/)**: Traces
   an execution thread from the raw HTTP transport presentation layer, executing
   automated header extraction and anchoring metadata variables into
   `AsyncLocalStorage` thread boundaries.
-- **[`http_core_demo/`](./demo/http_core_demo/)**: Examines the architectural
-  configuration of fault-tolerant external data sources orchestrated
-  concurrently via sandboxed Axios instances and Cockatiel policy rings.
-- **[`database_drizzle_demo/`](./demo/database_drizzle_demo/)**: Reviews
-  automated data mapper isolation, strongly-typed repository components,
-  transactional units of work, and Fluent Filter compilation grids interfacing
-  with PostgreSQL.
 
 ---
 
@@ -148,7 +109,7 @@ sandbox environments:
 Install the core package:
 
 ```bash
-npm install @xeno
+npm install @xeno/core
 
 ```
 
@@ -164,84 +125,162 @@ npm install zod pino cockatiel drizzle-orm
 
 ---
 
-## ⚡ Quick Start (The Magic Moment)
+## ⚡ Bootstrapping & Middleware Example
 
-Forget writing hundreds of lines of boilerplate. Instantiate the `AppBuilder`,
-configure your architecture using the fluent API, and build your container.
+Below is an architectural example of how to configure the Xeno
+`ServiceContainer`, load core modules, and process an incoming application
+payload natively inside a server middleware wrapper.
+
+### 1. Initialize the Container and Configure Modules
 
 ```typescript
-import { AppBuilder } from '@xeno/core';
+import { AppBuilder, LOG_LEVEL, TOKENS, XenoRegistry } from '@xeno/core'
+import { FindUserQueryHandler } from './user/cqrs/handlers/index'
+import { FindUserController } from './user/controllers/index'
+import { UserMapper } from './user/mappers/user.mapper'
+import { UserWriteRepository } from './user/repositories/user-write.repository'
+import { UserDataSource } from './user/datasources/user.datasource'
 
-async function bootstrap() {
-  const builder = new AppBuilder();
+// Map your registry token with XenoRegistry<TSchemaDb, TExtension>
+type MyRegistry = XenoRegistry<{ /** Your Db Schema here **/}, {
+  USER_MAPPER_TOKEN: UserMapper
+  USER_DS_TOKEN: UserDataSource
+  USER_REPOSITORY_TOKEN: UserWriteRepository
+  FIND_USER_QUERY_HANDLER_TOKEN: FindUserQueryHandler
+  FIND_USER_CONTROLLER_TOKEN: FindUserController
+}>
 
-  builder
-    // 1. Setup Core Modules
-    .addMiddlewares()
-    .addContext()
+// Create the root IoC container context
+export const xeno = new AppBuilder<MyRegistry>()
+        // Configure middleware and PUBLIC routes
+        .addMiddlewares(opts => {
+            opts.publicRoutes = {
+                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
+                '/api/user/:id': { GET: 'isPublic' },
+            }
+        })
+        // Configure the CQRS pipeline
+        .addPipeline((config) => {
+            // Add authz by user id
+            config.authorization.userId = true
+            // Add authz by tenant id
+            config.authorization.tenantId = true
+            // Can register Policies for your intent
+            config.authorization.policies = {
+                'FIND_USER_QUERY_HANDLER_TOKEN': {
+                    roles: ['admin']
+                    permissions: ['read'],
+                }
+            }
+            // Can add idempotency pipeline for command
+            config.commandBus.idempotency = { lockTtlSeconds: 30, processedTtlSeconds: 60 }
+            // Can add concurrency pipeline for command
+            config.commandBus.concurrency = { delayConfig: { baseDelayMs: 100, maxJitterMs: 500 }, maxRetries: 3 }
+            // Can add caching pipeline for query
+            config.queryBus.isEnabled = true
+        })
+        // Configure Database with drizzle
+        .addDb((opts) => {
+            if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL missing!')
+            opts.connectionString = process.env.DATABASE_URL
+        })
+        // Configure Authentication with supabase
+        .addAuth((config) => {
+            config.key = 'demo-key'
+            config.url = 'https://demo-auth-server.com'
+        })
+        // Configure your logger (e.g. Console, Sentry, Pino or custom logger)
+        .addLogger((config) => {
+            config.level = LOG_LEVEL.INFO
+            config.console = true
+        })
+        // Register your services
+        .addServices((services) => {
+            // REGISTER MAPPER
+            services.addScoped('USER_MAPPER_TOKEN', () => new UserMapper())
 
-    // 2. Add Logging (e.g., Pino)
-    .addLogger((config) => {
-      config.console = true;
-      config.level = LOG_LEVEL.INFO
-    })
+            // REGISTER DATASOURCES
+            services.addScoped('USER_DS_TOKEN', (c) => new UserDataSource(c.resolve(TOKENS.DB_CONTEXT)))
 
-    // 3. Configure the CQRS Pipeline
-    .addPipeline((config) => {
-        config.authorization.tenant = true
-        config.commandBus.idempotency = { lockTtlSeconds: 60 }
-        config.commandBus.concurrency = { maxRetries: 3 }
-    });
+            // REGISTER REPOSITORIES
+            services.addScoped('USER_REPOSITORY_TOKEN', (c) => new UserWriteRepository(c.resolve('USER_DS_TOKEN'), c.resolve('USER_MAPPER_TOKEN')))
 
-    // 4. Configure HTTP Client (Axios) with pattern resilience (Cockatiel)
-    .addHttpCore((config) => {
-        config.dataSourceToken = TokenHelper.createToken<IRemoteDataSource>('DUMMY_HTTP_CORE_TOKEN')
-        config.http.token = TokenHelper.createToken<IHttpClient>('DUMMY_HTTP_TOKEN')
-        config.http.client.baseURL = 'https://dummy-http-core.local'
-        config.http.client.timeoutMs = 5000
-        config.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
-        config.resilience.retry.attempts = 5
-    })
+            // REGISTER HANDLERS
+            services.addScoped('FIND_USER_QUERY_HANDLER_TOKEN', (c) => {
+                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const repository = c.resolve('USER_READ_REPOSITORY')
+                return new FindUserQueryHandler(repository, requestcontext)
+            })
 
-    // 5. Configure DB Client (Drizzle)
-    .addDb((config) => {
-        config.connectionString = 'postgres://dummy:dummy@localhost:5432/dummy'
-        config.tables = { "NAME_TABLE": "NAME_DRIZZLE_PGTABLE" }
-    })
-
-    // 6. Configure Authentication with supabase
-    .addAuthentication((config) => {
-        config.url = 'https://dummy-auth.local'
-        config.key = 'dummy-key'
-    })
-
-
-  // 7. Build the DI Container!
-  // This resolves the dependency graph safely.
-  const container = await builder.build();
-
-  return container;
-}
+            // REGISTER CONTROLLERS
+            services.addTransient('FIND_USER_CONTROLLER_TOKEN', (c) => {
+                return new FindUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
+            })
+        })
 
 ```
 
-### Dispatching a Command
-
-Once your container is built, executing a command through the Mediator
-automatically runs it through your configured pipelines (Validation -> Logging
--> Idempotency -> Retry -> Execution).
+### 2. Wrap and Run within Server Middleware (e.g., Fastify / Hono)
 
 ```typescript
-// Resolve the Mediator from the container
-const mediator = container.resolve(INJECTION_TOKENS.MEDIATOR)
+import 'dotenv/config'
+import fastify from 'fastify'
+import { xeno } from './bootstrap'
 
-// Dispatch a command
-const command = new CreateUserCommand({ email: 'test@xeno.dev' })
-const result = await mediator.send(command)
+async function runDemo() {
+  console.log('⚙️ Initialized Xeno Container...')
+  try {
+    // 1. Bootstrap the application and get the service container
+    await xeno.build()
 
-if (!result.isOk()) {
-  console.error('Command failed:', result.getErrorOrThrow())
+    console.log('🚀 Starting Fastify server on http://localhost:3000...')
+
+    // 2. Resolve the middleware and controllers from the container
+    const middleware = xeno.resolve('MIDDLEWARE')
+    const findUserController = xeno.resolve('FIND_USER_CONTROLLER_TOKEN')
+
+    console.log('✅ Middleware and Controllers resolved from the container.')
+    // 3. Create a Fastify instance to handle HTTP requests
+    const app = fastify()
+
+    // ─── ENDPOINT 2: QUERY ────────────────────────────────────────────
+    app.get('/api/user/:id', async (request, reply) => {
+      // 4. Execute the middleware to handle the request context and authentication, then call the StatusController's handle method with the request payload.
+      const responseDto = await middleware.execute(
+        { path: request.url, method: request.method } as any,
+        request.headers as any,
+        async () => {
+          const { id } = request.params as any
+          const payload = { id: id ?? '123' }
+          return await findUserController.handle(payload)
+        },
+      )
+
+      return reply
+        .status(responseDto.status)
+        .type('application/json')
+        .send(responseDto.data)
+    })
+
+    console.log('✅ Routes set up. Ready to accept requests.')
+
+    // ─── START SERVER ─────────────────────────────────────────────────
+    try {
+      await app.listen({ port: 3000 })
+      console.log('🚀 Application running on http://localhost:3000')
+      console.log('👉 GET  /api/user/:id  (GET: api/user/1)')
+    } catch (err) {
+      console.error('Error starting Fastify server:', err)
+      app.log.error(err)
+      process.exit(1)
+    }
+  } catch (error) {
+    console.error('Error during bootstrap or server setup:', error)
+    process.exit(1)
+  }
 }
+
+runDemo()
 ```
 
 ---
@@ -259,76 +298,27 @@ understand how the scaffolding engine works, check the
 
 ---
 
-## 🏗️ Architecture Structure
-
-The framework strictly follows Clean Architecture principles. When using Xeno,
-we recommend structuring your application as follows:
-
-```text
-src/
- ├── domain/         # Entities, Value Objects, Domain Events, Repository Contracts
- ├── application/    # Use Cases, Command/Query Handlers, DTOs
- ├── infrastructure/ # External Services, DB Adapters (Drizzle), HTTP Clients (Axios)
- └── presentation/   # Your REST/GraphQL Controllers, Edge functions, or CLI
-```
-
----
-
 ## 🗺️ Release Roadmap & Lifecycle
 
-Xeno is currently in **Beta**. We are actively stabilizing the architecture of
-the core engine while incrementally expanding our developer tooling and
-distributed systems primitives.
+Xeno is currently in **Beta**. Below are my current development tracks:
 
 ### 🟢 Current Phase: v1.0.0-beta.x (Core Architecture)
 
-The foundational, transport-agnostic core engine is fully operational and open
-for architectural evaluation:
-
-- **Ambient Context Management:** Robust tenant and request isolation powered by
-  Node's native `AsyncLocalStorage`.
-- **Nominal Branded IoC:** Compile-time, type-safe dependency injection
-  utilizing branded token symbols to eliminate runtime resolving errors.
-- **CQRS Pipeline Mediator:** Centralized command/query dispatching with support
-  for automated pipeline middleware behaviors.
-- **Native Service Resilience:** Out-of-the-box fault tolerance (Circuit
-  Breakers, Retries) baked into external HTTP data sources via Axios and
-  Cockatiel.
-- **Day-Zero Scaffolding CLI:** Initial interactive project bootstrapper
-  managing environment variables, configurations, and Drizzle ORM integration.
-
----
+- **Enhancing the Xeno CLI**: Developing robust scaffolding generators to
+  instantly build clean command, query, and handler boilerplates so developers
+  can focus strictly on core domain constraints.
+- **Advanced Datasource Base Implementations**: Improving concrete abstract
+  layers for relational multi-tenant models, adding seamless support
+  out-of-the-box for structured transactional stores.
 
 ### 🟡 In Development: v1.0.0-rc.x (Developer Experience)
 
-We are bridging the gap between rigorous software engineering and rapid daily
-development:
-
-- **Multi-Transport Server Scaffolding:** Automated CLI setups for
-  pre-configured HTTP servers (Express, Fastify, Hono) pre-wired with the core
-  context middleware.
-- **Boilerplate Generators:** Aggressive CLI generation commands
-  (`xeno g command <name>`) to scaffold commands, queries, and their respective
-  handlers instantly.
-- **Automated DI Wiring:** Programmatic AST-based injection to automatically
-  append tokens and register new handlers within the container bootstrap file.
-
----
-
-### 🔵 Planned: v1.0.0 Stable (Enterprise Distributed Toolkit)
-
-The final milestone designed to turn Xeno into an elite platform for highly
-scalable, event-driven distributed microservices:
-
-- **Unit of Work (UoW):** Coordinated, atomic transaction management across
-  decoupled data repositories and message channels.
-- **Transactional Outbox Pattern:** Integrated "at-least-once" delivery
-  mechanics to guarantee database-to-broker consistency during infrastructure
-  failures.
-- **Message Broker Bindings:** Native transport-agnostic pub/sub abstractions
-  with official production-ready drivers for Kafka and RabbitMQ.
-- **Event Sourcing Kernel:** Native tactical primitives for tracking state
-  transitions via Aggregate Roots, Event Streams, and Snapshotting.
+- **Native Distributed Eventing (Kafka)**: Introducing fully decoupled outbox
+  pipeline support and event handlers tailored for high-throughput Kafka
+  streaming networks.
+- **HTTP Core Optimizations**: Maximizing processing capabilities of internal
+  extractors, refining payload performance benchmarks, and offering zero-config
+  bindings for widely adopted Node servers.
 
 ---
 
