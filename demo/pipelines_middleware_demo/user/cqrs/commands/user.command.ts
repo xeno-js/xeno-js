@@ -2,7 +2,7 @@ import { REQUEST_TYPE, type ICommand } from '@xeno/core'
 import { UserProps } from '../../entity/user'
 
 export class SaveUserCommand implements ICommand<void> {
-    public readonly intent = 'SaveUserCommand'
+    public readonly intent = 'SAVE_USER_COMMAND_HANDLER_TOKEN'
     public readonly type = REQUEST_TYPE.COMMAND
 
     constructor(
@@ -11,7 +11,7 @@ export class SaveUserCommand implements ICommand<void> {
 }
 
 export class UpdateUserCommand implements ICommand<void> {
-    public readonly intent = 'UpdateUserCommand'
+    public readonly intent = 'UPDATE_USER_COMMAND_HANDLER_TOKEN'
     public readonly type = REQUEST_TYPE.COMMAND
     public readonly isPublic = true
 

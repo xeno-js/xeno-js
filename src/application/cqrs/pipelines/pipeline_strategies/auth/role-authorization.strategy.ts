@@ -1,9 +1,9 @@
 import type {
-  ExecutionContext,
+  IContextAccessor,
   Identity,
   IPolicyRegistry,
   IRequest,
-  IRequestContext,
+  RequestContext,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
 import { Guards } from '@/shared'
@@ -29,7 +29,7 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
    */
   constructor(
     private readonly _policy: IPolicyRegistry,
-    requestContext: IRequestContext<ExecutionContext>,
+    requestContext: IContextAccessor<RequestContext>,
   ) {
     super(requestContext)
   }
@@ -47,7 +47,10 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
         return Result.fail(
           AppError.forbidden(command.intent, 'User does not have the required roles.'),
         )
-    }
+    } else
+      return Result.fail(
+        AppError.forbidden(command.intent, 'No roles defined for the command policy.'),
+      )
 
     return Result.ok()
   }

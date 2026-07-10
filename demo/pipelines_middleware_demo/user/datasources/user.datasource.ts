@@ -1,9 +1,9 @@
 import type { IWriteDataSource, DbContext, Optional, UserContext } from '@xeno/core'
 import { and, AppError, Enumerable, eq } from '@xeno/core';
-import { UserDto, users } from '../../schema';
+import { FullSchema, UserDto, users } from '../../schema';
 
 export class UserDataSource implements IWriteDataSource<UserDto> {
-    constructor(private _db: DbContext<UserDto>) {}
+    constructor(private _db: DbContext<FullSchema>) {}
 
     public async findById(id: string | number, ctx: UserContext, signal: Optional<AbortSignal>): Promise<Optional<UserDto>> {
         AppError.throwIfAborted(signal, 'UserDataSource.findById');
@@ -30,5 +30,10 @@ export class UserDataSource implements IWriteDataSource<UserDto> {
     public async update(id: string | number, dto: Partial<UserDto>, ctx: UserContext, signal: Optional<AbortSignal>): Promise<void> {
         AppError.throwIfAborted(signal, 'UserDataSource.update');
         await this._db.update(users).set(dto).where(and(eq(users.id, id))).execute();
+    }
+
+    public async dispose(): Promise<void> {
+        // Implement any necessary cleanup logic here
+        // For demonstration, no resources to clean up
     }
 }

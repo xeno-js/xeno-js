@@ -1,4 +1,4 @@
-import { BaseHandler, AppError, ExecutionContext, Guards, IRepository, IRequestContext, IStrategy, Result, type ResultType, IUnitOfWork, Optional, GuidHelper, ERROR_CODES, STATUS_CODES } from "@xeno/core"
+import { BaseHandler, AppError, Guards, IRepository, Result, type ResultType, IUnitOfWork, Optional, GuidHelper, ERROR_CODES, STATUS_CODES, UserContext, IFactory } from "@xeno/core"
 
 import { User } from "../../entity/user"
 import { UpdateUserCommand } from "../commands/user.command"
@@ -7,9 +7,9 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
     constructor(
         private readonly _uow: IUnitOfWork,
         private readonly _repository: IRepository<User>,
-        requestContext: IRequestContext<ExecutionContext>,
+        identityFactory: IFactory<void, UserContext>
     ) {
-        super(requestContext)
+        super(identityFactory)
     }
     public async handle(request: UpdateUserCommand, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
         console.log(`[CQRS: Command] 🟢 Received UpdateUserCommand with intent: "${request.intent}"`)
@@ -26,7 +26,7 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
                     status: STATUS_CODES.NOT_FOUND,
                     cause: new Error('User with ID 3 does not exist.'),
                     name: 'UpdateUserCommandHandler'
-            })
+                })
 
             const userEntity = result.getValueOrThrow()
 

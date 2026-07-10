@@ -1,10 +1,9 @@
 import type {
   Delegate,
-  ExecutionContext,
   ICommand,
   IIdempotencyStore,
+  INetworkContextAccessor,
   IPipelineBehavior,
-  IRequestContext,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
@@ -53,7 +52,7 @@ export class IdempotencyPipeline<
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
-    private readonly _requestContext: IRequestContext<ExecutionContext>,
+    private readonly _requestContextFactory: INetworkContextAccessor,
     private readonly _idempotencyStore: IIdempotencyStore,
     lockTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_IDEMPOTENCY_LOCK_TTL_SECONDS,
     processedTtlSeconds: number = IDEMPOTENCY_CONSTANTS.DEFAULT_TTL_SECONDS,
@@ -76,35 +75,33 @@ export class IdempotencyPipeline<
   }
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
-    const { context } = this._requestContext.getContext() ?? {}
-    if (!Guards.isDefined(context))
+    const network = this._requestContextFactory.getNetworkContext()
+    if (!Guards.isDefined(network))
       return Result.fail(
         AppError.conflict(
           request.intent,
-          `Request context is not defined for request ${request.intent}`,
+          `Network context is not defined for request ${request.intent}`,
         ),
       )
 
     try {
-      const alreadyProcessed = await this._idempotencyStore.hasBeenProcessed(
-        context.network.requestId,
-      )
+      const alreadyProcessed = await this._idempotencyStore.hasBeenProcessed(network.requestId)
       if (alreadyProcessed) {
-        const payload = await this._idempotencyStore.getPayload<TResult>(context.network.requestId)
+        const payload = await this._idempotencyStore.getPayload<TResult>(network.requestId)
         if (Guards.isDefined(payload)) {
           return Result.ok(payload)
         } else {
           return Result.fail(
             AppError.conflict(
               request.intent,
-              `Idempotency store indicates request has been processed but no payload found for request ID ${context.network.requestId}`,
+              `Idempotency store indicates request has been processed but no payload found for request ID ${network.requestId}`,
             ),
           )
         }
       }
 
       const lockAcquired = await this._idempotencyStore.acquireLock(
-        context.network.requestId,
+        network.requestId,
         this._lockTtlSeconds,
       )
 
@@ -112,7 +109,7 @@ export class IdempotencyPipeline<
         return Result.fail(
           AppError.conflict(
             request.intent,
-            `Failed to acquire lock for request ID ${context.network.requestId}`,
+            `Failed to acquire lock for request ID ${network.requestId}`,
           ),
         )
       }
@@ -121,17 +118,17 @@ export class IdempotencyPipeline<
 
       if (result.isOk()) {
         await this._idempotencyStore.markAsProcessed(
-          context.network.requestId,
+          network.requestId,
           result.getValueOrThrow(),
           this._processedTtlSeconds,
         )
       } else {
-        await this._idempotencyStore.releaseLock(context.network.requestId)
+        await this._idempotencyStore.releaseLock(network.requestId)
       }
 
       return result
     } catch (error: unknown) {
-      await this._idempotencyStore.releaseLock(context.network.requestId)
+      await this._idempotencyStore.releaseLock(network.requestId)
 
       throw error
     }

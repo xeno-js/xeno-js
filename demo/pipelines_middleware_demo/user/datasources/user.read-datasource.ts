@@ -1,5 +1,5 @@
 import type { DbContext, IReadDataSource, Optional, UserContext } from '@xeno/core'
-import type { UserDto } from '../../schema'
+import type { FullSchema, UserDto } from '../../schema'
 import { AppError, Enumerable, eq } from '@xeno/core';
 import { users } from '../../schema';
 
@@ -9,7 +9,7 @@ export interface IUserDataSource extends IReadDataSource<UserDto> {
 
 export class UserReadDatasource implements IUserDataSource {
     constructor(
-        private readonly _dbContext: DbContext<UserDto>
+        private readonly _dbContext: DbContext<FullSchema>
     ) { }
 
     public async findById(id: string | number, _ctx: UserContext, signal: Optional<AbortSignal>): Promise<UserDto | undefined> {
@@ -34,5 +34,10 @@ export class UserReadDatasource implements IUserDataSource {
         AppError.throwIfAborted(signal, 'UserReadDatasource.findByUserId');
         const result = await this._dbContext.select().from(users).where(eq(users.userId, userId)).limit(1).execute();
         return Enumerable.firstOrDefault(result);
+    }
+
+    public async dispose(): Promise<void> {
+        // Implement any necessary cleanup logic here
+        // For demonstration, no resources to clean up
     }
 }

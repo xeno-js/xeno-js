@@ -1,13 +1,13 @@
-import { BaseHandler, ExecutionContext, GuidHelper, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
+import { BaseHandler, GuidHelper, IFactory, IReadDao, Result, ResultType, UserContext } from "@xeno/core"
 import { FindAllUsersQuery } from "../query/user.query"
 import { User } from "../../entity/user";
 
 export class FindAllUsersQueryHandler extends BaseHandler<FindAllUsersQuery, User[]> {
     constructor(
         private readonly _query: IReadDao<User>,
-        requestContext: IRequestContext<ExecutionContext>
+        identityFactory: IFactory<void, UserContext>
     ) {
-        super(requestContext)
+        super(identityFactory)
     }
 
     public async handle(_request: FindAllUsersQuery, signal: AbortSignal): Promise<ResultType<User[]>> {

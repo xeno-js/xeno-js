@@ -1,9 +1,9 @@
 import type {
-  ExecutionContext,
+  IContextAccessor,
   Identity,
   IRequest,
-  IRequestContext,
   IStrategy,
+  RequestContext,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
@@ -29,10 +29,10 @@ export abstract class BaseAuthorizationStrategy<
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
+  constructor(private readonly _requestContext: IContextAccessor<RequestContext>) {}
 
   public async execute(request: IRequest): Promise<ResultType<void>> {
-    const { context } = this._requestContext.getContext() ?? {}
+    const context = this._requestContext.getContext()
 
     if (!Guards.isDefined(context)) {
       return Result.fail(AppError.unauthorized(request.intent, 'User is not authenticated.'))

@@ -1,4 +1,4 @@
-import type { ExecutionContext, Identity, IRequest, IRequestContext } from '@/domain'
+import type { IContextAccessor, Identity, IRequest, RequestContext } from '@/domain'
 import { AppError, Result } from '@/domain'
 import { Guards, GuidHelper } from '@/shared'
 
@@ -14,15 +14,15 @@ import { BaseAuthorizationStrategy } from './base-authorization.strategy'
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class TenantAuthorizationStrategy extends BaseAuthorizationStrategy<IRequest> {
-  /** @description Constructs a new instance of the TenantAuthorizationStrategy class, which is responsible for checking if the authenticated tenant has the required tenant ID specified in the command. It takes an IRequestContext as a parameter, which is used to retrieve the identity of the currently authenticated tenant during the authorization process.
-   * @param requestContext An instance of IRequestContext used to access the identity of the currently authenticated tenant. This context is essential for performing the authorization checks based on the tenant's ID when executing commands that require specific tenant-based permissions.
+  /** @description Constructs a new instance of the TenantAuthorizationStrategy class, which is responsible for checking if the authenticated tenant has the required tenant ID specified in the command. It takes an IContextAccessor as a parameter, which is used to retrieve the identity of the currently authenticated tenant during the authorization process.
+   * @param requestContext An instance of IContextAccessor used to access the identity of the currently authenticated tenant. This context is essential for performing the authorization checks based on the tenant's ID when executing commands that require specific tenant-based permissions.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  constructor(requestContext: IRequestContext<ExecutionContext>) {
+  constructor(requestContext: IContextAccessor<RequestContext>) {
     super(requestContext)
   }
 

@@ -1,28 +1,21 @@
-import { AppBuilder, INJECTION_TOKENS, LOG_LEVEL, TokenHelper } from '@xeno/core'
-import type { IServiceContainer, IHandler, ICommand } from '@xeno/core'
-import { USER_REPOSITORY, USER_READ_REPOSITORY, USER_DS_TOKEN, USER_READ_DS_TOKEN, USER_MAPPER_TOKEN, UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, UPDATE_USER_COMMAND_HANDLER_TOKEN, UPDATE_USER_CONTROLLER_TOKEN, FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN } from './tokens'
+import { AppBuilder, LOG_LEVEL } from '@xeno/core'
 import { SaveUserCommandHandler, FindUserQueryHandler, UpdateUserCommandHandler } from './user/cqrs/handlers/index'
 import { UnauthorizedCommandHandler } from './unauthorized/handlers/unauthorized.handler'
 import { SaveUserController, FindUserController, UpdateUserController, FindAllUserController } from './user/controllers/index'
 import { UnauthorizedController } from './unauthorized/controllers/unauthorized.controller'
-import { SaveUserCommand } from './user/cqrs/commands/user.command'
-import { User } from './user/entity/user'
-import { FindAllUsersQuery, UserQuery } from './user/cqrs/query/user.query'
 import { UserMapper } from './user/mappers/user.mapper'
 import { UserDataSource } from './user/datasources/user.datasource'
 import { UserReadDatasource } from './user/datasources/user.read-datasource'
 import { UserReadRepository } from './user/repositories/user-read.repository'
 import { UserWriteRepository } from './user/repositories/user-write.repository'
 import { FindAllUsersQueryHandler } from './user/cqrs/handlers/find-all-user.handler'
+import type { MyRegistry } from './tokens'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO BOOTSTRAP FUNCTION
 // ─────────────────────────────────────────────────────────────────────────────
 // This function bootstraps the application by configuring the AppBuilder with necessary middlewares, pipeline settings, and service registrations. It sets up the command and query handlers, as well as the controllers for handling HTTP requests. The function returns a promise that resolves to an IServiceContainer, which can be used to resolve services and dependencies throughout the application.
-export async function bootstrap(): Promise<IServiceContainer> {
-    const builder = new AppBuilder()
-
-    builder
+export const xeno = new AppBuilder<MyRegistry>()
         .addContext()
         .addMiddlewares(opts => {
             opts.publicRoutes = {
@@ -34,18 +27,19 @@ export async function bootstrap(): Promise<IServiceContainer> {
             config.authorization.userId = true
             config.authorization.tenantId = true
             config.authorization.policies = {
-                'UnauthorizedAccessCommand': {
+                'UNAUTHORIZED_COMMAND_HANDLER_TOKEN': {
                     roles: ['guest'],
                     permissions: ['read', 'write'],
                 },
-                'SaveUserCommand': {
+                'SAVE_USER_COMMAND_HANDLER_TOKEN': {
                     roles: ['guest'],
                 },
-                'UserQuery': {
+                'FIND_USER_QUERY_HANDLER_TOKEN': {
                     permissions: ['read'],
                 },
             }
             config.commandBus.idempotency = { lockTtlSeconds: 30, processedTtlSeconds: 60 }
+            config.commandBus.concurrency = { delayConfig: { baseDelayMs: 100, maxJitterMs: 500 }, maxRetries: 3 }
             config.queryBus.isEnabled = true
         })
         .addDb((opts) => {
@@ -62,47 +56,52 @@ export async function bootstrap(): Promise<IServiceContainer> {
         })
         .addServices((services) => {
             // REGISTER MAPPER
-            services.addScoped(USER_MAPPER_TOKEN, UserMapper)
+            services.addScoped('USER_MAPPER_TOKEN', () => new UserMapper())
 
             // REGISTER DATASOURCES
-            services.addScoped(USER_DS_TOKEN, UserDataSource, [INJECTION_TOKENS.DB_CONTEXT])
-            services.addScoped(USER_READ_DS_TOKEN, UserReadDatasource, [INJECTION_TOKENS.DB_CONTEXT])
+            services.addScoped('USER_DS_TOKEN', (c) => new UserDataSource(c.resolve('DB_CONTEXT')))
+            services.addScoped('USER_READ_DS_TOKEN', (c) => new UserReadDatasource(c.resolve('DB_CONTEXT')))
 
             // REGISTER REPOSITORIES
-            services.addScoped(USER_REPOSITORY, UserWriteRepository, [USER_DS_TOKEN, USER_MAPPER_TOKEN])
-            services.addScoped(USER_READ_REPOSITORY, UserReadRepository, [USER_READ_DS_TOKEN, USER_MAPPER_TOKEN])
+            services.addScoped('USER_REPOSITORY', (c) => new UserWriteRepository(c.resolve('USER_DS_TOKEN'), c.resolve('USER_MAPPER_TOKEN')))
+            services.addScoped('USER_READ_REPOSITORY', (c) => new UserReadRepository(c.resolve('USER_READ_DS_TOKEN'), c.resolve('USER_MAPPER_TOKEN')))
 
             // REGISTER HANDLERS
-            services.addScopedFactory(TokenHelper.createToken<IHandler<SaveUserCommand, void>>('SaveUserCommand'), (c) => {
-                const requestcontext = c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
-                const repository = c.resolve(USER_REPOSITORY)
+            services.addScoped('SAVE_USER_COMMAND_HANDLER_TOKEN', (c) => {
+                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const repository = c.resolve('USER_REPOSITORY')
                 return new SaveUserCommandHandler(repository, requestcontext)
             })
-            services.addScoped(TokenHelper.createToken<IHandler<UserQuery, User>>('UserQuery'), FindUserQueryHandler, [USER_READ_REPOSITORY, INJECTION_TOKENS.REQUEST_CONTEXT])
-            services.addScoped(TokenHelper.createToken<IHandler<FindAllUsersQuery, User[]>>('FindAllUsersQuery'), FindAllUsersQueryHandler, [USER_READ_REPOSITORY, INJECTION_TOKENS.REQUEST_CONTEXT])
-            services.addScopedFactory(TokenHelper.createToken<IHandler<ICommand<null>, null>>('UnauthorizedAccessCommand'), (c) => {
-                return new UnauthorizedCommandHandler(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT))
+            services.addScoped('FIND_USER_QUERY_HANDLER_TOKEN', (c) => {
+                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const repository = c.resolve('USER_READ_REPOSITORY')
+                return new FindUserQueryHandler(repository, requestcontext)
             })
-            services.addScopedFactory(UPDATE_USER_COMMAND_HANDLER_TOKEN, (c) => {
-                const requestcontext = c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT)
-                const repository = c.resolve(USER_REPOSITORY)
-                const uow = c.resolve(INJECTION_TOKENS.UNIT_OF_WORK)
+            services.addScoped('FIND_ALL_USERS_QUERY_HANDLER_TOKEN', (c) => {
+                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const repository = c.resolve('USER_READ_REPOSITORY')
+                return new FindAllUsersQueryHandler(repository, requestcontext)
+            })
+            services.addScoped('UNAUTHORIZED_COMMAND_HANDLER_TOKEN', (c) => {
+                return new UnauthorizedCommandHandler(c.resolve('USER_CONTEXT_FACTORY'))
+            })
+            services.addScoped('UPDATE_USER_COMMAND_HANDLER_TOKEN', (c) => {
+                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const repository = c.resolve('USER_REPOSITORY')
+                const uow = c.resolve('UNIT_OF_WORK')
                 return new UpdateUserCommandHandler(uow, repository, requestcontext)
             })
 
             // REGISTER CONTROLLERS
-            services.addTransientFactory(SAVE_USER_CONTROLLER_TOKEN, (c) => {
-                return new SaveUserController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
+            services.addTransient('SAVE_USER_CONTROLLER_TOKEN', (c) => {
+                return new SaveUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
             })
-            services.addTransientFactory(FIND_USER_CONTROLLER_TOKEN, (c) => {
-                return new FindUserController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
+            services.addTransient('FIND_USER_CONTROLLER_TOKEN', (c) => {
+                return new FindUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
             })
-            services.addTransientFactory(UPDATE_USER_CONTROLLER_TOKEN, (c) => {
-                return new UpdateUserController(c.resolve(INJECTION_TOKENS.REQUEST_CONTEXT), c.resolve(INJECTION_TOKENS.MEDIATOR))
+            services.addTransient('UPDATE_USER_CONTROLLER_TOKEN', (c) => {
+                return new UpdateUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
             })
-            services.addTransient(UNAUTHORIZED_CONTROLLER_TOKEN, UnauthorizedController, [INJECTION_TOKENS.REQUEST_CONTEXT, INJECTION_TOKENS.MEDIATOR])
-            services.addTransient(FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN, FindAllUserController, [INJECTION_TOKENS.REQUEST_CONTEXT, INJECTION_TOKENS.MEDIATOR])
+            services.addTransient('UNAUTHORIZED_CONTROLLER_TOKEN', (c) => new UnauthorizedController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR')))
+            services.addTransient('FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN', (c) => new FindAllUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR')))
         })
-
-    return await builder.build()
-}

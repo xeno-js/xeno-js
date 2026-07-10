@@ -19,3 +19,8 @@ export const users = pgTable('users', {
 })
 
 export type UserDto = typeof users.$inferInsert
+
+export type FullSchema = {
+  users: UserDto
+  // Add other tables here as needed
+}

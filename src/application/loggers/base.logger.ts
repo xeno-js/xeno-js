@@ -1,4 +1,4 @@
-import type { ExecutionContext, ILogger, ILoggerClient, IRequestContext } from '@/domain'
+import type { IContextAccessor, ILogger, ILoggerClient, RequestContext } from '@/domain'
 import type { LogLevel, Optional } from '@/shared'
 import { LOG_LEVEL, LOG_LEVEL_NAMES } from '@/shared'
 
@@ -29,7 +29,7 @@ export class BaseLogger implements ILogger {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
-    private readonly _requestContext: IRequestContext<ExecutionContext>,
+    private readonly _requestContext: IContextAccessor<RequestContext>,
     config: LogLevel,
     loggers: ILoggerClient[],
   ) {
@@ -70,7 +70,7 @@ export class BaseLogger implements ILogger {
     if (level < this._minLevel) return
 
     const logMessage = `[${LOG_LEVEL_NAMES[level]}] ${message}`
-    const { context } = this._requestContext.getContext() ?? {}
+    const context = this._requestContext.getContext()
     for (const logger of this._loggers) {
       logger.track(level, logMessage, context, error)
     }

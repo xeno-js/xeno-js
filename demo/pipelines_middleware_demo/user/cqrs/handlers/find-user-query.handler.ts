@@ -1,13 +1,13 @@
-import { AppError, BaseHandler, ExecutionContext, GuidHelper, IReadDao, IRequestContext, IStrategy, Result, ResultType } from "@xeno/core"
+import { BaseHandler, GuidHelper, IFactory, IReadDao, Result, ResultType, UserContext } from "@xeno/core"
 import { UserQuery } from "../query/user.query"
 import { User } from "../../entity/user";
 
 export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
     constructor(
         private readonly _query: IReadDao<User>,
-        requestContext: IRequestContext<ExecutionContext>
+        identityFactory: IFactory<void, UserContext>
     ) {
-        super(requestContext)
+        super(identityFactory)
     }
 
     public async handle(request: UserQuery, signal: AbortSignal): Promise<ResultType<User>> {
@@ -23,7 +23,7 @@ export class FindUserQueryHandler extends BaseHandler<UserQuery, User> {
 
         const result = await this._query.findById(request.id, ctx, signal)
 
-        if(!result.isOk()) {
+        if (!result.isOk()) {
             return Result.fail(result.getErrorOrThrow())
         }
 

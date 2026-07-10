@@ -1,5 +1,5 @@
-import type { ExecutionContext, IHandler, IRequest, IRequestContext, ResultType } from '@/domain'
-import { Guards, type Guid, type Optional, type UserContext } from '@/shared'
+import type { IFactory, IHandler, IRequest, ResultType } from '@/domain'
+import type { UserContext } from '@/shared'
 
 /**
  * BaseHandler is an abstract class that implements the IHandler interface.
@@ -14,23 +14,11 @@ export abstract class BaseHandler<
   TRequest extends IRequest<TResponse>,
   TResponse,
 > implements IHandler<TRequest, TResponse> {
-  constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
+  constructor(private readonly _identityFactory: IFactory<void, UserContext>) {}
 
   abstract handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>>
 
   protected _getCurrentContext(): UserContext {
-    const output: { userId: Optional<Guid>; tenantId: Optional<Guid> } = {
-      userId: undefined,
-      tenantId: undefined,
-    }
-
-    const ctx = this._requestContext.getContext()
-
-    if (Guards.isDefined(ctx)) {
-      output.userId = ctx.context.identity?.userId
-      output.tenantId = ctx.context.identity?.tenantId
-    }
-
-    return output
+    return this._identityFactory.create()
   }
 }

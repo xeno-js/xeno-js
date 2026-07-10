@@ -1,24 +1,17 @@
 import type {
+  ApplicationRegistry,
   Delegate,
-  ExecutionContext,
   ICommand,
   IHandler,
   IMediator,
   IPipelineBehavior,
   IQuery,
   IRequest,
-  IRequestContext,
+  IServiceScopeAccessor,
   ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
-import {
-  ERROR_CODE_MESSAGES,
-  ERROR_CODES,
-  Guards,
-  STATUS_CODES,
-  TokenHelper,
-  TOKENS,
-} from '@/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES, TOKENS } from '@/shared'
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).
@@ -29,9 +22,11 @@ import {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class Mediator implements IMediator {
+export class Mediator<
+  TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
+> implements IMediator {
   /**
-   * @param _requestContext An instance of IRequestContext used to manage the execution context for commands and queries.
+   * @param _factoryScope - An instance of IServiceScopeAccessor used to access the current service scope, which is necessary for resolving handlers and pipeline behaviors for processing requests.
   
    * 
    * @author Xeno
@@ -39,7 +34,7 @@ export class Mediator implements IMediator {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  constructor(private readonly _requestContext: IRequestContext<ExecutionContext>) {}
+  constructor(private readonly _factoryScope: IServiceScopeAccessor<TRegistry>) {}
 
   /**
    * @inheritdoc
@@ -87,13 +82,14 @@ export class Mediator implements IMediator {
    */
   private async process<TResponse>(
     request: IRequest<TResponse>,
-    pipelineToken: string,
+    pipelineToken: keyof ApplicationRegistry<unknown>,
     signal: AbortSignal,
   ): Promise<ResultType<TResponse>> {
     if (Guards.isDefined(signal) && signal.aborted)
       return Result.fail(AppError.aborted(request.intent))
 
-    const { scope } = this._requestContext.getContext() ?? {}
+    const scope = this._factoryScope.getScope()
+
     if (!Guards.isDefined(scope))
       return Result.fail(
         AppError.create({
@@ -105,22 +101,38 @@ export class Mediator implements IMediator {
         }),
       )
 
-    const pipelines = scope.resolve(
-      TokenHelper.createToken<IPipelineBehavior<IRequest<TResponse>, TResponse>>(pipelineToken),
-    )
+    const pipelines = scope.resolve(pipelineToken) as unknown as IPipelineBehavior<
+      IRequest<TResponse>,
+      TResponse
+    >
+
+    if (!Guards.isDefined(pipelines) || !Guards.hasMethod(pipelines, 'handle')) {
+      return Result.fail(
+        AppError.create({
+          code: ERROR_CODES.PIPELINE_NOT_AVAILABLE,
+          status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+          name: request.intent,
+          message: ERROR_CODE_MESSAGES[ERROR_CODES.PIPELINE_NOT_AVAILABLE],
+          cause: new Error('Pipeline behavior is required to process the request.'),
+        }),
+      )
+    }
 
     const next: Delegate<TResponse> = () => {
-      const token = TokenHelper.get<IHandler<IRequest<TResponse>, TResponse>>(request.intent)
-      if (!Guards.isDefined(token))
+      const handler = scope.resolve(request.intent as keyof TRegistry) as IHandler<
+        IRequest<TResponse>,
+        TResponse
+      >
+
+      if (!Guards.isDefined(handler) || !Guards.hasMethod(handler, 'handle')) {
         AppError.throw({
           code: ERROR_CODES.HANDLER_NOT_FOUND,
           status: STATUS_CODES.INTERNAL_SERVER_ERROR,
           name: request.intent,
           message: ERROR_CODE_MESSAGES[ERROR_CODES.HANDLER_NOT_FOUND],
-          cause: new Error(`No handler registered for request intent: ${request.intent}`),
+          cause: new Error('Handler is required to process the request.'),
         })
-
-      const handler = scope.resolve(token)
+      }
       return handler.handle(request, signal)
     }
 

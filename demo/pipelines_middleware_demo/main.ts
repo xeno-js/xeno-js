@@ -1,8 +1,6 @@
 import 'dotenv/config'
 import fastify from 'fastify'
-import { INJECTION_TOKENS } from '@xeno/core'
-import { bootstrap } from './bootstrap'
-import { UNAUTHORIZED_CONTROLLER_TOKEN, SAVE_USER_CONTROLLER_TOKEN, FIND_USER_CONTROLLER_TOKEN, UPDATE_USER_CONTROLLER_TOKEN, FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN } from './tokens'
+import { xeno } from './bootstrap'
 import { UserProps } from './user/entity/user'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -11,19 +9,19 @@ import { UserProps } from './user/entity/user'
 // This function initializes the Xeno container, sets up the Fastify server, and defines two endpoints: one for handling a ping command and another for retrieving the status. It resolves the necessary controllers and middleware from the service container and starts the server on port 3000.
 async function runDemo() {
     console.log('⚙️ Initialized Xeno Container...')
-    // 1. Bootstrap the application and get the service container
     try {
-        const container = await bootstrap()
+        // 1. Bootstrap the application and get the service container
+        await xeno.build()
 
         console.log('🚀 Starting Fastify server on http://localhost:3000...')
 
         // 2. Resolve the middleware and controllers from the container
-        const middleware = container.resolve(INJECTION_TOKENS.MIDDLEWARE)
-        const saveUserController = container.resolve(SAVE_USER_CONTROLLER_TOKEN)
-        const findUserController = container.resolve(FIND_USER_CONTROLLER_TOKEN)
-        const unauthController = container.resolve(UNAUTHORIZED_CONTROLLER_TOKEN)
-        const updateUserController = container.resolve(UPDATE_USER_CONTROLLER_TOKEN)
-        const findAllUsersController = container.resolve(FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN)
+        const middleware = xeno.resolve('MIDDLEWARE')
+        const saveUserController = xeno.resolve('SAVE_USER_CONTROLLER_TOKEN')
+        const findUserController = xeno.resolve('FIND_USER_CONTROLLER_TOKEN')
+        const unauthController = xeno.resolve('UNAUTHORIZED_CONTROLLER_TOKEN')
+        const updateUserController = xeno.resolve('UPDATE_USER_CONTROLLER_TOKEN')
+        const findAllUsersController = xeno.resolve('FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN')
 
         console.log('✅ Middleware and Controllers resolved from the container.')
         // 3. Create a Fastify instance to handle HTTP requests

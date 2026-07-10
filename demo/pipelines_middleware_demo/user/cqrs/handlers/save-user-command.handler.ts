@@ -1,4 +1,4 @@
-import { BaseHandler, ExecutionContext, IRepository, IRequestContext, IStrategy, Result, type ResultType, StringHelper, Optional } from "@xeno/core"
+import { BaseHandler, IRepository, Result, type ResultType, StringHelper, Optional, UserContext, IFactory } from "@xeno/core"
 
 import { SaveUserCommand } from "../commands/user.command"
 import { User } from "../../entity/user"
@@ -6,9 +6,9 @@ import { User } from "../../entity/user"
 export class SaveUserCommandHandler extends BaseHandler<SaveUserCommand, void> {
     constructor(
         private readonly _repository: IRepository<User>,
-        requestContext: IRequestContext<ExecutionContext>,
+        identityFactory: IFactory<void, UserContext>
     ) {
-        super(requestContext)
+        super(identityFactory)
     }
 
     public async handle(request: SaveUserCommand, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
