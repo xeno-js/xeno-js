@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, IRequest, IRequestContext, ResultType } from '@/domain'
+import type { IFactory, IRequest, ResultType } from '@/domain'
 import { Result } from '@/domain'
-import type { Guid } from '@/shared'
+import type { Guid, UserContext } from '@/shared'
 
 import { BaseHandler } from '../base-handler'
 
@@ -23,46 +23,21 @@ class TestHandler extends BaseHandler<TestRequest, TestResponse> {
   }
 }
 
-const makeExecutionContext = (): ExecutionContext => ({
-  context: {
-    identity: {
-      userId: 'user-1' as unknown as Guid,
-      tenantId: 'tenant-1' as unknown as Guid,
-      roles: ['admin'],
-      permissions: ['read'],
-    },
-    network: {
-      requestId: 'req-1' as unknown as Guid,
-      clientIp: '127.0.0.1',
-      userAgent: 'vitest',
-      formatIndicator: 'json',
-      path: '/test',
-      isPublic: false,
-    },
-    tracing: {
-      correlationId: 'corr-1' as unknown as Guid,
-      startTime: Date.now(),
-      spanId: 'span-1',
-      parentSpanId: 'parent-1',
-    },
-    messaging: undefined,
-  },
-  scope: {} as ExecutionContext['scope'],
+const makeUserContext = (): UserContext => ({
+  userId: 'user-1' as unknown as Guid,
+  tenantId: 'tenant-1' as unknown as Guid,
 })
 
-const makeRequestContext = (
-  executionContext?: ExecutionContext,
-): IRequestContext<ExecutionContext> => ({
-  getContext: vi.fn().mockReturnValue(executionContext),
-  runAsync: vi.fn(),
+const makeRequestContext = (userContext?: UserContext): IFactory<void, UserContext> => ({
+  create: vi.fn().mockReturnValue(userContext),
 })
 
 describe('BaseHandler', () => {
   it('returns the identity when context exists', async () => {
-    const context = makeExecutionContext()
+    const context = makeUserContext()
     const currentUser = {
-      userId: context.context.identity?.userId,
-      tenantId: context.context.identity?.tenantId,
+      userId: context.userId,
+      tenantId: context.tenantId,
     }
     const requestContext = makeRequestContext(context)
     const handler = new TestHandler(requestContext)

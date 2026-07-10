@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 
-import type { ExecutionContext, IPolicyRegistry, IRequest, IRequestContext } from '@/domain'
+import type { IContextAccessor, IPolicyRegistry, IRequest, RequestContext } from '@/domain'
 import { type AuthPolicy } from '@/shared'
 import { ERROR_CODES } from '@/shared'
 
@@ -11,21 +11,18 @@ const makeRequest = (intent = 'TestCommand'): IRequest =>
 
 const makeRequestContext = (identity?: {
   permissions?: string[]
-}): IRequestContext<ExecutionContext> =>
-  ({
-    getContext: vi.fn().mockReturnValue({
-      context: {
-        identity: {
-          userId: 'user-1',
-          tenantId: 'tenant-1',
-          roles: [],
-          permissions: identity?.permissions ?? [],
-        },
-        network: { requestId: 'req-1' },
-        tracing: {},
-      },
-    }),
-  }) as unknown as IRequestContext<ExecutionContext>
+}): IContextAccessor<RequestContext> => ({
+  getContext: vi.fn().mockReturnValue({
+    identity: {
+      userId: 'user-1',
+      tenantId: 'tenant-1',
+      roles: [],
+      permissions: identity?.permissions ?? [],
+    },
+    network: { requestId: 'req-1' },
+    tracing: {},
+  }),
+})
 
 const makePolicy = (overrides?: Partial<AuthPolicy>): AuthPolicy => ({
   roles: [],
@@ -52,7 +49,7 @@ describe('PermissionAuthorizationStrategy', () => {
     it('returns UNAUTHORIZED when context is undefined', async () => {
       const requestContext = {
         getContext: vi.fn().mockReturnValue(undefined),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const { registry } = makePolicyRegistry(makePolicy())
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
@@ -66,7 +63,7 @@ describe('PermissionAuthorizationStrategy', () => {
     it('returns UNAUTHORIZED when getContext returns null', async () => {
       const requestContext = {
         getContext: vi.fn().mockReturnValue(null),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const { registry } = makePolicyRegistry(makePolicy())
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
@@ -79,26 +76,26 @@ describe('PermissionAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � no policy found', () => {
-    it('returns true when policy is undefined', async () => {
+    it('returns false when policy is undefined', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(undefined)
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
     })
   })
 
   describe('performAuthorizationCheck � policy with no permissions', () => {
-    it('returns ok when policy has empty permissions array', async () => {
+    it('returns false when policy has empty permissions array', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(makePolicy({ permissions: [] }))
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
     })
   })
 

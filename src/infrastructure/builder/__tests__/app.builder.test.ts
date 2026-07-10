@@ -1,28 +1,32 @@
-﻿import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@/domain'
-import { TokenHelper } from '@/shared'
+import type { Dictionary } from '@/shared'
 
+import type { XenoRegistry } from '../../xeno-registry'
 import { AppBuilder } from '../app.builder'
 
-// ── helpers ────────────────────────────────────────────────────────────────
+// -- helpers ----------------------------------------------------------------
 
-function makeBuilder(): AppBuilder {
-  return new AppBuilder()
+type Registry = XenoRegistry<
+  Dictionary,
+  {
+    myDummyDs: IRemoteDataSource
+    myDummyHttpClient: IHttpClient
+    resolveTest: number
+  }
+>
+
+function makeBuilder(): AppBuilder<Registry> {
+  return new AppBuilder<Registry>()
 }
 
-// ── Smoke test (full happy path) ───────────────────────────────────────────
+// -- Smoke test (full happy path) -------------------------------------------
 
-describe('AppBuilder – full smoke test', () => {
+describe('AppBuilder � full smoke test', () => {
   it('bootstraps all modules without throwing', async () => {
     const builder = makeBuilder()
     builder
-      .addLogger((config) => {
-        config.console = true
-        config.level = 0
-        config.sentry.config = { dsn: 'https://dummy-sentry-dsn.local', environment: 'test' }
-        config.pino.config = { env: 'test', destination: 'stdout', prettyPrint: true }
-      })
       .addAuth((config) => {
         config.url = 'https://dummy-auth.local'
         config.key = 'dummy-key'
@@ -42,8 +46,8 @@ describe('AppBuilder – full smoke test', () => {
         config.queryBus.isEnabled = true
       })
       .addHttpCore((config) => {
-        config.dataSourceToken = TokenHelper.createToken<IRemoteDataSource>('DUMMY_HTTP_CORE_TOKEN')
-        config.http.token = TokenHelper.createToken<IHttpClient>('DUMMY_HTTP_TOKEN')
+        config.dataSourceToken = 'myDummyDs'
+        config.http.token = 'myDummyHttpClient'
         config.http.client.baseURL = 'https://dummy-http-core.local'
         config.http.client.timeoutMs = 5000
         config.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
@@ -54,9 +58,9 @@ describe('AppBuilder – full smoke test', () => {
   })
 })
 
-// ── Idempotency guards ─────────────────────────────────────────────────────
+// -- Idempotency guards -----------------------------------------------------
 
-describe('AppBuilder – idempotency guards', () => {
+describe('AppBuilder � idempotency guards', () => {
   it('addLogger called twice only queues one module', async () => {
     const builder = makeBuilder()
     const b1 = builder.addLogger()
@@ -110,9 +114,9 @@ describe('AppBuilder – idempotency guards', () => {
   })
 })
 
-// ── Individual methods ─────────────────────────────────────────────────────
+// -- Individual methods -----------------------------------------------------
 
-describe('AppBuilder – individual methods', () => {
+describe('AppBuilder � individual methods', () => {
   it('addMiddlewares queues a module and build succeeds', async () => {
     const builder = makeBuilder()
     const result = builder.addMiddlewares()
@@ -165,23 +169,24 @@ describe('AppBuilder – individual methods', () => {
   })
 })
 
-// ── addServices ────────────────────────────────────────────────────────────
+// -- addServices ------------------------------------------------------------
 
-describe('AppBuilder – addServices', () => {
-  it('passes the container to the setup action', () => {
+describe('AppBuilder � addServices', () => {
+  it('passes the container to the setup action', async () => {
     const builder = makeBuilder()
     let captured: IServiceContainer | undefined
     const result = builder.addServices((container) => {
       captured = container
     })
+    await builder.build()
     expect(result).toBe(builder)
     expect(captured).toBeDefined()
   })
 })
 
-// ── addModule ──────────────────────────────────────────────────────────────
+// -- addModule --------------------------------------------------------------
 
-describe('AppBuilder – addModule', () => {
+describe('AppBuilder � addModule', () => {
   it('calls the factory and configure with the container and opts', async () => {
     const builder = makeBuilder()
     const configure = vi.fn().mockResolvedValue(undefined)
@@ -209,26 +214,25 @@ describe('AppBuilder – addModule', () => {
   })
 })
 
-// ── resolve ────────────────────────────────────────────────────────────────
+// -- resolve ----------------------------------------------------------------
 
-describe('AppBuilder – resolve', () => {
-  it('resolves a service registered via addServices', () => {
+describe('AppBuilder � resolve', () => {
+  it('resolves a service registered via addServices', async () => {
     const builder = makeBuilder()
-    const token = TokenHelper.createToken<{ value: number }>('RESOLVE_TEST')
 
     // Register a singleton factory through the exposed container
     builder.addServices((container) => {
-      container.addSingletonFactory(token, () => ({ value: 42 }))
+      container.addSingleton('resolveTest', () => 42)
     })
-
-    const resolved = builder.resolve(token)
-    expect(resolved).toEqual({ value: 42 })
+    await builder.build() // Build is not awaited here because we are only testing resolve, which is synchronous
+    const resolved = builder.resolve('resolveTest')
+    expect(resolved).toEqual(42)
   })
 })
 
-// ── build error path ───────────────────────────────────────────────────────
+// -- build error path -------------------------------------------------------
 
-describe('AppBuilder – build error handling', () => {
+describe('AppBuilder � build error handling', () => {
   it('rejects with a descriptive Bootstrap failed error when a module throws', async () => {
     const builder = makeBuilder()
     const cause = new Error('module exploded')
@@ -262,7 +266,7 @@ describe('AppBuilder – build error handling', () => {
   })
 })
 
-describe('AppBuilder – private queue idempotency guards', () => {
+describe('AppBuilder � private queue idempotency guards', () => {
   it('addMiddlewares after addPipeline hits _queueMiddlewareModule idempotency guard', async () => {
     const builder = makeBuilder()
     builder.addPipeline()

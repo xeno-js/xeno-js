@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, ICache, IRequestContext } from '@/domain'
+import type { ICache, Identity, IIdentityAccessor } from '@/domain'
+import type { Guid } from '@/shared'
 import { IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 import { IdempotencyStore } from '../idempotency-store'
 
-function makeStore(executionContext: ExecutionContext | undefined) {
+function makeStore(executionContext: Identity | undefined) {
   const setIfAbsentMock = vi.fn()
   const hasMock = vi.fn()
   const setMock = vi.fn()
@@ -22,10 +23,9 @@ function makeStore(executionContext: ExecutionContext | undefined) {
     remove: removeMock,
   } as unknown as ICache
 
-  const requestContext = {
-    getContext: getContextMock,
-    runAsync: vi.fn(),
-  } as unknown as IRequestContext<ExecutionContext>
+  const requestContext: IIdentityAccessor = {
+    getIdentity: getContextMock,
+  }
 
   const store = new IdempotencyStore(cache, requestContext)
 
@@ -45,15 +45,11 @@ function makeStore(executionContext: ExecutionContext | undefined) {
 describe('IdempotencyStore', () => {
   it('acquireLock uses tenant contextual key and returns cache result', async () => {
     const executionContext = {
-      context: {
-        identity: {
-          userId: '550e8400-e29b-41d4-a716-446655440001',
-          tenantId: '550e8400-e29b-41d4-a716-446655440002',
-          roles: ['admin'],
-          permissions: ['write'],
-        },
-      },
-    } as unknown as ExecutionContext
+      userId: '550e8400-e29b-41d4-a716-446655440001' as Guid,
+      tenantId: '550e8400-e29b-41d4-a716-446655440002' as Guid | undefined,
+      roles: ['admin'],
+      permissions: ['write'],
+    }
 
     const { store, mocks } = makeStore(executionContext)
     mocks.setIfAbsentMock.mockResolvedValue(true)
@@ -63,7 +59,7 @@ describe('IdempotencyStore', () => {
     expect(result).toBe(true)
     expect(mocks.getContextMock).toHaveBeenCalled()
     expect(mocks.setIfAbsentMock).toHaveBeenCalledWith(
-      `${IDEMPOTENCY_CONSTANTS.LOCK_KEY_PREFIX}tenant:${executionContext.context.identity.tenantId}:commands:req-1`,
+      `${IDEMPOTENCY_CONSTANTS.LOCK_KEY_PREFIX}tenant:${executionContext.tenantId}:commands:req-1`,
       IDEMPOTENCY_CONSTANTS.LOCKED_VALUE,
       60,
     )
@@ -71,15 +67,11 @@ describe('IdempotencyStore', () => {
 
   it('hasBeenProcessed falls back to non-tenant key when tenantId is empty', async () => {
     const executionContext = {
-      context: {
-        identity: {
-          userId: '550e8400-e29b-41d4-a716-446655440001',
-          tenantId: undefined,
-          roles: ['user'],
-          permissions: ['read'],
-        },
-      },
-    } as unknown as ExecutionContext
+      userId: '550e8400-e29b-41d4-a716-446655440001' as Guid,
+      tenantId: undefined as Guid | undefined,
+      roles: ['user'],
+      permissions: ['read'],
+    }
 
     const { store, mocks } = makeStore(executionContext)
     mocks.hasMock.mockResolvedValue(false)

@@ -1,236 +1,274 @@
-﻿import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { TokenHelper } from '@/shared'
+import type { ApplicationRegistry } from '@/domain'
 
+import type { DbContext } from '../../db'
 import { ServiceContainer } from '../service-container'
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 class Dep {}
 class ServiceA {
-  constructor(public dep: Dep) {}
+  constructor(public readonly dep: Dep) {}
 }
 class ServiceB {}
-class ServiceC {}
+class DisposableService {
+  public dispose = vi.fn(async () => undefined)
+}
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
+class MySingleton {
+  constructor(public readonly scopedDep: unknown) {}
+}
+
+type TestRegistry = ApplicationRegistry<DbContext> & {
+  dep: Dep
+  singletonA: ServiceA
+  transientB: ServiceB
+  scopedB: ServiceB
+  disposableSingleton: DisposableService
+  disposableTransient: DisposableService
+  disposableScoped: DisposableService
+  cycleA: { value: string }
+  cycleB: { value: string }
+  captiveSingleton: MySingleton
+  validScoped: ServiceB
+}
 
 describe('ServiceContainer', () => {
-  let container: ServiceContainer
+  let container: ServiceContainer<TestRegistry>
 
   beforeEach(() => {
-    container = new ServiceContainer()
+    container = new ServiceContainer<TestRegistry>()
+    vi.restoreAllMocks()
   })
 
-  // ── constructor ─────────────────────────────────────────────────────────────
-
-  it('registers itself as a singleton under SERVICE_CONTAINER token on construction', () => {
-    const token = TokenHelper.get<ServiceContainer>('SERVICE_CONTAINER')
-    expect(token).toBeDefined()
-    const resolved = container.resolve(token!)
-    expect(resolved).toBe(container)
+  afterEach(async () => {
+    await container.dispose()
   })
-
-  // ── addSingleton ────────────────────────────────────────────────────────────
 
   describe('addSingleton', () => {
-    it('registers and resolves a singleton', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-singleton')
-      container.addSingleton(token, ServiceB)
-      const instance = container.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceB)
-    })
+    it('registers and resolves a singleton instance', () => {
+      container.addSingleton('singletonA', (scope) => new ServiceA(scope.resolve('dep')))
+      container.addSingleton('dep', () => new Dep())
 
-    it('returns the same instance on repeated resolves', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-singleton-same')
-      container.addSingleton(token, ServiceB)
-      const a = container.resolve(token)
-      const b = container.resolve(token)
-      expect(a).toBe(b)
-    })
+      const first = container.resolve('singletonA')
+      const second = container.resolve('singletonA')
 
-    it('resolves dependencies', () => {
-      const depToken = TokenHelper.createToken<Dep>('Dep-singleton-dep')
-      const svcToken = TokenHelper.createToken<ServiceA>('ServiceA-singleton-dep')
-      container.addSingleton(depToken, Dep)
-      container.addSingleton(svcToken, ServiceA, [depToken] as const)
-      const instance = container.resolve(svcToken)
-      expect(instance).toBeInstanceOf(ServiceA)
-      expect(instance.dep).toBeInstanceOf(Dep)
+      expect(first).toBeInstanceOf(ServiceA)
+      expect(first.dep).toBeInstanceOf(Dep)
+      expect(second).toBe(first)
     })
 
     it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-chain-singleton')
-      expect(container.addSingleton(token, ServiceB)).toBe(container)
+      const result = container.addSingleton('dep', () => new Dep())
+      expect(result).toBe(container)
     })
   })
 
-  // ── addTransient ────────────────────────────────────────────────────────────
+  describe('Circular Dependencies', () => {
+    it('detects a direct circular dependency and throws an explicit error', () => {
+      container.addTransient('cycleA', (scope) => {
+        scope.resolve('cycleB')
+        return { value: 'A' }
+      })
+      container.addTransient('cycleB', (scope) => {
+        scope.resolve('cycleA')
+        return { value: 'B' }
+      })
 
-  describe('addTransient', () => {
-    it('registers and resolves a transient', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-transient')
-      container.addTransient(token, ServiceB)
-      const instance = container.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceB)
-    })
-
-    it('returns a new instance on each resolve', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-transient-new')
-      container.addTransient(token, ServiceB)
-      const a = container.resolve(token)
-      const b = container.resolve(token)
-      expect(a).not.toBe(b)
-    })
-
-    it('resolves dependencies', () => {
-      const depToken = TokenHelper.createToken<Dep>('Dep-transient-dep')
-      const svcToken = TokenHelper.createToken<ServiceA>('ServiceA-transient-dep')
-      container.addTransient(depToken, Dep)
-      container.addTransient(svcToken, ServiceA, [depToken] as const)
-      const instance = container.resolve(svcToken)
-      expect(instance).toBeInstanceOf(ServiceA)
-      expect(instance.dep).toBeInstanceOf(Dep)
-    })
-
-    it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-chain-transient')
-      expect(container.addTransient(token, ServiceB)).toBe(container)
-    })
-  })
-
-  // ── addScoped ───────────────────────────────────────────────────────────────
-
-  describe('addScoped', () => {
-    it('throws when resolving scoped directly from container', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-scoped-direct')
-      container.addScoped(token, ServiceC)
-      expect(() => container.resolve(token)).toThrow(
-        'Scoped services must be resolved through a scope',
+      expect(() => container.resolve('cycleA')).toThrow(
+        /\[DI Circular Dependency Error\]: Detected circular dependency while resolving/,
       )
     })
 
-    it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-chain-scoped')
-      expect(container.addScoped(token, ServiceC)).toBe(container)
+    it('isolates parallel async execution flows from sharing or polluting the resolution stack', async () => {
+      container.addTransient('singletonA', (scope) => new ServiceA(scope.resolve('dep')))
+      container.addTransient('dep', () => new Dep())
+
+      const executeParallelResolutions = Promise.all([
+        Promise.resolve().then(() => container.resolve('singletonA')),
+        Promise.resolve().then(() => container.resolve('singletonA')),
+      ])
+
+      await expect(executeParallelResolutions).resolves.toBeDefined()
+
+      const [res1, res2] = await executeParallelResolutions
+      expect(res1).toBeInstanceOf(ServiceA)
+      expect(res2).toBeInstanceOf(ServiceA)
     })
   })
 
-  // ── addSingletonFactory ─────────────────────────────────────────────────────
-
-  describe('addSingletonFactory', () => {
-    it('registers and resolves via factory', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-singleton-factory')
-      container.addSingletonFactory(token, () => new ServiceB())
-      const instance = container.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceB)
-    })
-
-    it('returns same instance on repeated resolves', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-singleton-factory-same')
-      container.addSingletonFactory(token, () => new ServiceB())
-      const a = container.resolve(token)
-      const b = container.resolve(token)
-      expect(a).toBe(b)
-    })
-
-    it('passes container to factory', () => {
-      const token = TokenHelper.createToken<ServiceContainer>('ServiceB-singleton-factory-ctx')
-      let received: unknown
-      container.addSingletonFactory(token, (c) => {
-        received = c
-        return new ServiceB() as unknown as ServiceContainer
+  describe('Captive Dependencies', () => {
+    it('throws an error when trying to inject a Scoped service inside a Singleton factory context', async () => {
+      container.addScoped('validScoped', () => new ServiceB())
+      container.addSingleton('captiveSingleton', (scope) => {
+        const scopedInstance = scope.resolve('validScoped')
+        return new MySingleton(scopedInstance)
       })
-      container.resolve(token)
-      expect(received).toBe(container)
-    })
 
-    it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-chain-singleton-factory')
-      expect(container.addSingletonFactory(token, () => new ServiceB())).toBe(container)
-    })
-  })
-
-  // ── addScopedFactory ────────────────────────────────────────────────────────
-
-  describe('addScopedFactory', () => {
-    it('resolves scoped factory via scope', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-scoped-factory')
-      container.addScopedFactory(token, () => new ServiceC())
       const scope = container.createScope()
-      const instance = scope.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceC)
-      scope.dispose()
+
+      expect(() => scope.resolve('captiveSingleton')).toThrow(
+        /\[DI Captive Dependency Error\]: Attempted to resolve a scoped service 'validScoped' from a singleton context/,
+      )
+
+      await scope.dispose()
     })
 
-    it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-chain-scoped-factory')
-      expect(container.addScopedFactory(token, () => new ServiceC())).toBe(container)
+    it('allows a Transient service to be resolved inside a Scoped service without throwing', async () => {
+      container.addTransient('dep', () => new Dep())
+      container.addScoped('scopedB', (scope) => {
+        const transientDep = scope.resolve('dep')
+        return new ServiceA(transientDep)
+      })
+
+      const scope = container.createScope()
+      const resolved = scope.resolve('scopedB')
+
+      expect(resolved).toBeInstanceOf(ServiceA)
+      expect((resolved as ServiceA).dep).toBeInstanceOf(Dep)
+
+      await scope.dispose()
     })
   })
 
-  // ── addTransientFactory ─────────────────────────────────────────────────────
+  describe('addTransient', () => {
+    it('returns a new instance on each resolve', () => {
+      container.addTransient('transientB', () => new ServiceB())
 
-  describe('addTransientFactory', () => {
-    it('registers and resolves via factory', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-transient-factory')
-      container.addTransientFactory(token, () => new ServiceB())
-      const instance = container.resolve(token)
+      const first = container.resolve('transientB')
+      const second = container.resolve('transientB')
+
+      expect(first).toBeInstanceOf(ServiceB)
+      expect(second).toBeInstanceOf(ServiceB)
+      expect(second).not.toBe(first)
+    })
+
+    it('returns this for chaining', () => {
+      const result = container.addTransient('transientB', () => new ServiceB())
+      expect(result).toBe(container)
+    })
+
+    it('tracks a reused disposable transient instance only once', async () => {
+      const shared = new DisposableService()
+      container.addTransient('disposableTransient', () => shared)
+
+      container.resolve('disposableTransient')
+      container.resolve('disposableTransient')
+
+      await container.dispose()
+
+      expect(shared.dispose).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('addScoped', () => {
+    it('creates one scoped instance per scope', () => {
+      container.addScoped('scopedB', () => new ServiceB())
+
+      const scope1 = container.createScope()
+      const scope2 = container.createScope()
+
+      const s1a = scope1.resolve('scopedB')
+      const s1b = scope1.resolve('scopedB')
+      const s2 = scope2.resolve('scopedB')
+
+      expect(s1a).toBe(s1b)
+      expect(s2).not.toBe(s1a)
+    })
+
+    it('returns this for chaining', () => {
+      const result = container.addScoped('scopedB', () => new ServiceB())
+      expect(result).toBe(container)
+    })
+
+    it('allows resolving scoped service from root container scope', () => {
+      container.addScoped('scopedB', () => new ServiceB())
+      const instance = container.resolve('scopedB')
       expect(instance).toBeInstanceOf(ServiceB)
     })
-
-    it('returns a new instance on each resolve', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-transient-factory-new')
-      container.addTransientFactory(token, () => new ServiceB())
-      const a = container.resolve(token)
-      const b = container.resolve(token)
-      expect(a).not.toBe(b)
-    })
-
-    it('returns this for chaining', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-chain-transient-factory')
-      expect(container.addTransientFactory(token, () => new ServiceB())).toBe(container)
-    })
   })
-
-  // ── resolve ─────────────────────────────────────────────────────────────────
 
   describe('resolve', () => {
-    it('throws when no registration found', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-unregistered-resolve')
-      expect(() => container.resolve(token)).toThrow('No registration found for token')
+    it('throws when no registration is found for a token', () => {
+      expect(() => container.resolve('transientB')).toThrow('Registration not found for token')
+    })
+
+    it('throws when registering duplicate token', () => {
+      container.addSingleton('dep', () => new Dep())
+      expect(() => container.addSingleton('dep', () => new Dep())).toThrow('already registered')
+    })
+
+    it('throws with cycle path when a circular dependency is detected', () => {
+      container.addTransient('cycleA', (scope) => {
+        scope.resolve('cycleB')
+        return { value: 'a' }
+      })
+      container.addTransient('cycleB', (scope) => {
+        scope.resolve('cycleA')
+        return { value: 'b' }
+      })
+
+      expect(() => container.resolve('cycleA')).toThrow('Detected circular dependency')
+      expect(() => container.resolve('cycleA')).toThrow('cycleA -> cycleB -> cycleA')
     })
   })
 
-  // ── createScope ─────────────────────────────────────────────────────────────
-
   describe('createScope', () => {
-    it('creates a scope that resolves scoped services', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-createscope')
-      container.addScoped(token, ServiceC)
+    it('throws when resolving from a disposed scope', async () => {
+      container.addScoped('scopedB', () => new ServiceB())
       const scope = container.createScope()
-      const instance = scope.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceC)
-      scope.dispose()
+      await scope.dispose()
+
+      expect(() => scope.resolve('scopedB')).toThrow(/Scope.*closed/i)
+    })
+  })
+
+  describe('dispose', () => {
+    it('tracks and disposes resources sequentially', async () => {
+      const singleton = new DisposableService()
+      const transient = new DisposableService()
+      const scoped = new DisposableService()
+
+      container.addSingleton('disposableSingleton', () => singleton)
+      container.addTransient('disposableTransient', () => transient)
+      container.addScoped('disposableScoped', () => scoped)
+
+      const scope = container.createScope()
+
+      scope.resolve('disposableSingleton')
+      scope.resolve('disposableTransient')
+      scope.resolve('disposableScoped')
+
+      await scope.dispose()
+      await container.dispose()
+
+      expect(scoped.dispose).toHaveBeenCalledTimes(1)
+      expect(transient.dispose).toHaveBeenCalledTimes(1)
+      expect(singleton.dispose).toHaveBeenCalledTimes(1)
     })
 
-    it('scope returns same instance within the same scope', () => {
-      const token = TokenHelper.createToken<ServiceC>('ServiceC-createscope-same')
-      container.addScoped(token, ServiceC)
-      const scope = container.createScope()
-      const a = scope.resolve(token)
-      const b = scope.resolve(token)
-      expect(a).toBe(b)
-      scope.dispose()
+    it('logs and continues when a tracked disposable throws', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      const disposeError = new Error('dispose-failure')
+      const failingDisposable = {
+        dispose: vi.fn(async () => {
+          throw disposeError
+        }),
+      }
+
+      container.addSingleton('disposableSingleton', () => failingDisposable)
+      container.resolve('disposableSingleton')
+
+      await expect(container.dispose()).resolves.toBeUndefined()
+      expect(failingDisposable.dispose).toHaveBeenCalledTimes(1)
+      expect(consoleSpy).toHaveBeenCalledTimes(1)
     })
 
-    it('scope delegates non-scoped to root container', () => {
-      const token = TokenHelper.createToken<ServiceB>('ServiceB-scope-delegates')
-      container.addSingleton(token, ServiceB)
-      const scope = container.createScope()
-      const instance = scope.resolve(token)
-      expect(instance).toBeInstanceOf(ServiceB)
-      scope.dispose()
+    it('invalidates root scope after container disposal', async () => {
+      container.addSingleton('dep', () => new Dep())
+
+      await container.dispose()
+
+      expect(() => container.resolve('dep')).toThrow(/Scope.*closed/i)
     })
   })
 })

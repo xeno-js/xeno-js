@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, IRequest, IRequestContext } from '@/domain'
+import type { IContextAccessor, IRequest, RequestContext } from '@/domain'
 import { ERROR_CODES } from '@/shared'
 
 import { TenantAuthorizationStrategy } from '../tenant-authorization.strategy'
@@ -10,21 +10,18 @@ const VALID_GUID = '550e8400-e29b-41d4-a716-446655440000'
 const makeRequest = (intent = 'TestCommand'): IRequest =>
   ({ intent, type: 'COMMAND', signal: undefined }) as unknown as IRequest
 
-const makeRequestContext = (tenantId?: string): IRequestContext<ExecutionContext> =>
-  ({
-    getContext: vi.fn().mockReturnValue({
-      context: {
-        identity: {
-          userId: 'user-1',
-          tenantId,
-          roles: [],
-          permissions: [],
-        },
-        network: { requestId: 'req-1' },
-        tracing: {},
-      },
-    }),
-  }) as unknown as IRequestContext<ExecutionContext>
+const makeRequestContext = (tenantId?: string): IContextAccessor<RequestContext> => ({
+  getContext: vi.fn().mockReturnValue({
+    identity: {
+      userId: 'user-1',
+      tenantId,
+      roles: [],
+      permissions: [],
+    },
+    network: { requestId: 'req-1' },
+    tracing: {},
+  }),
+})
 
 describe('TenantAuthorizationStrategy', () => {
   let request: IRequest
@@ -37,7 +34,7 @@ describe('TenantAuthorizationStrategy', () => {
     it('returns AUTHORIZATION_FAILED when getContext returns undefined', async () => {
       const ctx = {
         getContext: vi.fn().mockReturnValue(undefined),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const strategy = new TenantAuthorizationStrategy(ctx)
 
       const result = await strategy.execute(request)
@@ -49,7 +46,7 @@ describe('TenantAuthorizationStrategy', () => {
     it('returns AUTHORIZATION_FAILED when getContext returns null', async () => {
       const ctx = {
         getContext: vi.fn().mockReturnValue(null),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const strategy = new TenantAuthorizationStrategy(ctx)
 
       const result = await strategy.execute(request)

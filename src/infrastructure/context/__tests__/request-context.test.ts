@@ -2,12 +2,11 @@
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { NodeRequestContext } from '../request-context'
+import type { ExecutionContext, IFactory, IServiceScope, RequestContext } from '@/domain'
+import type { Guid } from '@/shared'
 
-interface Ctx {
-  userId: string
-  role: string
-}
+import type { XenoRegistry } from '../../xeno-registry'
+import { NodeRequestContext } from '../request-context'
 
 function makeStorage() {
   const runMock = vi.fn()
@@ -16,7 +15,7 @@ function makeStorage() {
   const storage = {
     run: runMock,
     getStore: getStoreMock,
-  } as unknown as AsyncLocalStorage<Ctx>
+  } as unknown as AsyncLocalStorage<ExecutionContext<XenoRegistry>>
 
   return {
     storage,
@@ -27,26 +26,71 @@ function makeStorage() {
   }
 }
 
+function makeFactoryScope() {
+  const disposeMock = vi.fn()
+  const createMock = vi.fn().mockReturnValue({
+    dispose: disposeMock,
+  })
+
+  const factoryScope = {
+    create: createMock,
+  } as unknown as IFactory<void, IServiceScope<XenoRegistry>>
+
+  return {
+    factoryScope,
+    mocks: {
+      createMock,
+      disposeMock,
+    },
+  }
+}
+
 describe('NodeRequestContext', () => {
   it('runAsync delegates to AsyncLocalStorage.run and returns its result', async () => {
     const { storage, mocks } = makeStorage()
-    const context: Ctx = { userId: 'u1', role: 'admin' }
+    const context: RequestContext = {
+      identity: {
+        userId: 'u1' as unknown as Guid,
+        tenantId: 't1' as unknown as Guid,
+        roles: ['admin'],
+        permissions: ['read'],
+      },
+      network: {
+        requestId: 'r1' as unknown as Guid,
+        clientIp: '127.0.0.1',
+        userAgent: 'Mozilla/5.0',
+        formatIndicator: 'json',
+        path: '/api/test',
+        isPublic: false,
+      },
+      tracing: {
+        correlationId: 'c1' as unknown as Guid,
+        startTime: Date.now(),
+        spanId: 's1',
+        parentSpanId: 'ps1',
+      },
+      messaging: undefined,
+    }
 
-    mocks.runMock.mockImplementation(async (_ctx: Ctx, fn: () => Promise<string>) => fn())
+    const { factoryScope } = makeFactoryScope()
+    mocks.runMock.mockImplementation((store, fn: () => Promise<string>) => fn())
 
-    const requestContext = new NodeRequestContext(storage)
+    const requestContext = new NodeRequestContext(storage, factoryScope)
     const result = await requestContext.runAsync(context, async () => 'ok')
 
     expect(result).toBe('ok')
     expect(mocks.runMock).toHaveBeenCalledOnce()
-    expect(mocks.runMock).toHaveBeenCalledWith(context, expect.any(Function))
+    expect(mocks.runMock).toHaveBeenCalledWith(
+      expect.objectContaining({ context }),
+      expect.any(Function),
+    )
   })
 
   it('getContext returns undefined when store is undefined', () => {
     const { storage, mocks } = makeStorage()
     mocks.getStoreMock.mockReturnValue(undefined)
 
-    const requestContext = new NodeRequestContext(storage)
+    const requestContext = new NodeRequestContext(storage, makeFactoryScope().factoryScope)
     const result = requestContext.getContext()
 
     expect(result).toBeUndefined()
@@ -56,7 +100,7 @@ describe('NodeRequestContext', () => {
     const { storage, mocks } = makeStorage()
     mocks.getStoreMock.mockReturnValue(null)
 
-    const requestContext = new NodeRequestContext(storage)
+    const requestContext = new NodeRequestContext(storage, makeFactoryScope().factoryScope)
     const result = requestContext.getContext()
 
     expect(result).toBeUndefined()
@@ -64,14 +108,39 @@ describe('NodeRequestContext', () => {
 
   it('getContext returns a frozen cloned object when store exists', () => {
     const { storage, mocks } = makeStorage()
-    const original: Ctx = { userId: 'u1', role: 'admin' }
-    mocks.getStoreMock.mockReturnValue(original)
+    const original: RequestContext = {
+      identity: {
+        userId: 'u1' as unknown as Guid,
+        tenantId: 't1' as unknown as Guid,
+        roles: ['admin'],
+        permissions: [],
+      },
+      network: {
+        clientIp: '',
+        userAgent: '',
+        formatIndicator: '',
+        isPublic: false,
+        path: '',
+        requestId: '' as unknown as Guid,
+      },
+      tracing: {
+        correlationId: '' as unknown as Guid,
+        spanId: '',
+        parentSpanId: undefined,
+        startTime: 0,
+      },
+    }
 
-    const requestContext = new NodeRequestContext(storage)
+    mocks.getStoreMock.mockReturnValue({
+      context: original,
+      scope: {} as IServiceScope<XenoRegistry>,
+    })
+
+    const requestContext = new NodeRequestContext(storage, makeFactoryScope().factoryScope)
     const result = requestContext.getContext()
 
-    expect(result).toEqual(original)
-    expect(result).not.toBe(original)
+    expect(result?.identity).toEqual(original.identity)
+    expect(result?.identity).not.toBe(original)
     expect(Object.isFrozen(result)).toBe(true)
   })
 })

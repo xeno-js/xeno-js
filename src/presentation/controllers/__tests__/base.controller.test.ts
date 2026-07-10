@@ -1,6 +1,6 @@
 ﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, ICommand, IMediator, IQuery, IRequestContext } from '@/domain'
+import type { ICommand, IContextAccessor, IMediator, IQuery, RequestContext } from '@/domain'
 import { AppError, Result } from '@/domain'
 import type { ResponseDto } from '@/shared'
 import { ERROR_CODES, REQUEST_TYPE, STATUS_CODES } from '@/shared'
@@ -9,7 +9,7 @@ import { BaseController } from '../base.controller'
 
 // Classe concreta di test per testare i metodi protetti della classe astratta
 class TestController extends BaseController<string, string> {
-  constructor(requestContext: IRequestContext<ExecutionContext>, mediator: IMediator) {
+  constructor(requestContext: IContextAccessor<RequestContext>, mediator: IMediator) {
     super(requestContext, mediator)
   }
 
@@ -39,13 +39,12 @@ class TestController extends BaseController<string, string> {
 
 describe('BaseController', () => {
   let mockMediator: IMediator
-  let mockRequestContext: IRequestContext<ExecutionContext>
+  let mockRequestContext: IContextAccessor<RequestContext>
   let controller: TestController
 
   beforeEach(() => {
     mockMediator = { send: vi.fn(), query: vi.fn() }
     mockRequestContext = {
-      runAsync: vi.fn(),
       getContext: vi.fn().mockReturnValue(undefined),
     }
     controller = new TestController(mockRequestContext, mockMediator)

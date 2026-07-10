@@ -1,12 +1,6 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 
-import type {
-  ExecutionContext,
-  ICommand,
-  IIdempotencyStore,
-  IRequestContext,
-  ResultType,
-} from '@/domain'
+import type { ICommand, IIdempotencyStore, INetworkContextAccessor, ResultType } from '@/domain'
 import { AppError, Result } from '@/domain'
 import { ERROR_CODES } from '@/shared'
 
@@ -14,16 +8,11 @@ import { IdempotencyPipeline } from '../idempotency.pipeline'
 
 type NextFn = () => Promise<ResultType<string>>
 
-const makeContext = (requestId = 'req-123') => ({
-  context: {
-    network: { requestId },
-  },
-})
+const makeContext = (requestId = 'req-123') => ({ requestId })
 
-const makeRequestContext = (requestId = 'req-123'): IRequestContext<ExecutionContext> =>
-  ({
-    getContext: vi.fn().mockReturnValue(makeContext(requestId)),
-  }) as unknown as IRequestContext<ExecutionContext>
+const makeRequestContext = (requestId = 'req-123'): INetworkContextAccessor => ({
+  getNetworkContext: vi.fn().mockReturnValue(makeContext(requestId)),
+})
 
 const makeStore = (): {
   [K in keyof IIdempotencyStore]: Mock
@@ -35,12 +24,11 @@ const makeStore = (): {
   releaseLock: vi.fn(),
 })
 
-const makeCommand = (): ICommand =>
-  ({ intent: 'TestCommand', type: 'COMMAND', signal: undefined }) as unknown as ICommand
+const makeCommand = (): ICommand => ({ intent: 'TestCommand', type: 'COMMAND' })
 
 describe('IdempotencyPipeline', () => {
   let store: ReturnType<typeof makeStore>
-  let requestContext: IRequestContext<ExecutionContext>
+  let requestContext: INetworkContextAccessor
   let next: Mock<NextFn>
   let command: ICommand
 
@@ -115,8 +103,8 @@ describe('IdempotencyPipeline', () => {
   describe('handle - missing context', () => {
     it('should return CONFLICT if getContext() returns null', async () => {
       const ctx = {
-        getContext: vi.fn().mockReturnValue(null),
-      } as unknown as IRequestContext<ExecutionContext>
+        getNetworkContext: vi.fn().mockReturnValue(null),
+      } as unknown as INetworkContextAccessor
       const pipeline = new IdempotencyPipeline(ctx, store)
 
       const result = await pipeline.handle(command, next)
@@ -125,10 +113,10 @@ describe('IdempotencyPipeline', () => {
       expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.CONFLICT)
     })
 
-    it('should return CONFLICT if getContext() returns undefined context', async () => {
+    it('should return CONFLICT if getNetworkContext() returns undefined context', async () => {
       const ctx = {
-        getContext: vi.fn().mockReturnValue({ context: undefined }),
-      } as unknown as IRequestContext<ExecutionContext>
+        getNetworkContext: vi.fn().mockReturnValue({ context: undefined }),
+      } as unknown as INetworkContextAccessor
       const pipeline = new IdempotencyPipeline(ctx, store)
 
       const result = await pipeline.handle(command, next)

@@ -1,49 +1,45 @@
 ﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ExecutionContext, ILoggerClient, IRequestContext } from '@/domain'
+import type { IContextAccessor, ILoggerClient, RequestContext } from '@/domain'
 import type { Guid, LogLevel } from '@/shared'
 import { LOG_LEVEL, LOG_LEVEL_NAMES } from '@/shared'
 
 import { BaseLogger } from '../base.logger'
 
 const makeRequestContext = (
-  executionContext?: ExecutionContext,
-): IRequestContext<ExecutionContext> => ({
+  executionContext?: RequestContext,
+): IContextAccessor<RequestContext> => ({
   getContext: vi.fn().mockReturnValue(executionContext),
-  runAsync: vi.fn(),
 })
 
-const makeExecutionContext = (): ExecutionContext => ({
-  context: {
-    identity: {
-      userId: '123' as unknown as Guid,
-      tenantId: '456' as unknown as Guid,
-      roles: ['admin'],
-      permissions: ['read'],
-    },
-    network: {
-      requestId: '789' as unknown as Guid,
-      clientIp: '127.0.0.1',
-      userAgent: 'Mozilla/5.0',
-      formatIndicator: 'json',
-      path: '/api/test',
-      isPublic: false,
-    },
-    tracing: {
-      correlationId: 'req-1' as unknown as Guid,
-      startTime: Date.now(),
-      spanId: 'span-1',
-      parentSpanId: 'parent-span-1',
-    },
-    messaging: undefined,
+const makeExecutionContext = (): RequestContext => ({
+  identity: {
+    userId: '123' as unknown as Guid,
+    tenantId: '456' as unknown as Guid,
+    roles: ['admin'],
+    permissions: ['read'],
   },
-  scope: {} as ExecutionContext['scope'],
+  network: {
+    requestId: '789' as unknown as Guid,
+    clientIp: '127.0.0.1',
+    userAgent: 'Mozilla/5.0',
+    formatIndicator: 'json',
+    path: '/api/test',
+    isPublic: false,
+  },
+  tracing: {
+    correlationId: 'req-1' as unknown as Guid,
+    startTime: Date.now(),
+    spanId: 'span-1',
+    parentSpanId: 'parent-span-1',
+  },
+  messaging: undefined,
 })
 
 describe('BaseLogger', () => {
   let trackMock: ReturnType<typeof vi.fn>
-  let requestContext: IRequestContext<ExecutionContext>
-  let executionContext: ExecutionContext
+  let requestContext: IContextAccessor<RequestContext>
+  let executionContext: RequestContext
 
   beforeEach(() => {
     trackMock = vi.fn()
@@ -61,7 +57,7 @@ describe('BaseLogger', () => {
       expect(trackMock).toHaveBeenCalledWith(
         LOG_LEVEL.INFO,
         `[${LOG_LEVEL_NAMES[LOG_LEVEL.INFO]}] hello`,
-        executionContext.context,
+        executionContext,
         undefined,
       )
     })
@@ -84,7 +80,7 @@ describe('BaseLogger', () => {
       expect(trackMock).toHaveBeenCalledWith(
         LOG_LEVEL.WARN,
         `[${LOG_LEVEL_NAMES[LOG_LEVEL.WARN]}] careful`,
-        executionContext.context,
+        executionContext,
         undefined,
       )
     })
@@ -107,7 +103,7 @@ describe('BaseLogger', () => {
       expect(trackMock).toHaveBeenCalledWith(
         LOG_LEVEL.DEBUG,
         `[${LOG_LEVEL_NAMES[LOG_LEVEL.DEBUG]}] verbose`,
-        executionContext.context,
+        executionContext,
         undefined,
       )
     })
@@ -131,7 +127,7 @@ describe('BaseLogger', () => {
       expect(trackMock).toHaveBeenCalledWith(
         LOG_LEVEL.ERROR,
         `[${LOG_LEVEL_NAMES[LOG_LEVEL.ERROR]}] something went wrong`,
-        executionContext.context,
+        executionContext,
         err,
       )
     })

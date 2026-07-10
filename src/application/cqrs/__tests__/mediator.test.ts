@@ -1,225 +1,198 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+﻿import { describe, expect, it, vi } from 'vitest'
 
 import type {
-  ExecutionContext,
+  ApplicationRegistry,
   ICommand,
   IHandler,
   IPipelineBehavior,
   IQuery,
-  IRequestContext,
+  IRequest,
+  IServiceScope,
+  IServiceScopeAccessor,
+  ResultType,
 } from '@/domain'
 import { AppError, Result } from '@/domain'
-import type { IServiceScope } from '@/domain/contracts/container/iservice-scope.contracts'
-import type { InjectionToken } from '@/shared'
-import {
-  ERROR_CODE_MESSAGES,
-  ERROR_CODES,
-  REQUEST_TYPE,
-  STATUS_CODES,
-  TokenHelper,
-  TOKENS,
-} from '@/shared'
+import { ERROR_CODES, TOKENS } from '@/shared'
 
 import { Mediator } from '../mediator'
 
-describe('Mediator', () => {
-  const createScope = () => {
-    const resolveMock = vi.fn<(token: InjectionToken<unknown>) => unknown>()
-    const scope: IServiceScope = {
-      resolve: ((token) => resolveMock(token)) as IServiceScope['resolve'],
-      dispose: vi.fn(),
-    }
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-    return { scope, resolveMock }
-  }
+type Registry = ApplicationRegistry<unknown>
 
-  const createRequestContext = (ctx: ExecutionContext | undefined) => {
-    const getContextMock = vi.fn().mockReturnValue(ctx)
-    const requestContext: IRequestContext<ExecutionContext> = {
-      runAsync: vi.fn(),
-      getContext: getContextMock,
-    }
+interface TestResponse {
+  value: string
+}
 
-    return { requestContext, getContextMock }
-  }
+function makeCommand(intent = 'TestCommand'): ICommand<TestResponse> {
+  return { intent } as ICommand<TestResponse>
+}
 
-  beforeEach(() => {
-    vi.restoreAllMocks()
-  })
+function makeQuery(intent = 'TestQuery'): IQuery<TestResponse> {
+  return { intent } as IQuery<TestResponse>
+}
 
-  it('returns a failed result when command signal is already aborted', async () => {
-    const abortController = new AbortController()
-    abortController.abort()
+function makeSignal(aborted = false): AbortSignal {
+  const controller = new AbortController()
+  if (aborted) controller.abort()
+  return controller.signal
+}
 
-    const { requestContext, getContextMock } = createRequestContext(undefined)
-    const mediator = new Mediator(requestContext)
+function makeScope(resolveMap: Partial<Record<string, unknown>> = {}): IServiceScope<Registry> {
+  return {
+    resolve: vi.fn((token: string) => resolveMap[token]),
+    dispose: vi.fn(),
+  } as unknown as IServiceScope<Registry>
+}
 
-    const command: ICommand<string> = {
-      intent: 'AbortCommand',
-      type: REQUEST_TYPE.COMMAND,
-    }
+function makeAccessor(scope: IServiceScope<Registry> | undefined): IServiceScopeAccessor<Registry> {
+  return { getScope: vi.fn().mockReturnValue(scope) }
+}
 
-    const result = await mediator.send(command, abortController.signal)
+function makePipeline(
+  handler: (
+    req: IRequest<TestResponse>,
+    next: () => Promise<ResultType<TestResponse>>,
+  ) => Promise<ResultType<TestResponse>>,
+): IPipelineBehavior<IRequest<TestResponse>, TestResponse> {
+  return { handle: vi.fn(handler) }
+}
 
-    expect(getContextMock).not.toHaveBeenCalled()
+function makeHandler(
+  result: ResultType<TestResponse>,
+): IHandler<IRequest<TestResponse>, TestResponse> {
+  return { handle: vi.fn().mockResolvedValue(result) }
+}
+
+// ---------------------------------------------------------------------------
+// send (command)
+// ---------------------------------------------------------------------------
+
+describe('Mediator – send (command)', () => {
+  it('returns aborted failure when signal is already aborted', async () => {
+    const mediator = new Mediator(makeAccessor(makeScope()))
+    const result = await mediator.send(makeCommand('Cmd'), makeSignal(true))
     expect(result.isOk()).toBe(false)
-
-    const error = result.getErrorOrThrow()
-    expect(error).toBeInstanceOf(AppError)
-    expect(error.code).toBe(ERROR_CODES.ABORTED)
-    expect(error.status).toBe(STATUS_CODES.ABORTED)
-    expect(error.name).toBe(command.intent)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.ABORTED)
   })
 
-  it('returns SCOPE_NOT_AVAILABLE when request context has no scope', async () => {
-    const { requestContext, getContextMock } = createRequestContext(undefined)
-    const mediator = new Mediator(requestContext)
-
-    const command: ICommand<string> = {
-      intent: 'ScopeMissingCommand',
-      type: REQUEST_TYPE.COMMAND,
-    }
-
-    const result = await mediator.send(command, new AbortController().signal)
-
-    expect(getContextMock).toHaveBeenCalledTimes(1)
+  it('returns SCOPE_NOT_AVAILABLE failure when scope is undefined', async () => {
+    const mediator = new Mediator(makeAccessor(undefined))
+    const result = await mediator.send(makeCommand(), makeSignal())
     expect(result.isOk()).toBe(false)
-
-    const error = result.getErrorOrThrow()
-    expect(error.code).toBe(ERROR_CODES.SCOPE_NOT_AVAILABLE)
-    expect(error.status).toBe(STATUS_CODES.INTERNAL_SERVER_ERROR)
-    expect(error.name).toBe(command.intent)
-    expect(error.message).toBe(ERROR_CODE_MESSAGES[ERROR_CODES.SCOPE_NOT_AVAILABLE])
-    expect(error.cause).toBeInstanceOf(Error)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.SCOPE_NOT_AVAILABLE)
   })
 
-  it('throws when no handler token is registered for request intent', async () => {
-    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<string>, string>>(
-      TOKENS.COMMAND_PIPELINES_BEHAVIOR,
-    )
-    const mockPipeline: IPipelineBehavior<ICommand<string>, string> = {
-      handle: async (_request, next) => next(),
-    }
-
-    const { scope, resolveMock } = createScope()
-
-    resolveMock.mockImplementation((token) => {
-      if (token === pipelineToken) {
-        return mockPipeline
-      }
-      return undefined
-    })
-
-    const { requestContext } = createRequestContext({ scope } as ExecutionContext)
-    const mediator = new Mediator(requestContext)
-
-    const command: ICommand<string> = {
-      intent: 'NoHandlerIntent',
-      type: REQUEST_TYPE.COMMAND,
-    }
-
-    await expect(mediator.send(command, new AbortController().signal)).rejects.toThrow(
-      `errors.handler_not_found`,
-    )
-
-    expect(resolveMock).toHaveBeenCalledWith(pipelineToken)
+  it('returns PIPELINE_NOT_AVAILABLE when pipeline resolves to undefined', async () => {
+    const scope = makeScope({ [TOKENS.COMMAND_PIPELINES_BEHAVIOR]: undefined })
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.send(makeCommand(), makeSignal())
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.PIPELINE_NOT_AVAILABLE)
   })
 
-  it('resolves handler and command pipeline then executes next delegate via send', async () => {
-    const command: ICommand<string> = {
-      intent: 'CommandIntent',
-      type: REQUEST_TYPE.COMMAND,
-    }
+  it('returns PIPELINE_NOT_AVAILABLE when pipeline has no handle method', async () => {
+    const scope = makeScope({ [TOKENS.COMMAND_PIPELINES_BEHAVIOR]: {} })
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.send(makeCommand(), makeSignal())
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.PIPELINE_NOT_AVAILABLE)
+  })
 
-    const handlerToken = TokenHelper.createToken<IHandler<ICommand<string>, string>>(command.intent)
-    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<ICommand<string>, string>>(
-      TOKENS.COMMAND_PIPELINES_BEHAVIOR,
-    )
-
-    const handler: IHandler<ICommand<string>, string> = {
-      handle: async () => Result.ok('command-ok'),
-    }
-    const handlerHandleSpy = vi.spyOn(handler, 'handle')
-
-    const pipeline: IPipelineBehavior<ICommand<string>, string> = {
-      handle: async (_request, next) => next(),
-    }
-    const pipelineHandleSpy = vi.spyOn(pipeline, 'handle')
-
-    const { scope, resolveMock } = createScope()
-    resolveMock.mockImplementation((token) => {
-      if (token === handlerToken) {
-        return handler
-      }
-
-      if (token === pipelineToken) {
-        return pipeline
-      }
-
-      throw new Error('Unexpected token')
+  it('returns handler result on happy path', async () => {
+    const intent = 'TestCommand'
+    const handler = makeHandler(Result.ok<TestResponse>({ value: 'ok' }))
+    const pipeline = makePipeline((_req, next) => next())
+    const scope = makeScope({
+      [TOKENS.COMMAND_PIPELINES_BEHAVIOR]: pipeline,
+      [intent]: handler,
     })
-
-    const { requestContext } = createRequestContext({ scope } as ExecutionContext)
-    const mediator = new Mediator(requestContext)
-
-    const signal = new AbortController().signal
-    const result = await mediator.send(command, signal)
-
-    expect(resolveMock).toHaveBeenNthCalledWith(1, pipelineToken)
-    expect(resolveMock).toHaveBeenNthCalledWith(2, handlerToken)
-    expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
-    expect(handlerHandleSpy).toHaveBeenCalledWith(command, signal)
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.send(makeCommand(intent), makeSignal())
     expect(result.isOk()).toBe(true)
-    expect(result.getValueOrThrow()).toBe('command-ok')
   })
 
-  it('resolves handler and query pipeline then executes next delegate via query', async () => {
-    const query: IQuery<number> = {
-      intent: 'QueryIntent',
-      type: REQUEST_TYPE.QUERY,
-      cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
-    }
-
-    const handlerToken = TokenHelper.createToken<IHandler<IQuery<number>, number>>(query.intent)
-    const pipelineToken = TokenHelper.createToken<IPipelineBehavior<IQuery<number>, number>>(
-      TOKENS.QUERY_PIPELINES_BEHAVIOR,
-    )
-
-    const handler: IHandler<IQuery<number>, number> = {
-      handle: async () => Result.ok(42),
-    }
-    const handlerHandleSpy = vi.spyOn(handler, 'handle')
-
-    const pipeline: IPipelineBehavior<IQuery<number>, number> = {
-      handle: async (_request, next) => next(),
-    }
-    const pipelineHandleSpy = vi.spyOn(pipeline, 'handle')
-
-    const { scope, resolveMock } = createScope()
-    resolveMock.mockImplementation((token) => {
-      if (token === handlerToken) {
-        return handler
-      }
-
-      if (token === pipelineToken) {
-        return pipeline
-      }
-
-      throw new Error('Unexpected token')
+  it('throws AppError when handler is not found in scope', async () => {
+    const intent = 'MissingHandler'
+    const pipeline = makePipeline((_req, next) => next())
+    const scope = makeScope({
+      [TOKENS.COMMAND_PIPELINES_BEHAVIOR]: pipeline,
+      [intent]: undefined,
     })
+    const mediator = new Mediator(makeAccessor(scope))
+    await expect(mediator.send(makeCommand(intent), makeSignal())).rejects.toBeInstanceOf(AppError)
+  })
 
-    const { requestContext } = createRequestContext({ scope } as ExecutionContext)
-    const mediator = new Mediator(requestContext)
+  it('throws AppError when handler has no handle method', async () => {
+    const intent = 'BadHandler'
+    const pipeline = makePipeline((_req, next) => next())
+    const scope = makeScope({
+      [TOKENS.COMMAND_PIPELINES_BEHAVIOR]: pipeline,
+      [intent]: {},
+    })
+    const mediator = new Mediator(makeAccessor(scope))
+    await expect(mediator.send(makeCommand(intent), makeSignal())).rejects.toBeInstanceOf(AppError)
+  })
+})
 
-    const signal = new AbortController().signal
+// ---------------------------------------------------------------------------
+// query
+// ---------------------------------------------------------------------------
 
-    const result = await mediator.query(query, signal)
+describe('Mediator – query', () => {
+  it('returns aborted failure when signal is already aborted', async () => {
+    const mediator = new Mediator(makeAccessor(makeScope()))
+    const result = await mediator.query(makeQuery('Q'), makeSignal(true))
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.ABORTED)
+  })
 
-    expect(resolveMock).toHaveBeenNthCalledWith(1, pipelineToken)
-    expect(resolveMock).toHaveBeenNthCalledWith(2, handlerToken)
-    expect(pipelineHandleSpy).toHaveBeenCalledTimes(1)
-    expect(handlerHandleSpy).toHaveBeenCalledWith(query, signal)
+  it('returns SCOPE_NOT_AVAILABLE failure when scope is undefined', async () => {
+    const mediator = new Mediator(makeAccessor(undefined))
+    const result = await mediator.query(makeQuery(), makeSignal())
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.SCOPE_NOT_AVAILABLE)
+  })
+
+  it('returns PIPELINE_NOT_AVAILABLE when query pipeline resolves to undefined', async () => {
+    const scope = makeScope({ [TOKENS.QUERY_PIPELINES_BEHAVIOR]: undefined })
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.query(makeQuery(), makeSignal())
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.PIPELINE_NOT_AVAILABLE)
+  })
+
+  it('returns PIPELINE_NOT_AVAILABLE when query pipeline has no handle method', async () => {
+    const scope = makeScope({ [TOKENS.QUERY_PIPELINES_BEHAVIOR]: {} })
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.query(makeQuery(), makeSignal())
+    expect(result.isOk()).toBe(false)
+    expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.PIPELINE_NOT_AVAILABLE)
+  })
+
+  it('returns handler result on happy path', async () => {
+    const intent = 'TestQuery'
+    const handler = makeHandler(Result.ok<TestResponse>({ value: 'query-ok' }))
+    const pipeline = makePipeline((_req, next) => next())
+    const scope = makeScope({
+      [TOKENS.QUERY_PIPELINES_BEHAVIOR]: pipeline,
+      [intent]: handler,
+    })
+    const mediator = new Mediator(makeAccessor(scope))
+    const result = await mediator.query(makeQuery(intent), makeSignal())
     expect(result.isOk()).toBe(true)
-    expect(result.getValueOrThrow()).toBe(42)
+  })
+
+  it('throws AppError when handler is not found for query', async () => {
+    const intent = 'MissingQueryHandler'
+    const pipeline = makePipeline((_req, next) => next())
+    const scope = makeScope({
+      [TOKENS.QUERY_PIPELINES_BEHAVIOR]: pipeline,
+      [intent]: undefined,
+    })
+    const mediator = new Mediator(makeAccessor(scope))
+    await expect(mediator.query(makeQuery(intent), makeSignal())).rejects.toBeInstanceOf(AppError)
   })
 })

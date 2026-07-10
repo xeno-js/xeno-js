@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 
-import type { ExecutionContext, IPolicyRegistry, IRequest, IRequestContext } from '@/domain'
+import type { IContextAccessor, IPolicyRegistry, IRequest, RequestContext } from '@/domain'
 import { type AuthPolicy } from '@/shared'
 import { ERROR_CODES } from '@/shared'
 
@@ -9,21 +9,18 @@ import { RoleAuthorizationStrategy } from '../role-authorization.strategy'
 const makeRequest = (intent = 'TestCommand'): IRequest =>
   ({ intent, type: 'COMMAND', signal: undefined }) as unknown as IRequest
 
-const makeRequestContext = (identity?: { roles?: string[] }): IRequestContext<ExecutionContext> =>
-  ({
-    getContext: vi.fn().mockReturnValue({
-      context: {
-        identity: {
-          userId: 'user-1',
-          tenantId: 'tenant-1',
-          roles: identity?.roles ?? [],
-          permissions: [],
-        },
-        network: { requestId: 'req-1' },
-        tracing: {},
-      },
-    }),
-  }) as unknown as IRequestContext<ExecutionContext>
+const makeRequestContext = (identity?: { roles?: string[] }): IContextAccessor<RequestContext> => ({
+  getContext: vi.fn().mockReturnValue({
+    identity: {
+      userId: 'user-1',
+      tenantId: 'tenant-1',
+      roles: identity?.roles ?? [],
+      permissions: [],
+    },
+    network: { requestId: 'req-1' },
+    tracing: {},
+  }),
+})
 
 const makePolicy = (overrides?: Partial<AuthPolicy>): AuthPolicy => ({
   roles: [],
@@ -53,7 +50,7 @@ describe('RoleAuthorizationStrategy', () => {
     it('returns UNAUTHORIZED when getContext returns undefined', async () => {
       const requestContext = {
         getContext: vi.fn().mockReturnValue(undefined),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const { registry } = makePolicyRegistry(makePolicy())
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
@@ -66,7 +63,7 @@ describe('RoleAuthorizationStrategy', () => {
     it('returns UNAUTHORIZED when getContext returns null', async () => {
       const requestContext = {
         getContext: vi.fn().mockReturnValue(null),
-      } as unknown as IRequestContext<ExecutionContext>
+      } as unknown as IContextAccessor<RequestContext>
       const { registry } = makePolicyRegistry(makePolicy())
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
@@ -78,14 +75,14 @@ describe('RoleAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � no policy found', () => {
-    it('returns true when policy is undefined', async () => {
+    it('returns false when policy is undefined', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(undefined)
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
     })
   })
 
@@ -155,17 +152,17 @@ describe('RoleAuthorizationStrategy', () => {
       expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.FORBIDDEN)
     })
 
-    it('returns true when policy roles array is empty', async () => {
+    it('returns false when policy roles array is empty', async () => {
       const requestContext = makeRequestContext({ roles: ['admin'] })
       const { registry } = makePolicyRegistry(makePolicy({ permissions: ['read'], roles: [] }))
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
     })
 
-    it('returns true when policy roles is undefined', async () => {
+    it('returns false when policy roles is undefined', async () => {
       const requestContext = makeRequestContext({ roles: ['admin'] })
       const { registry } = makePolicyRegistry(
         makePolicy({ permissions: ['read'], roles: undefined }),
@@ -174,7 +171,7 @@ describe('RoleAuthorizationStrategy', () => {
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(true)
+      expect(result.isOk()).toBe(false)
     })
 
     it('calls getPolicy with the correct intent', async () => {
