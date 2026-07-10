@@ -1,10 +1,9 @@
 import type {
-  ExecutionContext,
   IBaseMapper,
   Identity,
-  IServiceScope,
   MessagingContext,
   NetworkContext,
+  RequestContext,
   TracingContext,
 } from '@/domain'
 import { Guards, type Metadata, type Optional } from '@/shared'
@@ -12,22 +11,21 @@ import { Guards, type Metadata, type Optional } from '@/shared'
 interface ContextMapperSource {
   readonly metadata: Metadata
   readonly identity: Identity
-  readonly scope: IServiceScope
   readonly path: string
   readonly isPublic: boolean
 }
 
-export const ContextMapper: IBaseMapper<ContextMapperSource, ExecutionContext> = Object.freeze({
+export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = Object.freeze({
   /**
-   * @description Maps to ExecutionContext. It extracts relevant information from the object, such as correlation ID, request ID, authentication token, client IP, user agent, format indicator, and messaging context (if available). The method constructs an ExecutionContext object that encapsulates all this information, providing a structured representation of the request context for further processing in the application.
+   * @description Maps to RequestContext. It extracts relevant information from the object, such as correlation ID, request ID, authentication token, client IP, user agent, format indicator, and messaging context (if available). The method constructs a RequestContext object that encapsulates all this information, providing a structured representation of the request context for further processing in the application.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  map: (source: ContextMapperSource): ExecutionContext => {
-    const { metadata, identity, path, scope, isPublic } = source
+  map: (source: ContextMapperSource): RequestContext => {
+    const { metadata, identity, path, isPublic } = source
 
     const network: NetworkContext = {
       requestId: metadata.requestId!,
@@ -45,17 +43,14 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, ExecutionContext> =
     }
     const messaging = _buildMessagingContext(metadata)
 
-    const executionContext: ExecutionContext = {
-      context: {
-        identity,
-        network,
-        tracing,
-        messaging,
-      },
-      scope,
+    const requestContext: RequestContext = {
+      identity,
+      network,
+      tracing,
+      messaging,
     }
 
-    return executionContext
+    return requestContext
   },
 } as const)
 

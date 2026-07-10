@@ -1,11 +1,11 @@
 import type {
   AppError,
-  ExecutionContext,
   ICommand,
+  IContextAccessor,
   IController,
   IMediator,
   IQuery,
-  IRequestContext,
+  RequestContext,
   ResultType,
 } from '@/domain'
 import type { Dictionary, Optional, ResponseDto } from '@/shared'
@@ -27,7 +27,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
 > {
   /**
    * Constructs a new instance of the BaseController class.
-   * @param _requestContext - An instance of IRequestContext used to manage the execution context for requests.
+   * @param _requestContext - An instance of IContextAccessor used to manage the execution context for requests.
    * @param _mediator - An instance of IMediator used to facilitate communication between different parts of the application.
    *
    * @author Xeno
@@ -36,7 +36,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   constructor(
-    private readonly _requestContext: IRequestContext<ExecutionContext>,
+    private readonly _requestContext: IContextAccessor<RequestContext>,
     private readonly _mediator: IMediator,
   ) {}
 
@@ -82,7 +82,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
     details: Optional<string>,
     headers: Optional<Dictionary<string[]>> = {},
   ): ResponseDto<TResponse> {
-    const { context } = this._requestContext.getContext() ?? {}
+    const context = this._requestContext.getContext()
 
     const customHeaders = error['header'] as Optional<Dictionary<string[]>>
 
