@@ -23,10 +23,10 @@ export const xeno = new AppBuilder<MyRegistry>()
                 '/api/user/:id': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
             }
         })
-        .addPipeline((config) => {
-            config.authorization.userId = true
-            config.authorization.tenantId = true
-            config.authorization.policies = {
+        .addPipeline((opts) => {
+            opts.authorization.userId = true
+            opts.authorization.tenantId = true
+            opts.authorization.policies = {
                 'UNAUTHORIZED_COMMAND_HANDLER_TOKEN': {
                     roles: ['guest'],
                     permissions: ['read', 'write'],
@@ -38,21 +38,20 @@ export const xeno = new AppBuilder<MyRegistry>()
                     permissions: ['read'],
                 },
             }
-            config.commandBus.idempotency = { lockTtlSeconds: 30, processedTtlSeconds: 60 }
-            config.commandBus.concurrency = { delayConfig: { baseDelayMs: 100, maxJitterMs: 500 }, maxRetries: 3 }
-            config.queryBus.isEnabled = true
+            opts.commandBus.idempotency = { lockTtlSeconds: 30, processedTtlSeconds: 60 }
+            opts.commandBus.concurrency = { delayConfig: { baseDelayMs: 100, maxJitterMs: 500 }, maxRetries: 3 }
+            opts.queryBus.isEnabled = true
         })
-        .addDb((opts) => {
-            if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL missing!')
-            opts.connectionString = process.env.DATABASE_URL
+        .addDb((opts, config) => {
+            opts.connectionString = config.getOrThrow('DATABASE_URL')
         })
-        .addAuth((config) => {
-            config.key = 'demo-key'
-            config.url = 'https://demo-auth-server.com'
+        .addAuth((opts) => {
+            opts.key = 'demo-key'
+            opts.url = 'https://demo-auth-server.com'
         })
-        .addLogger((config) => {
-            config.level = LOG_LEVEL.INFO
-            config.console = true
+        .addLogger((opts) => {
+            opts.level = LOG_LEVEL.INFO
+            opts.console = true
         })
         .addServices((services) => {
             // REGISTER MAPPER
