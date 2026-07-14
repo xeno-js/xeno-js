@@ -234,7 +234,7 @@ export type Guid = `${string}-${string}-${string}-${string}-${string}`
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export type SetupAction<T> = (options: T) => void
+export type SetupAction<T, E = undefined> = (options: T, config: E) => void
 
 /**
  * @description Represents a valid HTTP path.

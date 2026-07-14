@@ -6,6 +6,7 @@ import type {
   CacheConfig,
   DbConfig,
   HttpCoreConfig,
+  IConfigurationService,
   IModule,
   IServiceContainer,
   LoggerConfig,
@@ -13,8 +14,9 @@ import type {
   PipelineConfig,
 } from '@/domain'
 import type { Optional, SetupAction } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
+import { Guards, LOG_LEVEL, TOKENS } from '@/shared'
 
+import { EnvironmentConfigurationService } from '../configuration'
 import { ServiceContainer } from '../container/service-container'
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -44,7 +46,18 @@ interface QueuedModule {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
 export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
-  private readonly _container: ServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
+  private readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
+  private readonly _configuration: IConfigurationService
+
+  constructor(container?: IServiceContainer<TRegistry>) {
+    this._container = container ?? new ServiceContainer<TRegistry>()
+
+    this._container.addSingleton(
+      TOKENS.CONFIGURATION_SERVICE,
+      () => new EnvironmentConfigurationService(),
+    )
+    this._configuration = this._container.resolve(TOKENS.CONFIGURATION_SERVICE)
+  }
 
   // --- Module Configurations ---
   private readonly _modules: QueuedModule[] = []
@@ -93,8 +106,9 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addMiddlewares(setupAction?: SetupAction<MiddlewareConfig>): this {
-    if (Guards.isDefined(setupAction)) setupAction(this._middlewareConfig)
+  public addMiddlewares(setupAction?: SetupAction<MiddlewareConfig, IConfigurationService>): this {
+    if (Guards.isDefined(setupAction)) setupAction(this._middlewareConfig, this._configuration)
+
     this._queueMiddlewareModule(this._middlewareConfig)
     return this
   }
@@ -125,7 +139,9 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addLogger(setupAction?: SetupAction<LoggerConfig<TRegistry>>): this {
+  public addLogger(
+    setupAction?: SetupAction<LoggerConfig<TRegistry>, IConfigurationService>,
+  ): this {
     if (this._isLoggerModuleQueued) return this
     this._isLoggerModuleQueued = true
     const config = {
@@ -135,7 +151,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
       pino: { config: undefined },
       customLoggers: undefined,
     } as unknown as Optional<LoggerConfig<ApplicationRegistry<unknown>>>
-    if (Guards.isDefined(setupAction) && Guards.isDefined(config)) setupAction(config)
+    if (Guards.isDefined(setupAction) && Guards.isDefined(config))
+      setupAction(config, this._configuration)
 
     this._modules.push({
       priority: 3,
@@ -159,9 +176,10 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addCache(setupAction?: SetupAction<CacheConfig>): this {
+  public addCache(setupAction?: SetupAction<CacheConfig, IConfigurationService>): this {
     const config = { inMemory: true, redis: undefined }
-    if (Guards.isDefined(setupAction)) setupAction(config)
+    if (Guards.isDefined(setupAction)) setupAction(config, this._configuration)
+
     this._modules.push({
       priority: 3,
       name: 'CacheModule',
@@ -184,11 +202,13 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addAuth(setupAction: SetupAction<AuthClientConfig<TRegistry>>): this {
+  public addAuth(
+    setupAction: SetupAction<AuthClientConfig<TRegistry>, IConfigurationService>,
+  ): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
     const config = { url: '', key: '', options: undefined, customAuthService: undefined }
-    setupAction(config)
+    setupAction(config, this._configuration)
     this._modules.push({
       priority: 2,
       name: 'AuthModule',
@@ -211,11 +231,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addDb(setupAction: SetupAction<DbConfig>): this {
+  public addDb(setupAction: SetupAction<DbConfig, IConfigurationService>): this {
     if (this._isDbContextModuleQueued) return this
     this._isDbContextModuleQueued = true
     const config = { connectionString: '' }
-    setupAction(config)
+    setupAction(config, this._configuration)
     this._modules.push({
       priority: 4,
       name: 'DbModule',
@@ -267,9 +287,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addPipeline(setupAction?: SetupAction<PipelineConfig<TRegistry>>): this {
+  public addPipeline(
+    setupAction?: SetupAction<PipelineConfig<TRegistry>, IConfigurationService>,
+  ): this {
     if (Guards.isDefined(setupAction)) {
-      setupAction(this._pipelineConfig)
+      setupAction(this._pipelineConfig, this._configuration)
     }
     this._queuePipelineModule()
     return this
@@ -290,13 +312,15 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addHttpCore(setupAction: SetupAction<HttpCoreConfig<TRegistry>>): this {
+  public addHttpCore(
+    setupAction: SetupAction<HttpCoreConfig<TRegistry>, IConfigurationService>,
+  ): this {
     const config = {
       dataSourceToken: undefined as unknown,
       http: { token: undefined as unknown, client: {} },
       resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
     } as unknown as HttpCoreConfig<TRegistry>
-    setupAction(config)
+    setupAction(config, this._configuration)
     this._modules.push({
       priority: 30,
       name: 'HttpCoreModule',
@@ -323,12 +347,14 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  public addServices(setupAction: SetupAction<IServiceContainer<TRegistry>>): this {
+  public addServices(
+    setupAction: SetupAction<IServiceContainer<TRegistry>, IConfigurationService>,
+  ): this {
     this._modules.push({
       priority: 99,
       name: 'ClientServicesModule',
       action: async () => {
-        setupAction(this._container)
+        setupAction(this._container, this._configuration)
       },
     })
     return this

@@ -27,12 +27,14 @@ describe('AppBuilder � full smoke test', () => {
   it('bootstraps all modules without throwing', async () => {
     const builder = makeBuilder()
     builder
-      .addAuth((config) => {
-        config.url = 'https://dummy-auth.local'
-        config.key = 'dummy-key'
+      .addAuth((opts, config) => {
+        opts.url = config.get('AUTH_URL', 'https://dummy-auth.local') ?? 'https://dummy-auth.local'
+        opts.key = config.get('AUTH_KEY', 'dummy-key') ?? 'dummy-key'
       })
-      .addDb((config) => {
-        config.connectionString = 'postgres://dummy:dummy@localhost:5432/dummy'
+      .addDb((opts, config) => {
+        opts.connectionString =
+          config.get('DB_CONNECTION_STRING', 'postgres://dummy:dummy@localhost:5432/dummy') ??
+          'postgres://dummy:dummy@localhost:5432/dummy'
       })
       .addPipeline((config) => {
         config.performance.thresholdMs = 100
@@ -45,13 +47,15 @@ describe('AppBuilder � full smoke test', () => {
         }
         config.queryBus.isEnabled = true
       })
-      .addHttpCore((config) => {
-        config.dataSourceToken = 'myDummyDs'
-        config.http.token = 'myDummyHttpClient'
-        config.http.client.baseURL = 'https://dummy-http-core.local'
-        config.http.client.timeoutMs = 5000
-        config.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
-        config.resilience.retry.attempts = 5
+      .addHttpCore((opts, config) => {
+        opts.dataSourceToken = 'myDummyDs'
+        opts.http.token = 'myDummyHttpClient'
+        opts.http.client.baseURL =
+          config.get('HTTP_CORE_BASE_URL', 'https://dummy-http-core.local') ??
+          'https://dummy-http-core.local'
+        opts.http.client.timeoutMs = config.getNumber('HTTP_CORE_TIMEOUT_MS', 5000) ?? 5000
+        opts.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
+        opts.resilience.retry.attempts = 5
       })
 
     await expect(builder.build()).resolves.toBeDefined()

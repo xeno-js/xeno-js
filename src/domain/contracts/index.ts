@@ -1,4 +1,5 @@
 export type * from './cache/index'
+export type * from './configuration/index'
 export type * from './container/index'
 export type * from './context/index'
 export type * from './controllers/index'

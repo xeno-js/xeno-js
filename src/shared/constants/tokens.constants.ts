@@ -82,6 +82,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CONCURRENCY_SERVICE: 'CONCURRENCY_SERVICE',
+  /** @description Token used to register and resolve the ConfigurationService instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  CONFIGURATION_SERVICE: 'CONFIGURATION_SERVICE',
   /** @description Token used to register and resolve the ConsoleLogger instance in the dependency injection container.
    *
    * @author Xeno

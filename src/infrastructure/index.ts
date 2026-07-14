@@ -1,5 +1,6 @@
 export type * from '../domain/config/registries/index'
 export * from './cache/index'
+export * from './configuration/index'
 export * from './container/index'
 export * from './context/index'
 export * from './datasources/index'

@@ -9,6 +9,7 @@ import type {
   ICache,
   ICommand,
   IConcurrencyService,
+  IConfigurationService,
   IContextAccessor,
   Identity,
   IDisposable,
@@ -131,6 +132,15 @@ export type ApplicationRegistry<T = unknown> = {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly CONCURRENCY_SERVICE: IConcurrencyService
+
+  /** @description Token used to register and resolve the ConfigurationService instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly CONFIGURATION_SERVICE: IConfigurationService
 
   /** @description Token used to register and resolve the ConsoleLogger instance in the dependency injection container.
    *
