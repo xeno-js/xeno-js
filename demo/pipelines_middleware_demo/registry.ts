@@ -8,10 +8,17 @@ import { IUserDataSource } from './user/datasources/user.read-datasource'
 import { FindAllUsersQuery, UserQuery } from './user/cqrs/query/user.query'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// INJECTION TOKENS
+// Registry Tokens
 // ─────────────────────────────────────────────────────────────────────────────
-// This file defines injection tokens for the User DataSource and the Filter Builder. These tokens are used for dependency injection, allowing for the registration and resolution of services in a decoupled manner. The tokens are created using the TokenHelper utility, which ensures type safety and uniqueness of the tokens within the application context.
-export type MyRegistry = XenoRegistry<FullSchema, {
+// This file defines the 'Injection Tokens' for the Dependency Injection system. A registry entry is a unique identifier (usually a Symbol) used by the Xeno container to resolve dependencies in a type-safe and decoupled manner.
+// ─────────────────────────────────────────────────────────────────────────────
+// HOW TO USE:
+// 1. Define your registry entry:
+// export interface MyRegistry extends XenoRegistry<{ /** Your Db Schema here **/}> {
+//      /** Your services here <string, class> **/
+//      MY_SERVICE: MyService
+// }
+export interface MyRegistry extends XenoRegistry<FullSchema> {
     USER_REPOSITORY: Repository<User, UserDto>
     USER_READ_REPOSITORY: IUserReadRepository
     USER_DS_TOKEN: IWriteDataSource<UserDto>
@@ -27,4 +34,4 @@ export type MyRegistry = XenoRegistry<FullSchema, {
     UNAUTHORIZED_COMMAND_HANDLER_TOKEN: BaseHandler<ICommand<null>, null>
     UPDATE_USER_COMMAND_HANDLER_TOKEN: BaseHandler<UpdateUserCommand, void>
     FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN: BaseController<void, User[]>
-}>
+}

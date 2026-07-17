@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { TOKENS } from '@xeno/core'
 import fastify from 'fastify'
 import { xeno } from './bootstrap'
 import { UserProps } from './user/entity/user'
@@ -16,7 +17,7 @@ async function runDemo() {
         console.log('🚀 Starting Fastify server on http://localhost:3000...')
 
         // 2. Resolve the middleware and controllers from the container
-        const middleware = xeno.resolve('MIDDLEWARE')
+        const middleware = xeno.resolve(TOKENS.MIDDLEWARE)
         const saveUserController = xeno.resolve('SAVE_USER_CONTROLLER_TOKEN')
         const findUserController = xeno.resolve('FIND_USER_CONTROLLER_TOKEN')
         const unauthController = xeno.resolve('UNAUTHORIZED_CONTROLLER_TOKEN')

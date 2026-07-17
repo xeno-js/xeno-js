@@ -1,4 +1,4 @@
-import { AppBuilder, LOG_LEVEL } from '@xeno/core'
+import { AppBuilder, LOG_LEVEL, TOKENS } from '@xeno/core'
 import { SaveUserCommandHandler, FindUserQueryHandler, UpdateUserCommandHandler } from './user/cqrs/handlers/index'
 import { UnauthorizedCommandHandler } from './unauthorized/handlers/unauthorized.handler'
 import { SaveUserController, FindUserController, UpdateUserController, FindAllUserController } from './user/controllers/index'
@@ -9,7 +9,7 @@ import { UserReadDatasource } from './user/datasources/user.read-datasource'
 import { UserReadRepository } from './user/repositories/user-read.repository'
 import { UserWriteRepository } from './user/repositories/user-write.repository'
 import { FindAllUsersQueryHandler } from './user/cqrs/handlers/find-all-user.handler'
-import type { MyRegistry } from './tokens'
+import type { MyRegistry } from './registry'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO BOOTSTRAP FUNCTION
@@ -28,7 +28,7 @@ export const xeno = new AppBuilder<MyRegistry>()
             opts.authorization.tenantId = true
             opts.authorization.policies = {
                 'UNAUTHORIZED_COMMAND_HANDLER_TOKEN': {
-                    roles: ['guest'],
+                    roles: ['admin'],
                     permissions: ['read', 'write'],
                 },
                 'SAVE_USER_COMMAND_HANDLER_TOKEN': {
@@ -58,8 +58,8 @@ export const xeno = new AppBuilder<MyRegistry>()
             services.addScoped('USER_MAPPER_TOKEN', () => new UserMapper())
 
             // REGISTER DATASOURCES
-            services.addScoped('USER_DS_TOKEN', (c) => new UserDataSource(c.resolve('DB_CONTEXT')))
-            services.addScoped('USER_READ_DS_TOKEN', (c) => new UserReadDatasource(c.resolve('DB_CONTEXT')))
+            services.addScoped('USER_DS_TOKEN', (c) => new UserDataSource(c.resolve(TOKENS.DB_CONTEXT)))
+            services.addScoped('USER_READ_DS_TOKEN', (c) => new UserReadDatasource(c.resolve(TOKENS.DB_CONTEXT)))
 
             // REGISTER REPOSITORIES
             services.addScoped('USER_REPOSITORY', (c) => new UserWriteRepository(c.resolve('USER_DS_TOKEN'), c.resolve('USER_MAPPER_TOKEN')))
@@ -67,40 +67,40 @@ export const xeno = new AppBuilder<MyRegistry>()
 
             // REGISTER HANDLERS
             services.addScoped('SAVE_USER_COMMAND_HANDLER_TOKEN', (c) => {
-                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const requestcontext = c.resolve(TOKENS.USER_CONTEXT_FACTORY)
                 const repository = c.resolve('USER_REPOSITORY')
                 return new SaveUserCommandHandler(repository, requestcontext)
             })
             services.addScoped('FIND_USER_QUERY_HANDLER_TOKEN', (c) => {
-                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const requestcontext = c.resolve(TOKENS.USER_CONTEXT_FACTORY)
                 const repository = c.resolve('USER_READ_REPOSITORY')
                 return new FindUserQueryHandler(repository, requestcontext)
             })
             services.addScoped('FIND_ALL_USERS_QUERY_HANDLER_TOKEN', (c) => {
-                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const requestcontext = c.resolve(TOKENS.USER_CONTEXT_FACTORY)
                 const repository = c.resolve('USER_READ_REPOSITORY')
                 return new FindAllUsersQueryHandler(repository, requestcontext)
             })
             services.addScoped('UNAUTHORIZED_COMMAND_HANDLER_TOKEN', (c) => {
-                return new UnauthorizedCommandHandler(c.resolve('USER_CONTEXT_FACTORY'))
+                return new UnauthorizedCommandHandler(c.resolve(TOKENS.USER_CONTEXT_FACTORY))
             })
             services.addScoped('UPDATE_USER_COMMAND_HANDLER_TOKEN', (c) => {
-                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
+                const requestcontext = c.resolve(TOKENS.USER_CONTEXT_FACTORY)
                 const repository = c.resolve('USER_REPOSITORY')
-                const uow = c.resolve('UNIT_OF_WORK')
+                const uow = c.resolve(TOKENS.UNIT_OF_WORK)
                 return new UpdateUserCommandHandler(uow, repository, requestcontext)
             })
 
             // REGISTER CONTROLLERS
             services.addTransient('SAVE_USER_CONTROLLER_TOKEN', (c) => {
-                return new SaveUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
+                return new SaveUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR))
             })
             services.addTransient('FIND_USER_CONTROLLER_TOKEN', (c) => {
-                return new FindUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
+                return new FindUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR))
             })
             services.addTransient('UPDATE_USER_CONTROLLER_TOKEN', (c) => {
-                return new UpdateUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
+                return new UpdateUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR))
             })
-            services.addTransient('UNAUTHORIZED_CONTROLLER_TOKEN', (c) => new UnauthorizedController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR')))
-            services.addTransient('FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN', (c) => new FindAllUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR')))
+            services.addTransient('UNAUTHORIZED_CONTROLLER_TOKEN', (c) => new UnauthorizedController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR)))
+            services.addTransient('FIND_ALL_USERS_QUERY_CONTROLLER_TOKEN', (c) => new FindAllUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR)))
         })

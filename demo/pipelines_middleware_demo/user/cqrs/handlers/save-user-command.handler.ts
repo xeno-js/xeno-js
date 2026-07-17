@@ -22,6 +22,6 @@ export class SaveUserCommandHandler extends BaseHandler<SaveUserCommand, void> {
             return Result.fail(result.getErrorOrThrow())
         }
 
-        return result
+        return Result.ok() // Return void on success. In a real-world scenario, you might want to return the created entity's ID or other relevant information.
     }
 }

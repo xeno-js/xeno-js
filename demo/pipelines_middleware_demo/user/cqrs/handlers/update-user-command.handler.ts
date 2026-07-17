@@ -1,4 +1,4 @@
-import { BaseHandler, AppError, Guards, IRepository, Result, type ResultType, IUnitOfWork, Optional, GuidHelper, ERROR_CODES, STATUS_CODES, UserContext, IFactory } from "@xeno/core"
+import { BaseHandler, AppError, Guards, IRepository, Result, type ResultType, IUnitOfWork, Optional, ERROR_CODES, STATUS_CODES, UserContext, IFactory } from "@xeno/core"
 
 import { User } from "../../entity/user"
 import { UpdateUserCommand } from "../commands/user.command"
@@ -14,10 +14,8 @@ export class UpdateUserCommandHandler extends BaseHandler<UpdateUserCommand, voi
     public async handle(request: UpdateUserCommand, signal: Optional<AbortSignal>): Promise<ResultType<void>> {
         console.log(`[CQRS: Command] 🟢 Received UpdateUserCommand with intent: "${request.intent}"`)
         const result = await this._uow.runInTransaction(async () => {
-            const ctx = {
-                userId: GuidHelper.generate(), // In a real-world scenario, you would retrieve the actual user ID from the request context or authentication token.
-                tenantId: GuidHelper.generate(), // In a real-world scenario, you would retrieve the actual tenant ID from the request context or authentication token.
-            }
+            const ctx = this._getCurrentContext() // Retrieve the current user context, which includes userId and tenantId. This context is essential for executing the command within the correct scope.
+
             const result = await this._repository.findById(request.props.id, ctx, signal)
             if (!result.isOk() || !Guards.isDefined(result.getValueOrThrow()))
                 AppError.throw({

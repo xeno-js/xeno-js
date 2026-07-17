@@ -6,9 +6,7 @@ export class UserQuery implements IQuery<User> {
     public readonly intent = 'FIND_USER_QUERY_HANDLER_TOKEN'
     public readonly type = REQUEST_TYPE.QUERY
     public readonly cacheOptions: ICacheableOptions
-    public readonly isPublic = true
     
-
     constructor(public readonly id: string) {
         this.cacheOptions = {
             ttl: 60, // Cache for 60 seconds
