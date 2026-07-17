@@ -2,6 +2,17 @@ import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
 
+/**
+ * @class EnvGenerator
+ * @description This generator creates a .env.example file with environment variable placeholders based on the provided scaffolding options.
+ * It includes sections for database, HTTP client, Redis, Supabase, Sentry, and logging configurations.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 export class EnvGenerator implements IGenerator {
   shouldGenerate(_options: ScaffoldingOptions): boolean {
     return true;

@@ -4,11 +4,21 @@ import pc from 'picocolors';
 import { ScaffoldingEngine } from './core/scaffolding.engine';
 import { ScaffoldingOptions } from './core/generator.interface';
 
-import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, TokensGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
+import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, RegistryGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
 import { CommandUtils } from './utils/command.utils';
 
+/**
+ * @function init
+ * @description Initializes the scaffolding process for a new Xeno project.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 async function init() {
-  console.log(pc.cyan('\n🚀 Welcome to @xeno Scaffolding!'));
+  console.log(pc.cyan('\n🚀 Welcome to @xeno/core Scaffolding!'));
 
   const args = process.argv.slice(2);
   const targetDir = args[0] || 'my-xeno-app';
@@ -19,6 +29,7 @@ async function init() {
 
   let options: ScaffoldingOptions = {
     targetDir,
+    zod: isFull,
     database: isFull,
     http: isFull,
     supabase: isFull,
@@ -29,6 +40,7 @@ async function init() {
 
   if (!isFull && !isEmpty) {
     const response = await prompts([
+      { type: 'confirm', name: 'zod', message: 'Install Zod?', initial: true },
       { type: 'confirm', name: 'database', message: 'Install Drizzle ORM & Postgres?', initial: true },
       { type: 'confirm', name: 'http', message: 'Install Axios & Cockatiel?', initial: true },
       { type: 'confirm', name: 'supabase', message: 'Install Supabase?', initial: true },
@@ -52,7 +64,7 @@ async function init() {
     new TsconfigGenerator(),
     new GitIgnoreGenerator(),
     new EnvGenerator(),
-    new TokensGenerator(),
+    new RegistryGenerator(),
     new DrizzleGenerator(),
     new BootstrapGenerator(),
     new MainGenerator(),

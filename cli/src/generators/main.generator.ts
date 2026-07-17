@@ -2,6 +2,16 @@ import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
 
+/**
+ * @class MainGenerator
+ * @description This generator creates the main.ts file for the project.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 export class MainGenerator implements IGenerator {
   shouldGenerate(): boolean {
     return true; // Ogni applicazione necessita di un punto di ingresso

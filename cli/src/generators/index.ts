@@ -5,5 +5,5 @@ export * from './git-ignore.generator';
 export * from './main.generator';
 export * from './package-json.generator';
 export * from './readme.generator';
-export * from './tokens.generator';
+export * from './registry.generator';
 export * from './tsconfig.generator';

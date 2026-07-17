@@ -2,6 +2,21 @@ import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
 
+/**
+ * @file bootstrap.ts
+ * @description This file defines the bootstrap function for the application. The bootstrap function is responsible for initializing and configuring the application, including setting up the database, HTTP client, cache, authentication, and logging services based on the provided configuration.
+ */
+
+/**
+ * The bootstrap function is the entry point for initializing the application. It uses the AppBuilder to configure various services and modules based on the provided configuration.
+ * The function returns a fully built application instance that can be used to start the application.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 export class BootstrapGenerator implements IGenerator {
   shouldGenerate(): boolean {
     return true;
@@ -15,7 +30,7 @@ export class BootstrapGenerator implements IGenerator {
 
   private composeBootstrap(options: ScaffoldingOptions): string {
     const imports = [
-      "import { AppBuilder } from '@xeno/core';",
+      "import { AppBuilder } from '@xeno/core';\nimport { MyRegistry } from './registry';",
       options.logging ? "import { LOG_LEVEL } from '@xeno/core';" : ""
     ].filter(Boolean).join('\n');
 
@@ -25,7 +40,7 @@ export class BootstrapGenerator implements IGenerator {
     return `${imports}
 
 export async function bootstrap() {
-  const builder = new AppBuilder();
+  const builder = new AppBuilder<MyRegistry>();
 ${body}
   return await builder.build();
 }
@@ -48,54 +63,54 @@ ${body}
   }
 
   private getDbSnippet(): string {
-    return `builder.addDb(opts => {
-    opts.connectionString = process.env.DATABASE_URL!;
+    return `builder.addDb((opts, config) => {
+    opts.connectionString = config.getOrThrow('DATABASE_URL');
   });`;
   }
 
   private getHttpSnippet(): string {
-    return `builder.addHttpCore(opts => {
-    opts.http.client.baseURL = process.env.HTTP_BASE_URL!;
-    opts..resilience.retry.attempts = Number(process.env.HTTP_RETRY_ATTEMPTS) || 3;
+    return `builder.addHttpCore((opts, config) => {
+    opts.http.client.baseURL = config.getOrThrow('HTTP_BASE_URL');
+    opts.resilience.retry.attempts = Number(config.get('HTTP_RETRY_ATTEMPTS')) ?? 3;
   });`;
   }
 
   private getCacheSnippet(): string {
-    return `builder.addCache(opts => {
-    opts.inMemory = false
-    opts.redis = { host: 'localhost', port: 6379, password: '', username: '', tls: false, maxRetriesPerRequest: 3 }
+    return `builder.addCache((opts, config) => {
+    opts.inMemory = false;
+    opts.redis = { host: config.getOrThrow('REDIS_HOST'), port: Number(config.get('REDIS_PORT')) ?? 6379, password: config.get('REDIS_PASSWORD') ?? '', username: config.get('REDIS_USERNAME') ?? '', tls: config.get('REDIS_TLS') === 'true', maxRetriesPerRequest: 3 };
   });`;
   }
 
   private getAuthSnippet(): string {
-    return `builder.addAuth(opts => {
-    opts.url = process.env.SUPABASE_URL!;
-    opts.key = process.env.SUPABASE_KEY!;
+    return `builder.addAuth((opts, config) => {
+    opts.url = config.getOrThrow('SUPABASE_URL');
+    opts.key = config.getOrThrow('SUPABASE_KEY');
   });`;
   }
 
   private getPinoSnippet(): string {
-    return `builder.addLogger(opts => {
-    opts.level = process.env.LOG_LEVEL as any || LOG_LEVEL.INFO;
+    return `builder.addLogger((opts, config) => {
+    opts.level = config.get('LOG_LEVEL') as any ?? LOG_LEVEL.INFO;
     opts.console = false
-    //config.pino.config = { env: process.env.NODE_ENV, destination: process.env.LOG_DESTINATION, prettyPrint: process.env.LOG_PRETTY_PRINT === 'true' }
+    //config.pino.config = { env: config.getOrThrow('NODE_ENV'), destination: process.env.LOG_DESTINATION, prettyPrint: process.env.LOG_PRETTY_PRINT === 'true' }
   });`;
   }
 
   private getSentrySnippet(): string {
-    return `builder.addLogger(opts => {
-    opts.level = process.env.LOG_LEVEL as any || LOG_LEVEL.INFO;
+    return `builder.addLogger((opts, config) => {
+    opts.level = config.get('LOG_LEVEL') as any ?? LOG_LEVEL.INFO;
     opts.console = false
-    //config.sentry.config = { dsn: process.env.SENTRY_DSN!, environment: process.env.SENTRY_ENVIRONMENT! }
+    //config.sentry.config = { dsn: config.getOrThrow('SENTRY_DSN'), environment: config.getOrThrow('SENTRY_ENVIRONMENT') }
   });`;
   }
 
   private getLoggerSnippet(): string {
-    return `builder.addLogger(opts => {
-    opts.level = process.env.LOG_LEVEL as any || LOG_LEVEL.INFO;
+    return `builder.addLogger((opts, config) => {
+    opts.level = config.get('LOG_LEVEL') as any ?? LOG_LEVEL.INFO;
     opts.console = false
-    //config.pino.config = { env: process.env.NODE_ENV, destination: process.env.LOG_DESTINATION, prettyPrint: process.env.LOG_PRETTY_PRINT === 'true' }
-    //config.sentry.config = { dsn: process.env.SENTRY_DSN!, environment: process.env.SENTRY_ENVIRONMENT! }
+    //config.pino.config = { env: config.getOrThrow('NODE_ENV'), destination: config.getOrThrow('LOG_DESTINATION'), prettyPrint: config.get('LOG_PRETTY_PRINT') === 'true' ?? false }
+    //config.sentry.config = { dsn: config.getOrThrow('SENTRY_DSN'), environment: config.getOrThrow('SENTRY_ENVIRONMENT') }
   });`;
   }
 }

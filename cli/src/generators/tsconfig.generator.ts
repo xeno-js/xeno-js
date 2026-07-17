@@ -2,6 +2,16 @@ import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
 
+/**
+ * @class TsconfigGenerator
+ * @description This generator creates the tsconfig.json file for the project.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 export class TsconfigGenerator implements IGenerator {
   shouldGenerate(): boolean {
     return true;

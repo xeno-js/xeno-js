@@ -2,6 +2,16 @@ import path from 'node:path';
 import { IGenerator, ScaffoldingOptions } from '../core/generator.interface';
 import { FileUtils } from '../utils/file.utils';
 
+/**
+ * @class PackageJsonGenerator
+ * @description This generator creates the package.json file for the project.
+ * 
+ * @author Xeno
+ * @version 1.0.0
+ * @license ISC
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js 
+ */
 export class PackageJsonGenerator implements IGenerator {
   shouldGenerate(_options: ScaffoldingOptions): boolean {
     return true;
@@ -25,14 +35,17 @@ export class PackageJsonGenerator implements IGenerator {
   private getDependencies(options: ScaffoldingOptions): Record<string, string> {
     const deps: Record<string, string> = {
       "@xeno/core": "latest",
-      "zod": "^4.4.3",
+      "dotenv": "^16.4.5"
     };
+
+    if(options.zod) {
+      deps["zod"] = "^3.22.2";
+    }
 
     if (options.database) {
       deps["drizzle-orm"] = "^0.45.2";
       deps["pg"] = "^8.22.0";
       deps["postgres"] = "^3.4.9";
-      deps["dotenv"] = "^16.4.5";
     }
 
     if (options.http) {
