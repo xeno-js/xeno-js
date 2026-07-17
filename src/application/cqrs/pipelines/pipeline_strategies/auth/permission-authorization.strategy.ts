@@ -51,10 +51,7 @@ export class PermissionAuthorizationStrategy extends BaseAuthorizationStrategy<I
         return Result.fail(
           AppError.forbidden(command.intent, 'User does not have the required permissions.'),
         )
-    } else
-      return Result.fail(
-        AppError.forbidden(command.intent, 'No permissions defined for the command policy.'),
-      )
+    }
 
     return Result.ok()
   }

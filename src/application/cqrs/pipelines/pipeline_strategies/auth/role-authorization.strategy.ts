@@ -47,10 +47,7 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
         return Result.fail(
           AppError.forbidden(command.intent, 'User does not have the required roles.'),
         )
-    } else
-      return Result.fail(
-        AppError.forbidden(command.intent, 'No roles defined for the command policy.'),
-      )
+    }
 
     return Result.ok()
   }

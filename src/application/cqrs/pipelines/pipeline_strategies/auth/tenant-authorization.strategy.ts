@@ -29,7 +29,10 @@ export class TenantAuthorizationStrategy extends BaseAuthorizationStrategy<IRequ
   protected async performAuthorizationCheck(
     command: IRequest,
     auth: Identity,
+    isPublic: boolean,
   ): Promise<Result<void, AppError>> {
+    if (isPublic) return Result.ok()
+
     if (Guards.isNullOrEmpty(auth.tenantId) || !GuidHelper.isValidGuid(auth.tenantId))
       return Result.fail(AppError.unauthorized(command.intent, 'Tenant is not authenticated.'))
 

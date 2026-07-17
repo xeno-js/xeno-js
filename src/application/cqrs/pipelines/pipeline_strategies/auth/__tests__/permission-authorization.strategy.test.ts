@@ -76,26 +76,26 @@ describe('PermissionAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � no policy found', () => {
-    it('returns false when policy is undefined', async () => {
+    it('returns true when policy is undefined', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(undefined)
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
+      expect(result.isOk()).toBe(true)
     })
   })
 
   describe('performAuthorizationCheck � policy with no permissions', () => {
-    it('returns false when policy has empty permissions array', async () => {
+    it('returns true when policy has empty permissions array', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(makePolicy({ permissions: [] }))
       const strategy = new PermissionAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
+      expect(result.isOk()).toBe(true)
     })
   })
 

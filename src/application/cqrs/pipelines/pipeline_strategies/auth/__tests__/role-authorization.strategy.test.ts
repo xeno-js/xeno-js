@@ -75,14 +75,14 @@ describe('RoleAuthorizationStrategy', () => {
   })
 
   describe('performAuthorizationCheck � no policy found', () => {
-    it('returns false when policy is undefined', async () => {
+    it('returns true when policy is undefined', async () => {
       const requestContext = makeRequestContext()
       const { registry } = makePolicyRegistry(undefined)
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
+      expect(result.isOk()).toBe(true)
     })
   })
 
@@ -152,17 +152,17 @@ describe('RoleAuthorizationStrategy', () => {
       expect(result.getErrorOrThrow().code).toBe(ERROR_CODES.FORBIDDEN)
     })
 
-    it('returns false when policy roles array is empty', async () => {
+    it('returns true when policy roles array is empty', async () => {
       const requestContext = makeRequestContext({ roles: ['admin'] })
       const { registry } = makePolicyRegistry(makePolicy({ permissions: ['read'], roles: [] }))
       const strategy = new RoleAuthorizationStrategy(registry, requestContext)
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
+      expect(result.isOk()).toBe(true)
     })
 
-    it('returns false when policy roles is undefined', async () => {
+    it('returns true when policy roles is undefined', async () => {
       const requestContext = makeRequestContext({ roles: ['admin'] })
       const { registry } = makePolicyRegistry(
         makePolicy({ permissions: ['read'], roles: undefined }),
@@ -171,7 +171,7 @@ describe('RoleAuthorizationStrategy', () => {
 
       const result = await strategy.execute(request)
 
-      expect(result.isOk()).toBe(false)
+      expect(result.isOk()).toBe(true)
     })
 
     it('calls getPolicy with the correct intent', async () => {

@@ -38,9 +38,7 @@ export abstract class BaseAuthorizationStrategy<
       return Result.fail(AppError.unauthorized(request.intent, 'User is not authenticated.'))
     }
 
-    if (context.network.isPublic) return Result.ok()
-
-    return await this.performAuthorizationCheck(request, context.identity)
+    return await this.performAuthorizationCheck(request, context.identity, context.network.isPublic)
   }
 
   /**
@@ -57,5 +55,6 @@ export abstract class BaseAuthorizationStrategy<
   protected abstract performAuthorizationCheck(
     request: IRequest,
     auth: Identity,
+    isPublic?: boolean,
   ): Promise<ResultType<void>>
 }

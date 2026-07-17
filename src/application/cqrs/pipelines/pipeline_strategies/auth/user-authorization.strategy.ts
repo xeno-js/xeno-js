@@ -28,7 +28,10 @@ export class UserAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
   protected async performAuthorizationCheck(
     command: IRequest,
     auth: Identity,
+    isPublic: boolean,
   ): Promise<Result<void, AppError>> {
+    if (isPublic) return Result.ok()
+
     if (Guards.isNullOrEmpty(auth.userId) || !GuidHelper.isValidGuid(auth.userId))
       return Result.fail(AppError.unauthorized(command.intent, 'User is not authenticated.'))
 
