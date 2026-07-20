@@ -96,7 +96,13 @@ describe('BaseController', () => {
     const request: IQuery<string> = {
       intent: 'TestQuery',
       type: REQUEST_TYPE.QUERY,
-      cacheOptions: { ttl: 1000, cacheKey: 'test-key', bypassCache: false, consistentRead: false },
+      cacheOptions: {
+        ttl: 1000,
+        cacheKey: 'test-key',
+        bypassCache: false,
+        consistentRead: false,
+        isUserScoped: false,
+      },
     }
 
     const result = await controller.exposeQuery(request)

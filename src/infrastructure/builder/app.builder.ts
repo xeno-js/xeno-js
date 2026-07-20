@@ -82,6 +82,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     queryBus: { isEnabled: false },
   }
   private _middlewareConfig: MiddlewareConfig = { publicRoutes: undefined }
+  private _config: CacheConfig = { inMemory: true, redis: undefined }
 
   // --- Module Queuing Flags ---
   private _isContextModuleQueued = false
@@ -91,6 +92,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private _isAuthModuleQueued = false
   private _isDbContextModuleQueued = false
   private _isConcurrencyServiceQueued = false
+  private _isCacheModuleQueued = false
 
   // ─────────────────────────────────────────────────────────────────────────────
   // Application Modules Configuration
@@ -177,15 +179,16 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addCache(setupAction?: SetupAction<CacheConfig, IConfigurationService>): this {
-    const config = { inMemory: true, redis: undefined }
-    if (Guards.isDefined(setupAction)) setupAction(config, this._configuration)
+    if (this._isCacheModuleQueued) return this
+    this._isCacheModuleQueued = true
+    if (Guards.isDefined(setupAction)) setupAction(this._config, this._configuration)
 
     this._modules.push({
       priority: 3,
       name: 'CacheModule',
       action: async () => {
         const { CacheUtils } = await import('../modules/utils/cache.utils')
-        await CacheUtils.addCache(this._container, config)
+        await CacheUtils.addCache(this._container, this._config)
       },
     })
     return this
@@ -465,7 +468,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         const pipelineModule = new CqrsModule<TRegistry>()
         await pipelineModule.configure(this._container, {
           ...this._pipelineConfig,
-          isLogger: this._isLoggerModuleQueued,
+          isLogger: this._isLoggerModuleQueued || this._isMiddlewareModuleQueued,
+          isCache: !this._isCacheModuleQueued,
         })
       },
     })
@@ -495,6 +499,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         await middlewareModule.configure(this._container, {
           ...opts,
           isAuth: this._isAuthModuleQueued,
+          isLogger: this._isLoggerModuleQueued,
         })
       },
     })

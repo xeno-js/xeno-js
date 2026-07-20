@@ -26,7 +26,7 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean },
+    opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean; isCache: boolean },
   ): Promise<void> {
     const { TOKENS } = await import('@/shared')
 
@@ -81,6 +81,14 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
 
     const commandPipelines = pipelines
     const queryPipelines = pipelines
+
+    if (
+      (Guards.isDefined(opts.commandBus.idempotency) || opts.queryBus.isEnabled) &&
+      opts.isCache
+    ) {
+      const { CacheUtils } = await import('./utils/cache.utils')
+      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+    }
 
     if (
       Guards.isDefined(opts.commandBus.idempotency) ||

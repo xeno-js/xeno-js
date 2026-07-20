@@ -7,6 +7,7 @@ import type {
   IAuthService,
   IBaseMapper,
   ICache,
+  ICacheKeyBuilder,
   ICommand,
   IConcurrencyService,
   IConfigurationService,
@@ -87,6 +88,15 @@ export type ApplicationRegistry<T = unknown> = {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly CACHE: ICache
+
+  /** @description Token used to register and resolve the CacheKeyBuilder instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly CACHE_KEY_BUILDER: ICacheKeyBuilder
 
   /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
    *

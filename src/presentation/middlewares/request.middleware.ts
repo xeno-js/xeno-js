@@ -1,6 +1,7 @@
 import type {
   ApplicationRegistry,
   IGateKeeper,
+  ILogger,
   IMatcher,
   IMiddleware,
   IRequestContext,
@@ -41,6 +42,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
     private readonly _gateKeeper: IGateKeeper,
+    private readonly _logger: ILogger,
   ) {}
 
   public async execute<T>(
@@ -71,13 +73,17 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
       const authResult = await this._gateKeeper.authenticate(meta.token)
       if (!authResult.isOk()) {
         const error = authResult.getErrorOrThrow()
+        this._logger.warn(
+          `Authentication failed for request on path: ${req.path}. Code: ${error.code}`,
+        )
+
         return HttpHelper.error(
           {
             success: false,
             error: {
               code: error.code,
               message: error.message,
-              details: undefined,
+              details: `[Authentication Error] Failed to authenticate request on path: ${req.path}`,
               path: req.path,
             },
             correlationId: metadata.correlationId!,
@@ -101,13 +107,14 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
         return next()
       })
     } catch (error) {
+      this._logger.error('RequestContextMiddleware encountered an error', error)
       return HttpHelper.error(
         {
           success: false,
           error: {
             code: ERROR_CODES.SYSTEM_ERROR,
             message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
-            details: error instanceof Error ? error.message : String(error),
+            details: `[Fatal System Error] Exception caught during request handling on path: ${req.path}`,
             path: req.path,
           },
           correlationId,
