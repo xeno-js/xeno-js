@@ -237,7 +237,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   public addDb(setupAction: SetupAction<DbConfig, IConfigurationService>): this {
     if (this._isDbContextModuleQueued) return this
     this._isDbContextModuleQueued = true
-    const config = { connectionString: '' }
+    const config = { connectionString: '', enableSqlLite: false }
     setupAction(config, this._configuration)
     this._modules.push({
       priority: 4,
