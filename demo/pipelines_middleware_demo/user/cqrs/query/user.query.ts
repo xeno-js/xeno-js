@@ -12,7 +12,8 @@ export class UserQuery implements IQuery<User> {
             ttl: 60, // Cache for 60 seconds
             cacheKey: `${this.intent}:${id}`, // Unique cache key based on the payload
             bypassCache: false, // Do not bypass cache
-            consistentRead: false // Do not require consistent read
+            consistentRead: false, // Do not require consistent read
+            isUserScoped: true // Cache is scoped to the user
         }
      }
 }
@@ -27,7 +28,8 @@ export class FindAllUsersQuery implements IQuery<User[]> {
             ttl: 60, // Cache for 60 seconds
             cacheKey: `${this.intent}`, // Unique cache key based on the payload
             bypassCache: true, // Do not bypass cache
-            consistentRead: false // Do not require consistent read
+            consistentRead: false, // Do not require consistent read
+            isUserScoped: false // Cache is not scoped to the user
         }
     }
 }
