@@ -224,6 +224,6 @@ You have completed the **Xeno Telemetry & Logging Layer** architecture guide
 series. Return to the main application boundaries index or explore the caching
 configuration tier:
 
-- 👉 **[Return to Telemetry & Logging Layer Index](./README.md)**
+- 👉 **[Return to Telemetry & Logging Layer Index](./README)**
 - 👉
-  **[Proceed to Presentation Layer](../presentation-layer-response-contracts/README.md)**
+  **[Proceed to Presentation Layer](../presentation-layer-response-contracts/README)**

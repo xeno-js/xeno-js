@@ -284,11 +284,10 @@ enforcement during continuous integration (CI) pipelines.
 
 To proceed with application implementation, navigate to the following resources:
 
-- **[Getting Started](./quick-start-guide.md)**: Initialize a new execution
-  project workspace using the interactive CLI generator.
-- **[CQRS System](../cqrs-pipeline-architecture/README.md)**: Construct
-  decoupled Command and Query pipelines using the explicit Mediator abstraction
-  layer.
-- **[Dependency Injection Container](../core-architecture/README.md)**:
-  Configure dependency token registration profiles inside the explicit
-  `AppBuilder` workspace.
+- **[Getting Started](./quick-start-guide)**: Initialize a new execution project
+  workspace using the interactive CLI generator.
+- **[CQRS System](../cqrs-pipeline-architecture/README)**: Construct decoupled
+  Command and Query pipelines using the explicit Mediator abstraction layer.
+- **[Dependency Injection Container](../core-architecture/README)**: Configure
+  dependency token registration profiles inside the explicit `AppBuilder`
+  workspace.

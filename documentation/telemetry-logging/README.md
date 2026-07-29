@@ -120,19 +120,19 @@ graph TD
 Navigate through the specialized telemetry and logging provider configuration
 manuals sequentially:
 
-### 1. [Configuring Console Logging](./configure-console.md)
+### 1. [Configuring Console Logging](./configure-console)
 
 - **What it covers:** Adjusting global verbosity parameters, toggling standard
   output tracks, and using the built-in console logging driver for localized
   developer workflows.
 
-### 2. [Configuring Pino Structured Logging](./configure-pino.md)
+### 2. [Configuring Pino Structured Logging](./configure-pino)
 
 - **What it covers:** Initializing high-performance JSON log streaming, setting
   up output file destination handles, and configuring clean printing utilities
   for production monitoring stacks.
 
-### 3. [Configuring Sentry Error Tracking](./configure-sentry.md)
+### 3. [Configuring Sentry Error Tracking](./configure-sentry)
 
 - **What it covers:** Wiring your remote Data Source Name (DSN) client, defining
   target environments, and capturing production errors automatically within
@@ -269,4 +269,4 @@ Now that the telemetry configuration fundamentals and logger definitions are
 established, explore how to optimize your terminal diagnostics using the native
 console logging engine:
 
-- **[Proceed to Configuring Console Logging](./configure-console.md)**
+- **[Proceed to Configuring Console Logging](./configure-console)**

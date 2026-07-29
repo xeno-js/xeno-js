@@ -186,4 +186,4 @@ Now that your local terminal text diagnostics are configured, learn how to scale
 your observability capabilities into structured JSON streaming formats for
 high-volume production cloud environments:
 
-- **[Proceed to Configuring Pino Structured Logging](./configure-pino.md)**
+- **[Proceed to Configuring Pino Structured Logging](./configure-pino)**

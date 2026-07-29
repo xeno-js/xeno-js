@@ -220,4 +220,4 @@ Now that the local in-memory provider is configured, explore how to scale your
 transient storage capabilities to support highly available, horizontally
 distributed environment architectures:
 
-- **[Proceed to Distributed Redis Cache Configuration](./redis-provider.md)**
+- **[Proceed to Distributed Redis Cache Configuration](./redis-provider)**

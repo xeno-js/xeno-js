@@ -257,5 +257,5 @@ You have completed the **Xeno CQRS Pipeline Architecture** guide series. Return
 to the main application boundaries dashboard or explore domain persistence layer
 rules:
 
-- **[Go Back to CQRS Pipeline Architecture Layer Index](./README.md)**
-- **[Proceed to Domain Persistence Layer](../../database-persistence/README.md)**
+- **[Go Back to CQRS Pipeline Architecture Layer Index](./README)**
+- **[Proceed to Domain Persistence Layer](../../database-persistence/README)**

@@ -81,7 +81,7 @@ Infrastructure, and Presentation responsibilities separated.
 
 Read the chapter in this order:
 
-### 1. [The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle.md)
+### 1. [The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle)
 
 Definition: Details the middleware orchestration from metadata extraction to
 scope disposal.
@@ -91,7 +91,7 @@ request-scoped execution.
 
 Effect: Clarifies where context enters the pipeline and how it is kept isolated.
 
-### 2. [ExecutionContext Composition](./execution-context-composition.md)
+### 2. [ExecutionContext Composition](./execution-context-composition)
 
 Definition: Describes the ExecutionContext shape.
 
@@ -99,7 +99,7 @@ Behavior: Breaks down identity, network, tracing, and scope components.
 
 Effect: Helps Command and Query handlers consume context consistently.
 
-### 3. [Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers.md)
+### 3. [Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers)
 
 Definition: Documents the header extraction contract.
 
@@ -159,4 +159,4 @@ bypassing RequestContextMiddleware for request-handling paths.
 ## Next Step
 
 Continue with
-[The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle.md).
+[The Request-Identity Storage Lifecycle](./request-identity-storage-lifecycle).

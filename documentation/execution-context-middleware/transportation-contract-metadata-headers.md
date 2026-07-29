@@ -209,4 +209,4 @@ export class CustomQueueAdapter {
 
 Continue with the core execution engine documentation:
 
-- **[Proceed to CQRS Pipeline Architecture Index](../cqrs-pipeline-architecture/README.md)**
+- **[Proceed to CQRS Pipeline Architecture Index](../cqrs-pipeline-architecture/README)**

@@ -154,9 +154,9 @@ diagnostic client.
 To continue setting up and optimizing the application container layout, proceed
 to the following architectural sections:
 
-- **[Application Hosting & Fluent Bootstrap Engine](./application-hosting-bootstrap-engine.md)**:
+- **[Application Hosting & Fluent Bootstrap Engine](./application-hosting-bootstrap-engine)**:
   Explore the detailed mechanics of the fluid initialization builder.
-- **[The IoC Container & Service Lifetimes](./ioc-container-service-lifetimes.md)**:
+- **[The IoC Container & Service Lifetimes](./ioc-container-service-lifetimes)**:
   Review allocation tracking across Singleton, Scoped, and Transient paths.
-- **[Module Composition Pattern](./module-composition-pattern.md)**: Encapsulate
+- **[Module Composition Pattern](./module-composition-pattern)**: Encapsulate
   features and application blocks using clean domain integration rules.

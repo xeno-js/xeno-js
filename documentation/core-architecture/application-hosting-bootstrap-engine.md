@@ -274,9 +274,8 @@ dependencies or passing `undefined` arguments into class components. :::
 To verify how the application container allocates instances resolved from the
 `AppBuilder` layer, navigate to the following resources:
 
-- **[Architecture Layers](../getting-started/architectural-layers-boundaries.md)**:
+- **[Architecture Layers](../getting-started/architectural-layers-boundaries)**:
   Review code isolation constraints and compilation policies enforced across
   domain boundaries.
-- **[CQRS System](../cqrs-pipeline-architecture/README.md)**: Construct
-  decoupled Command and Query pipelines using the explicit Mediator abstraction
-  layer.
+- **[CQRS System](../cqrs-pipeline-architecture/README)**: Construct decoupled
+  Command and Query pipelines using the explicit Mediator abstraction layer.

@@ -1,4 +1,22 @@
-# Supporting Xeno
+---
+title: 'Supporting Xeno: Open-Source Sponsorship & Enterprise Support'
+description:
+  'Learn how to support the development of Xeno, an MIT-licensed Node.js
+  framework. Discover sponsorship options, enterprise consulting, and community
+  contribution channels.'
+keywords:
+  [
+    'Supporting Xeno',
+    'Xeno Framework Sponsorship',
+    'Open Source Node.js',
+    'Enterprise Support',
+    'Buy Me A Coffee',
+    'Xeno Contributions',
+  ]
+author: 'Xeno'
+---
+
+## Supporting Xeno
 
 **Xeno** is an MIT-licensed, open-source framework.
 
@@ -6,7 +24,7 @@ Building an enterprise-grade framework is a challenging labor of love. I develop
 Xeno in my spare time—late nights, early mornings, and weekends—driven by the
 vision of a cleaner, more performant architecture for Node.js.
 
-### Why support Xeno?
+## Why support Xeno?
 
 Xeno is an independent, side-project born from the need to solve real-world
 architectural problems. I don't have a large corporation behind me funding the
@@ -40,7 +58,7 @@ sponsorship, buys the most precious resource: **time**.
   during late-night coding sessions.
 - **Direct Contact & Enterprise Support**: If you are a company interested in
   dedicated support, feature prioritization, or specialized consulting for your
-  infrastructure, please reach out to me directly at xeno-js@outlook.it .
+  infrastructure, please reach out to me directly at <xeno-js@outlook.it> .
 
 ### Join our Contributors
 

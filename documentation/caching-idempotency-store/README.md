@@ -113,19 +113,19 @@ graph TD
 Navigate through the transient storage configurations and implementation models
 sequentially:
 
-### 1. [In-Memory Cache Provider](in-memory-provider.md)
+### 1. [In-Memory Cache Provider](in-memory-provider)
 
 - **What it covers:** Leveraging the framework's native, zero-dependency
   process-memory engine, understanding default lifecycle parameters, and using
   it for local development environments.
 
-### 2. [Distributed Redis Cache Configuration](redis-provider.md)
+### 2. [Distributed Redis Cache Configuration](redis-provider)
 
 - **What it covers:** Establishing secure connections to external Redis
   deployments, handling TLS encryption parameters, and managing automatic
   connection-recovery limits.
 
-### 3. [Idempotency Key Storage Engine](../cqrs-pipeline-architecture/cross-cutting-pipeline-behaviors/idempotency-pipeline-behavior.md)
+### 3. [Idempotency Key Storage Engine](../cqrs-pipeline-architecture/cross-cutting-pipeline-behaviors/idempotency-pipeline-behavior)
 
 - **What it covers:** How the framework utilizes transient storage to maintain
   atomic locks for command deduplication, manage lease durations, and ensure
@@ -238,4 +238,4 @@ export async function bootstrap(): Promise<IServiceContainer> {
 Now that the caching and idempotency storage foundations are established,
 explore how to configure the zero-dependency in-memory cache provider:
 
-- **[Proceed to In-Memory Cache Provider](in-memory-provider.md)**
+- **[Proceed to In-Memory Cache Provider](in-memory-provider)**

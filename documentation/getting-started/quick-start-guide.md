@@ -311,12 +311,11 @@ limit is breached.
 To continue setting up and optimizing the application workspace, proceed to the
 following architectural sections:
 
-- **[Architecture Layers](./architectural-layers-boundaries.md)**: Review code
+- **[Architecture Layers](./architectural-layers-boundaries)**: Review code
   isolation constraints and compilation policies enforced across domain
   boundaries.
-- **[CQRS System](../cqrs-pipeline-architecture/README.md)**: Construct
-  decoupled Command and Query pipelines using the explicit Mediator abstraction
-  layer.
-- **[Dependency Injection Container](../core-architecture/README.md)**:
-  Configure dependency token registration profiles inside the explicit
-  `AppBuilder` workspace.
+- **[CQRS System](../cqrs-pipeline-architecture/README)**: Construct decoupled
+  Command and Query pipelines using the explicit Mediator abstraction layer.
+- **[Dependency Injection Container](../core-architecture/README)**: Configure
+  dependency token registration profiles inside the explicit `AppBuilder`
+  workspace.

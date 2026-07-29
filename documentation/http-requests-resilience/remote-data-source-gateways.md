@@ -263,5 +263,5 @@ export async function bootstrap(): Promise<IServiceContainer> {
 You have completed the **Xeno HTTP Architecture Layer** guide suite. Return to
 the main architecture dashboard index or explore caching configurations:
 
-- **[Return to Subsystem Architecture Index](./README.md)**
-- **[Proceed to Caching Configurations](../caching-idempotency-store/README.md)**
+- **[Return to Subsystem Architecture Index](./README)**
+- **[Proceed to Caching Configurations](../caching-idempotency-store/README)**

@@ -170,5 +170,5 @@ Command Handler code, to keep outcome handling deterministic.
 ## Next Step
 
 Continue with
-[The Request-Identity Storage Lifecycle](../execution-context-middleware/README.md)
+[The Request-Identity Storage Lifecycle](../execution-context-middleware/README)
 to connect Result-based flows with request-scoped execution context.

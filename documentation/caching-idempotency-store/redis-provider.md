@@ -281,8 +281,8 @@ Now that your out-of-process distributed caching topology and fault-tolerant
 Redis infrastructure are fully established, learn how the framework leverages
 this layer to secure write-side processing:
 
-- **[Proceed to Idempotency Key Storage Engine](../cqrs-pipeline-architecture/cross-cutting-pipeline-behaviors/idempotency-pipeline-behavior.md)**
+- **[Proceed to Idempotency Key Storage Engine](../cqrs-pipeline-architecture/cross-cutting-pipeline-behaviors/idempotency-pipeline-behavior)**
 
 Alternatively, learn how to configure loggers in Xeno:
 
-- **[Proceed to Configure Loggers](../telemetry-logging/README.md)**
+- **[Proceed to Configure Loggers](../telemetry-logging/README)**

@@ -265,4 +265,4 @@ Effect: Reliable auth behavior requires consistent bootstrap and pipeline setup.
 
 ## Next Step
 
-Continue with [Pipeline Behavior](../cqrs-pipeline-architecture/README.md).
+Continue with [Pipeline Behavior](../cqrs-pipeline-architecture/README).

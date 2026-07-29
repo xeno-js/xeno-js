@@ -263,8 +263,8 @@ Node.js and TypeScript framework landscape:
 
 To begin application implementation, navigate to the following resources:
 
-- **[Getting Started](./quick-start-guide.md)**: Initialize a new execution
-  project workspace using the interactive CLI generator.
-- **[Architecture Layers](./architectural-layers-boundaries.md)**: Review code
+- **[Getting Started](./quick-start-guide)**: Initialize a new execution project
+  workspace using the interactive CLI generator.
+- **[Architecture Layers](./architectural-layers-boundaries)**: Review code
   isolation constraints and compilation policies enforced across domain
   boundaries.

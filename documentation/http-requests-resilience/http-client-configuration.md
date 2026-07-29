@@ -234,4 +234,4 @@ Now that your HTTP client network connections and configuration boundaries are
 established, explore how to apply self-healing resilience strategies around your
 outgoing calls:
 
-- **[Proceed to Resilience & Fault-Tolerance Policies](./resilience-policies.md)**
+- **[Proceed to Resilience & Fault-Tolerance Policies](./resilience-policies)**

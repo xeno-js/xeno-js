@@ -183,4 +183,4 @@ export async function bootstrap() {
 Now that the core logging and profiling infrastructure is configured, move
 forward to identity verification and data security guards:
 
-- **[Authorization Pipeline Behavior](./authorization-pipeline-behavior.md)**
+- **[Authorization Pipeline Behavior](./authorization-pipeline-behavior)**

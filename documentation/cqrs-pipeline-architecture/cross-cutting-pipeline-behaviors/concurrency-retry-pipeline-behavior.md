@@ -163,4 +163,4 @@ export async function bootstrap(): Promise<IServiceContainer> {
 Now that write-side command safety and retry behaviors are fully established,
 explore how to optimize and accelerate read operations on the query bus:
 
-- **[Query Caching Pipeline Behavior](./query-caching-pipeline-behavior.md)**
+- **[Query Caching Pipeline Behavior](./query-caching-pipeline-behavior)**

@@ -64,17 +64,17 @@ test, safer to refactor, and more predictable across delivery channels.
 
 Navigate through the domain structural building blocks sequentially:
 
-### 1. [Entities & Unique Identifiers](./entities-unique-identifiers.md)
+### 1. [Entities & Unique Identifiers](./entities-unique-identifiers)
 
 - **What it covers:** Entities as identity-based objects, aggregate state
   boundaries, and type-safe identity mapping with `Guid` and `GuidHelper`.
 
-### 2. [Value Objects & Defensive Immutability](./value-objects-defensive-immutability.md)
+### 2. [Value Objects & Defensive Immutability](./value-objects-defensive-immutability)
 
 - **What it covers:** Immutable domain attributes, validation-first
   construction, and defensive patterns used to preserve invariants.
 
-### 3. [Functional Monads & Core Errors](./functional-monads-core-errors.md)
+### 3. [Functional Monads & Core Errors](./functional-monads-core-errors)
 
 - **What it covers:** Explicit success/failure modeling through `Result`,
   standardized error contracts with `AppError`, and rule composition through
@@ -121,4 +121,4 @@ unrecoverable Infrastructure faults. :::
 
 Continue with the identity and entity model details:
 
-- **[Proceed to Entities & Unique Identifiers](./entities-unique-identifiers.md)**
+- **[Proceed to Entities & Unique Identifiers](./entities-unique-identifiers)**

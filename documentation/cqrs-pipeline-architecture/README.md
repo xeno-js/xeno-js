@@ -111,7 +111,7 @@ preventing unnecessary execution overhead in deeper modules.
 Navigate through the CQRS and execution pipeline components sequentially to
 master their usage:
 
-### 1. [The Mediator Dispatcher Engine](./mediator-dispatcher-engine.md)
+### 1. [The Mediator Dispatcher Engine](./mediator-dispatcher-engine)
 
 - **Framework Concept:** Learn how the `IMediator` dispatcher bus coordinates
   message routing, evaluates incoming intent definitions, and isolates execution
@@ -120,7 +120,7 @@ master their usage:
   transport interfaces, map DTO envelopes, and safely handle returned monad
   outcomes.
 
-### 2. [Cross-Cutting Pipeline Implementations](../cqrs-pipeline-architecture/README.md)
+### 2. [Cross-Cutting Pipeline Implementations](../cqrs-pipeline-architecture/README)
 
 - **Framework Concept:** Deep dive into the native behavioral guardrails bundled
   out-of-the-box with Xeno.
@@ -195,4 +195,4 @@ export class PingController extends BaseController<
 Begin by mastering the structural design of the central application messaging
 engine:
 
-- **[Proceed to The Mediator Dispatcher Engine](./mediator-dispatcher-engine.md)**
+- **[Proceed to The Mediator Dispatcher Engine](./mediator-dispatcher-engine)**

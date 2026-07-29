@@ -230,6 +230,5 @@ app.get('/api/status', async (request, reply) => {
 
 ## Next Step
 
-Continue with
-[Execution Context Composition](./execution-context-composition.md) to discover
-how metadata maps onto structural domain context sub-types.
+Continue with [Execution Context Composition](./execution-context-composition)
+to discover how metadata maps onto structural domain context sub-types.

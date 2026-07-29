@@ -48,7 +48,7 @@ configuration side-effects and reduces runtime cold-start latency.
 The introductory documentation is divided into separate, atomic modules
 targeting specific operational phases:
 
-### 1. [Introduction & Philosophy](./introduction-philosophy.md)
+### 1. [Introduction & Philosophy](./introduction-philosophy)
 
 - **Definition:** A conceptual overview of the core architectural goals of the
   Xeno framework.
@@ -57,7 +57,7 @@ targeting specific operational phases:
 - **Effect:** Minimizes memory consumption and optimizes cold-start times within
   containerized and serverless environments.
 
-### 2. [Architectural Layers & Boundaries](./architectural-layers-boundaries.md)
+### 2. [Architectural Layers & Boundaries](./architectural-layers-boundaries)
 
 - **Definition:** A structural specification detailing the framework's
   concentric isolation onion model.
@@ -66,7 +66,7 @@ targeting specific operational phases:
 - **Effect:** Enforces strict code segregation verified at build time through
   static analysis (`eslint.config.mjs`) to eliminate layer bleeding.
 
-### 3. [Why Choose Xeno? An Architectural Deep-Dive](./why-this-framework.md)
+### 3. [Why Choose Xeno? An Architectural Deep-Dive](./why-this-framework)
 
 - **Definition:** A technical comparison analyzing the design trade-offs and
   structural choices implemented in the framework.
@@ -75,7 +75,7 @@ targeting specific operational phases:
 - **Effect:** Displaces framework-specific runtime coupling with standard
   TypeScript design patterns.
 
-### 4. [Quick Start Guide](https://www.google.com/search?q=./quick-start-guide.md)
+### 4. [Quick Start Guide](https://www.google.com/search?q=./quick-start-guide)
 
 - **Definition:** A step-by-step operational implementation manual for initial
   environment setup.
@@ -115,10 +115,10 @@ graph LR
 
 Xeno is an MIT-licensed open-source project. Contributions, feature requests,
 and community support guidelines are maintained within our dedicated
-[Community and Open Source Support section](../community-open-source/support-appreciation.md).
+[Community and Open Source Support section](../community-open-source/support-appreciation).
 
 ## Next Steps
 
 To begin implementation, proceed to the first core conceptual module:
 
-- **[Proceed to Introduction & Philosophy](./introduction-philosophy.md)**
+- **[Proceed to Introduction & Philosophy](./introduction-philosophy)**

@@ -109,7 +109,7 @@ flowchart TD
 
 Read this chapter in order:
 
-### 1. [How the Gatekeeper Operates](./how-works-gate-keeper.md)
+### 1. [How the Gatekeeper Operates](./how-works-gate-keeper)
 
 Definition: Detailed behavior of NoAuthGateKeeper and GateKeeper.
 
@@ -117,7 +117,7 @@ Behavior: Token path evaluation, guest fallback, and Result handling.
 
 Effect: Clarifies how identity is produced for each request mode.
 
-### 2. [Supabase Client & Auth Configuration](./supabase-configuration.md)
+### 2. [Supabase Client & Auth Configuration](./supabase-configuration)
 
 Definition: Provider setup using AuthClientConfig and SupabaseAuthService.
 
@@ -199,4 +199,4 @@ assuming a missing token automatically aborts request execution.
 
 ## Next Step
 
-Continue with [How the Gatekeeper Operates](./how-works-gate-keeper.md).
+Continue with [How the Gatekeeper Operates](./how-works-gate-keeper).

@@ -278,4 +278,4 @@ Now that your access control rules and custom strategies are securely
 established, explore how to protect your application core from structurally
 malformed payloads:
 
-- **[Validation Pipeline Behavior](./validation-pipeline-behaviors.md)**
+- **[Validation Pipeline Behavior](./validation-pipeline-behaviors)**

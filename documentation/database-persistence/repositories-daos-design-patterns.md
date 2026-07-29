@@ -192,9 +192,7 @@ export async function bootstrap(): Promise<IServiceContainer> {
   builder.addDb((opts) => {
     opts.connectionString = process.env.DATABASE_URL!
     opts.useOnlyPoolClient = false
-    opts.tables = {
-      /* Drizzle schema dictionary mapping */
-    }
+    opts.tables = {/* Drizzle schema dictionary mapping */}
   })
 
   builder.addServices((services) => {
@@ -301,4 +299,4 @@ export class GetActiveProductsHandler implements IHandler<IQuery<any>, any[]> {
 Now that your repositories, ReadDAOs, and data source strategies are configured,
 learn how to manage HTTP request:
 
-- **[HTTP Request](../http-requests-resilience/README.md)**
+- **[HTTP Request](../http-requests-resilience/README)**

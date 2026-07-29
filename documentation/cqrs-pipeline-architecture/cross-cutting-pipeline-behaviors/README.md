@@ -110,7 +110,7 @@ database or memory allocation overhead in deeper application rings.
 Every native behavior performs an explicit, dedicated role within the request
 lifecycle:
 
-### 1. [Exception Pipeline (`ExceptionPipeline`)](./exception-pipeline-behavior.md)
+### 1. [Exception Pipeline (`ExceptionPipeline`)](./exception-pipeline-behavior)
 
 - **Definition**: The absolute outermost safety layer tasked with intercepting
   uncaught runtime crashes.
@@ -120,7 +120,7 @@ lifecycle:
 - **Effect**: Prevents raw stack traces from leaking to presentation clients,
   ensuring a uniform failure protocol across all delivery nodes.
 
-### 2. [Logging Pipeline (`LoggingPipeline`)](./logging-pipeline-behavior.md)
+### 2. [Logging Pipeline (`LoggingPipeline`)](./logging-pipeline-behavior)
 
 - **Definition**: A telemetry monitoring ring positioned directly inside the
   exception boundary.
@@ -130,7 +130,7 @@ lifecycle:
 - **Effect**: Supplies structured, traceable execution timelines across
   distributed application environments.
 
-### 3. [Performance Pipeline (`PerformancePipeline`)](./logging-pipeline-behavior.md)
+### 3. [Performance Pipeline (`PerformancePipeline`)](./logging-pipeline-behavior)
 
 - **Definition**: A latency monitoring and profiling interceptor ring.
 - **Behavior**: It measures use-case execution durations. If the processing
@@ -139,7 +139,7 @@ lifecycle:
 - **Effect**: Identifies slow execution tracks and performance anomalies in
   heavy production environments.
 
-### 4. [Authorization Pipeline (`AuthorizationPipeline`)](./authorization-pipeline-behavior.md)
+### 4. [Authorization Pipeline (`AuthorizationPipeline`)](./authorization-pipeline-behavior)
 
 - **Definition**: A zero-trust security gate that evaluates request parameters
   prior to handler execution.
@@ -149,7 +149,7 @@ lifecycle:
 - **Effect**: Enforces multi-tenant data boundaries and permissions constraints
   uniformly across all entry endpoints.
 
-### 5. [Validation Pipeline (`ValidationPipeline`)](./validation-pipeline-behaviors.md)
+### 5. [Validation Pipeline (`ValidationPipeline`)](./validation-pipeline-behaviors)
 
 - **Definition**: An input-sanitization safety barrier.
 - **Behavior**: It maps incoming request payloads against structural compilation
@@ -158,7 +158,7 @@ lifecycle:
 - **Effect**: Blocks malformed data objects from entering use cases, eliminating
   manual type-checking code inside handlers.
 
-### 6. [Command Bus Utilities](./concurrency-retry-pipeline-behavior.md)
+### 6. [Command Bus Utilities](./concurrency-retry-pipeline-behavior)
 
 - **Definition**: A specialized safety ring applied exclusively to
   state-mutating (`ICommand`) operations.
@@ -167,7 +167,7 @@ lifecycle:
 - **Effect**: Guarantees exactly-once execution semantics for critical
   transactional workflows.
 
-### 7. [Query Bus Utilities](./query-caching-pipeline-behavior.md)
+### 7. [Query Bus Utilities](./query-caching-pipeline-behavior)
 
 - **Definition**: A read-optimization ring applied exclusively to data retrieval
   (`IQuery`) operations.
@@ -290,5 +290,5 @@ export async function bootstrap(): Promise<IServiceContainer> {
 Explore how individual built-in pipelines process requests and manage your use
 cases:
 
-- **[Exception Pipeline](../cross-cutting-pipeline-behaviors/README.md):**
+- **[Exception Pipeline](../cross-cutting-pipeline-behaviors/README):**
   Understand unhandled exception mapping and error scrubbing.

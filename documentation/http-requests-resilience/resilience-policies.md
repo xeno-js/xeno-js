@@ -211,4 +211,4 @@ Now that your HTTP clients are secured with comprehensive fault-tolerance and
 self-healing resilience wrappers, explore how to route outbound payloads
 smoothly through the Remote Data Source gateway:
 
-- **[Proceed to Remote Data Source Gateways](./remote-data-source-gateways.md)**
+- **[Proceed to Remote Data Source Gateways](./remote-data-source-gateways)**

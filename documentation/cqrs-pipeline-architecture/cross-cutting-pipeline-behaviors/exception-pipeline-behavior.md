@@ -177,4 +177,4 @@ export async function bootstrap() {
 Now that the outer exception management layout is defined, explore how requests
 are audited and timed:
 
-- **[Proceed to Logging & Performance Pipelines](./logging-pipeline-behavior.md)**
+- **[Proceed to Logging & Performance Pipelines](./logging-pipeline-behavior)**

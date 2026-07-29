@@ -158,4 +158,4 @@ defensive strategies when nested mutable structures are required.
 ## Next Step
 
 For error propagation patterns in Domain and Application flows, continue with
-[Functional Monads & Core Errors](./functional-monads-core-errors.md).
+[Functional Monads & Core Errors](./functional-monads-core-errors).

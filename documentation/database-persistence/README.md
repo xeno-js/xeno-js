@@ -99,7 +99,7 @@ graph TD
 
 Read this chapter in order:
 
-### 1. [Database Module & Client Configuration](./database-bootstrapping/README.md)
+### 1. [Database Module & Client Configuration](./database-bootstrapping/README)
 
 Definition: Bootstrap configuration of database services and client wiring.
 
@@ -109,7 +109,7 @@ container setup.
 Effect: Establishes connection and table schema dependencies used by
 datasources.
 
-### 2. [Database Context & Transaction Management](./db-context-transactions.md)
+### 2. [Database Context & Transaction Management](./db-context-transactions)
 
 Definition: Transactional boundary management through IDbContext.
 
@@ -117,7 +117,7 @@ Behavior: Covers begin/commit/rollback contracts and runInTransaction usage.
 
 Effect: Improves atomicity and consistency in multi-operation write scenarios.
 
-### 3. [The Generic Repository Pattern](./generic-repository-pattern.md)
+### 3. [The Generic Repository Pattern](./generic-repository-pattern)
 
 Definition: Entity-centric data access built on IRepository and
 Repository`<T, TDto>`.
@@ -173,4 +173,4 @@ configuration.
 ## Next Step
 
 Continue with
-[Database Module & Client Configuration](./database-bootstrapping/README.md).
+[Database Module & Client Configuration](./database-bootstrapping/README).

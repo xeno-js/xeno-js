@@ -253,6 +253,6 @@ export class GetTenantAnalyticsQueryHandler {
 ## Next Step
 
 Continue with
-[Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers.md)
+[Transportation Contract Metadata & Headers Extraction](./transportation-contract-metadata-headers)
 to discover how transport blocks map raw network packets into standardized
 system metadata.

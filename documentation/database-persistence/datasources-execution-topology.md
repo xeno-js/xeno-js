@@ -297,5 +297,4 @@ datasource and filter-builder tests.
 
 ## Next Step
 
-Continue with
-[The Filter Query Builder](./fluent-query-filter-compiler-grid.md).
+Continue with [The Filter Query Builder](./fluent-query-filter-compiler-grid).

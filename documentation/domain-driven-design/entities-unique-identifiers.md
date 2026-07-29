@@ -210,6 +210,6 @@ graph TD
 
 ## Related
 
-- [Value Objects & Defensive Immutability](./value-objects-defensive-immutability.md):
+- [Value Objects & Defensive Immutability](./value-objects-defensive-immutability):
   Encapsulating attribute-level validation and immutability without identity
   constraints.

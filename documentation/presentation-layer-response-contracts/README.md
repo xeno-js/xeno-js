@@ -121,33 +121,33 @@ graph TD
 Navigate through the Presentation Layer modules to learn about their
 implementation and contracts:
 
-### 1. [Base Controller](./base-controller.md)
+### 1. [Base Controller](./base-controller)
 
 - **Content:** Technical analysis of the `BaseController` abstract class,
   cancellation signal management (`AbortSignal`), and explicit message routing
   to the Mediator.
 
-### 2. [Standardize HTTP Response](./standardize-http-response/README.md)
+### 2. [Standardize HTTP Response](./standardize-http-response/README)
 
 - **Content:** General index of standardized response contracts and the
   philosophy of network DTO immutability.
 
-### 3. [Success Response](./standardize-http-response/success-response.md)
+### 3. [Success Response](./standardize-http-response/success-response)
 
 - **Content:** Specifications for compiling standard success payloads and status
   code mapping.
 
-### 4. [Error Response](./standardize-http-response/error-response.md)
+### 4. [Error Response](./standardize-http-response/error-response)
 
 - **Content:** Structure of error vectors and techniques for scrubbing internal
   crash details using typed error keys.
 
-### 5. [Paginated Response](./standardize-http-response/paginated-response.md)
+### 5. [Paginated Response](./standardize-http-response/paginated-response)
 
 - **Content:** Data segmentation contracts for page-limit or cursor-based
   responses and control metadata.
 
-### 6. [HTTP Helper](./standardize-http-response/http-helper.md)
+### 6. [HTTP Helper](./standardize-http-response/http-helper)
 
 - **Content:** Guide to using frozen `HttpHelper` methods for automated response
   DTO generation.
@@ -173,4 +173,4 @@ implementation and contracts:
 Begin by examining the structure and operation of the API entry point
 abstraction component:
 
-- **[Proceed to Base Controller documentation](./base-controller.md)**
+- **[Proceed to Base Controller documentation](./base-controller)**

@@ -213,4 +213,4 @@ export class CreateProductController extends BaseController<
 Now that the structure and capabilities of the Base Controller are established,
 explore the architectural patterns governing output standardisation:
 
-- **[Proceed to Standardise HTTP Response Index](./standardize-http-response/README.md)**
+- **[Proceed to Standardise HTTP Response Index](./standardize-http-response/README)**

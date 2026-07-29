@@ -207,4 +207,4 @@ chosen mode.
 ## Next Step
 
 Continue with
-[Database Context & Transaction Management](../db-context-transactions.md).
+[Database Context & Transaction Management](../db-context-transactions).

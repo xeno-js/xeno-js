@@ -208,7 +208,7 @@ export async function bootstrap(): Promise<IServiceContainer> {
 With your write-side operations secured by idempotency constraints, explore how
 the framework manages transient failures and race conditions:
 
-- **[Concurrency & Retry Pipeline Behavior](./concurrency-retry-pipeline-behavior.md)**
+- **[Concurrency & Retry Pipeline Behavior](./concurrency-retry-pipeline-behavior)**
 
 ```
 

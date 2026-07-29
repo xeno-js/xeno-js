@@ -299,4 +299,4 @@ Now that you have mastered how the Mediator handles intent messages and maps
 handlers, discover how to intercept and wrap this flow using cross-cutting
 pipeline behaviors:
 
-- **[Proceed to Pipeline Behaviors Core Fundamentals](./cross-cutting-pipeline-behaviors/README.md)**
+- **[Proceed to Pipeline Behaviors Core Fundamentals](./cross-cutting-pipeline-behaviors/README)**

@@ -184,5 +184,4 @@ rely on gatekeeper fallback behavior alone.
 
 ## Next Step
 
-Continue with
-[Supabase Client & Auth Configuration](./supabase-configuration.md).
+Continue with [Supabase Client & Auth Configuration](./supabase-configuration).

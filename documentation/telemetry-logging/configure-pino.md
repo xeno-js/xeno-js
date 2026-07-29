@@ -202,4 +202,4 @@ Now that your high-performance structured logging streams are configured using
 Pino, explore how to pair your telemetry setup with automated cloud exception
 monitoring using Sentry:
 
-- **[Proceed to Configuring Sentry Error Tracking](./configure-sentry.md)**
+- **[Proceed to Configuring Sentry Error Tracking](./configure-sentry)**

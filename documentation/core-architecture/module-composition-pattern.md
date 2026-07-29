@@ -196,5 +196,5 @@ export async function bootstrap() {
 
 ## Next step
 
-- Continue with [DDD Core](../domain-driven-design/README.md) to define domain
+- Continue with [DDD Core](../domain-driven-design/README) to define domain
   model boundaries and business invariants.

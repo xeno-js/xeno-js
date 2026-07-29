@@ -275,4 +275,4 @@ Now that data inputs are fully verified and guarded against structural
 corruption, explore how the write-side command bus optimizes state changes and
 prevents race conditions:
 
-- **[Command Bus Utilities: Idempotency & Concurrency Behaviors](./idempotency-pipeline-behavior.md)**
+- **[Command Bus Utilities: Idempotency & Concurrency Behaviors](./idempotency-pipeline-behavior)**

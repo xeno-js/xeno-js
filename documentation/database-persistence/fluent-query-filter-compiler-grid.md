@@ -327,4 +327,4 @@ broad write operations and projection regressions.
 ## Next Step
 
 Continue with
-[The Generic Repository Pattern](./repositories-daos-design-patterns.md).
+[The Generic Repository Pattern](./repositories-daos-design-patterns).

@@ -219,5 +219,5 @@ export class SafeGlobalService {
 
 ## Next step
 
-- Continue with [Module Composition Pattern](./module-composition-pattern.md) to
+- Continue with [Module Composition Pattern](./module-composition-pattern) to
   define module boundaries and registration composition.

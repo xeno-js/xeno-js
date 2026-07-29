@@ -119,19 +119,19 @@ graph TD
 
 Navigate through the HTTP and resilience components sequentially:
 
-### 1. [HTTP Client Configuration](./http-client-configuration.md)
+### 1. [HTTP Client Configuration](./http-client-configuration)
 
 - **What it covers:** Customizing baseline transport parameters, setting up
   default request headers, assigning base URLs, and wiring custom injection
   tokens for multi-service mapping.
 
-### 2. [Resilience & Fault-Tolerance Policies](./resilience-policies.md)
+### 2. [Resilience & Fault-Tolerance Policies](./resilience-policies)
 
 - **What it covers:** Tuning backoff retry attempts, configuring circuit breaker
   consecutive failure thresholds, and establishing bulkhead concurrent isolation
   boundaries.
 
-### 3. [Remote Data Source Gateways](./remote-data-source-gateways.md)
+### 3. [Remote Data Source Gateways](./remote-data-source-gateways)
 
 - **What it covers:** Consuming the integrated `IRemoteDataSource` wrapper to
   decouple outgoing requests from low-level infrastructure drivers.
@@ -210,4 +210,4 @@ export async function bootstrap(): Promise<IServiceContainer> {
 
 Learn how to define, secure, and specialize outgoing HTTP transport connections:
 
-- **[Proceed to HTTP Client Configuration](./http-client-configuration.md)**
+- **[Proceed to HTTP Client Configuration](./http-client-configuration)**
