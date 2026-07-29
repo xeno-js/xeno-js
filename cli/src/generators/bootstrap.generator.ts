@@ -31,7 +31,7 @@ export class BootstrapGenerator implements IGenerator {
   private composeBootstrap(options: ScaffoldingOptions): string {
     const imports = [
       "import { AppBuilder } from '@xeno/core';\nimport { MyRegistry } from './registry';",
-      options.logging ? "import { LOG_LEVEL } from '@xeno/core';" : ""
+      options.logging ? "import { LOG_LEVEL } from '@xeno/core';" : "",
     ].filter(Boolean).join('\n');
 
     const snippets = this.composeModules(options);
@@ -50,7 +50,7 @@ ${body}
   private composeModules(options: ScaffoldingOptions): string {
     const snippets: string[] = [];
 
-    if (options.database) snippets.push(this.getDbSnippet());
+    if (options.database || options.sqlLite) snippets.push(this.getDbSnippet(options));
     if (options.http) snippets.push(this.getHttpSnippet());
     if (options.redis) snippets.push(this.getCacheSnippet());
     if (options.supabase) snippets.push(this.getAuthSnippet());
@@ -62,7 +62,14 @@ ${body}
     return snippets.map(s => `  ${s}`).join('\n\n');
   }
 
-  private getDbSnippet(): string {
+  private getDbSnippet(options: ScaffoldingOptions): string {
+    if (options.sqlLite) {
+      return `builder.addDb((opts, config) => {
+    opts.connectionString = config.getOrThrow('SQLITE_DATABASE_URL');
+    opts.enableSqlLite = true;
+  });`;
+    }
+
     return `builder.addDb((opts, config) => {
     opts.connectionString = config.getOrThrow('DATABASE_URL');
   });`;
@@ -70,15 +77,23 @@ ${body}
 
   private getHttpSnippet(): string {
     return `builder.addHttpCore((opts, config) => {
-    opts.http.client.baseURL = config.getOrThrow('HTTP_BASE_URL');
-    opts.resilience.retry.attempts = Number(config.get('HTTP_RETRY_ATTEMPTS')) ?? 3;
+      opts.dataSourceToken = (container) => {
+        // Remember to replace 'MY_HTTP_CLIENT_TOKEN' and 'MY_DATA_SOURCE_TOKEN' with your actual HTTP client and data source tokens in the registry.
+        const client = c.resolve('MY_HTTP_CLIENT_TOKEN'); // Replace with your custom HTTP client token
+        const resilienceClient = c.resolve(TOKENS.RESILIENCE_CLIENT);
+        
+        container.addSingleton('MY_DATA_SOURCE_TOKEN', /** Replace with your custom data source implementation **/);
+      }
+      opts.http.token = 'MY_HTTP_CLIENT_TOKEN' // Replace with your custom HTTP client token
+      opts.http.client.baseURL = config.getOrThrow('HTTP_BASE_URL');
+      opts.resilience.retry.attempts = config.getNumber('HTTP_RETRY_ATTEMPTS') ?? 3;
   });`;
   }
 
   private getCacheSnippet(): string {
     return `builder.addCache((opts, config) => {
     opts.inMemory = false;
-    opts.redis = { host: config.getOrThrow('REDIS_HOST'), port: Number(config.get('REDIS_PORT')) ?? 6379, password: config.get('REDIS_PASSWORD') ?? '', username: config.get('REDIS_USERNAME') ?? '', tls: config.get('REDIS_TLS') === 'true', maxRetriesPerRequest: 3 };
+    opts.redis = { host: config.getOrThrow('REDIS_HOST'), port: config.getNumber('REDIS_PORT') ?? 6379, password: config.get('REDIS_PASSWORD') ?? '', username: config.get('REDIS_USERNAME') ?? '', tls: config.get('REDIS_TLS') === 'true', maxRetriesPerRequest: 3 };
   });`;
   }
 

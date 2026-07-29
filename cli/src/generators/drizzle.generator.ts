@@ -15,7 +15,7 @@ import { FileUtils } from '../utils/file.utils';
  */
 export class DrizzleGenerator implements IGenerator {
   shouldGenerate(options: ScaffoldingOptions): boolean {
-    return options.database; // Genera solo se l'utente ha scelto il database
+    return options.database && !options.sqlLite;
   }
 
   async generate(projectPath: string, options: ScaffoldingOptions): Promise<void> {

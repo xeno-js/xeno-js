@@ -39,13 +39,17 @@ export class PackageJsonGenerator implements IGenerator {
     };
 
     if(options.zod) {
-      deps["zod"] = "^3.22.2";
+      deps["zod"] = "^4.4.3";
     }
 
     if (options.database) {
       deps["drizzle-orm"] = "^0.45.2";
       deps["pg"] = "^8.22.0";
       deps["postgres"] = "^3.4.9";
+    }
+
+    if (options.sqlLite) {
+      deps["@libsql/client"] = "^0.14.0";
     }
 
     if (options.http) {
@@ -99,7 +103,7 @@ export class PackageJsonGenerator implements IGenerator {
       "g": "xeno generate" // Alias for scaffolding - actually, this is a placeholder for the scaffolding command
     };
 
-    if (options.database) {
+    if (options.database || options.sqlLite) {
       scripts["db:generate"] = "drizzle-kit generate";
       scripts["db:push"] = "drizzle-kit push";
       scripts["db:migrate"] = "drizzle-kit migrate";

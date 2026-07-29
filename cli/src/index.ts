@@ -4,7 +4,7 @@ import pc from 'picocolors';
 import { ScaffoldingEngine } from './core/scaffolding.engine';
 import { ScaffoldingOptions } from './core/generator.interface';
 
-import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, RegistryGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator } from './generators/index';
+import { PackageJsonGenerator, BootstrapGenerator, MainGenerator, EnvGenerator, TsconfigGenerator, RegistryGenerator, ReadmeGenerator, GitIgnoreGenerator, DrizzleGenerator, DrizzleSqlLiteGenerator } from './generators/index';
 import { CommandUtils } from './utils/command.utils';
 
 /**
@@ -31,6 +31,7 @@ async function init() {
     targetDir,
     zod: isFull,
     database: isFull,
+    sqlLite: false,
     http: isFull,
     supabase: isFull,
     logging: isFull,
@@ -40,14 +41,20 @@ async function init() {
 
   if (!isFull && !isEmpty) {
     const response = await prompts([
-      { type: 'confirm', name: 'zod', message: 'Install Zod?', initial: true },
+      { type: 'confirm', name: 'zod', message: 'Install Zod for validation?', initial: true },
       { type: 'confirm', name: 'database', message: 'Install Drizzle ORM & Postgres?', initial: true },
+      { type: 'confirm', name: 'sqlLite', message: 'Install SQLite?', initial: false },
       { type: 'confirm', name: 'http', message: 'Install Axios & Cockatiel?', initial: true },
       { type: 'confirm', name: 'supabase', message: 'Install Supabase?', initial: true },
       { type: 'confirm', name: 'logging', message: 'Install Pino?', initial: true },
       { type: 'confirm', name: 'sentry', message: 'Install Sentry?', initial: false },
       { type: 'confirm', name: 'redis', message: 'Install ioredis?', initial: false },
     ]);
+
+    if(response.database && response.sqlLite) {
+      console.log(pc.red('❌ You cannot select both Drizzle ORM & Postgres and SQLite at the same time.'));
+      process.exit(1);
+    }
 
     if (Object.keys(response).length === 0) {
       console.log(pc.red('❌ Scaffolding cancelled.'));
@@ -66,6 +73,7 @@ async function init() {
     new EnvGenerator(),
     new RegistryGenerator(),
     new DrizzleGenerator(),
+    new DrizzleSqlLiteGenerator(),
     new BootstrapGenerator(),
     new MainGenerator(),
     new ReadmeGenerator(),

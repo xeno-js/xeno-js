@@ -1,4 +1,4 @@
-import type { HttpCoreConfig, IHttpClient, IModule, IServiceContainer } from '@/domain'
+import type { HttpCoreConfig, IModule, IServiceContainer } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -19,36 +19,8 @@ export class HttpCoreModule<TRegistry extends XenoRegistry = XenoRegistry> imple
     container: IServiceContainer<TRegistry>,
     opts: HttpCoreConfig<TRegistry>,
   ): Promise<void> {
-    const { TOKENS } = await import('@/shared')
     const { HttpUtils } = await import('./utils/http.utils')
     await HttpUtils.addAxios(container, opts.http)
     await HttpUtils.addResilience(container, opts.resilience)
-
-    const { Guards } = await import('@/shared')
-    const { RemoteDataSource } = await import('../datasources/remote.datasource')
-    container.addSingleton(opts.dataSourceToken, (c) => {
-      const httpClient = c.resolve(opts.http.token)
-      if (!Guards.isDefined(httpClient)) {
-        throw new Error(
-          `HTTP client for token ${opts.http.token.toString()} is not defined in the container.`,
-        )
-      }
-      if (
-        !Guards.hasMethod(httpClient, 'get') ||
-        !Guards.hasMethod(httpClient, 'post') ||
-        !Guards.hasMethod(httpClient, 'put') ||
-        !Guards.hasMethod(httpClient, 'patch') ||
-        !Guards.hasMethod(httpClient, 'delete')
-      ) {
-        throw new Error(
-          'The resolved HTTP client instance does not implement the required methods of IHttpClient.',
-        )
-      }
-      const resilience = c.resolve(TOKENS.RESILIENCE_CLIENT)
-      return new RemoteDataSource(
-        httpClient as IHttpClient,
-        resilience,
-      ) as TRegistry[typeof opts.dataSourceToken]
-    })
   }
 }

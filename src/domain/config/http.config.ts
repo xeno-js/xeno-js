@@ -1,17 +1,17 @@
-import type { HttpHeaders, Optional } from '@/shared'
+import type { HttpHeaders, Optional, SetupAction } from '@/shared'
 
+import type { IServiceContainer } from '../contracts'
 import type { ApplicationRegistry } from './registries'
 import type { ResilienceConfig } from './resilience.config'
 
 /**
  * @description HttpCoreConfig is an interface that defines the configuration options for the core HTTP functionality of the application. It includes two properties: 'http' of type HttpConfig, which specifies the configuration for the HTTP client, and 'resilience' of type ResilienceConfig, which provides the settings for implementing resilience strategies such as retries, circuit breakers, and timeouts. This interface allows for a centralized configuration of both HTTP and resilience features in the application.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export interface HttpCoreConfig<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
 > {
@@ -22,7 +22,7 @@ export interface HttpCoreConfig<
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  dataSourceToken: keyof TRegistry
+  dataSourceToken: SetupAction<IServiceContainer<TRegistry>>
   /** @description The configuration options for the HTTP client, including default headers, base URL, and timeout settings.
    *
    * @author Xeno
@@ -43,13 +43,12 @@ export interface HttpCoreConfig<
 
 /**
  * @description HttpConfig is an interface that defines the configuration options for an HTTP client. It includes a required 'client' property of type HttpClientConfig, which specifies the default headers, base URL, and timeout for the HTTP client. Additionally, it has an optional 'resilience' property that indicates whether resilience features are enabled and provides the corresponding ResilienceConfig if they are.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export interface HttpConfig<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
 > {
@@ -74,13 +73,12 @@ export interface HttpConfig<
 /**
  * @description Agnostic contract used to execute HTTP calls independently
  * from concrete transport libraries (fetch, axios, undici, etc.),
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export interface HttpClientConfig {
   /** @description Optional default headers to include in every request made by the HTTP client.
    *

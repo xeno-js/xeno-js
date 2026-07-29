@@ -56,24 +56,14 @@ export type HttpQueryValue = Maybe<string | number | boolean>
 export type HttpOptions = 'url' | 'method' | 'body'
 
 /**
- * @description Request options accepted by the agnostic HTTP client.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
-export interface HttpRequest<TBody = unknown> {
-  /** @description HTTP method used for the outgoing call.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  readonly method: HttpMethod
-
+ * @description Base Request options accepted by the agnostic HTTP client.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
+export interface HttpBaseRequest {
   /** @description Optional query string parameters.
    *
    * @author Xeno
@@ -83,15 +73,6 @@ export interface HttpRequest<TBody = unknown> {
    */
   readonly query?: Optional<Dictionary<HttpQueryValue>>
 
-  /** @description Optional request body.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  readonly body?: Optional<TBody>
-
   /** @description Optional request headers.
    *
    * @author Xeno
@@ -100,15 +81,6 @@ export interface HttpRequest<TBody = unknown> {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly headers?: Optional<HttpHeaders>
-
-  /** @description Absolute or relative target URL.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
-   */
-  readonly url?: string
 
   /** @description Optional abort signal used to cancel the request.
    *
@@ -127,6 +99,44 @@ export interface HttpRequest<TBody = unknown> {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly timeoutMs?: Optional<number>
+}
+
+/**
+ * @description Request options accepted by the agnostic HTTP client.
+
+   * 
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js 
+   */
+export interface HttpRequest<TBody = unknown> extends HttpBaseRequest {
+  /** @description HTTP method used for the outgoing call.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly method: HttpMethod
+
+  /** @description Optional request body.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly body?: Optional<TBody>
+
+  /** @description Absolute or relative target URL.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly url?: string
 }
 
 /**

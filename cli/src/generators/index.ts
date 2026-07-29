@@ -1,5 +1,6 @@
 export * from './bootstrap.generator';
 export * from './drizzle.generator';
+export * from './drizzle-sql-lite.generator';
 export * from './env.generator';
 export * from './git-ignore.generator';
 export * from './main.generator';

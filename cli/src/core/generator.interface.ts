@@ -24,6 +24,7 @@ export interface ScaffoldingOptions {
   targetDir: string;
   zod: boolean;
   database: boolean;
+  sqlLite: boolean;
   http: boolean;
   supabase: boolean;
   logging: boolean;

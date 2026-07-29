@@ -32,7 +32,7 @@ export class EnvGenerator implements IGenerator {
       'NODE_ENV=development',
     ];
 
-    if (options.database) sections.push(this.getDatabaseSection());
+    if (options.database) sections.push(this.getDatabaseSection(options));
     if (options.http) sections.push(this.getHttpSection());
     if (options.redis) sections.push(this.getRedisSection());
     if (options.supabase) sections.push(this.getSupabaseSection());
@@ -42,7 +42,11 @@ export class EnvGenerator implements IGenerator {
     return sections.join('\n\n') + '\n';
   }
 
-  private getDatabaseSection(): string {
+  private getDatabaseSection(options: ScaffoldingOptions): string {
+    if (options.sqlLite) {
+      return `# --- Database (Drizzle & SQLite) ---\nSQLITE_DATABASE_URL=file:./dev.sqlite`;
+    }
+
     return `# --- Database (Drizzle & PG) ---\nDATABASE_URL=postgres://postgres:password@localhost:5432/xeno_db`;
   }
 

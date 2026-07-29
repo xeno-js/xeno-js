@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@/domain'
 import type { Dictionary } from '@/shared'
 
+import { RemoteDataSource } from '../../datasources/remote.datasource'
 import type { XenoRegistry } from '../../xeno-registry'
 import { AppBuilder } from '../app.builder'
 
@@ -16,6 +17,8 @@ type Registry = XenoRegistry<
     resolveTest: number
   }
 >
+
+class DummyDataSource extends RemoteDataSource {}
 
 function makeBuilder(): AppBuilder<Registry> {
   return new AppBuilder<Registry>()
@@ -59,7 +62,15 @@ describe('AppBuilder � full smoke test', () => {
         }
       })
       .addHttpCore((opts, config) => {
-        opts.dataSourceToken = 'myDummyDs'
+        opts.dataSourceToken = (container) =>
+          container.addSingleton(
+            'myDummyDs',
+            () =>
+              new DummyDataSource(
+                container.resolve('myDummyHttpClient'),
+                container.resolve('RESILIENCE_CLIENT'),
+              ),
+          )
         opts.http.token = 'myDummyHttpClient'
         opts.http.client.baseURL =
           config.get('HTTP_CORE_BASE_URL', 'https://dummy-http-core.local') ??
