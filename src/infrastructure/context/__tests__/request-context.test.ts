@@ -51,6 +51,7 @@ describe('NodeRequestContext', () => {
     const context: RequestContext = {
       identity: {
         userId: 'u1' as unknown as Guid,
+        email: 'admin@example.com',
         tenantId: 't1' as unknown as Guid,
         roles: ['admin'],
         permissions: ['read'],
@@ -111,6 +112,7 @@ describe('NodeRequestContext', () => {
     const original: RequestContext = {
       identity: {
         userId: 'u1' as unknown as Guid,
+        email: 'admin@example.com',
         tenantId: 't1' as unknown as Guid,
         roles: ['admin'],
         permissions: [],

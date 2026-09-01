@@ -19,6 +19,7 @@ export class SupabaseClaimsMapper implements IBaseMapper<User, AuthClaims> {
 
     return {
       sub: user.id,
+      email: user.email,
       tenantId: Guards.isString(appMetadata?.['tenant_id'])
         ? appMetadata?.['tenant_id']
         : undefined,

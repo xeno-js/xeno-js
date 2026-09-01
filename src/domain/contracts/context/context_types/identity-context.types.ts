@@ -29,6 +29,15 @@ export interface Identity {
    */
   readonly userId: Optional<Guid>
 
+  /** @description The email address of the user.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly email: Optional<string>
+
   /** @description The tenant ID associated with the user.
    *
    * @author Xeno

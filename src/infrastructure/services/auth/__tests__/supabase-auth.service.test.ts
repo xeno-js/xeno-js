@@ -98,6 +98,7 @@ describe('SupabaseAuthService', () => {
       const fakeUser = { id: 'usr-456', email: 'user@Xeno.it' } as User
       const expectedClaims: AuthClaims = {
         sub: 'usr-456',
+        email: 'admin@example.com',
         tenantId: 'tenant-789',
         roles: ['USER'],
         permissions: ['read:items'],

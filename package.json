@@ -1,6 +1,6 @@
 {
-  "name": "@xeno/core",
-  "version": "1.0.0-beta.0",
+  "name": "@xeno-js/core",
+  "version": "1.0.0",
   "description": "Xeno agnostic core — DDD + Clean Architecture npm package",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,7 +20,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc-alias",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint --config eslint.config.mjs \"src/**/*.ts\" --max-warnings=0",
     "lint:fix": "eslint --config eslint.config.mjs \"src/**/*.ts\" --fix --max-warnings=0",
@@ -130,6 +130,7 @@
     "pino": "^10.3.1",
     "postgres": "^3.4.9",
     "prettier": "^3.8.3",
+    "tsc-alias": "^1.9.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
     "vitest": "^4.1.7",

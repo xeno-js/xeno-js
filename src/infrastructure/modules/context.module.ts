@@ -16,6 +16,12 @@ export class ContextModule<TRegistry extends XenoRegistry = XenoRegistry> implem
 > {
   async configure(container: IServiceContainer<TRegistry>): Promise<void> {
     const { TOKENS } = await import('@/shared')
+    const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
+    container.addSingleton(TOKENS.SERVICE_SCOPE_FACTORY, () => {
+      const factory = new ServiceScopeFactory<TRegistry>(container)
+      return factory
+    })
+
     const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
     container.addSingleton(TOKENS.REQUEST_CONTEXT, (c) => {
       return new NodeRequestContextFactory<TRegistry>(

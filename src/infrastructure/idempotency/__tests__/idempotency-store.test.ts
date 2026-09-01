@@ -46,6 +46,7 @@ describe('IdempotencyStore', () => {
   it('acquireLock uses tenant contextual key and returns cache result', async () => {
     const executionContext = {
       userId: '550e8400-e29b-41d4-a716-446655440001' as Guid,
+      email: 'admin@example.com',
       tenantId: '550e8400-e29b-41d4-a716-446655440002' as Guid | undefined,
       roles: ['admin'],
       permissions: ['write'],
@@ -68,6 +69,7 @@ describe('IdempotencyStore', () => {
   it('hasBeenProcessed falls back to non-tenant key when tenantId is empty', async () => {
     const executionContext = {
       userId: '550e8400-e29b-41d4-a716-446655440001' as Guid,
+      email: 'admin@example.com',
       tenantId: undefined as Guid | undefined,
       roles: ['user'],
       permissions: ['read'],

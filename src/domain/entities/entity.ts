@@ -40,13 +40,11 @@ export abstract class Entity<T> implements IEntity<T> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  protected constructor(props: T, id: Optional<UniqueId> = undefined) {
-    if (Guards.isNullOrEmpty(id)) {
-      this.id = UniqueId.create()
-    } else if (GuidHelper.isValid(id.getValue())) {
-      this.id = id
+  protected constructor(props: T, id: Optional<string> = undefined) {
+    if (Guards.isNullOrEmpty(id) || GuidHelper.isValid(id)) {
+      this.id = UniqueId.create(id)
     } else {
-      throw new Error('Invalid UniqueId provided.')
+      throw new Error(`Invalid UniqueId provided: ${id}.`)
     }
     this.props = Object.freeze({ ...props })
     Object.freeze(this)

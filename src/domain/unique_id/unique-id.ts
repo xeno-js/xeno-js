@@ -1,5 +1,5 @@
 import type { Guid } from '@/shared'
-import { GuidHelper } from '@/shared'
+import { Guards, GuidHelper } from '@/shared'
 
 /**
  * A class representing a unique identifier (UUID v4) for entities in the domain.
@@ -37,8 +37,9 @@ export class UniqueId {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public static create(id?: Guid): UniqueId {
-    const uniqueId = id ?? GuidHelper.generate()
+  public static create(id?: string): UniqueId {
+    const uniqueId =
+      !Guards.isNullOrEmpty(id) && GuidHelper.isValid(id) ? id : GuidHelper.generate()
     return new UniqueId(uniqueId)
   }
 

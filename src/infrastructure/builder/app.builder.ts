@@ -91,6 +91,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private _isAuthModuleQueued = false
   private _isDbContextModuleQueued = false
   private _isConcurrencyServiceQueued = false
+  private _isCacheModuleQueued = false
 
   // ─────────────────────────────────────────────────────────────────────────────
   // Application Modules Configuration
@@ -177,6 +178,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addCache(setupAction?: SetupAction<CacheConfig, IConfigurationService>): this {
+    if (this._isCacheModuleQueued) return this
+    this._isCacheModuleQueued = true
     const config = { inMemory: true, redis: undefined }
     if (Guards.isDefined(setupAction)) setupAction(config, this._configuration)
 
@@ -466,6 +469,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         await pipelineModule.configure(this._container, {
           ...this._pipelineConfig,
           isLogger: this._isLoggerModuleQueued,
+          isCache: this._isCacheModuleQueued,
         })
       },
     })

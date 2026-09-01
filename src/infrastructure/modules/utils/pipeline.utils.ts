@@ -23,13 +23,15 @@ export const PipelineUtils = Object.freeze({
    */
   async addCommand<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry>['commandBus'],
+    opts: PipelineConfig<TRegistry>['commandBus'] & { isCache: boolean },
   ): Promise<(keyof TRegistry)[]> {
     const pipelines: (keyof TRegistry)[] = []
     const { Guards, TOKENS } = await import('@/shared')
     if (Guards.isDefined(opts.idempotency)) {
-      const { CacheUtils } = await import('./cache.utils')
-      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+      if (!opts.isCache) {
+        const { CacheUtils } = await import('./cache.utils')
+        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+      }
 
       const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
       container.addSingleton(
@@ -74,9 +76,16 @@ export const PipelineUtils = Object.freeze({
    */
   async addQuery<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
+    opts: { isCache: boolean },
   ): Promise<(keyof TRegistry)[]> {
     const { TOKENS } = await import('@/shared')
     const pipelines: (keyof TRegistry)[] = []
+
+    if (!opts.isCache) {
+      const { CacheUtils } = await import('./cache.utils')
+      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+    }
+
     const { QueryCachingPipeline } = await import('@/application')
     container.addSingleton(
       TOKENS.QUERY_CACHING_PIPELINE,

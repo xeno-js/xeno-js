@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { UniqueId } from '@/domain'
+import { GuidHelper } from '@/shared'
 
 import { Entity } from '../entity'
 
@@ -10,7 +11,7 @@ interface SampleProps {
 }
 
 class SampleEntity extends Entity<SampleProps> {
-  constructor(props: SampleProps, id?: UniqueId) {
+  constructor(props: SampleProps, id?: string) {
     super(props, id)
   }
 }
@@ -27,19 +28,21 @@ describe('Entity', () => {
 
   it('uses the provided UniqueId when it is valid', () => {
     const props: SampleProps = { name: 'bob', tags: ['user'] }
-    const id = UniqueId.create()
+    const id = GuidHelper.generate()
 
     const entity = new SampleEntity(props, id)
 
-    expect(entity.id).toBe(id)
+    expect(entity.id.getValue()).toBe(id)
     expect(entity.getProps()).toEqual(props)
   })
 
   it('throws when an invalid UniqueId is provided', () => {
     const props: SampleProps = { name: 'carol', tags: [] }
-    const invalidId = { getValue: () => 'not-a-guid' } as unknown as UniqueId
+    const invalidId = 'not-a-guid'
 
-    expect(() => new SampleEntity(props, invalidId)).toThrow('Invalid UniqueId provided.')
+    expect(() => new SampleEntity(props, invalidId)).toThrow(
+      `Invalid UniqueId provided: ${invalidId}.`,
+    )
   })
 
   it('getProps returns the properties of the entity', () => {

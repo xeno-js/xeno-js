@@ -31,6 +31,17 @@ export interface AuthClaims {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   readonly sub: string
+
+  /**
+   * The user's email
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly email: Optional<string>
+
   /**
    * The tenant ID associated with the user, if applicable. This is useful in multi-tenant applications to identify which tenant the user belongs to.
   

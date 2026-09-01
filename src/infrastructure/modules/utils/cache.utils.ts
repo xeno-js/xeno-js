@@ -34,7 +34,7 @@ export const CacheUtils = Object.freeze({
       )
     }
 
-    if (opts.inMemory || !Guards.isDefined(opts.redis)) {
+    if (opts.inMemory) {
       const { InMemoryCache } = await import('../../cache/in-memory.cache')
       container.addSingleton(TOKENS.CACHE, () => new InMemoryCache())
       return

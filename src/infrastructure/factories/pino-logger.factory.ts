@@ -2,7 +2,7 @@ import type { DestinationStream, LoggerOptions } from 'pino'
 import pino from 'pino'
 
 import type { IFactory, ILoggerClient, LoggerConfig } from '@/domain'
-import { Guards, LOG_LEVEL } from '@/shared'
+import { LOG_LEVEL } from '@/shared'
 
 import { PinoLogger } from '../loggers/pino.logger'
 import type { XenoRegistry } from '../xeno-registry'
@@ -43,7 +43,7 @@ export class PinoLoggerFactory<TRegistry extends XenoRegistry = XenoRegistry> im
       },
     }
 
-    if (Guards.isDefined(prettyPrint)) {
+    if (prettyPrint) {
       return new PinoLogger(
         pino({
           ...options,

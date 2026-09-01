@@ -32,11 +32,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       TOKENS.SERVICE_EXTRACTOR,
       (c) => new HttpHeaderExtractor(c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR)),
     )
-    const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
-    container.addSingleton(TOKENS.SERVICE_SCOPE_FACTORY, () => {
-      const factory = new ServiceScopeFactory<TRegistry>(container)
-      return factory
-    })
+
     const { RegexRouteMatcher } = await import('../services/matchers/router-regex.matcher')
     container.addSingleton(TOKENS.ROUTE_MATCHER, () => {
       return new RegexRouteMatcher(opts.publicRoutes ?? {})

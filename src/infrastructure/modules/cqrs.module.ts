@@ -26,9 +26,10 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean },
+    opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean; isCache: boolean },
   ): Promise<void> {
     const { TOKENS } = await import('@/shared')
+    let isCache = opts.isCache
 
     const { Mediator } = await import('@/application')
     container.addSingleton(TOKENS.MEDIATOR, (c) => {
@@ -87,13 +88,17 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
       Guards.isDefined(opts.commandBus.concurrency)
     ) {
       const { PipelineUtils } = await import('./utils/pipeline.utils')
-      const newCommandPipelines = await PipelineUtils.addCommand(container, opts.commandBus)
+      const newCommandPipelines = await PipelineUtils.addCommand(container, {
+        ...opts.commandBus,
+        isCache,
+      })
+      isCache = true
       commandPipelines.push(...newCommandPipelines)
     }
 
     if (opts.queryBus.isEnabled) {
       const { PipelineUtils } = await import('./utils/pipeline.utils')
-      const newQueryPipelines = await PipelineUtils.addQuery(container)
+      const newQueryPipelines = await PipelineUtils.addQuery(container, { isCache })
       queryPipelines.push(...newQueryPipelines)
     }
 

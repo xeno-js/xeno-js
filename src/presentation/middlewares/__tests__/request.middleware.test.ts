@@ -95,6 +95,7 @@ function makeRequestContextFactory() {
 const fakeIdentity = {
   userId: '00000000-0000-0000-0000-000000000001' as const,
   tenantId: '00000000-0000-0000-0000-000000000002' as const,
+  email: 'admin@example.com',
   roles: ['admin'] as string[],
   permissions: [] as string[],
 }

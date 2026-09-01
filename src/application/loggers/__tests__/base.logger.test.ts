@@ -15,6 +15,7 @@ const makeRequestContext = (
 const makeExecutionContext = (): RequestContext => ({
   identity: {
     userId: '123' as unknown as Guid,
+    email: 'admin@example.com',
     tenantId: '456' as unknown as Guid,
     roles: ['admin'],
     permissions: ['read'],

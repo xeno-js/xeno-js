@@ -79,7 +79,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    */
   protected fail(
     error: AppError,
-    details: Optional<string>,
+    details: Optional<string> = undefined,
     headers: Optional<Dictionary<string[]>> = {},
   ): ResponseDto<TResponse> {
     const context = this._requestContext.getContext()
@@ -137,5 +137,9 @@ export abstract class BaseController<TRequest, TResponse> implements IController
   protected _send(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     const signal = new AbortController().signal
     return this._mediator.send(request, signal)
+  }
+
+  protected getContext(): Optional<RequestContext> {
+    return this._requestContext.getContext()
   }
 }
