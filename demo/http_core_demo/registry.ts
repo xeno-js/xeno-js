@@ -1,8 +1,10 @@
-import { IHttpClient, IRemoteDataSource, TokenHelper } from '@xeno/core'
+import { IHttpClient, IRemoteDataSource, XenoRegistry } from '@xeno/core'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS
 // ─────────────────────────────────────────────────────────────────────────────
 // 
-export const DATA_SOURCE_TOKEN = TokenHelper.createToken<IRemoteDataSource>('DATA_SOURCE_TOKEN')
-export const HTTP_CLIENT_TOKEN = TokenHelper.createToken<IHttpClient>('HTTP_CLIENT_TOKEN')
+export interface AppRegistry extends XenoRegistry {
+    CUSTOM_DATA_SOURCE_TOKEN: IRemoteDataSource
+    MY_HTTP_CLIENT_TOKEN: IHttpClient
+}

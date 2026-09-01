@@ -42,6 +42,14 @@ export const TOKENS = Object.freeze({
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   CACHE: 'CACHE',
+  /** @description Token used to register and resolve the CacheKeyBuilder instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  CACHE_KEY_BUILDER: 'CACHE_KEY_BUILDER',
   /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
    *
    * @author Xeno

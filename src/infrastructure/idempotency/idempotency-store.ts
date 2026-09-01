@@ -1,6 +1,6 @@
-import type { ICache, IIdempotencyStore, IIdentityAccessor } from '@/domain'
+import type { ICache, ICacheKeyBuilder, IIdempotencyStore } from '@/domain'
 import type { Optional } from '@/shared'
-import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
+import { IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 /**
  * @description The IdempotencyStore class provides an implementation of the IIdempotencyStore interface, utilizing a caching mechanism to manage locks and processed command results for idempotent operations. This class is designed to ensure that commands with the same ID are processed only once, preventing duplicate processing and allowing for retrieval of results from previously processed commands. The IdempotencyStore uses the IRequestContext to build contextual keys for storing locks and results in a multi-tenant environment, following the AWS SaaS Factory Pattern for logical partitioning. By leveraging the ICache interface, the IdempotencyStore can efficiently manage locks and stored results with configurable time-to-live (TTL) values, ensuring that stale data is automatically cleaned up over time.
@@ -25,11 +25,11 @@ export class IdempotencyStore implements IIdempotencyStore {
    */
   constructor(
     private readonly _cache: ICache,
-    private readonly _identityAccessor: IIdentityAccessor,
+    private readonly _cacheKeyBuilder: ICacheKeyBuilder,
   ) {}
 
   public async acquireLock(requestId: string, ttlSeconds: number): Promise<boolean> {
-    const key = this.buildContextualKey(requestId)
+    const key = this._cacheKeyBuilder.buildContextualKey(`command:${requestId}`)
     return await this._cache.setIfAbsent(
       `${IDEMPOTENCY_CONSTANTS.LOCK_KEY_PREFIX}${key}`,
       IDEMPOTENCY_CONSTANTS.LOCKED_VALUE,
@@ -38,7 +38,7 @@ export class IdempotencyStore implements IIdempotencyStore {
   }
 
   public async hasBeenProcessed(commandId: string): Promise<boolean> {
-    const key = this.buildContextualKey(commandId)
+    const key = this._cacheKeyBuilder.buildContextualKey(`command:${commandId}`)
     return await this._cache.has(`${IDEMPOTENCY_CONSTANTS.PROCESSED_KEY_PREFIX}${key}`)
   }
 
@@ -47,7 +47,7 @@ export class IdempotencyStore implements IIdempotencyStore {
     payload: T,
     ttlSeconds: number,
   ): Promise<void> {
-    const key = this.buildContextualKey(commandId)
+    const key = this._cacheKeyBuilder.buildContextualKey(`command:${commandId}`)
     await this._cache.set(
       `${IDEMPOTENCY_CONSTANTS.PROCESSED_KEY_PREFIX}${key}`,
       payload,
@@ -56,36 +56,14 @@ export class IdempotencyStore implements IIdempotencyStore {
   }
 
   public async getPayload<T>(commandId: string): Promise<Optional<T>> {
-    const key = this.buildContextualKey(commandId)
+    const key = this._cacheKeyBuilder.buildContextualKey(`command:${commandId}`)
     const payload = await this._cache.get<T>(`${IDEMPOTENCY_CONSTANTS.PROCESSED_KEY_PREFIX}${key}`)
 
     return payload
   }
 
   public async releaseLock(commandId: string): Promise<void> {
-    const key = this.buildContextualKey(commandId)
+    const key = this._cacheKeyBuilder.buildContextualKey(`command:${commandId}`)
     await this._cache.remove(`${IDEMPOTENCY_CONSTANTS.LOCK_KEY_PREFIX}${key}`)
-  }
-
-  /**
-   * @description Builds a contextual key for the given requestId by incorporating the identity of the user from the request context. This method constructs a key that includes a tenant prefix if the identity is defined and has a tenantId, following the AWS SaaS Factory Pattern for logical partitioning. If the identity is not defined or does not have a tenantId, it falls back to a simpler key format without the tenant prefix. This contextual key is used for storing locks and processed command results in the cache, allowing for more granular management of idempotent commands in multi-tenant scenarios.
-   * @param requestId The unique identifier for the command or request for which the contextual key is being built. This ID is used as part of the key construction to ensure that locks and processed results are associated with the correct command or request.
-   * @returns A string representing the contextual key to be used in the cache for storing locks and processed command results, incorporating tenant information if available.
-  
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
-  private buildContextualKey(requestId: string): string {
-    const identity = this._identityAccessor.getIdentity()
-
-    // AWS SaaS Factory Pattern: logical partitioning via tenant prefix keyspace
-    if (Guards.isDefined(identity) && !Guards.isNullOrEmpty(identity.tenantId)) {
-      return `tenant:${identity.tenantId}:commands:${requestId}`
-    }
-
-    return `commands:${requestId}`
   }
 }

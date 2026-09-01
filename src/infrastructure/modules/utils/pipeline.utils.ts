@@ -28,15 +28,10 @@ export const PipelineUtils = Object.freeze({
     const pipelines: (keyof TRegistry)[] = []
     const { Guards, TOKENS } = await import('@/shared')
     if (Guards.isDefined(opts.idempotency)) {
-      if (!opts.isCache) {
-        const { CacheUtils } = await import('./cache.utils')
-        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
-      }
-
       const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
       container.addSingleton(
         TOKENS.IDEMPOTENCY_STORE,
-        (c) => new IdempotencyStore(c.resolve(TOKENS.CACHE), c.resolve(TOKENS.IDENTITY_ACCESSOR)),
+        (c) => new IdempotencyStore(c.resolve(TOKENS.CACHE), c.resolve(TOKENS.CACHE_KEY_BUILDER)),
       )
 
       const { IdempotencyPipeline } = await import('@/application')
@@ -89,7 +84,12 @@ export const PipelineUtils = Object.freeze({
     const { QueryCachingPipeline } = await import('@/application')
     container.addSingleton(
       TOKENS.QUERY_CACHING_PIPELINE,
-      (c) => new QueryCachingPipeline(c.resolve(TOKENS.CACHE), c.resolve(TOKENS.LOGGER)),
+      (c) =>
+        new QueryCachingPipeline(
+          c.resolve(TOKENS.CACHE),
+          c.resolve(TOKENS.CACHE_KEY_BUILDER),
+          c.resolve(TOKENS.LOGGER),
+        ),
     )
     pipelines.push(TOKENS.QUERY_CACHING_PIPELINE)
     return pipelines

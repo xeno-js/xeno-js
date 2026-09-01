@@ -2,7 +2,7 @@ import type { IDisposable, ITransactionState, IUnitOfWork } from '@/domain'
 import { AppError } from '@/domain'
 import { Guards, type Optional } from '@/shared'
 
-import type { DbContext } from '../db/db.types'
+import type { DbContext, DbTransaction } from '../db/db.types'
 
 /**
  * @file unit-of-work.ts
@@ -26,7 +26,7 @@ export class UnitOfWork implements IUnitOfWork, IDisposable {
    */
   constructor(
     private readonly _dbContext: DbContext,
-    private readonly _ttx: ITransactionState<DbContext>,
+    private readonly _ttx: ITransactionState<DbTransaction>,
   ) {}
 
   async runInTransaction<T>(callback: () => Promise<T>, signal: Optional<AbortSignal>): Promise<T> {

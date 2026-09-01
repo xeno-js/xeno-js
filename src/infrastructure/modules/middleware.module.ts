@@ -16,7 +16,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: MiddlewareConfig & { isAuth: boolean },
+    opts: MiddlewareConfig & { isAuth: boolean; isLogger: boolean },
   ): Promise<void> {
     const { TOKENS } = await import('@/shared')
 
@@ -38,6 +38,11 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       return new RegexRouteMatcher(opts.publicRoutes ?? {})
     })
 
+    if (!opts.isLogger) {
+      const { LoggerUtils } = await import('./utils/logger.utils')
+      await LoggerUtils.addLogger(container, undefined)
+    }
+
     const { RequestContextMiddleware } = await import('@/presentation')
     container.addSingleton(
       TOKENS.MIDDLEWARE,
@@ -47,6 +52,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
           c.resolve(TOKENS.REQUEST_CONTEXT),
           c.resolve(TOKENS.SERVICE_EXTRACTOR),
           c.resolve(TOKENS.GATE_KEEPER),
+          c.resolve(TOKENS.LOGGER),
         ),
     )
   }

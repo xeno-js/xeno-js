@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { ICache, ILogger, IQuery } from '@/domain'
+import type { ICache, ICacheKeyBuilder, ILogger, IQuery } from '@/domain'
 import { Result } from '@/domain'
 import { REQUEST_TYPE } from '@/shared'
 
@@ -18,6 +18,16 @@ const createCache = () => {
     clear: vi.fn(),
   }
   return { cache, getMock, setMock }
+}
+
+const createCacheKeyBuilder = () => {
+  const buildContextualKeyMock = vi.fn((key: string) => `contextual:${key}`)
+  const buildUserScopedKeyMock = vi.fn((key: string) => `user-scoped:${key}`)
+  const cacheKeyBuilder: ICacheKeyBuilder = {
+    buildContextualKey: buildContextualKeyMock,
+    buildUserScopedKey: buildUserScopedKeyMock,
+  }
+  return { cacheKeyBuilder, buildContextualKeyMock, buildUserScopedKeyMock }
 }
 
 const createLogger = () => {
@@ -40,6 +50,7 @@ const makeRequest = (overrides?: Partial<IQuery['cacheOptions']>): IQuery<{ id: 
     ttl: 60,
     bypassCache: undefined,
     consistentRead: undefined,
+    isUserScoped: false,
     ...overrides,
   },
 })
@@ -49,7 +60,8 @@ describe('QueryCachingPipeline', () => {
     it('bypasses cache and calls next when cacheKey is empty', async () => {
       const { cache, getMock } = createCache()
       const { logger } = createLogger()
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('value'))
       const request = makeRequest({ cacheKey: '' })
 
@@ -64,7 +76,8 @@ describe('QueryCachingPipeline', () => {
       const { cache, getMock } = createCache()
       const { logger, debugMock } = createLogger()
       getMock.mockResolvedValue('cached-value')
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn()
       const request = makeRequest()
 
@@ -81,7 +94,8 @@ describe('QueryCachingPipeline', () => {
       const { logger, debugMock } = createLogger()
       getMock.mockResolvedValue(undefined)
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('db-value'))
       const request = makeRequest()
 
@@ -90,7 +104,7 @@ describe('QueryCachingPipeline', () => {
       expect(next).toHaveBeenCalledTimes(1)
       expect(result.isOk()).toBe(true)
       expect(result.getValueOrThrow()).toBe('db-value')
-      expect(setMock).toHaveBeenCalledWith('test-key', 'db-value', 60)
+      expect(setMock).toHaveBeenCalledWith('contextual:test-key', 'db-value', 60)
       expect(debugMock).toHaveBeenCalledWith(expect.stringContaining('Cache SET'))
     })
 
@@ -98,7 +112,8 @@ describe('QueryCachingPipeline', () => {
       const { cache, getMock, setMock } = createCache()
       const { logger } = createLogger()
       getMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const appError = { message: 'err' } as never
       const next = vi.fn().mockResolvedValue(Result.fail(appError))
       const request = makeRequest()
@@ -113,7 +128,8 @@ describe('QueryCachingPipeline', () => {
       const { cache, getMock, setMock } = createCache()
       const { logger } = createLogger()
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('fresh-value'))
       const request = makeRequest({ bypassCache: true })
 
@@ -128,7 +144,8 @@ describe('QueryCachingPipeline', () => {
       const { cache, getMock, setMock } = createCache()
       const { logger } = createLogger()
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('fresh-value'))
       const request = makeRequest({ consistentRead: true })
 
@@ -144,7 +161,8 @@ describe('QueryCachingPipeline', () => {
       const { logger, warnMock } = createLogger()
       getMock.mockRejectedValue(new Error('redis down'))
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('db-value'))
       const request = makeRequest()
 
@@ -161,7 +179,8 @@ describe('QueryCachingPipeline', () => {
       const { logger, warnMock } = createLogger()
       getMock.mockResolvedValue(undefined)
       setMock.mockRejectedValue(new Error('write fail'))
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('db-value'))
       const request = makeRequest()
 
@@ -178,7 +197,8 @@ describe('QueryCachingPipeline', () => {
       const { logger, warnMock } = createLogger()
       getMock.mockRejectedValue('string error')
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('db-value'))
       const request = makeRequest()
 
@@ -192,7 +212,8 @@ describe('QueryCachingPipeline', () => {
       const { logger, warnMock } = createLogger()
       getMock.mockResolvedValue(undefined)
       setMock.mockRejectedValue('write string error')
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('db-value'))
       const request = makeRequest()
 
@@ -205,13 +226,14 @@ describe('QueryCachingPipeline', () => {
       const { cache, setMock } = createCache()
       const { logger } = createLogger()
       setMock.mockResolvedValue(undefined)
-      const pipeline = new QueryCachingPipeline(cache, logger)
+      const { cacheKeyBuilder } = createCacheKeyBuilder()
+      const pipeline = new QueryCachingPipeline(cache, cacheKeyBuilder, logger)
       const next = vi.fn().mockResolvedValue(Result.ok('value'))
       const request = makeRequest({ bypassCache: true })
 
       await pipeline.handle(request, next)
 
-      expect(setMock).toHaveBeenCalledWith('test-key', 'value', 60)
+      expect(setMock).toHaveBeenCalledWith('contextual:test-key', 'value', 60)
     })
   })
 })

@@ -15,7 +15,7 @@ If you are looking to start a new architecture from scratch, we highly recommend
 using the official Xeno scaffolding CLI. It automates project setup and handles
 the configuration of modules for you.
 
-- **[See how to use the CLI](../cli/README.md)**
+- **[See how to use the CLI](../cli/README)**
 
 ---
 
@@ -31,7 +31,7 @@ layer, executing automated header extraction and anchoring metadata variables
 into `AsyncLocalStorage` thread boundaries.
 
 - 👉
-  **[Explore Pipeline & Middleware Implementation](./pipelines_middleware_demo/README.md)**
+  **[Explore Pipeline & Middleware Implementation](./pipelines_middleware_demo/README)**
 
 ### 2. `http_core_demo/`
 
@@ -40,7 +40,7 @@ sources, orchestrated concurrently via sandboxed Axios instances and Cockatiel
 policy rings.
 
 - 👉
-  **[Explore HTTP Core & Resilience Implementation](./http_core_demo/README.md)**
+  **[Explore HTTP Core & Resilience Implementation](./http_core_demo/README)**
 
 ---
 

@@ -84,6 +84,14 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     const queryPipelines = pipelines
 
     if (
+      (Guards.isDefined(opts.commandBus.idempotency) || opts.queryBus.isEnabled) &&
+      opts.isCache
+    ) {
+      const { CacheUtils } = await import('./utils/cache.utils')
+      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+    }
+
+    if (
       Guards.isDefined(opts.commandBus.idempotency) ||
       Guards.isDefined(opts.commandBus.concurrency)
     ) {

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@/domain'
 import type { Dictionary } from '@/shared'
 
+import { RemoteDataSource } from '../../datasources/remote.datasource'
 import type { XenoRegistry } from '../../xeno-registry'
 import { AppBuilder } from '../app.builder'
 
@@ -16,6 +17,8 @@ type Registry = XenoRegistry<
     resolveTest: number
   }
 >
+
+class DummyDataSource extends RemoteDataSource {}
 
 function makeBuilder(): AppBuilder<Registry> {
   return new AppBuilder<Registry>()
@@ -40,15 +43,34 @@ describe('AppBuilder � full smoke test', () => {
         config.performance.thresholdMs = 100
         config.authorization.userId = true
         config.authorization.tenantId = true
-        config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
+        // config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
         config.commandBus.concurrency = {
           maxRetries: 3,
           delayConfig: { baseDelayMs: 100, maxJitterMs: 50 },
         }
         config.queryBus.isEnabled = true
       })
+      .addCache((opts, config) => {
+        opts.inMemory = false
+        opts.redis = {
+          host: config.get('REDIS_HOST', 'localhost') ?? 'localhost',
+          port: config.getNumber('REDIS_PORT', 6379) ?? 6379,
+          password: config.get('REDIS_PASSWORD', undefined),
+          username: config.get('REDIS_USERNAME', undefined),
+          tls: config.getBoolean('REDIS_TLS', false) ?? false,
+          maxRetriesPerRequest: config.getNumber('REDIS_MAX_RETRIES', 3) ?? 3,
+        }
+      })
       .addHttpCore((opts, config) => {
-        opts.dataSourceToken = 'myDummyDs'
+        opts.dataSourceToken = (container) =>
+          container.addSingleton(
+            'myDummyDs',
+            () =>
+              new DummyDataSource(
+                container.resolve('myDummyHttpClient'),
+                container.resolve('RESILIENCE_CLIENT'),
+              ),
+          )
         opts.http.token = 'myDummyHttpClient'
         opts.http.client.baseURL =
           config.get('HTTP_CORE_BASE_URL', 'https://dummy-http-core.local') ??

@@ -60,6 +60,7 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
+    "@libsql/client": "^0.14.0",
     "@sentry/node": "^7.64.0",
     "@supabase/supabase-js": "^2.35.0",
     "axios": "^1.16.1",
@@ -73,6 +74,9 @@
     "zod": "^4.4.3"
   },
   "peerDependenciesMeta": {
+    "@libsql/client": {
+      "optional": true
+    },
     "@sentry/node": {
       "optional": true
     },
@@ -111,6 +115,7 @@
     "@commitlint/cli": "^21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
+    "@libsql/client": "^0.14.0",
     "@sentry/node": "^7.64.0",
     "@supabase/supabase-js": "^2.35.0",
     "@types/pg": "^8.20.0",

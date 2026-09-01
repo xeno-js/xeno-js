@@ -1,12 +1,12 @@
 <div align="center">
   <img src="website/static/img/logo.png" alt="Xeno Logo" width="140" />
-  
+
   <h1>Xeno</h1>
-  
+
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
-  
+
   <p>
-    <a href="https://github.com/Mattia-Carcione/xeno">
+    <a href="https://github.com/Mattia-Carcione/xeno-js">
       <img src="https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square" alt="Powered by Xeno" />
     </a>
     <a href="https://github.com/Mattia-Carcione/xeno-js/blob/main/LICENSE">
@@ -80,7 +80,7 @@ To explore the architecture, programmatic configurations, and extension
 workflows of Xeno, read the full technical manuals located inside the main
 documentation hub:
 
-- **[Framework Documentation Repository](./docs/README.md)**
+- **[Framework Documentation Repository](./docs/README)**
 
 Inside, you will find exhaustive, step-by-step assembly guides covering core
 host building (`AppBuilder`), isolated request middleware lifecycles, functional
@@ -180,14 +180,13 @@ export const xeno = new AppBuilder<MyRegistry>()
             config.queryBus.isEnabled = true
         })
         // Configure Database with drizzle
-        .addDb((opts) => {
-            if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL missing!')
-            opts.connectionString = process.env.DATABASE_URL
+        .addDb((opts, config) => {
+            opts.connectionString = config.getOrThrow('DATABASE_URL')
         })
         // Configure Authentication with supabase
-        .addAuth((config) => {
-            config.key = 'demo-key'
-            config.url = 'https://demo-auth-server.com'
+        .addAuth((opts, config) => {
+            opts.key = 'demo-key'
+            opts.url = config.getOrThrow('https://demo-auth-server.com')
         })
         // Configure your logger (e.g. Console, Sentry, Pino or custom logger)
         .addLogger((config) => {
@@ -294,7 +293,7 @@ a clean, pre-configured architecture tailored to your specific requirements.
 
 If you want to learn how to use it, see the full options available, or
 understand how the scaffolding engine works, check the
-**[CLI Documentation](./cli/README.md)**.
+**[CLI Documentation](./cli/README)**.
 
 ---
 
@@ -329,7 +328,6 @@ stability of the core framework, **direct pushes to the `main` and `develop`
 branches are strictly prohibited.** Please follow this Git Flow to contribute:
 
 1. **Branch off from `develop`**: Create a new branch for your feature or
-
    bugfix.
 
 ```bash
@@ -408,11 +406,12 @@ Whether you are an individual developer or a business using Xeno, your support
 makes a real difference.
 
 👉
-**[Read our support guidelines and find out how to help](./docs/support/README.md)**
+**[Read our support guidelines and find out how to help](./docs/support/README)**
 
 Thank you for being part of this decoupled open-source journey!
 
-<amp-bounce></amp-bounce>
+<amp-bounce>
+</amp-bounce>
 <a href="https://www.buymeacoffee.com/xenojs" target="_blank">
 <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="42" style="height: 42px !important;" />
 </a>
@@ -426,7 +425,7 @@ your README:
 
 ```html
 <a
-  href="[https://github.com/Mattia-Carcione/xeno](https://github.com/Mattia-Carcione/xeno)"
+  href="[https://github.com/Mattia-Carcione/xeno-js](https://github.com/Mattia-Carcione/xeno-js)"
   target="_blank"
 >
   <img

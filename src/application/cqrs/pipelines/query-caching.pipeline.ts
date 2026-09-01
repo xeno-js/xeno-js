@@ -1,4 +1,12 @@
-import type { Delegate, ICache, ILogger, IPipelineBehavior, IQuery, ResultType } from '@/domain'
+import type {
+  Delegate,
+  ICache,
+  ICacheKeyBuilder,
+  ILogger,
+  IPipelineBehavior,
+  IQuery,
+  ResultType,
+} from '@/domain'
 import { Result } from '@/domain'
 import { Guards } from '@/shared'
 
@@ -28,6 +36,7 @@ export class QueryCachingPipeline<
    */
   constructor(
     private readonly _cacheService: ICache,
+    private readonly _cacheKeyBuilder: ICacheKeyBuilder,
     private readonly _logger: ILogger,
   ) {}
 
@@ -41,10 +50,13 @@ export class QueryCachingPipeline<
     const bypass =
       request.cacheOptions.bypassCache === true || request.cacheOptions.consistentRead === true
 
-    // 1. Lettura (Cache Hit)
+    const key = request.cacheOptions.isUserScoped
+      ? this._cacheKeyBuilder.buildUserScopedKey(request.cacheOptions.cacheKey)
+      : this._cacheKeyBuilder.buildContextualKey(request.cacheOptions.cacheKey)
+    // 1. Read (Cache Hit)
     if (!bypass) {
       try {
-        const cachedResponse = await this._cacheService.get<TResult>(request.cacheOptions.cacheKey)
+        const cachedResponse = await this._cacheService.get<TResult>(key)
         if (Guards.isDefined(cachedResponse)) {
           this._logger.debug(
             `[Cache HIT] Returning data from cache for: ${request.cacheOptions.cacheKey}`,
@@ -65,15 +77,11 @@ export class QueryCachingPipeline<
     // 3. Write: If the Handler succeeded, save the result in cache
     if (result.isOk()) {
       try {
-        await this._cacheService.set(
-          request.cacheOptions.cacheKey,
-          result.getValueOrThrow(),
-          request.cacheOptions.ttl,
-        )
-        this._logger.debug(`[Cache SET] Data saved in cache for: ${request.cacheOptions.cacheKey}`)
+        await this._cacheService.set(key, result.getValueOrThrow(), request.cacheOptions.ttl)
+        this._logger.debug(`[Cache SET] Data saved in cache for: ${key}`)
       } catch (error) {
         this._logger.warn(
-          `[Cache ERROR] Unable to save cache for: ${request.cacheOptions.cacheKey}. Error: ${error instanceof Error ? error.message : String(error)}`,
+          `[Cache ERROR] Unable to save cache for: ${key}. Error: ${error instanceof Error ? error.message : String(error)}`,
         )
       }
     }

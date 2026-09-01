@@ -7,6 +7,7 @@ import type {
   IAuthService,
   IBaseMapper,
   ICache,
+  ICacheKeyBuilder,
   ICommand,
   IConcurrencyService,
   IConfigurationService,
@@ -51,7 +52,7 @@ import type { LoggerConfig } from '../logger.config'
  * @since 2025-09-30
  * @link https://github.com/Mattia-Carcione/xeno-js
  */
-export type ApplicationRegistry<T = unknown> = {
+export type ApplicationRegistry<T = unknown, Ttx = unknown> = {
   /** @description Token used to register and resolve the AuthorizationPipeline instance in the dependency injection container.
    *
    * @author Xeno
@@ -87,6 +88,15 @@ export type ApplicationRegistry<T = unknown> = {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   readonly CACHE: ICache
+
+  /** @description Token used to register and resolve the CacheKeyBuilder instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  readonly CACHE_KEY_BUILDER: ICacheKeyBuilder
 
   /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
    *
@@ -401,7 +411,7 @@ export type ApplicationRegistry<T = unknown> = {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  readonly TRANSACTION_STATE: ITransactionState<T>
+  readonly TRANSACTION_STATE: ITransactionState<Ttx>
 
   /** @description Token used to register and resolve the UnitOfWork instance in the dependency injection container.
    *

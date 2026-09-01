@@ -54,4 +54,15 @@ export interface ICacheableOptions {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   readonly consistentRead: Optional<boolean>
+
+  /**
+   * @description (Optional) If true, indicates that the cache entry is scoped to the current user. This is useful for multi-tenant applications where cached data should be isolated per user or tenant.
+  
+   * 
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js 
+   */
+  readonly isUserScoped: boolean
 }

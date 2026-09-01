@@ -1,6 +1,6 @@
 import type { DbConfig, IModule, IServiceContainer } from '@/domain'
 
-import type { DbContext } from '../db/db.types'
+import type { DbContext, DbTransaction } from '../db/db.types'
 import type { XenoRegistry } from '../xeno-registry'
 
 /**
@@ -16,15 +16,15 @@ export class DbModule<TRegistry extends XenoRegistry = XenoRegistry> implements 
   DbConfig
 > {
   async configure(container: IServiceContainer<TRegistry>, opts: DbConfig): Promise<void> {
-    const { TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@/shared')
 
-    const { DbClientFactory } = await import('../factories/db-client.factory')
-    const db = new DbClientFactory().create(opts)
+    const { DbUtils } = await import('./utils/db.utils')
+    const db = opts.enableSqlLite ? await DbUtils.addSqlLite(opts) : await DbUtils.addDbClient(opts)
 
     const { TransactionState } = await import('../transaction/transaction-state')
 
     container.addScoped(TOKENS.TRANSACTION_STATE, () => {
-      return new TransactionState<DbContext>(db)
+      return new TransactionState<DbTransaction>()
     })
 
     const { UnitOfWork } = await import('../transaction/unit-of-work')
@@ -38,11 +38,14 @@ export class DbModule<TRegistry extends XenoRegistry = XenoRegistry> implements 
 
       return new Proxy(db, {
         get(_target, prop, receiver) {
-          if (prop === 'transaction') {
-            return ttx.state?.transaction.bind(ttx.state)
+          const activeState = ttx.state
+          if (Guards.isDefined(activeState)) {
+            if (prop === 'transaction') {
+              return activeState.transaction.bind(activeState)
+            }
+            return Reflect.get(activeState, prop, receiver) as DbContext
           }
-
-          return Reflect.get(ttx.state!, prop, receiver) as DbContext
+          return Reflect.get(db, prop, receiver) as DbContext
         },
       })
     })

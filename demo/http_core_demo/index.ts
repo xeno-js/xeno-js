@@ -1,7 +1,6 @@
 import http from 'node:http';
 import { HttpRequest } from '@xeno/core';
 import { bootstrap } from './bootstrap';
-import { DATA_SOURCE_TOKEN } from './tokens';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN DEMO FUNCTION
@@ -13,7 +12,7 @@ async function runDemo() {
   const container = await bootstrap()
 
   // 2. Resolve the data source from the container
-  const dataSource = container.resolve(DATA_SOURCE_TOKEN)
+  const dataSource = container.resolve('MY_HTTP_CLIENT_TOKEN')
 
   // 3. Create an HTTP server to handle requests
   const server = http.createServer(async (req, res) => {
@@ -29,21 +28,17 @@ async function runDemo() {
 
       try {
         const requestUrl = `pokemon/${name.toLowerCase()}`;
-        
+
         const request: HttpRequest<unknown> = {
           method: 'GET',
           query: Object.fromEntries(url.searchParams.entries()),
           signal: new AbortController().signal
         }
         // 4. Use the data source to fetch data from the PokeAPI
-        const pokemonData = await dataSource.send(requestUrl, request)
+        const pokemonData = await dataSource.get(requestUrl, request)
 
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        if (pokemonData.isOk()) {
-          res.end(JSON.stringify(pokemonData.getValueOrThrow()))
-        } else {
-          res.end(JSON.stringify({ error: pokemonData.getErrorOrThrow() }))
-        }
+        res.end(JSON.stringify(pokemonData.data))
       } catch (error) {
         console.error('Error fetching pokemon:', error);
         res.writeHead(500, { 'Content-Type': 'application/json' })

@@ -4,6 +4,7 @@ import type {
   ApplicationRegistry,
   IFactory,
   IGateKeeper,
+  ILogger,
   IRequestContext,
   IServiceExtractor,
   IServiceScope,
@@ -67,6 +68,22 @@ function makeRegexRouteMatcher(isPublic: boolean): {
   }
 }
 
+function makeLogger(): {
+  logger: ILogger
+  warnMock: ReturnType<typeof vi.fn>
+  errorMock: ReturnType<typeof vi.fn>
+} {
+  const warnMock = vi.fn()
+  const errorMock = vi.fn()
+  const logger: ILogger = {
+    info: vi.fn(),
+    warn: warnMock,
+    error: errorMock,
+    debug: vi.fn(),
+  }
+  return { logger, warnMock, errorMock }
+}
+
 function makeRequestContextFactory() {
   const runAsyncMock = vi
     .fn()
@@ -120,11 +137,13 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
     const next = vi
       .fn()
@@ -146,11 +165,13 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, next)
@@ -165,11 +186,14 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
+
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, next)
@@ -195,11 +219,13 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     await middleware.execute({ method, path }, headers, next)
@@ -224,11 +250,13 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.fail(authError))
     const next = vi.fn()
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, next)
@@ -251,11 +279,13 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = makeGateKeeper(Result.fail(authError))
     const routeMatcher = makeRegexRouteMatcher(false)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     await middleware.execute({ method, path }, headers, vi.fn())
@@ -272,11 +302,13 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, vi.fn())
@@ -291,11 +323,13 @@ describe('RequestContextMiddleware', () => {
     const extractor = makeExtractor()
     const gateKeeper = { authenticate: vi.fn().mockRejectedValue(new Error('auth crash')) }
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, vi.fn())
@@ -314,16 +348,20 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, vi.fn())
 
-    expect((response.data as { error?: { details: string } }).error?.details).toBe('detail msg')
+    expect((response.data as { error?: { details: string } }).error?.details).toBe(
+      '[Fatal System Error] Exception caught during request handling on path: /api/test',
+    )
   })
 
   it('includes String(error) as details in SYSTEM_ERROR when non-Error is thrown', async () => {
@@ -335,16 +373,20 @@ describe('RequestContextMiddleware', () => {
     }
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, vi.fn())
 
-    expect((response.data as { error?: { details: string } }).error?.details).toBe('string error')
+    expect((response.data as { error?: { details: string } }).error?.details).toBe(
+      '[Fatal System Error] Exception caught during request handling on path: /api/test',
+    )
   })
 
   it('uses messagingContext with returnAddress, expiration and sequence from metadata', async () => {
@@ -369,11 +411,13 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     await middleware.execute({ method, path }, headers, next)
@@ -404,11 +448,13 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     await middleware.execute({ method, path }, headers, next)
@@ -426,11 +472,13 @@ describe('RequestContextMiddleware', () => {
       .fn()
       .mockResolvedValue({ status: 200, ok: true, headers: {}, data: { success: true } })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     const response = await middleware.execute({ method, path }, headers, next)
@@ -455,11 +503,13 @@ describe('RequestContextMiddleware', () => {
     const gateKeeper = makeGateKeeper(Result.ok(fakeIdentity))
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
     const routeMatcher = makeRegexRouteMatcher(true)
+    const { logger } = makeLogger()
     const middleware = new RequestContextMiddleware(
       routeMatcher,
       requestContextFactory.ctx,
       extractor,
       gateKeeper,
+      logger,
     )
 
     await middleware.execute({ method, path }, headers, next)
