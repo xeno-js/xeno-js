@@ -1,6 +1,5 @@
+import type { HttpClientConfig, IFactory, IHttpClient } from '@xeno-js/shared'
 import axios from 'axios'
-
-import type { HttpClientConfig, IFactory, IHttpClient } from '@/domain'
 
 import { AxiosHttpClient } from '../http/axios.http'
 

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { TOKENS } from '@xeno/core'
+import { TOKENS } from '@xeno-js/core'
 import fastify from 'fastify'
 import { xeno } from './bootstrap'
 import { UserProps } from './user/entity/user'

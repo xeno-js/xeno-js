@@ -1,6 +1,5 @@
+import type { ApplicationRegistry } from '@xeno-js/shared'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { ApplicationRegistry } from '@/domain'
 
 import type { DbContext } from '../../db'
 import { ServiceContainer } from '../service-container'

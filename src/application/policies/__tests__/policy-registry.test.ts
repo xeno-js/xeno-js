@@ -1,6 +1,5 @@
+import type { AuthPolicy } from '@xeno-js/shared' // O dove hai definito AuthPolicy
 import { beforeEach, describe, expect, it } from 'vitest'
-
-import type { AuthPolicy } from '@/shared' // O dove hai definito AuthPolicy
 
 import { PolicyRegistry } from '../policy-registry' // Assicurati che il percorso sia corretto
 
@@ -14,6 +13,8 @@ describe('PolicyRegistry', () => {
   it('should add and retrieve a policy correctly', () => {
     const intent = 'CREATE_USER'
     const policy: AuthPolicy = {
+      userId: false,
+      tenantId: false,
       roles: ['ADMIN'],
       permissions: ['user:create'],
     }
@@ -29,6 +30,8 @@ describe('PolicyRegistry', () => {
     const intentUpper = 'DELETE_USER'
     const intentLower = 'delete_user'
     const policy: AuthPolicy = {
+      userId: false,
+      tenantId: false,
       roles: ['ADMIN'],
       permissions: ['user:delete'],
     }
@@ -48,7 +51,12 @@ describe('PolicyRegistry', () => {
   })
 
   it('should support method chaining (fluent interface)', () => {
-    const policy: AuthPolicy = { roles: ['USER'], permissions: ['read'] }
+    const policy: AuthPolicy = {
+      userId: false,
+      tenantId: false,
+      roles: ['USER'],
+      permissions: ['read'],
+    }
 
     // Verifica che addPolicy restituisca 'this'
     const returnedRegistry = registry.addPolicy('READ_ONLY', policy)
@@ -59,8 +67,18 @@ describe('PolicyRegistry', () => {
 
   it('should allow overwriting an existing policy for the same intent', () => {
     const intent = 'UPDATE_PROFILE'
-    const policy1: AuthPolicy = { roles: ['USER'], permissions: ['update'] }
-    const policy2: AuthPolicy = { roles: ['ADMIN'], permissions: ['update', 'delete'] }
+    const policy1: AuthPolicy = {
+      userId: false,
+      tenantId: false,
+      roles: ['USER'],
+      permissions: ['update'],
+    }
+    const policy2: AuthPolicy = {
+      userId: false,
+      tenantId: false,
+      roles: ['ADMIN'],
+      permissions: ['update', 'delete'],
+    }
 
     registry.addPolicy(intent, policy1)
     registry.addPolicy(intent, policy2)

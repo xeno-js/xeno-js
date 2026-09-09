@@ -1,8 +1,12 @@
+import type {
+  ICommand,
+  IIdempotencyStore,
+  INetworkContextAccessor,
+  ResultType,
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
-
-import type { ICommand, IIdempotencyStore, INetworkContextAccessor, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODES } from '@/shared'
 
 import { IdempotencyPipeline } from '../idempotency.pipeline'
 

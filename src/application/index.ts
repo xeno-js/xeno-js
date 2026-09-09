@@ -1,6 +1,5 @@
 export * from './cqrs/index'
 export * from './gate_keepers/index'
-export * from './loggers/index'
 export * from './mappers/index'
 export * from './policies/index'
 export * from './specifications/index'

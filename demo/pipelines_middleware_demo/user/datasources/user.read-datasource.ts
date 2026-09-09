@@ -1,6 +1,6 @@
-import type { DbContext, IReadDataSource, Optional, UserContext } from '@xeno/core'
+import type { DbContext, IReadDataSource, Optional, UserContext } from '@xeno-js/core'
 import type { FullSchema, UserDto } from '../../schema'
-import { AppError, Enumerable, eq } from '@xeno/core';
+import { AppError, Enumerable, eq } from '@xeno-js/core';
 import { users } from '../../schema';
 
 export interface IUserDataSource extends IReadDataSource<UserDto> {

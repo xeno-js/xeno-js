@@ -1,7 +1,0 @@
-export type * from './config/index'
-export type * from './contracts/index'
-export * from './entities/index'
-export * from './errors/index'
-export * from './results/index'
-export * from './unique_id/index'
-export * from './value_objects/index'

@@ -5,14 +5,13 @@ import type {
   NetworkContext,
   RequestContext,
   TracingContext,
-} from '@/domain'
-import { Guards, type Metadata, type Optional } from '@/shared'
+} from '@xeno-js/shared'
+import { Guards, type Metadata, type Optional } from '@xeno-js/shared'
 
 interface ContextMapperSource {
   readonly metadata: Metadata
   readonly identity: Identity
   readonly path: string
-  readonly isPublic: boolean
 }
 
 export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = Object.freeze({
@@ -25,7 +24,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   map: (source: ContextMapperSource): RequestContext => {
-    const { metadata, identity, path, isPublic } = source
+    const { metadata, identity, path } = source
 
     const network: NetworkContext = {
       requestId: metadata.requestId!,
@@ -33,7 +32,6 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
       userAgent: metadata.userAgent,
       formatIndicator: metadata.formatIndicator,
       path,
-      isPublic,
     }
     const tracing: TracingContext = {
       correlationId: metadata.correlationId!,

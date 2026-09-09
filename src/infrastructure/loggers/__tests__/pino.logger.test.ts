@@ -1,7 +1,6 @@
+import { LOG_LEVEL } from '@xeno-js/shared'
 import type { Logger } from 'pino'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { LOG_LEVEL } from '@/shared'
 
 import { PinoLogger } from '../pino.logger'
 

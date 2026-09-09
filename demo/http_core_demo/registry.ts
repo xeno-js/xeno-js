@@ -1,4 +1,4 @@
-import { IHttpClient, IRemoteDataSource, XenoRegistry } from '@xeno/core'
+import { IHttpClient, IRemoteDataSource, XenoRegistry } from '@xeno-js/core'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // INJECTION TOKENS

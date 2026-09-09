@@ -1,8 +1,7 @@
+import type { ILoggerClient } from '@xeno-js/shared'
+import type { LogLevel, Optional } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL } from '@xeno-js/shared'
 import type { Logger } from 'pino'
-
-import type { ILoggerClient } from '@/domain'
-import type { LogLevel, Optional } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
 
 /**
  * @description Class that implements the ILoggerClient interface using the Pino logging library. This class serves as an adapter between the ILoggerClient interface and the Pino logging library, allowing the use of Pino as a logging provider within the application's architecture without directly coupling the code to the specific logging framework.

@@ -1,8 +1,7 @@
+import type { IServiceResilience } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
 import type { IPolicy } from 'cockatiel'
-
-import type { IServiceResilience } from '@/domain'
-import { AppError } from '@/domain'
-import type { Optional } from '@/shared'
 
 /**
  * @description The ServiceResilience class implements the IServiceResilience interface, providing a concrete implementation of resilience features for service calls. This class is designed to enhance the reliability of service interactions by automatically handling transient faults and preventing cascading failures in distributed systems. The execute method allows for the execution of asynchronous operations with built-in support for retries, timeouts, and circuit breakers, ensuring that service calls are more resilient to failures and can recover gracefully from errors.

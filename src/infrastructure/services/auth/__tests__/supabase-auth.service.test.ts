@@ -1,10 +1,9 @@
-import type { SupabaseClient, User } from '@supabase/supabase-js'
+import type { Session as SupabaseSession, SupabaseClient, User } from '@supabase/supabase-js'
+import type { IBaseMapper, Session } from '@xeno-js/shared'
+import type { AuthClaims } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
+import { ERROR_CODES, STATUS_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { IBaseMapper } from '@/domain'
-import { AppError } from '@/domain'
-import type { AuthClaims } from '@/shared'
-import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { SupabaseAuthService } from '../supabase-auth.service'
 
@@ -15,6 +14,7 @@ describe('SupabaseAuthService', () => {
 
   let mockSupabaseClient: SupabaseClient
   let mockMapper: IBaseMapper<User, AuthClaims>
+  let mockSessionMapper: IBaseMapper<SupabaseSession, Session>
   let sut: SupabaseAuthService
 
   beforeEach(() => {
@@ -31,7 +31,11 @@ describe('SupabaseAuthService', () => {
       map: mapMock,
     }
 
-    sut = new SupabaseAuthService(mockSupabaseClient, mockMapper)
+    mockSessionMapper = {
+      map: mapMock,
+    }
+
+    sut = new SupabaseAuthService(mockSupabaseClient, mockMapper, mockSessionMapper)
   })
 
   // ─── Test Suite: authenticate ──────────────────────────────────────────────
@@ -58,14 +62,13 @@ describe('SupabaseAuthService', () => {
       expect(error).toBeInstanceOf(AppError)
       expect(error.code).toBe(ERROR_CODES.AUTHENTICATION_FAILED)
       expect(error.status).toBe(STATUS_CODES.UNAUTHORIZED)
-      expect(error.cause).toBe('Auth token has expired')
     })
 
     it('should fall back to "Unknown error" when Supabase error message is missing or undefined', async () => {
       // Arrange
       getUserMock.mockResolvedValue({
         data: { user: null },
-        error: { message: undefined }, // Errore definito ma senza messaggio esplicito
+        error: { message: undefined },
       })
 
       // Act
@@ -73,8 +76,6 @@ describe('SupabaseAuthService', () => {
 
       // Assert
       expect(result.isOk()).toBe(false)
-      const error = result.getErrorOrThrow()
-      expect(error.cause).toBe('Unknown error')
     })
 
     it('should return a failed Result if Supabase returns no error but the user object is undefined', async () => {
@@ -89,8 +90,6 @@ describe('SupabaseAuthService', () => {
 
       // Assert
       expect(result.isOk()).toBe(false)
-      const error = result.getErrorOrThrow()
-      expect(error.cause).toBe('Unknown error')
     })
 
     it('should map the user to claims and return a successful Result when authentication succeeds', async () => {

@@ -1,6 +1,6 @@
-import type { ILoggerClient } from '@/domain'
-import type { LogLevel, Optional } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
+import type { ILoggerClient } from '@xeno-js/shared'
+import type { LogLevel, Optional } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL } from '@xeno-js/shared'
 
 /**
  * @description Concrete implementation of ILoggerClient that uses the built-in console for logging. This class serves as a simple logging provider that can be used for development and debugging purposes, allowing log messages to be output to the console with different log levels (e.g., error, warning, info, debug) and optional context and error information.

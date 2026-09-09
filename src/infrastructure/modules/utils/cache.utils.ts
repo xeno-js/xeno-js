@@ -1,4 +1,4 @@
-import type { CacheConfig, IServiceContainer } from '@/domain'
+import type { CacheConfig, IServiceContainer } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -27,21 +27,21 @@ export const CacheUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: CacheConfig,
   ): Promise<void> {
-    const { Guards, TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
     if (!opts.inMemory && !Guards.isDefined(opts.redis)) {
       throw new Error(
         'No cache strategies are configured. Please provide at least one cache strategy.',
       )
     }
 
-    const { CacheKeyBuilder } = await import('../../cache/key-builder.cache')
+    const { CacheKeyBuilder } = await import('@xeno-js/shared')
     container.addSingleton(
       TOKENS.CACHE_KEY_BUILDER,
       (c) => new CacheKeyBuilder(c.resolve(TOKENS.IDENTITY_ACCESSOR)),
     )
 
     if (opts.inMemory || !Guards.isDefined(opts.redis)) {
-      const { InMemoryCache } = await import('../../cache/in-memory.cache')
+      const { InMemoryCache } = await import('@xeno-js/shared')
       container.addSingleton(TOKENS.CACHE, () => new InMemoryCache())
       return
     }

@@ -1,5 +1,5 @@
-import type { DbConfig } from '@/domain'
-import type { Dictionary } from '@/shared'
+import type { DbConfig } from '@xeno-js/shared'
+import type { Dictionary } from '@xeno-js/shared'
 
 import type { DbContext } from '../../db/db.types'
 

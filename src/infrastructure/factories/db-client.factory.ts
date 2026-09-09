@@ -1,8 +1,7 @@
+import type { DbConfig, IFactory } from '@xeno-js/shared'
+import type { Dictionary } from '@xeno-js/shared'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
-
-import type { DbConfig, IFactory } from '@/domain'
-import type { Dictionary } from '@/shared'
 
 import type { DbContext } from '../db/db.types'
 

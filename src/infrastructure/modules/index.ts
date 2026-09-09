@@ -1,4 +1,3 @@
-export type * from '../../domain/config/index'
 export * from './context.module'
 export * from './cqrs.module'
 export * from './db.module'

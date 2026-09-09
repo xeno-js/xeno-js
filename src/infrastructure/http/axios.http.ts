@@ -1,10 +1,9 @@
+import type { IHttpClient } from '@xeno-js/shared'
+import type { HttpOptions, HttpRequest, HttpResponse, Optional } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
 import type { AxiosInstance } from 'axios'
 import { AxiosError } from 'axios'
-
-import type { IHttpClient } from '@/domain'
-import { AppError } from '@/domain'
-import type { HttpOptions, HttpRequest, HttpResponse, Optional } from '@/shared'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, HttpHelper, STATUS_CODES } from '@/shared'
 
 /**
  * @description Axios-based implementation of the agnostic IHttpClient contract.

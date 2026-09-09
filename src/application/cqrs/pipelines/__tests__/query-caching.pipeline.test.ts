@@ -1,8 +1,7 @@
+import type { ICache, ICacheKeyBuilder, ILogger, IQuery } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
+import { REQUEST_TYPE } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { ICache, ICacheKeyBuilder, ILogger, IQuery } from '@/domain'
-import { Result } from '@/domain'
-import { REQUEST_TYPE } from '@/shared'
 
 import { QueryCachingPipeline } from '../query-caching.pipeline'
 

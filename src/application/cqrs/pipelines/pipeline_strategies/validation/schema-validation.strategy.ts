@@ -1,5 +1,5 @@
-import type { IRequest, IStrategy, IValidatorService, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
+import type { IRequest, IStrategy, IValidatorService, ResultType } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
 
 /**
  * @description Strategy that validates incoming requests against predefined schemas. It implements the IStrategy interface and uses a schema registry to determine if a schema exists for the given request type. If a schema is found, it validates the request against the schema using a safe parsing method. If the validation fails, it returns a failed Result with an appropriate AppError indicating a validation error. If the validation succeeds, it returns a successful Result with a boolean value of true.

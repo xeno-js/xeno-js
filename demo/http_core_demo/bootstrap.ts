@@ -1,5 +1,5 @@
-import { AppBuilder, TOKENS } from '@xeno/core'
-import type { IServiceContainer } from '@xeno/core'
+import { AppBuilder, TOKENS } from '@xeno-js/core'
+import type { IServiceContainer } from '@xeno-js/core'
 import { AppRegistry } from './registry'
 import { CustomDataSource } from './datasources/custom.datasource'
 

@@ -1,4 +1,4 @@
-import { REQUEST_TYPE, type ICommand } from '@xeno/core'
+import { REQUEST_TYPE, type ICommand } from '@xeno-js/core'
 import { UserProps } from '../../entity/user'
 
 export class SaveUserCommand implements ICommand<void> {

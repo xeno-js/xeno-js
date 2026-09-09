@@ -1,8 +1,7 @@
+import type { CacheClientConfig, ICache, IFactory } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 import type { RedisOptions } from 'ioredis'
 import { Redis } from 'ioredis'
-
-import type { CacheClientConfig, ICache, IFactory } from '@/domain'
-import { Guards } from '@/shared'
 
 import { RedisCache } from '../cache/redis.cache'
 

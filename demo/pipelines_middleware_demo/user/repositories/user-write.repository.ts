@@ -1,5 +1,5 @@
-import type { IWriteDataSource, DbContext, Optional, UserContext, IRepository, IMapper } from '@xeno/core'
-import { Repository } from '@xeno/core';
+import type { IWriteDataSource, DbContext, Optional, UserContext, IRepository, IMapper } from '@xeno-js/core'
+import { Repository } from '@xeno-js/core';
 import { UserDto } from '../../schema';
 import { User } from '../entity/user';
 

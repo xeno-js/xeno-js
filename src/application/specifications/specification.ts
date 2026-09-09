@@ -1,4 +1,4 @@
-import type { ISpecification } from '@/domain'
+import type { ISpecification } from '@xeno-js/shared'
 
 /**
  * Base class for specifications, providing default implementations for logical operations (AND, OR, NOT).

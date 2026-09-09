@@ -1,4 +1,4 @@
-import { type IQuery, type ICacheableOptions, REQUEST_TYPE } from '@xeno/core'
+import { type IQuery, type ICacheableOptions, REQUEST_TYPE } from '@xeno-js/core'
 
 import type { User } from '../../entity/user'
 

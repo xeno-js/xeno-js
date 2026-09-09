@@ -4,9 +4,9 @@ import type {
   IPolicyRegistry,
   IRequest,
   RequestContext,
-} from '@/domain'
-import { AppError, Result } from '@/domain'
-import { Guards } from '@/shared'
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 import { BaseAuthorizationStrategy } from './base-authorization.strategy'
 

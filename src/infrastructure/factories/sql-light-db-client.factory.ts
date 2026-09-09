@@ -1,8 +1,7 @@
 import { createClient } from '@libsql/client'
+import type { DbConfig, IFactory } from '@xeno-js/shared'
+import type { Dictionary } from '@xeno-js/shared'
 import { drizzle } from 'drizzle-orm/libsql'
-
-import type { DbConfig, IFactory } from '@/domain'
-import type { Dictionary } from '@/shared'
 
 import type { DbContext } from '../db/db.types'
 

@@ -1,6 +1,5 @@
+import { GUEST } from '@xeno-js/shared'
 import { describe, expect, it } from 'vitest'
-
-import { GUEST } from '@/shared'
 
 import { NoAuthGateKeeper } from '../noauth.gate-keeper'
 

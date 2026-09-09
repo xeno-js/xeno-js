@@ -1,8 +1,7 @@
+import type { IRequest } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODES, STATUS_CODES } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IRequest } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { ExceptionPipeline } from '../exception.pipeline'
 

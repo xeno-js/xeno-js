@@ -1,6 +1,6 @@
-import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, STATUS_CODES } from '@/shared'
+import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, STATUS_CODES } from '@xeno-js/shared'
 
 /**
  * @description A pipeline behavior that handles exceptions thrown during the execution of a request in the CQRS pattern. It catches any unhandled exceptions, wraps them in an AppError with a standardized error code and message, and returns a failed Result containing the AppError. This ensures that exceptions are consistently handled and logged across the application, providing a clear mechanism for error reporting and debugging in the context of CQRS pipelines.

@@ -1,8 +1,7 @@
 import type * as Sentry from '@sentry/node'
-
-import type { ILoggerClient } from '@/domain'
-import type { Dictionary, LogLevel, Optional } from '@/shared'
-import { Guards, LOG_LEVEL } from '@/shared'
+import type { ILoggerClient } from '@xeno-js/shared'
+import type { Dictionary, LogLevel, Optional } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL } from '@xeno-js/shared'
 
 /**
  * @description Concrete implementation of ILoggerClient that uses Sentry as the error tracking system. This class acts as an adapter between the ILoggerClient interface and the Sentry library, allowing the use of Sentry as a logging provider within the application's architecture without directly coupling the code to the specific tracking framework.

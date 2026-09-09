@@ -1,15 +1,14 @@
+import type { IRequest, ResultType } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODES, PromiseHelper, STATUS_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
-
-import type { IRequest, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODES, PromiseHelper, STATUS_CODES } from '@/shared'
 
 import { ConcurrencyRetryPipeline } from '../concurrency-retry.pipeline'
 
 type NextFn = () => Promise<ResultType<string>>
 
-vi.mock('@/shared', async () => {
-  const actual = await vi.importActual('@/shared')
+vi.mock('@xeno-js/shared', async () => {
+  const actual = await vi.importActual('@xeno-js/shared')
   return {
     ...actual,
     GuidHelper: {

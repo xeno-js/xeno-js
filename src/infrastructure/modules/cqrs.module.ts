@@ -1,5 +1,3 @@
-import type { ZodType } from 'zod'
-
 import type {
   ICommand,
   IModule,
@@ -8,7 +6,8 @@ import type {
   IServiceContainer,
   IServiceScopeAccessor,
   PipelineConfig,
-} from '@/domain'
+} from '@xeno-js/shared'
+import type { ZodType } from 'zod'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -28,7 +27,7 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean; isCache: boolean },
   ): Promise<void> {
-    const { TOKENS } = await import('@/shared')
+    const { TOKENS } = await import('@xeno-js/shared')
     let isCache = opts.isCache
 
     const { Mediator } = await import('@/application')
@@ -59,10 +58,8 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     })
     pipelines.push(TOKENS.PERFORMANCE_PIPELINE)
 
-    const { Guards } = await import('@/shared')
+    const { Guards } = await import('@xeno-js/shared')
     if (
-      Guards.isDefined(opts.authorization.userId) ||
-      Guards.isDefined(opts.authorization.tenantId) ||
       Guards.isDefined(opts.authorization.policies) ||
       Guards.isDefined(opts.authorization.customAuthorizationStrategy)
     ) {
@@ -76,7 +73,12 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
       Guards.isDefined(opts.validation.customValidationStrategy)
     ) {
       const { ValidationUtils } = await import('./utils/validation.utils')
-      const validationPipelines = await ValidationUtils.addValidation(container, opts.validation)
+      const logger = container.resolve(TOKENS.LOGGER)
+      const validationPipelines = await ValidationUtils.addValidation(
+        container,
+        opts.validation,
+        logger,
+      )
       pipelines.push(...validationPipelines)
     }
 

@@ -1,5 +1,5 @@
-import type { Delegate, IPipelineBehavior, IRequest, IStrategy, ResultType } from '@/domain'
-import { Result } from '@/domain'
+import type { Delegate, IPipelineBehavior, IRequest, IStrategy, ResultType } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
 
 /**
  * @description Middleware che gestisce l'autenticazione e l'autorizzazione dei comandi.

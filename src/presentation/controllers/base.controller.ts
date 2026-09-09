@@ -7,9 +7,9 @@ import type {
   IQuery,
   RequestContext,
   ResultType,
-} from '@/domain'
-import type { Dictionary, Optional, ResponseDto } from '@/shared'
-import { GuidHelper, HttpHelper } from '@/shared'
+} from '@xeno-js/shared'
+import type { Dictionary, Optional, ResponseDto } from '@xeno-js/shared'
+import { GuidHelper, HttpHelper } from '@xeno-js/shared'
 
 /**
  * BaseController is an abstract class that implements the IController interface. It provides a foundation for creating specific controllers that handle incoming requests and return responses. The class requires a mediator to facilitate communication between different parts of the application.

@@ -1,7 +1,6 @@
-﻿import type * as Sentry from '@sentry/node'
+import type * as Sentry from '@sentry/node'
+import { LOG_LEVEL } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import { LOG_LEVEL } from '@/shared'
 
 import { SentryLogger } from '../sentry.logger'
 

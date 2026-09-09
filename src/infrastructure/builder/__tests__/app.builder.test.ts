@@ -1,7 +1,6 @@
+import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@xeno-js/shared'
+import type { Dictionary } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@/domain'
-import type { Dictionary } from '@/shared'
 
 import { RemoteDataSource } from '../../datasources/remote.datasource'
 import type { XenoRegistry } from '../../xeno-registry'
@@ -41,8 +40,6 @@ describe('AppBuilder � full smoke test', () => {
       })
       .addPipeline((config) => {
         config.performance.thresholdMs = 100
-        config.authorization.userId = true
-        config.authorization.tenantId = true
         // config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
         config.commandBus.concurrency = {
           maxRetries: 3,

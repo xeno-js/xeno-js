@@ -1,6 +1,6 @@
-import type { ICache, ICacheKeyBuilder, IIdempotencyStore } from '@/domain'
-import type { Optional } from '@/shared'
-import { IDEMPOTENCY_CONSTANTS } from '@/shared'
+import type { ICache, ICacheKeyBuilder, IIdempotencyStore } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { IDEMPOTENCY_CONSTANTS } from '@xeno-js/shared'
 
 /**
  * @description The IdempotencyStore class provides an implementation of the IIdempotencyStore interface, utilizing a caching mechanism to manage locks and processed command results for idempotent operations. This class is designed to ensure that commands with the same ID are processed only once, preventing duplicate processing and allowing for retrieval of results from previously processed commands. The IdempotencyStore uses the IRequestContext to build contextual keys for storing locks and results in a multi-tenant environment, following the AWS SaaS Factory Pattern for logical partitioning. By leveraging the ICache interface, the IdempotencyStore can efficiently manage locks and stored results with configurable time-to-live (TTL) values, ensuring that stale data is automatically cleaned up over time.

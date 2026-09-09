@@ -1,4 +1,4 @@
-import type { IFactory, IModule, IServiceContainer, IServiceScope } from '@/domain'
+import type { IFactory, IModule, IServiceContainer, IServiceScope } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -15,7 +15,7 @@ export class ContextModule<TRegistry extends XenoRegistry = XenoRegistry> implem
   void
 > {
   async configure(container: IServiceContainer<TRegistry>): Promise<void> {
-    const { TOKENS } = await import('@/shared')
+    const { TOKENS } = await import('@xeno-js/shared')
     const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
     container.addSingleton(TOKENS.SERVICE_SCOPE_FACTORY, () => {
       const factory = new ServiceScopeFactory<TRegistry>(container)

@@ -1,5 +1,5 @@
-import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from '@/domain'
-import { Guards } from '@/shared'
+import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 /**
  * @description Default threshold in milliseconds for logging performance warnings. If a request takes longer than this threshold to execute, a warning will be logged. This value can be overridden by providing a different thresholdMs value when constructing the PerformancePipeline instance.

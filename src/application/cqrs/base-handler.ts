@@ -1,5 +1,4 @@
-import type { IFactory, IHandler, IRequest, ResultType } from '@/domain'
-import type { UserContext } from '@/shared'
+import type { IFactory, IHandler, IRequest, ResultType, UserContext } from '@xeno-js/shared'
 
 /**
  * BaseHandler is an abstract class that implements the IHandler interface.

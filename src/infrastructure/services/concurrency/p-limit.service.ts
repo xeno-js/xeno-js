@@ -1,4 +1,4 @@
-import type { IConcurrencyService } from '@/domain'
+import type { IConcurrencyService } from '@xeno-js/shared'
 
 /**
  * @description Concrete implementation of IConcurrencyService utilizing the 'p-limit' library.

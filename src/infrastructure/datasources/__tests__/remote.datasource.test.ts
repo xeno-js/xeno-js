@@ -1,7 +1,6 @@
+import type { IHttpClient, IServiceResilience } from '@xeno-js/shared'
+import type { HttpRequest } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IHttpClient, IServiceResilience } from '@/domain'
-import type { HttpRequest } from '@/shared'
 
 import { RemoteDataSource } from '../remote.datasource'
 

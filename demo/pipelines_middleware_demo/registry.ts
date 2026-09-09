@@ -1,5 +1,5 @@
-import { XenoRegistry } from '@xeno/core'
-import type { BaseController, ICommand, Repository, IWriteDataSource, IMapper, BaseHandler } from '@xeno/core'
+import { XenoRegistry } from '@xeno-js/core'
+import type { BaseController, ICommand, Repository, IWriteDataSource, IMapper, BaseHandler } from '@xeno-js/core'
 import { User, UserProps } from './user/entity/user'
 import { type FullSchema, UserDto } from './schema'
 import { SaveUserCommand, UpdateUserCommand } from './user/cqrs/commands/user.command'

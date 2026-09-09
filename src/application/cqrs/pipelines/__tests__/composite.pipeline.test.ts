@@ -1,8 +1,7 @@
+import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
+import { REQUEST_TYPE } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@/domain'
-import { Result } from '@/domain'
-import { REQUEST_TYPE } from '@/shared'
 
 import { CompositePipeline } from '../composite.pipeline'
 

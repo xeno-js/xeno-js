@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/node'
-
-import type { IFactory, ILoggerClient, LoggerConfig } from '@/domain'
-import { Guards, LOG_LEVEL } from '@/shared'
+import type { IFactory, ILoggerClient, LoggerConfig } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL } from '@xeno-js/shared'
 
 import { SentryLogger } from '../loggers/sentry.logger'
 import type { XenoRegistry } from '../xeno-registry'

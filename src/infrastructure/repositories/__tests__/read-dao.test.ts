@@ -1,7 +1,6 @@
+import type { IMapper, IReadDataSource } from '@xeno-js/shared'
+import type { Optional, UserContext } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IMapper, IReadDataSource } from '@/domain'
-import type { Optional, UserContext } from '@/shared'
 
 import { ReadDao } from '../read-dao'
 

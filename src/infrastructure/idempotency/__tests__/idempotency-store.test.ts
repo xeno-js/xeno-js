@@ -1,7 +1,6 @@
+import type { ICache, ICacheKeyBuilder } from '@xeno-js/shared'
+import { IDEMPOTENCY_CONSTANTS } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { ICache, ICacheKeyBuilder } from '@/domain'
-import { IDEMPOTENCY_CONSTANTS } from '@/shared'
 
 import { IdempotencyStore } from '../idempotency-store'
 

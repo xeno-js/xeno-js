@@ -1,8 +1,7 @@
 import type { Client } from '@libsql/client/web'
+import type { Dictionary } from '@xeno-js/shared'
 import type { LibSQLDatabase } from 'drizzle-orm/libsql'
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
-
-import type { Dictionary } from '@/shared'
 
 /**
  * @description Type definition for the database context used in the application.

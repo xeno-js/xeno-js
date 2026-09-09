@@ -1,4 +1,4 @@
-import { AppBuilder, LOG_LEVEL, TOKENS } from '@xeno/core'
+import { AppBuilder, LOG_LEVEL, TOKENS } from '@xeno-js/core'
 import { SaveUserCommandHandler, FindUserQueryHandler, UpdateUserCommandHandler } from './user/cqrs/handlers/index'
 import { UnauthorizedCommandHandler } from './unauthorized/handlers/unauthorized.handler'
 import { SaveUserController, FindUserController, UpdateUserController, FindAllUserController } from './user/controllers/index'
@@ -17,17 +17,12 @@ import type { MyRegistry } from './registry'
 // This function bootstraps the application by configuring the AppBuilder with necessary middlewares, pipeline settings, and service registrations. It sets up the command and query handlers, as well as the controllers for handling HTTP requests. The function returns a promise that resolves to an IServiceContainer, which can be used to resolve services and dependencies throughout the application.
 export const xeno = new AppBuilder<MyRegistry>()
         .addContext()
-        .addMiddlewares(opts => {
-            opts.publicRoutes = {
-                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
-                '/api/user/:id': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic', HEAD: 'isPublic', OPTIONS: 'isPublic' },
-            }
-        })
+        .addMiddlewares()
         .addPipeline((opts) => {
-            opts.authorization.userId = true
-            opts.authorization.tenantId = true
             opts.authorization.policies = {
                 'UNAUTHORIZED_COMMAND_HANDLER_TOKEN': {
+                    userId: true,
+                    tenantId: true,
                     roles: ['admin'],
                     permissions: ['read', 'write'],
                 },

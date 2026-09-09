@@ -1,4 +1,4 @@
-import type { HttpCoreConfig, IModule, IServiceContainer } from '@/domain'
+import type { HttpCoreConfig, IModule, IServiceContainer } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -22,5 +22,15 @@ export class HttpCoreModule<TRegistry extends XenoRegistry = XenoRegistry> imple
     const { HttpUtils } = await import('./utils/http.utils')
     await HttpUtils.addAxios(container, opts.http)
     await HttpUtils.addResilience(container, opts.resilience)
+  }
+}
+
+export class HttpOriginModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
+  TRegistry,
+  string[]
+> {
+  async configure(container: IServiceContainer<TRegistry>, opts: string[]): Promise<void> {
+    const { HttpUtils } = await import('./utils/http.utils')
+    await HttpUtils.addAllowOrigin(container, opts)
   }
 }

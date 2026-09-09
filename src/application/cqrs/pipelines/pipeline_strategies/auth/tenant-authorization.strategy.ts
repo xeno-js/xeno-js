@@ -1,6 +1,12 @@
-import type { IContextAccessor, Identity, IRequest, RequestContext } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { Guards, GuidHelper } from '@/shared'
+import type {
+  IContextAccessor,
+  Identity,
+  IPolicyRegistry,
+  IRequest,
+  RequestContext,
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { Guards, GuidHelper } from '@xeno-js/shared'
 
 import { BaseAuthorizationStrategy } from './base-authorization.strategy'
 
@@ -22,19 +28,23 @@ export class TenantAuthorizationStrategy extends BaseAuthorizationStrategy<IRequ
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  constructor(requestContext: IContextAccessor<RequestContext>) {
+  constructor(
+    private readonly _policy: IPolicyRegistry,
+    requestContext: IContextAccessor<RequestContext>,
+  ) {
     super(requestContext)
   }
 
   protected async performAuthorizationCheck(
     command: IRequest,
     auth: Identity,
-    isPublic: boolean,
   ): Promise<Result<void, AppError>> {
-    if (isPublic) return Result.ok()
+    const policy = this._policy.getPolicy(command.intent)
 
-    if (Guards.isNullOrEmpty(auth.tenantId) || !GuidHelper.isValidGuid(auth.tenantId))
-      return Result.fail(AppError.unauthorized(command.intent, 'Tenant is not authenticated.'))
+    if (Guards.isDefined(policy?.tenantId)) {
+      if (Guards.isNullOrEmpty(auth.tenantId) || !GuidHelper.isValidGuid(auth.tenantId))
+        return Result.fail(AppError.unauthorized(command.intent, 'Tenant is not authenticated.'))
+    }
 
     return Result.ok()
   }

@@ -1,6 +1,6 @@
-import type { IBaseMapper, Identity } from '@/domain'
-import type { AuthClaims } from '@/shared'
-import { GuidHelper } from '@/shared'
+import type { IBaseMapper, Identity } from '@xeno-js/shared'
+import type { AuthClaims } from '@xeno-js/shared'
+import { GuidHelper } from '@xeno-js/shared'
 
 /**
  * @description ClaimsIdentityMapper is responsible for mapping authentication claims (AuthClaims) to an Identity object. This mapper takes the claims extracted from a token (such as a JWT) and transforms them into a structured Identity that can be used throughout the application for authentication and authorization purposes. The mapping includes parsing the user ID and tenant ID from the claims, as well as extracting roles and permissions.

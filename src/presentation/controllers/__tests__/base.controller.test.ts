@@ -1,9 +1,8 @@
-﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { ICommand, IContextAccessor, IMediator, IQuery, RequestContext } from '@/domain'
-import { AppError, Result } from '@/domain'
-import type { ResponseDto } from '@/shared'
-import { ERROR_CODES, REQUEST_TYPE, STATUS_CODES } from '@/shared'
+import type { ICommand, IContextAccessor, IMediator, IQuery, RequestContext } from '@xeno-js/shared'
+import type { ResponseDto } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODES, REQUEST_TYPE, STATUS_CODES } from '@xeno-js/shared'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { BaseController } from '../base.controller'
 

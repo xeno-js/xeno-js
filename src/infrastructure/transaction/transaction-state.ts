@@ -1,5 +1,4 @@
-import type { ITransactionState } from '@/domain'
-import type { Maybe } from '@/index'
+import type { ITransactionState, Maybe } from '@xeno-js/shared'
 
 /**
  * @file transaction-state.ts

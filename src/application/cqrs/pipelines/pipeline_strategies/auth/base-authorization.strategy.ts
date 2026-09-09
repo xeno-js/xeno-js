@@ -5,9 +5,9 @@ import type {
   IStrategy,
   RequestContext,
   ResultType,
-} from '@/domain'
-import { AppError, Result } from '@/domain'
-import { Guards } from '@/shared'
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 /**
  * @description Abstract base class for authorization strategies in the CQRS pipeline. This class implements the IStrategy interface and provides a common structure for performing authorization checks based on the identity of the authenticated user. It defines an abstract method performAuthorizationCheck that must be implemented by concrete authorization strategies to specify the logic for checking if the user has the necessary permissions to execute a given request. The execute method retrieves the user's identity from the request context and ensures that the user is authenticated before delegating to the performAuthorizationCheck method for further authorization validation. If the user is not authenticated, it returns a failed Result with an appropriate AppError indicating that authentication is required.
@@ -38,7 +38,7 @@ export abstract class BaseAuthorizationStrategy<
       return Result.fail(AppError.unauthorized(request.intent, 'User is not authenticated.'))
     }
 
-    return await this.performAuthorizationCheck(request, context.identity, context.network.isPublic)
+    return await this.performAuthorizationCheck(request, context.identity)
   }
 
   /**
@@ -55,6 +55,5 @@ export abstract class BaseAuthorizationStrategy<
   protected abstract performAuthorizationCheck(
     request: IRequest,
     auth: Identity,
-    isPublic?: boolean,
   ): Promise<ResultType<void>>
 }

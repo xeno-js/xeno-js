@@ -6,7 +6,7 @@ import type {
   IRequestContext,
   IServiceScope,
   RequestContext,
-} from '@/domain'
+} from '@xeno-js/shared'
 
 import { NodeRequestContext } from '../context/request-context'
 import type { XenoRegistry } from '../xeno-registry'

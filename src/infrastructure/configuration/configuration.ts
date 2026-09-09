@@ -1,6 +1,6 @@
-import type { IConfigurationService } from '@/domain'
-import type { Dictionary, Optional } from '@/shared'
-import { Guards } from '@/shared'
+import type { IConfigurationService } from '@xeno-js/shared'
+import type { Dictionary, Optional } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 /**
  * @description

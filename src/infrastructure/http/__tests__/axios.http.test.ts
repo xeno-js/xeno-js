@@ -1,9 +1,8 @@
+import { AppError } from '@xeno-js/shared'
+import { ERROR_CODES, STATUS_CODES } from '@xeno-js/shared'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 import { AxiosError } from 'axios'
 import { describe, expect, it, vi } from 'vitest'
-
-import { AppError } from '@/domain'
-import { ERROR_CODES, STATUS_CODES } from '@/shared'
 
 import { AxiosHttpClient } from '../axios.http'
 

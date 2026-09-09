@@ -1,4 +1,4 @@
-import type { IServiceContainer, PipelineConfig } from '@/domain'
+import type { IServiceContainer, PipelineConfig } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -26,7 +26,7 @@ export const PipelineUtils = Object.freeze({
     opts: PipelineConfig<TRegistry>['commandBus'] & { isCache: boolean },
   ): Promise<(keyof TRegistry)[]> {
     const pipelines: (keyof TRegistry)[] = []
-    const { Guards, TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
     if (Guards.isDefined(opts.idempotency)) {
       const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
       container.addSingleton(
@@ -73,7 +73,7 @@ export const PipelineUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: { isCache: boolean },
   ): Promise<(keyof TRegistry)[]> {
-    const { TOKENS } = await import('@/shared')
+    const { TOKENS } = await import('@xeno-js/shared')
     const pipelines: (keyof TRegistry)[] = []
 
     if (!opts.isCache) {

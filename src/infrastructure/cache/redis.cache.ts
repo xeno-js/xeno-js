@@ -1,8 +1,7 @@
+import type { ICache } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { Guards, StringHelper } from '@xeno-js/shared'
 import type { Redis } from 'ioredis'
-
-import type { ICache } from '@/domain'
-import type { Optional } from '@/shared'
-import { Guards, StringHelper } from '@/shared'
 
 /**
  * @description The RedisCache class provides an implementation of the ICache interface using Redis as the underlying caching mechanism. This class allows for storing, retrieving, and managing cached values in a Redis database, supporting features such as time-to-live (TTL) for cache entries and atomic operations for setting values only if they do not already exist. The RedisCache class abstracts away the details of interacting with Redis, providing a simple and consistent interface for caching operations within the application.

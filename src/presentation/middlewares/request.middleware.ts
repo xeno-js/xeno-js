@@ -2,14 +2,19 @@ import type {
   ApplicationRegistry,
   IGateKeeper,
   ILogger,
-  IMatcher,
   IMiddleware,
   IRequestContext,
   IServiceExtractor,
   RequestContext,
-} from '@/domain'
-import type { Guid, HttpHeaders, HttpMethod, Metadata, ResponseDto } from '@/shared'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, GuidHelper, HttpHelper, STATUS_CODES } from '@/shared'
+} from '@xeno-js/shared'
+import type { Guid, HttpHeaders, HttpMethod, Metadata, ResponseDto } from '@xeno-js/shared'
+import {
+  ERROR_CODE_MESSAGES,
+  ERROR_CODES,
+  GuidHelper,
+  HttpHelper,
+  STATUS_CODES,
+} from '@xeno-js/shared'
 
 import { ContextMapper } from '../mappers/context.mapper'
 
@@ -25,7 +30,6 @@ import { ContextMapper } from '../mappers/context.mapper'
 export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   /**
    * @description Constructs a new instance of the RequestContextMiddleware class, which is responsible for handling the request context in the middleware chain. It takes several dependencies as parameters, including an IRequestContext for managing the execution context, an IServiceExtractor for extracting metadata from HTTP headers, an IGateKeeper for performing authentication, and an IServiceContainer for managing service scopes and dependencies. These dependencies are essential for the middleware to function correctly, allowing it to extract necessary information from incoming requests, authenticate users, and set up the execution context for downstream processing.
-   * @param _routeMatcher An instance of IMatcher used to match incoming requests to their corresponding routes and determine whether each route is public or requires authentication.
    * @param _requestContext An instance of IRequestContext used to manage the execution context for the request. This context allows the middleware to set and retrieve contextual information that can be accessed by downstream handlers, controllers, or use cases during the processing of the request.
    * @param _extractor An instance of IServiceExtractor used to extract metadata from the incoming HTTP request headers. This extractor is responsible for parsing the headers and retrieving relevant information such as correlation IDs, request IDs, authentication tokens, client IP addresses, and tracing span IDs, which are essential for building the ExecutionContext.
    * @param _gateKeeper An instance of IGateKeeper used to perform authentication. This component is responsible for validating the authentication token extracted from the request headers and returning the authentication result, which includes the identity of the authenticated user if the authentication is successful.
@@ -38,7 +42,6 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   constructor(
-    private readonly _routeMatcher: IMatcher<{ method: HttpMethod; path: string }>,
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
     private readonly _gateKeeper: IGateKeeper,
@@ -50,7 +53,6 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
     headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
-    const isPublic = this._routeMatcher.match(req)
     let correlationId = GuidHelper.generate()
     let requestId = GuidHelper.generate()
     let spanId: Guid = correlationId
@@ -74,7 +76,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
       if (!authResult.isOk()) {
         const error = authResult.getErrorOrThrow()
         this._logger.warn(
-          `Authentication failed for request on path: ${req.path}. Code: ${error.code}`,
+          `Authentication failed for request on path: ${req.path}. Code: ${error.code}. Error: ${error}`,
         )
 
         return HttpHelper.error(
@@ -100,7 +102,6 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
         metadata,
         identity: authResult.getValueOrThrow()!,
         path: req.path,
-        isPublic,
       })
 
       return await this._requestContext.runAsync(requestContext, async () => {

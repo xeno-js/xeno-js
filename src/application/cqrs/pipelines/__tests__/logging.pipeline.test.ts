@@ -1,8 +1,7 @@
+import type { ILogger, IRequest } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { REQUEST_TYPE, STATUS_CODES } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { ILogger, IRequest } from '@/domain'
-import { AppError, Result } from '@/domain'
-import { REQUEST_TYPE, STATUS_CODES } from '@/shared'
 
 import { LoggingPipeline } from '../logging.pipeline'
 

@@ -1,7 +1,13 @@
-import type { Delegate, ICommand, IPipelineBehavior, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
-import type { Optional } from '@/shared'
-import { DEFAULT_CONCURRENCY, ERROR_CODES, Guards, PromiseHelper, STATUS_CODES } from '@/shared'
+import type { Delegate, ICommand, IPipelineBehavior, ResultType } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import {
+  DEFAULT_CONCURRENCY,
+  ERROR_CODES,
+  Guards,
+  PromiseHelper,
+  STATUS_CODES,
+} from '@xeno-js/shared'
 
 /**
  * @description A pipeline behavior that implements a retry mechanism for handling concurrency conflicts in the CQRS pipelines. When a request results in a concurrency conflict error, this behavior will automatically retry the request up to a specified maximum number of attempts, with an exponential backoff strategy and added jitter to prevent thundering herd problems. If the maximum number of retry attempts is exceeded, it returns a failed Result with an AppError indicating the concurrency conflict.

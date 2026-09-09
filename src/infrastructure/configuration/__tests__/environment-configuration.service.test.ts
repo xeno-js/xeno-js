@@ -1,11 +1,11 @@
-﻿import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const guardsMocks = vi.hoisted(() => ({
   isNullOrEmpty: vi.fn((value: unknown) => value === null || value === undefined || value === ''),
   isDefined: vi.fn((value: unknown) => value !== null && value !== undefined && value !== ''),
 }))
 
-vi.mock('@/shared', () => ({
+vi.mock('@xeno-js/shared', () => ({
   Guards: {
     isNullOrEmpty: guardsMocks.isNullOrEmpty,
     isDefined: guardsMocks.isDefined,

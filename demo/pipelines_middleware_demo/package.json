@@ -10,7 +10,7 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@xeno/core": "file:../../",
+    "@xeno-js/core": "file:../../",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0"
   },

@@ -1,5 +1,5 @@
-import type { IWriteDataSource, DbContext, Optional, UserContext } from '@xeno/core'
-import { and, AppError, Enumerable, eq } from '@xeno/core';
+import type { IWriteDataSource, DbContext, Optional, UserContext } from '@xeno-js/core'
+import { and, AppError, Enumerable, eq } from '@xeno-js/core';
 import { FullSchema, UserDto, users } from '../../schema';
 
 export class UserDataSource implements IWriteDataSource<UserDto> {

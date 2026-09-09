@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { HttpRequest } from '@xeno/core';
+import { HttpRequest } from '@xeno-js/core';
 import { bootstrap } from './bootstrap';
 
 // ─────────────────────────────────────────────────────────────────────────────

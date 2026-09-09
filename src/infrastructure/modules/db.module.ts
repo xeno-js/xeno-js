@@ -1,4 +1,4 @@
-import type { DbConfig, IModule, IServiceContainer } from '@/domain'
+import type { DbConfig, IModule, IServiceContainer } from '@xeno-js/shared'
 
 import type { DbContext, DbTransaction } from '../db/db.types'
 import type { XenoRegistry } from '../xeno-registry'
@@ -16,7 +16,7 @@ export class DbModule<TRegistry extends XenoRegistry = XenoRegistry> implements 
   DbConfig
 > {
   async configure(container: IServiceContainer<TRegistry>, opts: DbConfig): Promise<void> {
-    const { Guards, TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
 
     const { DbUtils } = await import('./utils/db.utils')
     const db = opts.enableSqlLite ? await DbUtils.addSqlLite(opts) : await DbUtils.addDbClient(opts)

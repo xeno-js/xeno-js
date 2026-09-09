@@ -1,9 +1,8 @@
-﻿import type { AsyncLocalStorage } from 'node:async_hooks'
+import type { AsyncLocalStorage } from 'node:async_hooks'
 
+import type { ExecutionContext, IFactory, IServiceScope, RequestContext } from '@xeno-js/shared'
+import type { Guid } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { ExecutionContext, IFactory, IServiceScope, RequestContext } from '@/domain'
-import type { Guid } from '@/shared'
 
 import type { XenoRegistry } from '../../xeno-registry'
 import { NodeRequestContext } from '../request-context'
@@ -62,7 +61,6 @@ describe('NodeRequestContext', () => {
         userAgent: 'Mozilla/5.0',
         formatIndicator: 'json',
         path: '/api/test',
-        isPublic: false,
       },
       tracing: {
         correlationId: 'c1' as unknown as Guid,
@@ -121,7 +119,6 @@ describe('NodeRequestContext', () => {
         clientIp: '',
         userAgent: '',
         formatIndicator: '',
-        isPublic: false,
         path: '',
         requestId: '' as unknown as Guid,
       },

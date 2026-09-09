@@ -1,4 +1,4 @@
-import { BaseController, ICommand, ResponseDto, STATUS_CODES } from '@xeno/core'
+import { BaseController, ICommand, ResponseDto, STATUS_CODES } from '@xeno-js/core'
 
 export class UnauthorizedController extends BaseController<null, null> {
     public async handle(_request: null): Promise<ResponseDto<null>> {

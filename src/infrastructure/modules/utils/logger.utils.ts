@@ -1,5 +1,5 @@
-import type { ILoggerClient, IServiceContainer, IServiceScope, LoggerConfig } from '@/domain'
-import type { KeysOfType, Optional } from '@/shared'
+import type { ILoggerClient, IServiceContainer, IServiceScope, LoggerConfig } from '@xeno-js/shared'
+import type { KeysOfType, Optional } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../../xeno-registry'
 /**
@@ -29,7 +29,7 @@ export const LoggerUtils = Object.freeze({
   ): Promise<void> {
     const loggerDependencies: KeysOfType<XenoRegistry, ILoggerClient>[] = []
 
-    const { Guards, LOG_LEVEL, TOKENS } = await import('@/shared')
+    const { Guards, LOG_LEVEL, TOKENS } = await import('@xeno-js/shared')
 
     if (!Guards.isDefined(opts) || opts.console) {
       const { ConsoleLogger } = await import('../../loggers/console.logger')
@@ -68,7 +68,7 @@ export const LoggerUtils = Object.freeze({
       }
     }
 
-    const { BaseLogger } = await import('@/application')
+    const { BaseLogger } = await import('@xeno-js/shared')
     container.addSingleton(TOKENS.LOGGER, (c) => {
       const context = c.resolve(TOKENS.CONTEXT_ACCESSOR)
       const resolvedDependencies = [

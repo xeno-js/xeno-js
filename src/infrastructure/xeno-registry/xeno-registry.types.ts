@@ -1,5 +1,5 @@
-import type { ApplicationRegistry } from '@/domain'
-import type { Dictionary } from '@/shared'
+import type { ApplicationRegistry } from '@xeno-js/shared'
+import type { Dictionary } from '@xeno-js/shared'
 
 import type { DbContext, DbTransaction } from '../db'
 

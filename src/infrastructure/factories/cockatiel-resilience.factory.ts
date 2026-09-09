@@ -1,3 +1,7 @@
+import type { IFactory, IServiceResilience, ResilienceConfig } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
+import { Guards, RESILIENCE_DEFAULTS, STATUS_CODES } from '@xeno-js/shared'
 import {
   bulkhead,
   circuitBreaker,
@@ -8,11 +12,6 @@ import {
   retry,
   wrap,
 } from 'cockatiel'
-
-import type { IFactory, IServiceResilience, ResilienceConfig } from '@/domain'
-import { AppError } from '@/domain'
-import type { Optional } from '@/shared'
-import { Guards, RESILIENCE_DEFAULTS, STATUS_CODES } from '@/shared'
 
 import { ServiceResilience } from '../services/resiliences/resilience.service'
 

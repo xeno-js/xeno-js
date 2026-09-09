@@ -1,4 +1,4 @@
-import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@/domain'
+import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@xeno-js/shared'
 
 /**
  * @description A composite pipeline behavior that allows for the combination of multiple pipeline behaviors into a single pipeline. This class takes an array of IPipelineBehavior instances and executes them in the order they were provided, allowing for a structured and modular approach to handling requests in a CQRS architecture. Each behavior can perform specific actions before and after invoking the next behavior in the pipeline, enabling cross-cutting concerns to be applied consistently across all requests.

@@ -1,4 +1,4 @@
-import { Entity, UniqueId } from '@xeno/core'
+import { Entity, UniqueId } from '@xeno-js/core'
 
 export interface UserProps {
     name: string

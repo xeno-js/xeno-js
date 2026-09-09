@@ -134,7 +134,7 @@ payload natively inside a server middleware wrapper.
 ### 1. Initialize the Container and Configure Modules
 
 ```typescript
-import { AppBuilder, LOG_LEVEL, TOKENS, XenoRegistry } from '@xeno/core'
+import { AppBuilder, LOG_LEVEL, TOKENS, XenoRegistry } from '@xeno-js/core'
 import { FindUserQueryHandler } from './user/cqrs/handlers/index'
 import { FindUserController } from './user/controllers/index'
 import { UserMapper } from './user/mappers/user.mapper'

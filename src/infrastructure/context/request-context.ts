@@ -8,9 +8,9 @@ import type {
   IServiceScope,
   NetworkContext,
   RequestContext,
-} from '@/domain'
-import type { Optional } from '@/shared'
-import { Guards } from '@/shared'
+} from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../xeno-registry'
 

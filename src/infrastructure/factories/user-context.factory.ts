@@ -1,6 +1,6 @@
-import type { IFactory, IIdentityAccessor } from '@/domain'
-import type { Guid, Optional, UserContext } from '@/shared'
-import { Guards } from '@/shared'
+import type { IFactory, IIdentityAccessor } from '@xeno-js/shared'
+import type { Guid, Optional, UserContext } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 /**
  * @description Factory class responsible for creating instances of UserContext. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the UserContext, promoting separation of concerns and flexibility in managing user context instances across the application.

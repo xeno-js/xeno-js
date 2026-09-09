@@ -1,7 +1,6 @@
-﻿import type { IPolicy } from 'cockatiel'
+import { AppError } from '@xeno-js/shared'
+import type { IPolicy } from 'cockatiel'
 import { describe, expect, it, vi } from 'vitest'
-
-import { AppError } from '@/domain'
 
 import { ServiceResilience } from '../resilience.service'
 

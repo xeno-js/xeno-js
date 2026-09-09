@@ -1,13 +1,13 @@
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type { ZodType } from 'zod'
-
 import type {
   AuthClientConfig,
   IRequest,
   IServiceContainer,
   IStrategy,
   PipelineConfig,
-} from '@/domain'
+} from '@xeno-js/shared'
+import type { ZodType } from 'zod'
+
 import type { XenoRegistry } from '@/infrastructure'
 
 /**
@@ -36,29 +36,12 @@ export const AuthUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry, ZodType>['authorization'],
   ): Promise<(keyof TRegistry)[]> {
-    const { TOKENS } = await import('@/shared')
+    const { TOKENS } = await import('@xeno-js/shared')
     const pipelines: (keyof TRegistry)[] = []
     type StrategiesToken = keyof TRegistry
     const strategies: StrategiesToken[] = []
 
-    if (opts.userId) {
-      const { UserAuthorizationStrategy } = await import('@/application')
-      container.addSingleton(
-        TOKENS.USER_AUTHORIZATION_PIPELINE,
-        (c) => new UserAuthorizationStrategy(c.resolve(TOKENS.CONTEXT_ACCESSOR)),
-      )
-      strategies.push(TOKENS.USER_AUTHORIZATION_PIPELINE)
-    }
-
-    if (opts.tenantId) {
-      const { TenantAuthorizationStrategy } = await import('@/application')
-      container.addSingleton(
-        TOKENS.TENANT_AUTHORIZATION_PIPELINE,
-        (c) => new TenantAuthorizationStrategy(c.resolve(TOKENS.CONTEXT_ACCESSOR)),
-      )
-      strategies.push(TOKENS.TENANT_AUTHORIZATION_PIPELINE)
-    }
-    const { Guards } = await import('@/shared')
+    const { Guards } = await import('@xeno-js/shared')
     if (Guards.isDefined(opts.policies)) {
       const { PolicyRegistry } = await import('@/application')
       container.addSingleton(TOKENS.POLICY_REGISTRY, () => new PolicyRegistry())
@@ -76,6 +59,14 @@ export const AuthUtils = Object.freeze({
 
         if (!Guards.isNullOrEmpty(policy.permissions)) {
           Policies.add('permissions')
+        }
+
+        if (!Guards.isNullOrEmpty(policy.userId)) {
+          Policies.add('userId')
+        }
+
+        if (!Guards.isNullOrEmpty(policy.tenantId)) {
+          Policies.add('tenantId')
         }
       }
 
@@ -103,6 +94,32 @@ export const AuthUtils = Object.freeze({
             ),
         )
         strategies.push(TOKENS.PERMISSION_AUTHORIZATION_PIPELINE)
+      }
+
+      if (Policies.has('userId')) {
+        const { UserAuthorizationStrategy } = await import('@/application')
+        container.addSingleton(
+          TOKENS.USER_AUTHORIZATION_PIPELINE,
+          (c) =>
+            new UserAuthorizationStrategy(
+              c.resolve(TOKENS.POLICY_REGISTRY),
+              c.resolve(TOKENS.CONTEXT_ACCESSOR),
+            ),
+        )
+        strategies.push(TOKENS.USER_AUTHORIZATION_PIPELINE)
+      }
+
+      if (Policies.has('tenantId')) {
+        const { TenantAuthorizationStrategy } = await import('@/application')
+        container.addSingleton(
+          TOKENS.TENANT_AUTHORIZATION_PIPELINE,
+          (c) =>
+            new TenantAuthorizationStrategy(
+              c.resolve(TOKENS.POLICY_REGISTRY),
+              c.resolve(TOKENS.CONTEXT_ACCESSOR),
+            ),
+        )
+        strategies.push(TOKENS.TENANT_AUTHORIZATION_PIPELINE)
       }
     }
 
@@ -146,7 +163,7 @@ export const AuthUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: AuthClientConfig<TRegistry, SupabaseClientOptions<'public'>>,
   ): Promise<void> {
-    const { Guards, TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
     if (Guards.isDefined(opts.customAuthService)) {
       container.addSingleton(TOKENS.AUTH_SERVICE, () => {
         return opts.customAuthService!(container.createScope())

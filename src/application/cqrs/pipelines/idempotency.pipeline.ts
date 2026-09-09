@@ -5,9 +5,9 @@ import type {
   INetworkContextAccessor,
   IPipelineBehavior,
   ResultType,
-} from '@/domain'
-import { AppError, Result } from '@/domain'
-import { Guards, IDEMPOTENCY_CONSTANTS } from '@/shared'
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { Guards, IDEMPOTENCY_CONSTANTS } from '@xeno-js/shared'
 
 /**
  * @description A pipeline behavior that implements idempotency for command requests in the CQRS architecture. This behavior ensures that if multiple requests with the same command ID are received, only one of them will be processed, and the others will receive the same result without reprocessing the command. The pipeline uses an IIdempotencyStore to manage locks and store results for processed commands, allowing it to handle concurrent requests safely and efficiently while preventing duplicate processing of commands. The behavior checks if the incoming request is a command and if it has a valid ID. If the command has already been processed, it retrieves the stored result and returns it. If the command is currently being processed by another request, it returns an error indicating that the command is locked. If the command has not been processed and is not locked, it acquires a lock, processes the command, stores the result, and releases the lock accordingly. The pipeline also includes error handling to ensure that locks are released in case of exceptions during command processing.

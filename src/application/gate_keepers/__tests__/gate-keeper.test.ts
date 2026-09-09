@@ -1,9 +1,8 @@
-﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { IAuthService, IBaseMapper, Identity } from '@/domain'
-import { AppError, Result } from '@/domain'
-import type { AuthClaims } from '@/shared'
-import { GUEST, STATUS_CODES } from '@/shared'
+import type { IAuthService, IBaseMapper, Identity } from '@xeno-js/shared'
+import type { AuthClaims } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { GUEST, STATUS_CODES } from '@xeno-js/shared'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { GateKeeper } from '../gate-keeper'
 

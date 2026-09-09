@@ -1,8 +1,7 @@
+import type { IContextAccessor, IPolicyRegistry, IRequest, RequestContext } from '@xeno-js/shared'
+import { type AuthPolicy } from '@xeno-js/shared'
+import { ERROR_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
-
-import type { IContextAccessor, IPolicyRegistry, IRequest, RequestContext } from '@/domain'
-import { type AuthPolicy } from '@/shared'
-import { ERROR_CODES } from '@/shared'
 
 import { RoleAuthorizationStrategy } from '../role-authorization.strategy'
 
@@ -23,6 +22,8 @@ const makeRequestContext = (identity?: { roles?: string[] }): IContextAccessor<R
 })
 
 const makePolicy = (overrides?: Partial<AuthPolicy>): AuthPolicy => ({
+  userId: false,
+  tenantId: false,
   roles: [],
   permissions: [],
   ...overrides,

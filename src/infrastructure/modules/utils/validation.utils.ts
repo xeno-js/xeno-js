@@ -1,14 +1,14 @@
-import type { ZodType } from 'zod'
-
 import type {
   ApplicationRegistry,
+  ILogger,
   IRequest,
   IServiceContainer,
   IServiceScope,
   IStrategy,
   PipelineConfig,
-} from '@/domain'
-import type { KeysOfType } from '@/shared'
+} from '@xeno-js/shared'
+import type { KeysOfType } from '@xeno-js/shared'
+import type { ZodType } from 'zod'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -35,8 +35,9 @@ export const ValidationUtils = Object.freeze({
   async addValidation<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry, ZodType>['validation'],
+    logger: ILogger,
   ): Promise<(keyof TRegistry)[]> {
-    const { Guards, TOKENS } = await import('@/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
 
     if (!Guards.isDefined(opts.zod) && Guards.isNullOrEmpty(opts.customValidationStrategy)) {
       return []
@@ -52,7 +53,7 @@ export const ValidationUtils = Object.freeze({
       const config = opts.zod
       const { ZodValidatorFactory } = await import('../../factories/zod-validator.factory')
       container.addSingleton(TOKENS.ZOD_VALIDATOR, () => {
-        return new ZodValidatorFactory().create(config)
+        return new ZodValidatorFactory().create({ ...config, logger })
       })
 
       const { SchemaValidationStrategy } = await import('@/application')

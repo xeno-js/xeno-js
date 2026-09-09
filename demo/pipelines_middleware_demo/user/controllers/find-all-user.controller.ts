@@ -1,4 +1,4 @@
-import { BaseController, ResponseDto, STATUS_CODES } from '@xeno/core'
+import { BaseController, ResponseDto, STATUS_CODES } from '@xeno-js/core'
 import { FindAllUsersQuery } from '../cqrs/query/user.query'
 import { User } from '../entity/user'
 

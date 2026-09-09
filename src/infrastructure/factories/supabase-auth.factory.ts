@@ -1,9 +1,8 @@
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
 import { SupabaseClient } from '@supabase/supabase-js'
+import type { AuthClientConfig, IAuthService, IFactory } from '@xeno-js/shared'
+import { SupabaseClaimsMapper, SupabaseSessionMapper } from '@xeno-js/shared'
 
-import type { AuthClientConfig, IAuthService, IFactory } from '@/domain'
-
-import { SupabaseClaimsMapper } from '../mappers/supabase-claims.mapper'
 import { SupabaseAuthService } from '../services/auth/supabase-auth.service'
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -23,6 +22,7 @@ export class SupabaseAuthServiceFactory<
   ): IAuthService {
     const client = new SupabaseClient(config.url, config.key, config.options)
     const mapper = new SupabaseClaimsMapper()
-    return new SupabaseAuthService(client, mapper)
+    const sessionMapper = new SupabaseSessionMapper(mapper)
+    return new SupabaseAuthService(client, mapper, sessionMapper)
   }
 }

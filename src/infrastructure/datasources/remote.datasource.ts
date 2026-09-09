@@ -1,6 +1,11 @@
-import type { IHttpClient, IRemoteDataSource, IServiceResilience, ResultType } from '@/domain'
-import { Result } from '@/domain'
-import type { HttpBaseRequest, HttpRequest } from '@/shared'
+import type {
+  IHttpClient,
+  IRemoteDataSource,
+  IServiceResilience,
+  ResultType,
+} from '@xeno-js/shared'
+import type { HttpBaseRequest, HttpRequest } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
 
 /**
  * @description Concrete implementation of the IRemoteDataSource contract that utilizes an agnostic HTTP client and a resilience service to fetch data from remote endpoints. The RemoteDataSource class is responsible for sending HTTP requests based on the provided HttpClientRequest parameters, while leveraging the resilience features of the IServiceResilience to ensure reliable communication with external services. This implementation abstracts away the details of how HTTP requests are made and how resilience is handled, allowing for flexibility in choosing different HTTP clients and resilience strategies without affecting the consumers of the IRemoteDataSource interface.

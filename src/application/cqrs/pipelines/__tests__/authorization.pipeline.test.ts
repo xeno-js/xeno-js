@@ -1,8 +1,7 @@
+import type { IRequest } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { IRequest } from '@/domain'
-import { Result } from '@/domain'
-import { AppError } from '@/domain'
 
 import { AuthorizationPipeline } from '../authorization.pipeline'
 

@@ -1,8 +1,6 @@
+import type { Guid, IFactory, IRequest, ResultType, UserContext } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IFactory, IRequest, ResultType } from '@/domain'
-import { Result } from '@/domain'
-import type { Guid, UserContext } from '@/shared'
 
 import { BaseHandler } from '../base-handler'
 

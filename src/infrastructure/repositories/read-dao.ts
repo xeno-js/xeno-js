@@ -1,7 +1,7 @@
-import type { IMapper, IReadDao, IReadDataSource, ResultType } from '@/domain'
-import { AppError, Result } from '@/domain'
-import type { Optional, UserContext } from '@/shared'
-import { Guards } from '@/shared'
+import type { IMapper, IReadDao, IReadDataSource, ResultType } from '@xeno-js/shared'
+import type { Optional, UserContext } from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 /**
  * An abstract generic read-only DAO that provides basic read operations for entities of type T, using a Data Transfer Object (DTO) of type TDto for data access. This class relies on an IReadDataSource to perform database operations and an IMapper to convert between entities and DTOs.

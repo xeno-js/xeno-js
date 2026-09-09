@@ -1,5 +1,3 @@
-import type { ZodType } from 'zod'
-
 import type {
   ApplicationRegistry,
   AuthClientConfig,
@@ -10,11 +8,11 @@ import type {
   IModule,
   IServiceContainer,
   LoggerConfig,
-  MiddlewareConfig,
   PipelineConfig,
-} from '@/domain'
-import type { Optional, SetupAction } from '@/shared'
-import { Guards, LOG_LEVEL, TOKENS } from '@/shared'
+} from '@xeno-js/shared'
+import type { Optional, SetupAction } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
+import type { ZodType } from 'zod'
 
 import { EnvironmentConfigurationService } from '../configuration'
 import { ServiceContainer } from '../container/service-container'
@@ -66,8 +64,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private _pipelineConfig: PipelineConfig<TRegistry, ZodType> = {
     performance: { thresholdMs: 500 },
     authorization: {
-      userId: false,
-      tenantId: false,
       policies: undefined,
       customAuthorizationStrategy: undefined,
     },
@@ -81,7 +77,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     },
     queryBus: { isEnabled: false },
   }
-  private _middlewareConfig: MiddlewareConfig = { publicRoutes: undefined }
   private _config: CacheConfig = { inMemory: true, redis: undefined }
 
   // --- Module Queuing Flags ---
@@ -108,10 +103,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addMiddlewares(setupAction?: SetupAction<MiddlewareConfig, IConfigurationService>): this {
-    if (Guards.isDefined(setupAction)) setupAction(this._middlewareConfig, this._configuration)
-
-    this._queueMiddlewareModule(this._middlewareConfig)
+  public addMiddlewares(): this {
+    this._queueMiddlewareModule()
     return this
   }
 
@@ -336,6 +329,21 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     return this
   }
 
+  public addAllowOrigin(setupAction: SetupAction<string[], IConfigurationService>): this {
+    const config: string[] = []
+    setupAction(config, this._configuration)
+    this._modules.push({
+      priority: 30,
+      name: 'HttpCoreModule',
+      action: async () => {
+        const { HttpOriginModule } = await import('../modules/http-core.module')
+        const httpOriginModule = new HttpOriginModule()
+        await httpOriginModule.configure(this._container, config)
+      },
+    })
+    return this
+  }
+
   // ─────────────────────────────────────────────────────────────────────────────
   // Dependency Injection Pass-through Methods
   // ─────────────────────────────────────────────────────────────────────────────
@@ -484,7 +492,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  private _queueMiddlewareModule(opts: MiddlewareConfig): void {
+  private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return
     this._isMiddlewareModuleQueued = true
 
@@ -497,7 +505,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         const { MiddlewareModule } = await import('../modules/middleware.module')
         const middlewareModule = new MiddlewareModule()
         await middlewareModule.configure(this._container, {
-          ...opts,
           isAuth: this._isAuthModuleQueued,
           isLogger: this._isLoggerModuleQueued,
         })

@@ -6,9 +6,9 @@ import type {
   IServiceContainer,
   IServiceScope,
   Lifetime,
-} from '@/domain'
-import type { Factory } from '@/shared'
-import { Guards } from '@/shared'
+} from '@xeno-js/shared'
+import type { Factory } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
 
 import type { DbContext } from '../db'
 

@@ -1,4 +1,4 @@
-import type { IGateKeeper, IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
+import type { IGateKeeper, IModule, IServiceContainer } from '@xeno-js/shared'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -12,13 +12,13 @@ import type { XenoRegistry } from '../xeno-registry'
  */
 export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
   TRegistry,
-  MiddlewareConfig
+  { isAuth: boolean; isLogger: boolean }
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: MiddlewareConfig & { isAuth: boolean; isLogger: boolean },
+    opts: { isAuth: boolean; isLogger: boolean },
   ): Promise<void> {
-    const { TOKENS } = await import('@/shared')
+    const { TOKENS } = await import('@xeno-js/shared')
 
     if (!opts.isAuth) {
       const { NoAuthGateKeeper } = await import('@/application')
@@ -33,11 +33,6 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       (c) => new HttpHeaderExtractor(c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR)),
     )
 
-    const { RegexRouteMatcher } = await import('../services/matchers/router-regex.matcher')
-    container.addSingleton(TOKENS.ROUTE_MATCHER, () => {
-      return new RegexRouteMatcher(opts.publicRoutes ?? {})
-    })
-
     if (!opts.isLogger) {
       const { LoggerUtils } = await import('./utils/logger.utils')
       await LoggerUtils.addLogger(container, undefined)
@@ -48,7 +43,6 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       TOKENS.MIDDLEWARE,
       (c) =>
         new RequestContextMiddleware(
-          c.resolve(TOKENS.ROUTE_MATCHER),
           c.resolve(TOKENS.REQUEST_CONTEXT),
           c.resolve(TOKENS.SERVICE_EXTRACTOR),
           c.resolve(TOKENS.GATE_KEEPER),

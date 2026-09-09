@@ -1,6 +1,6 @@
-import type { IDisposable, ITransactionState, IUnitOfWork } from '@/domain'
-import { AppError } from '@/domain'
-import { Guards, type Optional } from '@/shared'
+import type { IDisposable, ITransactionState, IUnitOfWork } from '@xeno-js/shared'
+import { AppError } from '@xeno-js/shared'
+import { Guards, type Optional } from '@xeno-js/shared'
 
 import type { DbContext, DbTransaction } from '../db/db.types'
 

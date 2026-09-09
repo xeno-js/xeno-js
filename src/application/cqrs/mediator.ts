@@ -9,9 +9,9 @@ import type {
   IRequest,
   IServiceScopeAccessor,
   ResultType,
-} from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES, TOKENS } from '@/shared'
+} from '@xeno-js/shared'
+import { AppError, Result } from '@xeno-js/shared'
+import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES, TOKENS } from '@xeno-js/shared'
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).

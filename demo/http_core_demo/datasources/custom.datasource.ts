@@ -1,4 +1,4 @@
-import { IHttpClient, type IServiceResilience, RemoteDataSource, type ResultType } from '@xeno/core'
+import { IHttpClient, type IServiceResilience, RemoteDataSource, type ResultType } from '@xeno-js/core'
 
 export class CustomDataSource extends RemoteDataSource {
     constructor(httpClient: IHttpClient, resilienceClient: IServiceResilience) {

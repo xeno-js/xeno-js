@@ -1,7 +1,6 @@
+import type { IMapper, IWriteDataSource } from '@xeno-js/shared'
+import type { Optional, UserContext } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
-
-import type { IMapper, IWriteDataSource } from '@/domain'
-import type { Optional, UserContext } from '@/shared'
 
 import { Repository } from '../repository'
 

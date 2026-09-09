@@ -1,4 +1,4 @@
-import type { IMapper } from '@xeno/core';
+import type { IMapper } from '@xeno-js/core';
 import { UserDto } from '../../schema';
 import { User, UserProps } from '../entity/user';
 

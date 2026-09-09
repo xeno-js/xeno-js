@@ -1,6 +1,4 @@
-﻿import { describe, expect, it, vi } from 'vitest'
-
-import type {
+﻿import type {
   ApplicationRegistry,
   ICommand,
   IHandler,
@@ -10,9 +8,9 @@ import type {
   IServiceScope,
   IServiceScopeAccessor,
   ResultType,
-} from '@/domain'
-import { AppError, Result } from '@/domain'
-import { ERROR_CODES, TOKENS } from '@/shared'
+} from '@xeno-js/shared'
+import { AppError, ERROR_CODES, Result, TOKENS } from '@xeno-js/shared'
+import { describe, expect, it, vi } from 'vitest'
 
 import { Mediator } from '../mediator'
 

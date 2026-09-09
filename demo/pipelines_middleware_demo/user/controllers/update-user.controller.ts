@@ -1,4 +1,4 @@
-import { BaseController, ResponseDto, STATUS_CODES } from '@xeno/core'
+import { BaseController, ResponseDto, STATUS_CODES } from '@xeno-js/core'
 import { UserProps } from '../entity/user'
 import { UpdateUserCommand } from '../cqrs/commands/user.command'
 

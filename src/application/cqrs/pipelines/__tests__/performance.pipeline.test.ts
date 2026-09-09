@@ -1,8 +1,7 @@
-﻿import { afterEach, describe, expect, it, vi } from 'vitest'
-
-import type { ILogger, IRequest } from '@/domain'
-import { Result } from '@/domain'
-import { REQUEST_TYPE } from '@/shared'
+import type { ILogger, IRequest } from '@xeno-js/shared'
+import { Result } from '@xeno-js/shared'
+import { REQUEST_TYPE } from '@xeno-js/shared'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { PerformancePipeline } from '../performance.pipeline'
 
