@@ -11,9 +11,9 @@ import type {
   IModule,
   IServiceContainer,
   LoggerConfig,
+  MiddlewareConfig,
   PipelineConfig,
 } from '@/domain'
-import type { MiddlewareConfig } from '@/domain/config/middleware.config'
 
 import { EnvironmentConfigurationService } from '../configuration'
 import { ServiceContainer } from '../container/service-container'

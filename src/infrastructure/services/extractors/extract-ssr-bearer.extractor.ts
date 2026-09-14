@@ -8,13 +8,11 @@ import {
 
 export class SupabaseSsrTokenExtractor implements IServiceExtractor<HttpHeaders, Optional<string>> {
   extract(headers: HttpHeaders): Optional<string> {
-    // 1. Supporto standard per Authorization Header (es. Postman o App Mobile)
     const authHeader = StringHelper.getSingleValue(headers['authorization'])
     if (Guards.isDefined(authHeader) && authHeader.toLowerCase().startsWith('bearer ')) {
       return authHeader.substring(7)
     }
 
-    // 2. Riassemblaggio nativo dei cookie chunked di @supabase/ssr
     const cookieHeader = StringHelper.getSingleValue(headers['cookie'])
     if (Guards.isNullOrEmpty(cookieHeader)) return undefined
 
@@ -47,12 +45,7 @@ export class SupabaseSsrTokenExtractor implements IServiceExtractor<HttpHeaders,
 
     try {
       const parsed = StringHelper.safeParse(fullTokenString)
-      if (
-        Guards.isDefined(parsed) &&
-        Guards.isObject(parsed) &&
-        parsed !== null &&
-        'access_token' in parsed
-      ) {
+      if (Guards.isDefined(parsed) && Guards.isObject(parsed) && 'access_token' in parsed) {
         const accessToken = parsed['access_token']
         if (Guards.isString(accessToken)) return accessToken
       }
