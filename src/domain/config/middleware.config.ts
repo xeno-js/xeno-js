@@ -9,4 +9,5 @@ export interface MiddlewareConfig {
   csrf: Optional<string>
   optionsMiddleware: boolean
   routeRegistry: Optional<Dictionary<HttpMethod[]>>
+  trustedIpHeader: Optional<string>
 }

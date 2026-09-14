@@ -38,7 +38,8 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     const { HttpHeaderExtractor } = await import('../services/extractors/http-header.extractor')
     container.addSingleton(
       TOKENS.SERVICE_EXTRACTOR,
-      (c) => new HttpHeaderExtractor(c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR)),
+      (c) =>
+        new HttpHeaderExtractor(c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR), opts.trustedIpHeader),
     )
 
     if (!opts.isLogger) {

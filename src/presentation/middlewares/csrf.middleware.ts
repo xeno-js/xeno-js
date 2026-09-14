@@ -33,7 +33,10 @@ export class CsrfMiddleware {
       const { network, tracing } = this._requestContext.getContext() ?? {}
 
       // Fail-fast: se manca o è errato, blocca tutto lanciando un'eccezione di dominio
-      if (!Guards.isDefined(network?.csrf) || network.csrf.toLowerCase() !== this._csrf) {
+      if (
+        !Guards.isDefined(network?.csrf) ||
+        network.csrf.toLowerCase() !== this._csrf.toLowerCase()
+      ) {
         return HttpHelper.error(
           {
             success: false,

@@ -30,7 +30,7 @@ export class NodeAxiosFactory extends AxiosFactory {
       httpsAgent,
       maxRedirects: config.maxRedirects ?? 5,
       decompress: config.decompress ?? true,
-      proxy: false,
+      proxy: config.proxy,
       withCredentials: config.withCredentials,
     })
 

@@ -88,6 +88,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     csrf: undefined,
     optionsMiddleware: false,
     routeRegistry: undefined,
+    trustedIpHeader: undefined,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,
@@ -102,6 +103,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         maxRedirects: undefined,
         decompress: undefined,
         withCredentials: undefined,
+        proxy: false,
       },
     },
     resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },

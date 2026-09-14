@@ -13,7 +13,7 @@ describe('HttpHeaderExtractor', () => {
   describe('extract', () => {
     it('returns a fully populated Metadata when all headers are present', () => {
       const bearer = makeBearerExtractor(TOKEN)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
 
       const headers = {
         'x-correlation-id': VALID_GUID,
@@ -33,7 +33,7 @@ describe('HttpHeaderExtractor', () => {
 
     it('returns undefined fields when headers are absent', () => {
       const bearer = makeBearerExtractor(undefined)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
 
       const result = extractor.extract({})
 
@@ -46,7 +46,7 @@ describe('HttpHeaderExtractor', () => {
 
     it('returns undefined for correlationId when value is not a valid GUID', () => {
       const bearer = makeBearerExtractor(undefined)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
 
       const result = extractor.extract({ 'x-correlation-id': 'not-a-guid' })
 
@@ -55,7 +55,7 @@ describe('HttpHeaderExtractor', () => {
 
     it('returns undefined for requestId when value is not a valid GUID', () => {
       const bearer = makeBearerExtractor(undefined)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
 
       const result = extractor.extract({ 'x-request-id': 'not-a-guid' })
 
@@ -64,7 +64,7 @@ describe('HttpHeaderExtractor', () => {
 
     it('delegates token extraction to the injected bearerExtractor', () => {
       const bearer = makeBearerExtractor(TOKEN)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
       const headers = { authorization: `Bearer ${TOKEN}` }
 
       extractor.extract(headers)
@@ -75,7 +75,7 @@ describe('HttpHeaderExtractor', () => {
 
     it('accepts array header values for x-forwarded-for', () => {
       const bearer = makeBearerExtractor(undefined)
-      const extractor = new HttpHeaderExtractor(bearer)
+      const extractor = new HttpHeaderExtractor(bearer, undefined)
 
       const result = extractor.extract({ 'x-forwarded-for': ['10.0.0.1', '10.0.0.2'] })
 

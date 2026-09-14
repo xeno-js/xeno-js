@@ -30,13 +30,16 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
    */
   constructor(
     private readonly _bearerExtractor: IServiceExtractor<HttpHeaders, Optional<string>>,
+    private readonly _trustedIp: Optional<string>,
   ) {}
 
   extract(headers: HttpHeaders): Metadata {
     const correlationId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-correlation-id']))
     const requestId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-request-id']))
     const token = this._bearerExtractor.extract(headers)
-    const clientIp = StringHelper.getSingleValue(headers['x-forwarded-for'])
+    const clientIp =
+      StringHelper.getSingleValue(headers[this._trustedIp?.toLowerCase() ?? 'x-forwarded-for']) ??
+      StringHelper.getSingleValue(headers['x-real-ip'])
     const spanId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-span-id']))
     const parentSpanId = StringHelper.getSingleValue(headers['x-parent-span-id'])
     const acceptHeader = StringHelper.getSingleValue(headers['accept'])
