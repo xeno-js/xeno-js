@@ -1,14 +1,9 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-import type {
-  ApplicationRegistry,
-  IDisposable,
-  IServiceContainer,
-  IServiceScope,
-  Lifetime,
-} from '@xeno-js/shared'
-import type { Factory } from '@xeno-js/shared'
+import type { Factory, IDisposable } from '@xeno-js/shared'
 import { Guards } from '@xeno-js/shared'
+
+import type { ApplicationRegistry, IServiceContainer, IServiceScope, Lifetime } from '@/domain'
 
 import type { DbContext } from '../db'
 

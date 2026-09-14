@@ -1,2 +1,3 @@
 export * from './extract-bearer.extractor'
+export * from './extract-ssr-bearer.extractor'
 export * from './http-header.extractor'

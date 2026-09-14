@@ -1,13 +1,7 @@
-import type {
-  ICommand,
-  IModule,
-  IPipelineBehavior,
-  IQuery,
-  IServiceContainer,
-  IServiceScopeAccessor,
-  PipelineConfig,
-} from '@xeno-js/shared'
+import type { ICommand, IPipelineBehavior, IQuery } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
+
+import type { IModule, IServiceContainer, IServiceScopeAccessor, PipelineConfig } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 

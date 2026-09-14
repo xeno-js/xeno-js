@@ -1,4 +1,6 @@
-import type { IFactory, IServiceContainer, IServiceScope } from '@xeno-js/shared'
+import type { IFactory } from '@xeno-js/shared'
+
+import type { IServiceContainer, IServiceScope } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 

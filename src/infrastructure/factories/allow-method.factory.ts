@@ -1,8 +1,8 @@
-import type { IFactory, ILogger, IValidatorService } from '@xeno-js/shared'
-import { ZodValidatorService } from '@xeno-js/shared'
-import type { ZodType } from 'zod'
+import type { Dictionary, HttpMethod, IFactory } from '@xeno-js/shared'
 
-import type { SchemaConfig } from '@/domain'
+import type { IAllowMethod } from '@/domain'
+
+import { AllowMethodRegistry } from '../services/allow_methods'
 
 /**
  * @description Factory class responsible for creating instances of ZodValidatorService based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, including the initialization of the underlying ZodValidatorService instance with the specified configuration options such as URL and API key. This design promotes separation of concerns and allows for flexibility in managing ZodValidatorService instances across the application.
@@ -13,18 +13,15 @@ import type { SchemaConfig } from '@/domain'
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-export class ZodValidatorFactory implements IFactory<
-  SchemaConfig<ZodType> & { logger: ILogger },
-  IValidatorService
-> {
-  public create(opts: SchemaConfig<ZodType> & { logger: ILogger }): IValidatorService {
-    const validatorService = new ZodValidatorService(new Map(), opts.logger)
+export class AllowMethodFactory implements IFactory<Dictionary<HttpMethod[]>, IAllowMethod> {
+  public create(opts: Dictionary<HttpMethod[]>): IAllowMethod {
+    const allowMethodService = new AllowMethodRegistry()
 
     // 2. Iteriamo sugli schemi passati nella configurazione e li registriamo (Ora in modo sincrono!)
-    for (const [intentKey, schema] of Object.entries(opts.schemas)) {
-      validatorService.addSchema(intentKey, schema)
+    for (const [intentKey, schema] of Object.entries(opts)) {
+      allowMethodService.add(intentKey, schema)
     }
 
-    return validatorService
+    return allowMethodService
   }
 }

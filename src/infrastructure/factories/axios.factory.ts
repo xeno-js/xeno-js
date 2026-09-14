@@ -1,23 +1,37 @@
-import type { HttpClientConfig, IFactory, IHttpClient } from '@xeno-js/shared'
+import http from 'node:http'
+import https from 'node:https'
+
+import type { HttpClientConfig, IHttpClient } from '@xeno-js/shared'
+import { AxiosFactory, AxiosHttpClient } from '@xeno-js/shared'
 import axios from 'axios'
 
-import { AxiosHttpClient } from '../http/axios.http'
+export class NodeAxiosFactory extends AxiosFactory {
+  public override create(config: HttpClientConfig): IHttpClient {
+    const isKeepAlive = config.keepAlive ?? true
+    const maxSockets = config.maxSockets ?? 100
 
-/**
- * @description Factory class responsible for creating instances of AxiosHttpClient based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the AxiosHttpClient, including the initialization of the underlying Axios instance with the specified configuration options such as base URL, default headers, and timeout settings. This design promotes separation of concerns and allows for flexibility in managing AxiosHttpClient instances across the application.
+    const httpAgent = new http.Agent({
+      keepAlive: isKeepAlive,
+      maxSockets,
+      scheduling: 'lifo',
+    })
 
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
-export class AxiosFactory implements IFactory<HttpClientConfig, IHttpClient> {
-  public create(config: HttpClientConfig): IHttpClient {
+    const httpsAgent = new https.Agent({
+      keepAlive: isKeepAlive,
+      maxSockets,
+      scheduling: 'lifo',
+    })
+
     const axiosInstance = axios.create({
       baseURL: config.baseURL,
       headers: config.defaultHeaders,
       timeout: config.timeoutMs,
+      httpAgent,
+      httpsAgent,
+      maxRedirects: config.maxRedirects ?? 5,
+      decompress: config.decompress ?? true,
+      proxy: false,
+      withCredentials: config.withCredentials,
     })
 
     return new AxiosHttpClient(axiosInstance)

@@ -1,12 +1,8 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-import type {
-  ExecutionContext,
-  IFactory,
-  IRequestContext,
-  IServiceScope,
-  RequestContext,
-} from '@xeno-js/shared'
+import type { IFactory, RequestContext } from '@xeno-js/shared'
+
+import type { ExecutionContext, IRequestContext, IServiceScope } from '@/domain'
 
 import { NodeRequestContext } from '../context/request-context'
 import type { XenoRegistry } from '../xeno-registry'

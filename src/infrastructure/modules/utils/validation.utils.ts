@@ -1,14 +1,13 @@
-import type {
-  ApplicationRegistry,
-  ILogger,
-  IRequest,
-  IServiceContainer,
-  IServiceScope,
-  IStrategy,
-  PipelineConfig,
-} from '@xeno-js/shared'
+import type { ILogger, IRequest, IStrategy } from '@xeno-js/shared'
 import type { KeysOfType } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
+
+import type {
+  ApplicationRegistry,
+  IServiceContainer,
+  IServiceScope,
+  PipelineConfig,
+} from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 

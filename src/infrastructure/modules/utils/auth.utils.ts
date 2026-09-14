@@ -1,13 +1,8 @@
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type {
-  AuthClientConfig,
-  IRequest,
-  IServiceContainer,
-  IStrategy,
-  PipelineConfig,
-} from '@xeno-js/shared'
+import type { IRequest, IStrategy } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
 
+import type { AuthSsrConfig, IServiceContainer, PipelineConfig } from '@/domain'
 import type { XenoRegistry } from '@/infrastructure'
 
 /**
@@ -161,28 +156,28 @@ export const AuthUtils = Object.freeze({
    */
   async addAuthN<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: AuthClientConfig<TRegistry, SupabaseClientOptions<'public'>>,
+    opts: AuthSsrConfig<SupabaseClientOptions<'public'>>,
   ): Promise<void> {
-    const { Guards, TOKENS } = await import('@xeno-js/shared')
-    if (Guards.isDefined(opts.customAuthService)) {
-      container.addSingleton(TOKENS.AUTH_SERVICE, () => {
-        return opts.customAuthService!(container.createScope())
-      })
-    } else {
-      const { SupabaseAuthServiceFactory } = await import('../../factories/supabase-auth.factory')
-      container.addSingleton(TOKENS.AUTH_SERVICE, () => {
-        const factory = new SupabaseAuthServiceFactory<TRegistry>()
-        return factory.create(opts)
-      })
+    const { TOKENS } = await import('@xeno-js/shared')
+    const _t = opts
+    const { SupabaseServerAuthFactory } = await import('../../factories')
+    container.addScoped(TOKENS.AUTH_SERVICE, () => {
+      const factory = new SupabaseServerAuthFactory()
+      return factory.create({ config: opts, container })
+    })
 
-      const { ClaimsIdentityMapper } = await import('@/application')
-      container.addSingleton(TOKENS.CLAIMS_IDENTITY_MAPPER, () => new ClaimsIdentityMapper())
-    }
+    container.addSingleton(TOKENS.BASE_AUTH_SERVICE, () => {
+      const factory = new SupabaseServerAuthFactory()
+      return factory.create({ config: opts, container })
+    })
+
+    const { ClaimsIdentityMapper } = await import('@/application')
+    container.addSingleton(TOKENS.CLAIMS_IDENTITY_MAPPER, () => new ClaimsIdentityMapper())
 
     const { GateKeeper } = await import('@/application')
     container.addSingleton(TOKENS.GATE_KEEPER, (c) => {
       return new GateKeeper(
-        c.resolve(TOKENS.AUTH_SERVICE),
+        c.resolve(TOKENS.BASE_AUTH_SERVICE),
         c.resolve(TOKENS.CLAIMS_IDENTITY_MAPPER),
       )
     })

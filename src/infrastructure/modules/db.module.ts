@@ -1,4 +1,6 @@
-import type { DbConfig, IModule, IServiceContainer } from '@xeno-js/shared'
+import type { DbConfig } from '@xeno-js/shared'
+
+import type { IModule, IServiceContainer } from '@/domain'
 
 import type { DbContext, DbTransaction } from '../db/db.types'
 import type { XenoRegistry } from '../xeno-registry'

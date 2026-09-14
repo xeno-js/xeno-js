@@ -1,4 +1,4 @@
-import type { HttpCoreConfig, IModule, IServiceContainer } from '@xeno-js/shared'
+import type { HttpCoreConfig, IModule, IServiceContainer } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 

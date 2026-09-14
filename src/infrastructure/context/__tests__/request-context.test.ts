@@ -1,8 +1,10 @@
 import type { AsyncLocalStorage } from 'node:async_hooks'
 
-import type { ExecutionContext, IFactory, IServiceScope, RequestContext } from '@xeno-js/shared'
+import type { IFactory, RequestContext } from '@xeno-js/shared'
 import type { Guid } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
+
+import type { ExecutionContext, IServiceScope } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 import { NodeRequestContext } from '../request-context'
@@ -51,6 +53,7 @@ describe('NodeRequestContext', () => {
       identity: {
         userId: 'u1' as unknown as Guid,
         email: 'admin@example.com',
+        name: 'admin',
         tenantId: 't1' as unknown as Guid,
         roles: ['admin'],
         permissions: ['read'],
@@ -61,6 +64,8 @@ describe('NodeRequestContext', () => {
         userAgent: 'Mozilla/5.0',
         formatIndicator: 'json',
         path: '/api/test',
+        transport: undefined,
+        csrf: '',
       },
       tracing: {
         correlationId: 'c1' as unknown as Guid,
@@ -111,6 +116,7 @@ describe('NodeRequestContext', () => {
       identity: {
         userId: 'u1' as unknown as Guid,
         email: 'admin@example.com',
+        name: 'admin',
         tenantId: 't1' as unknown as Guid,
         roles: ['admin'],
         permissions: [],
@@ -121,6 +127,8 @@ describe('NodeRequestContext', () => {
         formatIndicator: '',
         path: '',
         requestId: '' as unknown as Guid,
+        transport: undefined,
+        csrf: '',
       },
       tracing: {
         correlationId: '' as unknown as Guid,

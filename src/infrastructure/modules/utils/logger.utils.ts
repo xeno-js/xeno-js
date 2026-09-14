@@ -1,5 +1,7 @@
-import type { ILoggerClient, IServiceContainer, IServiceScope, LoggerConfig } from '@xeno-js/shared'
+import type { ILoggerClient } from '@xeno-js/shared'
 import type { KeysOfType, Optional } from '@xeno-js/shared'
+
+import type { IServiceContainer, IServiceScope, LoggerConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 /**

@@ -1,7 +1,9 @@
-import type { IFactory, ILoggerClient, LoggerConfig } from '@xeno-js/shared'
+import type { IFactory, ILoggerClient } from '@xeno-js/shared'
 import { LOG_LEVEL } from '@xeno-js/shared'
 import type { DestinationStream, LoggerOptions } from 'pino'
 import pino from 'pino'
+
+import type { LoggerConfig } from '@/domain'
 
 import { PinoLogger } from '../loggers/pino.logger'
 import type { XenoRegistry } from '../xeno-registry'

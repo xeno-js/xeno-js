@@ -1,4 +1,6 @@
-import type { HttpConfig, IServiceContainer, ResilienceConfig } from '@xeno-js/shared'
+import type { ResilienceConfig } from '@xeno-js/shared'
+
+import type { HttpConfig, IServiceContainer } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -26,14 +28,14 @@ export const HttpUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: HttpConfig<TRegistry>,
   ): Promise<void> {
-    const { AxiosFactory } = await import('../../factories/axios.factory')
+    const { NodeAxiosFactory } = await import('../../factories')
     const { Guards } = await import('@xeno-js/shared')
     if (!Guards.isDefined(opts.token)) {
       throw new Error('HttpConfig.token is required and must be defined.')
     }
 
     container.addSingleton(opts.token, () => {
-      const factory = new AxiosFactory()
+      const factory = new NodeAxiosFactory()
       const instance = factory.create(opts.client)
       if (
         !Guards.hasMethod(instance, 'get') ||
@@ -64,8 +66,7 @@ export const HttpUtils = Object.freeze({
     opts: ResilienceConfig,
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
-    const { CockatielResilienceFactory } =
-      await import('../../factories/cockatiel-resilience.factory')
+    const { CockatielResilienceFactory } = await import('@xeno-js/shared')
     container.addSingleton(TOKENS.RESILIENCE_CLIENT, () => {
       const factory = new CockatielResilienceFactory()
       return factory.create(opts)
@@ -80,7 +81,7 @@ export const HttpUtils = Object.freeze({
     if (Guards.isNullOrEmpty(opts)) throw new Error('At least an allow origin must be passed')
 
     const { TOKENS } = await import('@xeno-js/shared')
-    const { AllowOrigin } = await import('../../http/allow-origin.http')
+    const { AllowOrigin } = await import('@xeno-js/shared')
     const allowOrigin: string[] = []
 
     opts.forEach((x) => {

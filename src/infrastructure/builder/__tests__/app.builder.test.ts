@@ -1,8 +1,9 @@
-import type { IHttpClient, IRemoteDataSource, IServiceContainer } from '@xeno-js/shared'
-import type { Dictionary } from '@xeno-js/shared'
+import type { Dictionary, IHttpClient, IRemoteDataSource } from '@xeno-js/shared'
+import { RemoteDataSource } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
 
-import { RemoteDataSource } from '../../datasources/remote.datasource'
+import type { IServiceContainer } from '@/domain'
+
 import type { XenoRegistry } from '../../xeno-registry'
 import { AppBuilder } from '../app.builder'
 
@@ -142,7 +143,7 @@ describe('AppBuilder � idempotency guards', () => {
 describe('AppBuilder � individual methods', () => {
   it('addMiddlewares queues a module and build succeeds', async () => {
     const builder = makeBuilder()
-    const result = builder.addMiddlewares()
+    const result = builder.addMiddlewares((opts) => (opts.isSSR = true))
     expect(result).toBe(builder)
     await expect(builder.build()).resolves.toBeDefined()
   })
@@ -293,13 +294,13 @@ describe('AppBuilder � private queue idempotency guards', () => {
   it('addMiddlewares after addPipeline hits _queueMiddlewareModule idempotency guard', async () => {
     const builder = makeBuilder()
     builder.addPipeline()
-    builder.addMiddlewares() // _isMiddlewareModuleQueued already true
+    builder.addMiddlewares((opts) => (opts.isSSR = true)) // _isMiddlewareModuleQueued already true
     await expect(builder.build()).resolves.toBeDefined()
   })
 
   it('addContext after addMiddlewares hits _queueContextModule idempotency guard', async () => {
     const builder = makeBuilder()
-    builder.addMiddlewares()
+    builder.addMiddlewares((opts) => (opts.isSSR = true))
     builder.addContext() // _isContextModuleQueued already true
     await expect(builder.build()).resolves.toBeDefined()
   })

@@ -1,4 +1,6 @@
-import type { IGateKeeper, IModule, IServiceContainer } from '@xeno-js/shared'
+import { Guards, type HttpHeaders, type IGateKeeper, type IMiddleware } from '@xeno-js/shared'
+
+import type { IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -12,11 +14,11 @@ import type { XenoRegistry } from '../xeno-registry'
  */
 export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
   TRegistry,
-  { isAuth: boolean; isLogger: boolean }
+  MiddlewareConfig & { isAuth: boolean; isLogger: boolean; isCache: boolean }
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: { isAuth: boolean; isLogger: boolean },
+    opts: MiddlewareConfig & { isAuth: boolean; isLogger: boolean; isCache: boolean },
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
 
@@ -25,8 +27,14 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       container.addSingleton(TOKENS.GATE_KEEPER, (): IGateKeeper => new NoAuthGateKeeper())
     }
 
-    const { BearerTokenExtractor } = await import('../services/extractors/extract-bearer.extractor')
-    container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
+    if (opts.isSSR) {
+      const { SupabaseSsrTokenExtractor } = await import('../services/extractors')
+      container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new SupabaseSsrTokenExtractor())
+    } else {
+      const { BearerTokenExtractor } =
+        await import('../services/extractors/extract-bearer.extractor')
+      container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
+    }
     const { HttpHeaderExtractor } = await import('../services/extractors/http-header.extractor')
     container.addSingleton(
       TOKENS.SERVICE_EXTRACTOR,
@@ -38,16 +46,99 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       await LoggerUtils.addLogger(container, undefined)
     }
 
+    const middlewares: (keyof TRegistry)[] = [TOKENS.REQUEST_CONTEXT_MIDDLEWARE]
+
     const { RequestContextMiddleware } = await import('@/presentation')
     container.addSingleton(
-      TOKENS.MIDDLEWARE,
+      TOKENS.REQUEST_CONTEXT_MIDDLEWARE,
       (c) =>
         new RequestContextMiddleware(
           c.resolve(TOKENS.REQUEST_CONTEXT),
           c.resolve(TOKENS.SERVICE_EXTRACTOR),
-          c.resolve(TOKENS.GATE_KEEPER),
           c.resolve(TOKENS.LOGGER),
         ),
     )
+
+    if (opts.optionsMiddleware) {
+      const { OptionsMiddleware } = await import('@/presentation')
+      container.addSingleton(TOKENS.OPTIONS_MIDDLEWARE, () => new OptionsMiddleware())
+      middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
+    }
+
+    if (Guards.isDefined(opts.routeRegistry)) {
+      const registry = opts.routeRegistry
+      const { AllowMethodFactory } = await import('../factories')
+      container.addSingleton(TOKENS.ALLOW_METHOD, () => new AllowMethodFactory().create(registry))
+
+      const { MethodCheckMiddleware } = await import('@/presentation')
+      container.addSingleton(
+        TOKENS.METHOD_CHECK_MIDDLEWARE,
+        (c) =>
+          new MethodCheckMiddleware(
+            c.resolve(TOKENS.REQUEST_CONTEXT),
+            c.resolve(TOKENS.ALLOW_METHOD),
+          ),
+      )
+      middlewares.push(TOKENS.METHOD_CHECK_MIDDLEWARE)
+    }
+
+    if (Guards.isDefined(opts.csrf)) {
+      const csrf = opts.csrf
+      const { CsrfMiddleware } = await import('@/presentation')
+      container.addSingleton(TOKENS.CSRF_MIDDLEWARE, (c) => {
+        return new CsrfMiddleware(c.resolve(TOKENS.REQUEST_CONTEXT), csrf)
+      })
+      middlewares.push(TOKENS.CSRF_MIDDLEWARE)
+    }
+
+    if (
+      Guards.isDefined(opts.rateLimite.maxRequests) ||
+      Guards.isDefined(opts.rateLimite.windowSeconds)
+    ) {
+      const maxRequests = opts.rateLimite.maxRequests ?? 30
+      Guards.throwIfNegative(maxRequests, 'MaxRequests must be positive')
+      Guards.throwIfNotInteger(maxRequests, 'MaxRequests must be an integer')
+      const windowSeconds = opts.rateLimite.windowSeconds ?? 30
+      Guards.throwIfNegative(windowSeconds, 'WindowSeconds must be positive')
+      Guards.throwIfNotInteger(windowSeconds, 'WindowSeconds must be an integer')
+
+      if (!opts.isCache) {
+        const { CacheUtils } = await import('./utils/cache.utils')
+        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+      }
+
+      const { RateLimitMiddleware } = await import('@/presentation')
+      container.addSingleton(TOKENS.RATE_LIMITER_MIDDLEWARE, (c) => {
+        return new RateLimitMiddleware(
+          c.resolve(TOKENS.CONTEXT_ACCESSOR),
+          c.resolve(TOKENS.CACHE),
+          c.resolve(TOKENS.LOGGER),
+          {
+            maxRequests,
+            windowSeconds,
+          },
+        )
+      })
+      middlewares.push(TOKENS.RATE_LIMITER_MIDDLEWARE)
+    }
+
+    const { AuthenticationMiddleware } = await import('@/presentation')
+    container.addSingleton(TOKENS.AUTH_MIDDLEWARE, (c) => {
+      return new AuthenticationMiddleware(
+        c.resolve(TOKENS.REQUEST_CONTEXT),
+        c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR),
+        c.resolve(TOKENS.GATE_KEEPER),
+        c.resolve(TOKENS.LOGGER),
+      )
+    })
+    middlewares.push(TOKENS.AUTH_MIDDLEWARE)
+
+    const { CompositeMiddleware } = await import('@/presentation')
+    container.addSingleton(TOKENS.MIDDLEWARE, (c) => {
+      const resolvedMiddleware = middlewares.map(
+        (token) => c.resolve(token) as IMiddleware<HttpHeaders>,
+      )
+      return new CompositeMiddleware(resolvedMiddleware)
+    })
   }
 }

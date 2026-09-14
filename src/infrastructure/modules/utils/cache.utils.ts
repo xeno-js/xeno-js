@@ -1,4 +1,6 @@
-import type { CacheConfig, IServiceContainer } from '@xeno-js/shared'
+import type { CacheConfig } from '@xeno-js/shared'
+
+import type { IServiceContainer } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 

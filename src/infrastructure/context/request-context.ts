@@ -1,16 +1,9 @@
 import type { AsyncLocalStorage } from 'node:async_hooks'
 
-import type {
-  ExecutionContext,
-  Identity,
-  IFactory,
-  IRequestContext,
-  IServiceScope,
-  NetworkContext,
-  RequestContext,
-} from '@xeno-js/shared'
-import type { Optional } from '@xeno-js/shared'
+import type { Identity, IFactory, NetworkContext, Optional, RequestContext } from '@xeno-js/shared'
 import { Guards } from '@xeno-js/shared'
+
+import type { ExecutionContext, IRequestContext, IServiceScope } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -48,6 +41,16 @@ export class NodeRequestContext<
       return await this._storage.run({ context, scope }, fn)
     } finally {
       await scope.dispose()
+    }
+  }
+
+  public updateIdentity(identity: Identity): void {
+    const store = this._storage.getStore()
+    if (Guards.isDefined(store) && Guards.isDefined(store.context)) {
+      store.context = Object.freeze({
+        ...store.context,
+        identity: Object.freeze(identity),
+      })
     }
   }
 

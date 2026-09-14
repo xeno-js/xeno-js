@@ -1,18 +1,19 @@
+import type { SupabaseClientOptions } from '@supabase/supabase-js'
+import type { CacheConfig, DbConfig, IConfigurationService } from '@xeno-js/shared'
+import type { Optional, SetupAction } from '@xeno-js/shared'
+import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
+import type { ZodType } from 'zod'
+
 import type {
   ApplicationRegistry,
-  AuthClientConfig,
-  CacheConfig,
-  DbConfig,
+  AuthSsrConfig,
   HttpCoreConfig,
-  IConfigurationService,
   IModule,
   IServiceContainer,
   LoggerConfig,
   PipelineConfig,
-} from '@xeno-js/shared'
-import type { Optional, SetupAction } from '@xeno-js/shared'
-import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
-import type { ZodType } from 'zod'
+} from '@/domain'
+import type { MiddlewareConfig } from '@/domain/config/middleware.config'
 
 import { EnvironmentConfigurationService } from '../configuration'
 import { ServiceContainer } from '../container/service-container'
@@ -78,6 +79,33 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     queryBus: { isEnabled: false },
   }
   private _config: CacheConfig = { inMemory: true, redis: undefined }
+  private _middlewareConfig: MiddlewareConfig = {
+    isSSR: false,
+    rateLimite: {
+      maxRequests: undefined,
+      windowSeconds: undefined,
+    },
+    csrf: undefined,
+    optionsMiddleware: false,
+    routeRegistry: undefined,
+  }
+  private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
+    dataSourceToken: undefined,
+    http: {
+      token: undefined,
+      client: {
+        defaultHeaders: undefined,
+        baseURL: undefined,
+        timeoutMs: undefined,
+        keepAlive: undefined,
+        maxSockets: undefined,
+        maxRedirects: undefined,
+        decompress: undefined,
+        withCredentials: undefined,
+      },
+    },
+    resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
+  } as unknown as HttpCoreConfig<TRegistry>
 
   // --- Module Queuing Flags ---
   private _isContextModuleQueued = false
@@ -103,7 +131,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
-  public addMiddlewares(): this {
+  public addMiddlewares(setupAction: SetupAction<MiddlewareConfig, IConfigurationService>): this {
+    setupAction(this._middlewareConfig, this._configuration)
     this._queueMiddlewareModule()
     return this
   }
@@ -199,11 +228,18 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @link https://github.com/Mattia-Carcione/xeno-js 
    */
   public addAuth(
-    setupAction: SetupAction<AuthClientConfig<TRegistry>, IConfigurationService>,
+    setupAction: SetupAction<AuthSsrConfig<SupabaseClientOptions<'public'>>, IConfigurationService>,
   ): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
-    const config = { url: '', key: '', options: undefined, customAuthService: undefined }
+    const config: AuthSsrConfig<SupabaseClientOptions<'public'>> = {
+      url: '',
+      key: '',
+      opts: undefined,
+      redirectTo: '',
+      storageOpts: { type: 'memory', cookieOpts: undefined, storage: undefined },
+      ssrOpts: undefined,
+    }
     setupAction(config, this._configuration)
     this._modules.push({
       priority: 2,
@@ -311,19 +347,14 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   public addHttpCore(
     setupAction: SetupAction<HttpCoreConfig<TRegistry>, IConfigurationService>,
   ): this {
-    const config = {
-      dataSourceToken: undefined as unknown,
-      http: { token: undefined as unknown, client: {} },
-      resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
-    } as unknown as HttpCoreConfig<TRegistry>
-    setupAction(config, this._configuration)
+    setupAction(this._httpConfig, this._configuration)
     this._modules.push({
       priority: 30,
       name: 'HttpCoreModule',
       action: async () => {
         const { HttpCoreModule } = await import('../modules/http-core.module')
         const coreModule = new HttpCoreModule<TRegistry>()
-        await coreModule.configure(this._container, config)
+        await coreModule.configure(this._container, this._httpConfig)
       },
     })
     return this
@@ -505,8 +536,10 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         const { MiddlewareModule } = await import('../modules/middleware.module')
         const middlewareModule = new MiddlewareModule()
         await middlewareModule.configure(this._container, {
+          ...this._middlewareConfig,
           isAuth: this._isAuthModuleQueued,
           isLogger: this._isLoggerModuleQueued,
+          isCache: this._isCacheModuleQueued || this._isPipelineModuleQueued,
         })
       },
     })

@@ -1,4 +1,4 @@
-import type { IServiceContainer, PipelineConfig } from '@xeno-js/shared'
+import type { IServiceContainer, PipelineConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
