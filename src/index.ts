@@ -1,10 +1,12 @@
-export { BaseHandler } from './application/cqrs/base-handler'
-export { BaseAuthorizationStrategy } from './application/cqrs/pipelines/pipeline_strategies/auth/base-authorization.strategy'
-export { Specification } from './application/specifications/specification'
-export { AppBuilder } from './infrastructure/builder/app.builder'
-export { RemoteDataSource } from './infrastructure/datasources/remote.datasource'
+export {
+  BaseAuthorizationStrategy,
+  BaseHandler,
+  ContainerUtils,
+  Specification,
+} from './application'
+export type * from './domain'
+export type { XenoRegistry } from './infrastructure'
+export { AppBuilder, ReadDao, Repository, SupabaseServerAuthFactory } from './infrastructure'
 export type * from './infrastructure/db/db.types'
 export * from './infrastructure/db/drizzle.types'
-export * from './infrastructure/repositories/index'
-export type { XenoRegistry } from './infrastructure/xeno-registry/xeno-registry.types'
-export { BaseController } from './presentation/controllers/base.controller'
+export { BaseController } from './presentation'

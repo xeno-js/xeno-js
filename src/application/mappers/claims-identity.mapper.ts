@@ -16,6 +16,7 @@ export class ClaimsIdentityMapper implements IBaseMapper<AuthClaims, Identity> {
     return {
       userId: GuidHelper.parse(claims.sub),
       email: claims.email,
+      name: claims.name,
       tenantId: GuidHelper.parse(claims.tenantId),
       roles: claims.roles,
       permissions: claims.permissions,

@@ -1,3 +1,4 @@
+export * from './containers/index'
 export * from './cqrs/index'
 export * from './gate_keepers/index'
 export * from './mappers/index'

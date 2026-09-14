@@ -1,4 +1,10 @@
-import type { IAuthService, IBaseMapper, Identity, IGateKeeper, ResultType } from '@xeno-js/shared'
+import type {
+  IBaseAuthService,
+  IBaseMapper,
+  Identity,
+  IGateKeeper,
+  ResultType,
+} from '@xeno-js/shared'
 import type { AuthClaims, Optional } from '@xeno-js/shared'
 import { Result } from '@xeno-js/shared'
 import { Guards, GUEST } from '@xeno-js/shared'
@@ -14,27 +20,32 @@ import { Guards, GUEST } from '@xeno-js/shared'
    */
 export class GateKeeper implements IGateKeeper {
   constructor(
-    private readonly _authService: IAuthService,
+    private readonly _authService: IBaseAuthService,
     private readonly _mapper: IBaseMapper<AuthClaims, Identity>,
   ) {}
 
   public async authenticate(token: Optional<string>): Promise<ResultType<Identity>> {
     const guest = GUEST as unknown as Identity
 
-    if (Guards.isNullOrEmpty(token)) {
-      return Result.ok(guest)
+    if (!Guards.isNullOrEmpty(token)) {
+      const authResult = await this._authService.authenticate(token)
+      if (authResult.isOk()) {
+        const claims = authResult.getValueOrThrow()
+        if (Guards.isDefined(claims)) return Result.ok(this._mapper.map(claims))
+      }
     }
 
-    const authResult = await this._authService.authenticate(token)
-    if (!authResult.isOk()) {
-      return Result.fail(authResult.getErrorOrThrow())
+    const userResult = await this._authService.getUser()
+
+    if (userResult.isOk()) {
+      const user = userResult.getValueOrThrow()
+      if (Guards.isDefined(user)) {
+        return Result.ok(this._mapper.map(user))
+      }
     }
 
-    const claims = authResult.getValueOrThrow()
-    if (Guards.isNullOrEmpty(claims)) {
-      return Result.ok(guest)
-    }
+    return Result.ok(guest)
 
-    return Result.ok(this._mapper.map(claims))
+    return Result.ok(guest)
   }
 }

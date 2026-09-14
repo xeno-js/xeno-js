@@ -1,5 +1,4 @@
 import type {
-  ApplicationRegistry,
   Delegate,
   ICommand,
   IHandler,
@@ -7,11 +6,12 @@ import type {
   IPipelineBehavior,
   IQuery,
   IRequest,
-  IServiceScopeAccessor,
   ResultType,
 } from '@xeno-js/shared'
 import { AppError, Result } from '@xeno-js/shared'
 import { ERROR_CODE_MESSAGES, ERROR_CODES, Guards, STATUS_CODES, TOKENS } from '@xeno-js/shared'
+
+import type { ApplicationRegistry, IServiceScopeAccessor } from '@/domain'
 
 /**
  * @description Mediator implementation for CQRS pattern. It is responsible for sending commands and executing queries by delegating them to the appropriate handlers, while also applying any registered pipeline behaviors (middlewares).

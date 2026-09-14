@@ -1,16 +1,15 @@
 ﻿import type {
-  ApplicationRegistry,
   ICommand,
   IHandler,
   IPipelineBehavior,
   IQuery,
   IRequest,
-  IServiceScope,
-  IServiceScopeAccessor,
   ResultType,
 } from '@xeno-js/shared'
 import { AppError, ERROR_CODES, Result, TOKENS } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
+
+import type { ApplicationRegistry, IServiceScope, IServiceScopeAccessor } from '@/domain'
 
 import { Mediator } from '../mediator'
 
