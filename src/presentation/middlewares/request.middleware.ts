@@ -1,9 +1,7 @@
 import type {
-  ApplicationRegistry,
-  IGateKeeper,
+  Identity,
   ILogger,
   IMiddleware,
-  IRequestContext,
   IServiceExtractor,
   RequestContext,
 } from '@xeno-js/shared'
@@ -11,10 +9,13 @@ import type { Guid, HttpHeaders, HttpMethod, Metadata, ResponseDto } from '@xeno
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
+  GUEST,
   GuidHelper,
   HttpHelper,
   STATUS_CODES,
 } from '@xeno-js/shared'
+
+import type { ApplicationRegistry, IRequestContext } from '@/domain'
 
 import { ContextMapper } from '../mappers/context.mapper'
 
@@ -32,81 +33,54 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    * @description Constructs a new instance of the RequestContextMiddleware class, which is responsible for handling the request context in the middleware chain. It takes several dependencies as parameters, including an IRequestContext for managing the execution context, an IServiceExtractor for extracting metadata from HTTP headers, an IGateKeeper for performing authentication, and an IServiceContainer for managing service scopes and dependencies. These dependencies are essential for the middleware to function correctly, allowing it to extract necessary information from incoming requests, authenticate users, and set up the execution context for downstream processing.
    * @param _requestContext An instance of IRequestContext used to manage the execution context for the request. This context allows the middleware to set and retrieve contextual information that can be accessed by downstream handlers, controllers, or use cases during the processing of the request.
    * @param _extractor An instance of IServiceExtractor used to extract metadata from the incoming HTTP request headers. This extractor is responsible for parsing the headers and retrieving relevant information such as correlation IDs, request IDs, authentication tokens, client IP addresses, and tracing span IDs, which are essential for building the ExecutionContext.
-   * @param _gateKeeper An instance of IGateKeeper used to perform authentication. This component is responsible for validating the authentication token extracted from the request headers and returning the authentication result, which includes the identity of the authenticated user if the authentication is successful.
-   * @param _factoryScope An instance of IFactory used to create a new IServiceScope for managing service dependencies during the execution of the request. This allows for proper scoping and disposal of services after the request is processed, ensuring that resources are managed efficiently and preventing memory leaks.
-  
-   * 
+   * @param _logger
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/Mattia-Carcione/xeno-js
    */
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
-    private readonly _gateKeeper: IGateKeeper,
     private readonly _logger: ILogger,
   ) {}
 
-  public async execute<T>(
-    req: { method: HttpMethod; path: string },
+  public async execute<T, TRes, TReq>(
+    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
     headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
-    let correlationId = GuidHelper.generate()
-    let requestId = GuidHelper.generate()
-    let spanId: Guid = correlationId
-    let formatIndicator = 'application/json'
+    const correlationId = GuidHelper.generate()
+    const requestId = GuidHelper.generate()
+    const spanId: Guid = correlationId
+    const formatIndicator = 'application/json'
 
     try {
       const meta = this._extractor.extract(headers)
-      correlationId = meta.correlationId ?? correlationId
-      requestId = meta.requestId ?? requestId
-      spanId = meta.spanId ?? spanId
-      formatIndicator = meta.formatIndicator
 
       const metadata: Metadata = {
         ...meta,
-        correlationId,
-        requestId,
-        spanId,
+        correlationId: meta.correlationId ?? correlationId,
+        requestId: meta.requestId ?? requestId,
+        spanId: meta.spanId ?? spanId,
+        formatIndicator: meta.formatIndicator,
       }
 
-      const authResult = await this._gateKeeper.authenticate(meta.token)
-      if (!authResult.isOk()) {
-        const error = authResult.getErrorOrThrow()
-        this._logger.warn(
-          `Authentication failed for request on path: ${req.path}. Code: ${error.code}. Error: ${error}`,
-        )
-
-        return HttpHelper.error(
-          {
-            success: false,
-            error: {
-              code: error.code,
-              message: error.message,
-              details: `[Authentication Error] Failed to authenticate request on path: ${req.path}`,
-              path: req.path,
-            },
-            correlationId: metadata.correlationId!,
-            requestId: metadata.requestId!,
-            spanId: metadata.spanId!,
-            timestamp: new Date().toISOString(),
-          },
-          error.status ?? STATUS_CODES.UNAUTHORIZED,
-          { 'Content-Type': [formatIndicator] },
-        )
-      }
-
-      const requestContext = ContextMapper.map({
+      const tmpContext = ContextMapper.map({
         metadata,
-        identity: authResult.getValueOrThrow()!,
+        identity: GUEST as unknown as Identity,
         path: req.path,
+        transport: req.transport,
       })
 
-      return await this._requestContext.runAsync(requestContext, async () => {
+      const result = await this._requestContext.runAsync(tmpContext, async () => {
         return next()
       })
+      if (!result.ok && !result.data.success)
+        this._logger.error(result.data.error.message, result.data)
+
+      return result
     } catch (error) {
       this._logger.error('RequestContextMiddleware encountered an error', error)
       return HttpHelper.error(
