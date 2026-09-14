@@ -62,6 +62,7 @@
   "peerDependencies": {
     "@libsql/client": "^0.14.0",
     "@sentry/node": "^7.64.0",
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.35.0",
     "@xeno-js/shared": "file:../xeno-shared",
     "axios": "^1.16.1",
@@ -82,6 +83,9 @@
       "optional": true
     },
     "@supabase/supabase-js": {
+      "optional": true
+    },
+    "@supabase/ssr": {
       "optional": true
     },
     "axios": {
@@ -118,11 +122,12 @@
     "@eslint/js": "^10.0.1",
     "@libsql/client": "^0.14.0",
     "@sentry/node": "^7.64.0",
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.35.0",
     "@types/pg": "^8.20.0",
     "@vitest/coverage-v8": "^4.1.7",
     "@xeno-js/shared": "file:../xeno-shared",
-    "axios": "^1.16.1",
+    "axios": "^1.20.0",
     "cockatiel": "^4.0.0",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
