@@ -3,6 +3,7 @@ import {
   type HttpHeaders,
   type HttpMethod,
   type IController,
+  type Optional,
   type ResponseDto,
   TOKENS,
 } from '@xeno-js/shared'
@@ -24,16 +25,16 @@ export const ContainerUtils = Object.freeze({
   },
 
   async runExecute<
+    TResponse,
     K extends keyof T,
     T extends ApplicationRegistry,
     TRes,
     TReq,
     TRequest,
-    TResponse,
     TController extends IController<TRequest, TResponse>,
   >(
     endpoint: string,
-    method: string,
+    method: Optional<string>,
     headers: HttpHeaders,
     transport: { res: TRes; req: TReq },
     container: IServiceContainer<T>,
