@@ -1,4 +1,11 @@
-import { Guards, TOKENS } from '@xeno-js/shared'
+import {
+  Guards,
+  type HttpHeaders,
+  type HttpMethod,
+  type IController,
+  type ResponseDto,
+  TOKENS,
+} from '@xeno-js/shared'
 
 import type { ApplicationRegistry, IServiceContainer, IServiceScope } from '@/domain'
 
@@ -14,5 +21,34 @@ export const ContainerUtils = Object.freeze({
 
     const service = (scope as IServiceScope<T>).resolve(token)
     return service
+  },
+
+  async runExecute<
+    K extends keyof T,
+    T extends ApplicationRegistry,
+    TRes,
+    TReq,
+    TRequest,
+    TResponse,
+    TController extends IController<TRequest, TResponse>,
+  >(
+    endpoint: string,
+    method: string,
+    headers: HttpHeaders,
+    transport: { res: TRes; req: TReq },
+    container: IServiceContainer<T>,
+    token: K,
+    payload: TRequest,
+  ): Promise<ResponseDto<TResponse>> {
+    const middleware = container.resolve(TOKENS.MIDDLEWARE)
+
+    return await middleware.execute(
+      { path: endpoint, method: (method as HttpMethod) ?? 'GET', transport },
+      { ...headers },
+      async () => {
+        const controller = ContainerUtils.resolveServiceScoped(token, container) as TController
+        return await controller.handle(payload)
+      },
+    )
   },
 })

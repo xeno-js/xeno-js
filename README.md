@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="website/static/img/logo.png" alt="Xeno Logo" width="140" />
+  <img src="logo/logo.png" alt="Xeno Logo" width="140" />
 
   <h1>Xeno</h1>
 
@@ -80,7 +80,7 @@ To explore the architecture, programmatic configurations, and extension
 workflows of Xeno, read the full technical manuals located inside the main
 documentation hub:
 
-- **[Framework Documentation Repository](./docs/README)**
+- **[Framework Documentation Repository](https://www.xeno-js.it/introduction)**
 
 Inside, you will find exhaustive, step-by-step assembly guides covering core
 host building (`AppBuilder`), isolated request middleware lifecycles, functional
@@ -154,21 +154,22 @@ type MyRegistry = XenoRegistry<{ /** Your Db Schema here **/}, {
 export const xeno = new AppBuilder<MyRegistry>()
         // Configure middleware and only PUBLIC routes
         .addMiddlewares(opts => {
-            opts.publicRoutes = {
-                '/api/user': { GET: 'isPublic', POST: 'isPublic', PATCH: 'isPublic', DELETE: 'isPublic', PUT: 'isPublic' },
-                '/api/user/:id': { GET: 'isPublic' },
+            opts.routeRegistry = {
+                '/api/user/:id': ['GET', 'UPDATE', 'DELETE'],
             }
         })
         // Configure the CQRS pipeline
-        .addPipeline((config) => {
-            // Add authz by user id
-            config.authorization.userId = true
-            // Add authz by tenant id
-            config.authorization.tenantId = true
             // Can register Policies for your intent
-            config.authorization.policies = {
-                'FIND_USER_QUERY_HANDLER_TOKEN': {
+              .addPipeline((config) => {
+                config.authorization.policies = {
+                  'FIND_USER_QUERY_HANDLER_TOKEN': {
+                    // Add authz by user id
+                    userId: true
+                    // Add authz by tenant id
+                    tenantId: true
+                    // Add authz by roles
                     roles: ['admin']
+                    // Add authz by perissions
                     permissions: ['read'],
                 }
             }
@@ -186,7 +187,7 @@ export const xeno = new AppBuilder<MyRegistry>()
         // Configure Authentication with supabase
         .addAuth((opts, config) => {
             opts.key = 'demo-key'
-            opts.url = config.getOrThrow('https://demo-auth-server.com')
+            opts.url = config.getOrThrow('API_BASE_URL')
         })
         // Configure your logger (e.g. Console, Sentry, Pino or custom logger)
         .addLogger((config) => {
@@ -213,7 +214,7 @@ export const xeno = new AppBuilder<MyRegistry>()
 
             // REGISTER CONTROLLERS
             services.addTransient('FIND_USER_CONTROLLER_TOKEN', (c) => {
-                return new FindUserController(c.resolve('CONTEXT_ACCESSOR'), c.resolve('MEDIATOR'))
+                return new FindUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR))
             })
         })
 
@@ -223,22 +224,20 @@ export const xeno = new AppBuilder<MyRegistry>()
 
 ```typescript
 import 'dotenv/config'
+import { ContainerUtils, TOKENS } from '@xeno-js/core'
 import fastify from 'fastify'
-import { xeno } from './bootstrap'
+import { bootstrap } from './bootstrap'
 
 async function runDemo() {
   console.log('⚙️ Initialized Xeno Container...')
   try {
     // 1. Bootstrap the application and get the service container
-    await xeno.build()
+    const xenoApp = await bootstrap.build()
 
     console.log('🚀 Starting Fastify server on http://localhost:3000...')
 
-    // 2. Resolve the middleware and controllers from the container
-    const middleware = xeno.resolve('MIDDLEWARE')
-    const findUserController = xeno.resolve('FIND_USER_CONTROLLER_TOKEN')
-
-    console.log('✅ Middleware and Controllers resolved from the container.')
+    // 2. Resolve the middleware from the container
+    const middleware = xeno.resolve(TOKENS.MIDDLEWARE)
     // 3. Create a Fastify instance to handle HTTP requests
     const app = fastify()
 
@@ -246,12 +245,19 @@ async function runDemo() {
     app.get('/api/user/:id', async (request, reply) => {
       // 4. Execute the middleware to handle the request context and authentication, then call the StatusController's handle method with the request payload.
       const responseDto = await middleware.execute(
-        { path: request.url, method: request.method } as any,
-        request.headers as any,
+        {
+          path: '/api/user/:id',
+          method: 'GET',
+          transport: { res: reply, req: request },
+        },
+        { ...request.headers },
         async () => {
           const { id } = request.params as any
-          const payload = { id: id ?? '123' }
-          return await findUserController.handle(payload)
+          const controller = ContainerUtils.resolveServiceScoped(
+            'FIND_USER_CONTROLLER_TOKEN',
+            xenoApp,
+          )
+          return await controller.handle({ id: id ?? '123' })
         },
       )
 
@@ -293,7 +299,7 @@ a clean, pre-configured architecture tailored to your specific requirements.
 
 If you want to learn how to use it, see the full options available, or
 understand how the scaffolding engine works, check the
-**[CLI Documentation](./cli/README)**.
+**[CLI Documentation](https://www.xeno-js.it/cli/overview)**.
 
 ---
 
@@ -406,7 +412,7 @@ Whether you are an individual developer or a business using Xeno, your support
 makes a real difference.
 
 👉
-**[Read our support guidelines and find out how to help](./docs/support/README)**
+**[Read our support guidelines and find out how to help](https://www.xeno-js.it/support-us)**
 
 Thank you for being part of this decoupled open-source journey!
 
