@@ -2,7 +2,6 @@ import {
   Guards,
   type HttpHeaders,
   type HttpMethod,
-  type IController,
   type Optional,
   type ResponseDto,
   TOKENS,
@@ -10,7 +9,16 @@ import {
 
 import type { ApplicationRegistry, IServiceContainer, IServiceScope } from '@/domain'
 
+/**
+ * Utils that provide utility functions for interacting with the service container and managing scoped service resolution.
+ */
 export const ContainerUtils = Object.freeze({
+  /**
+   * Resolves a scoped service from the container using the provided token.
+   * @param token * The token to resolve from the registry.
+   * @param container *
+   * @returns
+   */
   resolveServiceScoped<K extends keyof T, T extends ApplicationRegistry>(
     token: K,
     container: IServiceContainer<T>,
@@ -24,22 +32,13 @@ export const ContainerUtils = Object.freeze({
     return service
   },
 
-  async runExecute<
-    TResponse,
-    K extends keyof T,
-    T extends ApplicationRegistry,
-    TRes,
-    TReq,
-    TRequest,
-    TController extends IController<TRequest, TResponse>,
-  >(
+  async runExecute<TResponse, T extends ApplicationRegistry, TRes, TReq>(
     endpoint: string,
     method: Optional<string>,
     headers: HttpHeaders,
     transport: { res: TRes; req: TReq },
     container: IServiceContainer<T>,
-    token: K,
-    payload: TRequest,
+    action: () => Promise<ResponseDto<TResponse>>,
   ): Promise<ResponseDto<TResponse>> {
     const middleware = container.resolve(TOKENS.MIDDLEWARE)
 
@@ -47,8 +46,7 @@ export const ContainerUtils = Object.freeze({
       { path: endpoint, method: (method as HttpMethod) ?? 'GET', transport },
       { ...headers },
       async () => {
-        const controller = ContainerUtils.resolveServiceScoped(token, container) as TController
-        return await controller.handle(payload)
+        return await action()
       },
     )
   },
