@@ -16,8 +16,10 @@ export const ContainerUtils = Object.freeze({
   /**
    * Resolves a scoped service from the container using the provided token.
    * @param token * The token to resolve from the registry.
-   * @param container *
-   * @returns
+   * @param container * The container to resolve the service from.
+   *
+   * @returns The resolved service instance.
+   * @throws Error if the active service scope is not available.
    */
   resolveServiceScoped<K extends keyof T, T extends ApplicationRegistry>(
     token: K,
@@ -32,6 +34,20 @@ export const ContainerUtils = Object.freeze({
     return service
   },
 
+  /**
+   * Executes a service action within the context of a scoped service.
+   * @param endpoint * The endpoint to execute the action on.
+   * @param method * The HTTP method to use for the action.
+   * @param headers * The headers to include in the request.
+   * @param transport * The transport object containing the request and response objects.
+   * @param container * The container to resolve the service from.
+   * @param action * The action to execute within the scoped service.
+   *
+   * @returns Promise<ResponseDto<TResponse>> A promise that resolves to the response DTO of the executed action.
+   * @throws Error If the active service scope is not available.
+   * @throws Error If the service is not found in the container.
+   * @throws Error If the service is not a scoped service.
+   */
   async runExecute<TResponse, T extends ApplicationRegistry, TRes, TReq>(
     endpoint: string,
     method: Optional<string>,

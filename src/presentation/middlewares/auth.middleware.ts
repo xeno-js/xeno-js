@@ -13,6 +13,24 @@ import { GuidHelper, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
 
 import type { ApplicationRegistry, IRequestContext } from '@/domain'
 
+/**
+ * @description Middleware that checks if the request is authenticated. If the request is not authenticated, it returns a 401
+ * status code with an error message.
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @param {IRequestContext<RequestContext, ApplicationRegistry<unknown>>} _requestContext - The request context to use for resolving services.
+ * @param {IGateKeeper} _gateKeeper - The gate keeper to use for authentication.
+ * @param {ILogger} _logger - The logger to use for logging.
+ * @param {IServiceExtractor<HttpHeaders, Optional<string>>} _tokenExtractor - The token extractor to use for extracting the token from the request.
+ * @returns {IMiddleware<HttpHeaders>} - The middleware function.
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ *
+ * @see {@link IRequestContext} - The request context interface.
+ * @see {@link IGateKeeper} - The gate keeper interface.
+ * @see {@link ILogger} - The logger interface.
+ * @see {@link IServiceExtractor} - The service extractor interface.
+ */
 export class AuthenticationMiddleware implements IMiddleware<HttpHeaders> {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
