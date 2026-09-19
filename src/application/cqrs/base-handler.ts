@@ -44,8 +44,13 @@ export abstract class BaseHandler<
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  abstract executeAsync(request: TRequest): Promise<ResultType<TResponse>>
+  protected abstract executeAsync(request: TRequest): Promise<ResultType<TResponse>>
 
+  /**
+   * Gets the current context.
+   * @returns {UserContext} The current context.
+   * {@link UserContext}
+   */
   protected _getCurrentContext(): UserContext {
     return this._identityFactory.create()
   }
