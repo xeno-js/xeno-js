@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo/logo.png" alt="Xeno Logo" width="140" />
 
-  <h1>Xeno.js</h1>
+  <h1>Xeno Core</h1>
 
   <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
 
