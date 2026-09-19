@@ -1,4 +1,11 @@
-import type { IFactory, IHandler, IRequest, ResultType, UserContext } from '@xeno-js/shared'
+import {
+  AppError,
+  type IFactory,
+  type IHandler,
+  type IRequest,
+  type ResultType,
+  type UserContext,
+} from '@xeno-js/shared'
 
 /**
  * BaseHandler is an abstract class that implements the IHandler interface.
@@ -15,7 +22,29 @@ export abstract class BaseHandler<
 > implements IHandler<TRequest, TResponse> {
   constructor(private readonly _identityFactory: IFactory<void, UserContext>) {}
 
-  abstract handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>>
+  public async handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>> {
+    AppError.throwIfAborted(signal, this.constructor.name)
+
+    return await this.executeAsync(request)
+  }
+
+  /**
+   * Executes the strategy for the given request.
+   * @param request - The request to be handled.
+   * @throws {AppError} If the strategy execution fails.
+   * @protected - This method should be overridden by subclasses.
+   * @abstract - This method must be implemented by subclasses.
+   * @async - This method is asynchronous.
+   * @template TRequest - The type of the request.
+   * @template TResponse - The type of the response.
+   * @returns {Promise<ResultType<TResponse>>} A promise that resolves to the result of the strategy execution.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  abstract executeAsync(request: TRequest): Promise<ResultType<TResponse>>
 
   protected _getCurrentContext(): UserContext {
     return this._identityFactory.create()

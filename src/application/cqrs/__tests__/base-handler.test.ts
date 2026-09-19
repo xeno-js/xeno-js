@@ -13,6 +13,10 @@ interface TestResponse {
 
 class TestHandler extends BaseHandler<TestRequest, TestResponse> {
   async handle(): Promise<ResultType<TestResponse>> {
+    return this.executeAsync()
+  }
+
+  async executeAsync(): Promise<ResultType<TestResponse>> {
     return Result.ok({ ok: true })
   }
 
