@@ -3,6 +3,7 @@ import {
   type IFactory,
   type IHandler,
   type IRequest,
+  type Optional,
   type ResultType,
   type UserContext,
 } from '@xeno-js/shared'
@@ -31,6 +32,7 @@ export abstract class BaseHandler<
   /**
    * Executes the strategy for the given request.
    * @param request - The request to be handled.
+   * @param signal - (Optional) The abort signal for the request.
    * @throws {AppError} If the strategy execution fails.
    * @protected - This method should be overridden by subclasses.
    * @abstract - This method must be implemented by subclasses.
@@ -44,7 +46,10 @@ export abstract class BaseHandler<
    * @since 2025-09-30
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
-  protected abstract executeAsync(request: TRequest): Promise<ResultType<TResponse>>
+  protected abstract executeAsync(
+    request: TRequest,
+    signal?: Optional<AbortSignal>,
+  ): Promise<ResultType<TResponse>>
 
   /**
    * Gets the current context.
