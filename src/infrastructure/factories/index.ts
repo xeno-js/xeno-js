@@ -1,5 +1,6 @@
 export * from './allow-method.factory'
 export * from './axios.factory'
+export * from './cockatiel-resilience.factory'
 export * from './db-client.factory'
 export * from './pino-logger.factory'
 export * from './redis-cache.factory'

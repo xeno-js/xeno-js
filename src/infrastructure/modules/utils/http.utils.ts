@@ -1,6 +1,4 @@
-import type { ResilienceConfig } from '@xeno-js/shared'
-
-import type { HttpConfig, IServiceContainer } from '@/domain'
+import type { HttpConfig, IServiceContainer, ResilienceConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -66,7 +64,7 @@ export const HttpUtils = Object.freeze({
     opts: ResilienceConfig,
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
-    const { CockatielResilienceFactory } = await import('@xeno-js/shared')
+    const { CockatielResilienceFactory } = await import('../../factories')
     container.addSingleton(TOKENS.RESILIENCE_CLIENT, () => {
       const factory = new CockatielResilienceFactory()
       return factory.create(opts)

@@ -1,7 +1,8 @@
-import type { HttpClientConfig, ResilienceConfig, SetupAction } from '@xeno-js/shared'
+import type { HttpClientConfig, SetupAction } from '@xeno-js/shared'
 
 import type { IServiceContainer } from '../contracts'
 import type { ApplicationRegistry } from '../registries'
+import type { ResilienceConfig } from './resilience.config'
 
 /**
  * @description HttpCoreConfig is an interface that defines the configuration options for the core HTTP functionality of the application. It includes two properties: 'http' of type HttpConfig, which specifies the configuration for the HTTP client, and 'resilience' of type ResilienceConfig, which provides the settings for implementing resilience strategies such as retries, circuit breakers, and timeouts. This interface allows for a centralized configuration of both HTTP and resilience features in the application.
