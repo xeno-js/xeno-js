@@ -1,9 +1,9 @@
 import type { Dictionary, IHttpClient, IRemoteDataSource } from '@xeno-js/shared'
-import { RemoteDataSource } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { IServiceContainer } from '@/domain'
 
+import { RemoteDataSource } from '../../datasources'
 import type { XenoRegistry } from '../../xeno-registry'
 import { AppBuilder } from '../app.builder'
 
