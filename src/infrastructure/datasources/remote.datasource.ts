@@ -1,9 +1,11 @@
 import type {
   HttpBaseRequest,
+  HttpMethod,
   HttpRequest,
   IHttpClient,
   IRemoteDataSource,
   IServiceResilience,
+  Optional,
   ResultType,
 } from '@xeno-js/shared'
 import { AppError, Result } from '@xeno-js/shared'
@@ -70,17 +72,27 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
     return Result.ok(response.data)
   }
 
-  public async get<TResponse>(
-    endpoint: string,
-    request?: HttpBaseRequest,
-  ): Promise<ResultType<TResponse>> {
-    const options: HttpRequest = {
+  protected setOptions<T>(
+    request: Optional<HttpBaseRequest>,
+    method: HttpMethod,
+    body: Optional<T> = undefined,
+  ): HttpRequest<T> {
+    return {
       query: request?.query,
       signal: request?.signal,
       timeoutMs: request?.timeoutMs,
       headers: request?.headers,
-      method: 'GET',
+      responseType: request?.responseType,
+      method,
+      body,
     }
+  }
+
+  public async get<TResponse>(
+    endpoint: string,
+    request?: HttpBaseRequest,
+  ): Promise<ResultType<TResponse>> {
+    const options = this.setOptions(request, 'GET')
 
     return await this.send<TResponse>(endpoint, options)
   }
@@ -90,14 +102,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
     body: TBody,
     request?: HttpBaseRequest,
   ): Promise<ResultType<TResponse>> {
-    const options: HttpRequest<TBody> = {
-      query: request?.query,
-      signal: request?.signal,
-      timeoutMs: request?.timeoutMs,
-      headers: request?.headers,
-      method: 'POST',
-      body,
-    }
+    const options = this.setOptions(request, 'POST', body)
 
     return await this.send<TResponse, TBody>(endpoint, options)
   }
@@ -107,14 +112,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
     body: TBody,
     request?: HttpBaseRequest,
   ): Promise<ResultType<TResponse>> {
-    const options: HttpRequest<TBody> = {
-      query: request?.query,
-      signal: request?.signal,
-      timeoutMs: request?.timeoutMs,
-      headers: request?.headers,
-      method: 'PUT',
-      body,
-    }
+    const options = this.setOptions(request, 'PUT', body)
 
     return await this.send<TResponse, TBody>(endpoint, options)
   }
@@ -124,14 +122,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
     body: TBody,
     request?: HttpBaseRequest,
   ): Promise<ResultType<TResponse>> {
-    const options: HttpRequest<TBody> = {
-      query: request?.query,
-      signal: request?.signal,
-      timeoutMs: request?.timeoutMs,
-      headers: request?.headers,
-      method: 'PATCH',
-      body,
-    }
+    const options = this.setOptions(request, 'PATCH', body)
 
     return await this.send<TResponse, TBody>(endpoint, options)
   }
@@ -140,13 +131,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
     endpoint: string,
     request?: HttpBaseRequest,
   ): Promise<ResultType<TResponse>> {
-    const options: HttpRequest = {
-      query: request?.query,
-      signal: request?.signal,
-      timeoutMs: request?.timeoutMs,
-      headers: request?.headers,
-      method: 'DELETE',
-    }
+    const options = this.setOptions(request, 'DELETE')
 
     return await this.send<TResponse>(endpoint, options)
   }
