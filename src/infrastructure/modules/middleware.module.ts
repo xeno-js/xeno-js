@@ -72,14 +72,22 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       })
 
       const { AllowOriginMiddleware } = await import('@/presentation')
-      container.addTransient('ALLOW_ORIGIN_MIDDLEWARE', (c) => {
+      container.addSingleton(TOKENS.ALLOW_ORIGIN_MIDDLEWARE, (c) => {
         return new AllowOriginMiddleware(
-          c.resolve('ALLOW_ORIGIN'),
+          c.resolve(TOKENS.ALLOW_ORIGIN),
           c.resolve(TOKENS.CONTEXT_ACCESSOR),
           c.resolve(TOKENS.LOGGER),
         )
       })
-      middlewares.push('ALLOW_ORIGIN_MIDDLEWARE')
+      middlewares.push(TOKENS.ALLOW_ORIGIN_MIDDLEWARE)
+    }
+
+    if (opts.cors) {
+      const { CORSMiddleware } = await import('@/presentation')
+      container.addSingleton(TOKENS.CORS_MIDDLEWARE, (c) => {
+        return new CORSMiddleware(c.resolve(TOKENS.CONTEXT_ACCESSOR))
+      })
+      middlewares.push(TOKENS.CORS_MIDDLEWARE)
     }
 
     if (Guards.isDefined(opts.routeRegistry)) {

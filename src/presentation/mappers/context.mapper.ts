@@ -42,6 +42,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
       startTime: Date.now(),
       spanId: metadata.spanId,
       parentSpanId: metadata.parentSpanId,
+      referer: metadata.referer,
     }
     const messaging = _buildMessagingContext(metadata)
 

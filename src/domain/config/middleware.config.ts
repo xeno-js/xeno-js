@@ -100,4 +100,14 @@ export interface MiddlewareConfig {
    * @link https://github.com/Mattia-Carcione/xeno-js
    */
   allowOrigins: Optional<string[]>
+  /**
+   * @description
+   * The cors property is a boolean property that is used to enable or disable Cross-Origin Resource Sharing (CORS) for the application. CORS is a mechanism that allows resources on a web page to be requested from another domain outside the domain from which the first resource was served. This property is used to configure the CORS middleware that is responsible for handling CORS requests and responses.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/Mattia-Carcione/xeno-js
+   */
+  cors: boolean
 }

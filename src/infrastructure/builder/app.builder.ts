@@ -82,14 +82,15 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private _middlewareConfig: MiddlewareConfig = {
     isSSR: false,
     rateLimite: {
-      maxRequests: undefined,
-      windowSeconds: undefined,
+      maxRequests: 3,
+      windowSeconds: 100,
     },
     csrf: undefined,
     optionsMiddleware: false,
     routeRegistry: undefined,
     trustedIpHeader: undefined,
-    allowOrigins: undefined,
+    allowOrigins: ['*'],
+    cors: true,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,

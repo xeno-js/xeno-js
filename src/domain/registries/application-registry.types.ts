@@ -254,6 +254,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   readonly AUTH_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly CSRF_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly ALLOW_ORIGIN_MIDDLEWARE: IMiddleware<HttpHeaders>
+  readonly CORS_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly METHOD_CHECK_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly OPTIONS_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly REQUEST_CONTEXT_MIDDLEWARE: IMiddleware<HttpHeaders>

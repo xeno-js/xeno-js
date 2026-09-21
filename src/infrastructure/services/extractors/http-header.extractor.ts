@@ -53,10 +53,10 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
     const expiration = StringHelper.getSingleValue(headers['x-expiration'])
 
     const csrf = StringHelper.getSingleValue(headers['x-requested-with'])
-    const origin =
-      StringHelper.getSingleValue(headers['origin']) ??
-      StringHelper.getSingleValue(headers['referer'])
+    const origin = StringHelper.getSingleValue(headers['origin'])
     const cleanOrigin = HttpHelper.sanitizeOriginUrl(origin)
+    const referer = StringHelper.getSingleValue(headers['referer'])
+    const cleanReferer = HttpHelper.sanitizeOriginUrl(referer)
 
     const accept = acceptHeader === '*/*' ? undefined : acceptHeader
     const formatIndicator = accept ?? contentTypeHeader ?? 'application/json'
@@ -73,6 +73,7 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
       returnAddress,
       csrf,
       origin: cleanOrigin,
+      referer: cleanReferer,
       sequence: {
         sequenceId,
         position: Guards.isDefined(position) ? MathHelper.toNumber(position) : undefined,

@@ -15,7 +15,7 @@ export class AllowOrigin implements IAllowOrigin {
   constructor(private readonly _list: string[]) {}
 
   public isAllowed(origin: Optional<string>): boolean {
-    if (Guards.isNullOrEmpty(origin)) return false
+    if (Guards.isNullOrEmpty(origin)) return true
 
     const cleanOrigin = origin.trim().toLowerCase()
 
