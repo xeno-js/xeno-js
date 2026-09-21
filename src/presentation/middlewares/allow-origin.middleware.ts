@@ -38,8 +38,9 @@ export class AllowOriginMiddleware implements IMiddleware<HttpHeaders> {
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const { network, tracing } = this._requestContext.getContext() ?? {}
+    const origin = network?.origin
 
-    if (!this._allowOrigin.isAllowed(network?.origin)) {
+    if (!this._allowOrigin.isAllowed(origin)) {
       this._logger.warn(`Access denied by AllowOrigin policy for origin: ${origin ?? 'unknown'}`)
 
       return HttpHelper.error(
