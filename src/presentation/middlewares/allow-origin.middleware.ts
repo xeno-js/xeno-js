@@ -17,6 +17,14 @@ import {
 
 import type { IAllowOrigin } from '@/domain'
 
+/**
+ * @description A middleware that checks if the origin of the request is allowed.
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export class AllowOriginMiddleware implements IMiddleware<HttpHeaders> {
   constructor(
     private readonly _allowOrigin: IAllowOrigin,
@@ -26,7 +34,7 @@ export class AllowOriginMiddleware implements IMiddleware<HttpHeaders> {
 
   public async execute<T, TRes, TReq>(
     req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    headers: HttpHeaders,
+    _headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const { network, tracing } = this._requestContext.getContext() ?? {}
