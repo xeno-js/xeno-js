@@ -61,7 +61,10 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
 
     if (opts.optionsMiddleware) {
       const { OptionsMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.OPTIONS_MIDDLEWARE, () => new OptionsMiddleware())
+      container.addSingleton(
+        TOKENS.OPTIONS_MIDDLEWARE,
+        (c) => new OptionsMiddleware(c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)),
+      )
       middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
     }
 
