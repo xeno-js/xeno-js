@@ -35,6 +35,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
       path,
       transport,
       csrf: metadata.csrf,
+      origin: metadata.origin,
     }
     const tracing: TracingContext = {
       correlationId: metadata.correlationId!,

@@ -3,7 +3,6 @@ import type {
   AuthClaims,
   HttpHeaders,
   HttpMethod,
-  IAllowOrigin,
   IBaseAuthService,
   IBaseMapper,
   ICache,
@@ -42,6 +41,7 @@ import type {
 
 import type {
   IAllowMethod,
+  IAllowOrigin,
   IRequestContext,
   IServiceContainer,
   IServiceScope,
@@ -253,6 +253,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   readonly MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly AUTH_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly CSRF_MIDDLEWARE: IMiddleware<HttpHeaders>
+  readonly ALLOW_ORIGIN_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly METHOD_CHECK_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly OPTIONS_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly REQUEST_CONTEXT_MIDDLEWARE: IMiddleware<HttpHeaders>

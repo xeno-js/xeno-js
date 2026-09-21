@@ -1,4 +1,5 @@
 export * from './allow-method.middleware'
+export * from './allow-origin.middleware'
 export * from './auth.middleware'
 export * from './composite.middleware'
 export * from './csrf.middleware'

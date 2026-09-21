@@ -2,7 +2,7 @@ import type { Dictionary, HttpMethod, IFactory } from '@xeno-js/shared'
 
 import type { IAllowMethod } from '@/domain'
 
-import { AllowMethodRegistry } from '../services/allow_methods'
+import { AllowMethodRegistry } from '../services'
 
 /**
  * @description Factory class responsible for creating instances of ZodValidatorService based on the provided configuration. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the ZodValidatorService, including the initialization of the underlying ZodValidatorService instance with the specified configuration options such as URL and API key. This design promotes separation of concerns and allows for flexibility in managing ZodValidatorService instances across the application.

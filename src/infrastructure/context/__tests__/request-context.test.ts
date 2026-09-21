@@ -66,6 +66,7 @@ describe('NodeRequestContext', () => {
         path: '/api/test',
         transport: undefined,
         csrf: '',
+        origin: '',
       },
       tracing: {
         correlationId: 'c1' as unknown as Guid,
@@ -129,6 +130,7 @@ describe('NodeRequestContext', () => {
         requestId: '' as unknown as Guid,
         transport: undefined,
         csrf: '',
+        origin: '',
       },
       tracing: {
         correlationId: '' as unknown as Guid,

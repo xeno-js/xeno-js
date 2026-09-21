@@ -28,14 +28,13 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     }
 
     if (opts.isSSR) {
-      const { SupabaseSsrTokenExtractor } = await import('../services/extractors')
+      const { SupabaseSsrTokenExtractor } = await import('../services')
       container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new SupabaseSsrTokenExtractor())
     } else {
-      const { BearerTokenExtractor } =
-        await import('../services/extractors/extract-bearer.extractor')
+      const { BearerTokenExtractor } = await import('../services')
       container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
     }
-    const { HttpHeaderExtractor } = await import('../services/extractors/http-header.extractor')
+    const { HttpHeaderExtractor } = await import('../services')
     container.addSingleton(
       TOKENS.SERVICE_EXTRACTOR,
       (c) =>
@@ -64,6 +63,23 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       const { OptionsMiddleware } = await import('@/presentation')
       container.addSingleton(TOKENS.OPTIONS_MIDDLEWARE, () => new OptionsMiddleware())
       middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
+    }
+
+    if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
+      const { AllowOrigin } = await import('../services')
+      container.addSingleton('ALLOW_ORIGIN', () => {
+        return new AllowOrigin(opts.allowOrigins!)
+      })
+
+      const { AllowOriginMiddleware } = await import('@/presentation')
+      container.addTransient('ALLOW_ORIGIN_MIDDLEWARE', (c) => {
+        return new AllowOriginMiddleware(
+          c.resolve('ALLOW_ORIGIN'),
+          c.resolve(TOKENS.CONTEXT_ACCESSOR),
+          c.resolve(TOKENS.LOGGER),
+        )
+      })
+      middlewares.push('ALLOW_ORIGIN_MIDDLEWARE')
     }
 
     if (Guards.isDefined(opts.routeRegistry)) {

@@ -5,13 +5,13 @@ import type { ApplicationRegistry } from '../registries'
 
 /**
  * @description Interface defining the structure of a logger configuration object. This includes properties such as the minimum log level that should be captured by the logger. The log level determines the severity of log messages that will be processed and forwarded to the logging clients, allowing developers to control the verbosity of logs based on the needs of the application and its operational context.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
-   */
+ *
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/Mattia-Carcione/xeno-js
+ */
 export interface LoggerConfig<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
   /**
    * @description

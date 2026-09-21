@@ -79,7 +79,7 @@ export const HttpUtils = Object.freeze({
     if (Guards.isNullOrEmpty(opts)) throw new Error('At least an allow origin must be passed')
 
     const { TOKENS } = await import('@xeno-js/shared')
-    const { AllowOrigin } = await import('@xeno-js/shared')
+    const { AllowOrigin } = await import('../../services')
     const allowOrigin: string[] = []
 
     opts.forEach((x) => {

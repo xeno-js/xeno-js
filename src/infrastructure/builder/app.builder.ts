@@ -89,6 +89,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     optionsMiddleware: false,
     routeRegistry: undefined,
     trustedIpHeader: undefined,
+    allowOrigins: undefined,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,
