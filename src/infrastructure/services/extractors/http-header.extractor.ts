@@ -4,6 +4,7 @@ import {
   Guards,
   GuidHelper,
   type HttpHeaders,
+  HttpHelper,
   MathHelper,
   type Optional,
   StringHelper,
@@ -55,6 +56,7 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
     const origin =
       StringHelper.getSingleValue(headers['origin']) ??
       StringHelper.getSingleValue(headers['referer'])
+    const cleanOrigin = HttpHelper.sanitizeOriginUrl(origin)
 
     const accept = acceptHeader === '*/*' ? undefined : acceptHeader
     const formatIndicator = accept ?? contentTypeHeader ?? 'application/json'
@@ -70,7 +72,7 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
       userAgent,
       returnAddress,
       csrf,
-      origin,
+      origin: cleanOrigin,
       sequence: {
         sequenceId,
         position: Guards.isDefined(position) ? MathHelper.toNumber(position) : undefined,
