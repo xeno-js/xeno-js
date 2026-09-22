@@ -1,16 +1,24 @@
 {
   "name": "@xeno-js/core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Xeno agnostic core — DDD + Clean Architecture npm package",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xeno-js/xeno-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xeno-js/xeno-js/issues"
+  },
+  "homepage": "https:www.xeno-js.it",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -20,7 +28,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && tsc-alias",
+    "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint --config eslint.config.mjs \"src/**/*.ts\" --max-warnings=0",
     "lint:fix": "eslint --config eslint.config.mjs \"src/**/*.ts\" --fix --max-warnings=0",
@@ -64,7 +72,7 @@
     "@sentry/node": "^7.64.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.35.0",
-    "@xeno-js/shared": "file:../xeno-shared",
+    "@xeno-js/shared": "^0.1.1",
     "axios": "^1.16.1",
     "cockatiel": "^4.0.0",
     "drizzle-orm": "^0.45.2",
@@ -126,7 +134,7 @@
     "@supabase/supabase-js": "^2.35.0",
     "@types/pg": "^8.20.0",
     "@vitest/coverage-v8": "^4.1.7",
-    "@xeno-js/shared": "file:../xeno-shared",
+    "@xeno-js/shared": "^0.1.1",
     "axios": "^1.20.0",
     "cockatiel": "^4.0.0",
     "drizzle-kit": "^0.31.10",
@@ -145,10 +153,8 @@
     "tsc-alias": "^1.9.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0",
+    "tsup": "^8.5.1",
     "vitest": "^4.1.7",
     "zod": "^4.4.3"
-  },
-  "overrides": {
-    "esbuild": "^0.25.0"
   }
 }
