@@ -12,7 +12,7 @@ import { RedisCache } from '../cache/redis.cache'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class RedisCacheFactory implements IFactory<CacheClientConfig, ICache> {
   public create(config: CacheClientConfig): ICache {

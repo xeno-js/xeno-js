@@ -12,7 +12,7 @@ import type { XenoRegistry } from '@/infrastructure'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export const AuthUtils = Object.freeze({
   /**
@@ -24,7 +24,7 @@ export const AuthUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 
   async addAuthZ<TRegistry extends XenoRegistry = XenoRegistry>(
@@ -152,7 +152,7 @@ export const AuthUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   async addAuthN<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,

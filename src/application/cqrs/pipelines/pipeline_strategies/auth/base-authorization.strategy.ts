@@ -15,7 +15,7 @@ import { Guards } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export abstract class BaseAuthorizationStrategy<
   TInput extends IRequest,
@@ -27,7 +27,7 @@ export abstract class BaseAuthorizationStrategy<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(private readonly _requestContext: IContextAccessor<RequestContext>) {}
 
@@ -50,7 +50,7 @@ export abstract class BaseAuthorizationStrategy<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   protected abstract performAuthorizationCheck(
     request: IRequest,

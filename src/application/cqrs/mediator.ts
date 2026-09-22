@@ -20,7 +20,7 @@ import type { ApplicationRegistry, IServiceScopeAccessor } from '@/domain'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class Mediator<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -32,7 +32,7 @@ export class Mediator<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(private readonly _factoryScope: IServiceScopeAccessor<TRegistry>) {}
 
@@ -43,7 +43,7 @@ export class Mediator<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   async send<TResponse>(
     request: ICommand<TResponse>,
@@ -58,7 +58,7 @@ export class Mediator<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async query<TResponse>(
     request: IQuery<TResponse>,
@@ -78,7 +78,7 @@ export class Mediator<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   private async process<TResponse>(
     request: IRequest<TResponse>,

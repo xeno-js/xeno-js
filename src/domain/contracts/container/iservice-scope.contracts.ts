@@ -8,7 +8,7 @@ import type { ApplicationRegistry } from '../../registries'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 
 /**
@@ -25,7 +25,7 @@ import type { ApplicationRegistry } from '../../registries'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface IServiceScope<
   Registry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -43,7 +43,7 @@ export interface IServiceScope<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   resolve<K extends keyof Registry>(token: K): Registry[K]
 }

@@ -10,7 +10,7 @@ import type { ResilienceConfig } from './resilience.config'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface HttpCoreConfig<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -20,7 +20,7 @@ export interface HttpCoreConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   dataSourceToken: SetupAction<IServiceContainer<TRegistry>>
   /** @description The configuration options for the HTTP client, including default headers, base URL, and timeout settings.
@@ -28,7 +28,7 @@ export interface HttpCoreConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   http: HttpConfig<TRegistry>
   /** @description The configuration options for implementing resilience strategies, including retries, circuit breakers, and timeouts. This allows for enhancing the reliability of service interactions by automatically handling transient faults and preventing cascading failures in distributed systems.
@@ -36,7 +36,7 @@ export interface HttpCoreConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   resilience: ResilienceConfig
 }
@@ -47,7 +47,7 @@ export interface HttpCoreConfig<
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface HttpConfig<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -57,7 +57,7 @@ export interface HttpConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   token: keyof TRegistry
   /** @description The configuration options for the HTTP client, including default headers, base URL, and timeout settings.
@@ -65,7 +65,7 @@ export interface HttpConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   client: HttpClientConfig
 }

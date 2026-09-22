@@ -22,7 +22,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   map: (source: ContextMapperSource): RequestContext => {
     const { metadata, identity, path, transport } = source
@@ -65,7 +65,7 @@ export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = O
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 function _buildMessagingContext(meta: Metadata): Optional<MessagingContext> {
   const hasSequenceData =

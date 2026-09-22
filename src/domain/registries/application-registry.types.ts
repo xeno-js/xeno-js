@@ -56,7 +56,7 @@ import type {
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   readonly ALLOW_ORIGIN: IAllowOrigin
@@ -66,7 +66,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly AUTHORIZATION_PIPELINE: IPipelineBehavior<IRequest, unknown>
 
@@ -75,7 +75,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly AUTH_SERVICE: IExtendendService
 
@@ -86,7 +86,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly BEARER_TOKEN_EXTRACTOR: IServiceExtractor<HttpHeaders, Optional<string>>
 
@@ -95,7 +95,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CACHE: ICache
 
@@ -104,7 +104,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CACHE_KEY_BUILDER: ICacheKeyBuilder
 
@@ -113,7 +113,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CLAIMS_IDENTITY_MAPPER: IBaseMapper<AuthClaims, Identity>
 
@@ -122,7 +122,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly COMMAND_PIPELINES_BEHAVIOR: IPipelineBehavior<ICommand, unknown>
 
@@ -131,7 +131,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly COMPOSITE_PIPELINE: IPipelineBehavior<IQuery, unknown>
 
@@ -140,7 +140,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONCURRENCY_RETRY_PIPELINE: IPipelineBehavior<ICommand, unknown>
 
@@ -149,7 +149,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONCURRENCY_SERVICE: IConcurrencyService
 
@@ -158,7 +158,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONFIGURATION_SERVICE: IConfigurationService
 
@@ -167,7 +167,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONSOLE_LOGGER: ILoggerClient
 
@@ -176,7 +176,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly DB_CONTEXT: T
 
@@ -185,7 +185,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly EXCEPTION_PIPELINE: IPipelineBehavior<IRequest, unknown>
 
@@ -194,7 +194,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly GATE_KEEPER: IGateKeeper
 
@@ -203,7 +203,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly IDEMPOTENCY_PIPELINE: IPipelineBehavior<ICommand, unknown>
 
@@ -212,7 +212,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly IDEMPOTENCY_STORE: IIdempotencyStore
 
@@ -221,7 +221,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly LOGGER: ILogger
 
@@ -230,7 +230,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly LOGGING_PIPELINE: IPipelineBehavior<IRequest, unknown>
 
@@ -239,7 +239,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly MEDIATOR: IMediator
 
@@ -248,7 +248,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly AUTH_MIDDLEWARE: IMiddleware<HttpHeaders>
@@ -265,7 +265,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly PERFORMANCE_PIPELINE: IPipelineBehavior<IRequest, unknown>
 
@@ -274,7 +274,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly PERMISSION_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
 
@@ -283,7 +283,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly PINO_LOGGER: ILoggerClient
 
@@ -292,7 +292,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly POLICY_REGISTRY: IPolicyRegistry
 
@@ -301,7 +301,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly QUERY_CACHING_PIPELINE: IPipelineBehavior<IQuery, unknown>
 
@@ -310,7 +310,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly QUERY_PIPELINES_BEHAVIOR: IPipelineBehavior<IQuery, unknown>
 
@@ -319,7 +319,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly REGISTRY_ROUTES: Record<`/${string}`, Record<HttpMethod, 'isPublic'>>
 
@@ -328,7 +328,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly REQUEST_CONTEXT: IRequestContext<RequestContext, ApplicationRegistry<T>>
 
@@ -337,7 +337,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly RESILIENCE_CLIENT: IServiceResilience
 
@@ -346,7 +346,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly ROLE_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
 
@@ -355,7 +355,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SCHEMA_VALIDATION_STRATEGY: IStrategy<IRequest, boolean>
 
@@ -364,7 +364,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SENTRY_LOGGER: ILoggerClient
 
@@ -373,7 +373,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_CONTAINER: IServiceContainer
 
@@ -382,7 +382,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_EXTRACTOR: IServiceExtractor<HttpHeaders, Metadata>
 
@@ -391,7 +391,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_SCOPE_FACTORY: IFactory<void, IServiceScope>
 
@@ -400,7 +400,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly TENANT_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
 
@@ -409,7 +409,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly TRANSACTION_STATE: ITransactionState<Ttx>
 
@@ -418,7 +418,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly UNIT_OF_WORK: IUnitOfWork & IDisposable
 
@@ -427,7 +427,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly USER_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
 
@@ -436,7 +436,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly VALIDATION_PIPELINE: IPipelineBehavior<IRequest, unknown>
 
@@ -445,7 +445,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly ZOD_VALIDATOR: IValidatorService
 
@@ -456,7 +456,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly IDENTITY_ACCESSOR: IIdentityAccessor
 
@@ -465,7 +465,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_SCOPE_ACCESSOR: IServiceScopeAccessor<ApplicationRegistry<T>>
 
@@ -474,7 +474,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONTEXT_ACCESSOR: IContextAccessor<RequestContext>
 
@@ -483,7 +483,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly NETWORK_CONTEXT_ACCESSOR: INetworkContextAccessor
 
@@ -492,7 +492,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   readonly USER_CONTEXT_FACTORY: IFactory<void, UserContext>
 }

@@ -8,7 +8,7 @@ import { Guards } from '@xeno-js/shared'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 const defaultThresholdMs = 500
 
@@ -22,7 +22,7 @@ const defaultThresholdMs = 500
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class PerformancePipeline<
   TInput extends IRequest<TResult>,
@@ -35,7 +35,7 @@ export class PerformancePipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   private readonly _thresholdMs: number
 
@@ -49,7 +49,7 @@ export class PerformancePipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(
     private readonly _logger: ILogger,

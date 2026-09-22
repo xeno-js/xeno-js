@@ -10,7 +10,7 @@ import type { ApplicationRegistry } from '../registries'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface LoggerConfig<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
   /**
@@ -21,7 +21,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   level: Optional<LogLevel>
   /** @description Flag to enable or disable console logging. If set to true, log messages will be output to the console. If set to false or not defined, console logging will be disabled, and log messages will not be output to the console.
@@ -29,7 +29,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   console: boolean
   /** @description Optional configuration for Sentry logger integration. If provided and enabled, the application will use Sentry as a logging client to capture and report log messages to the Sentry service. The configuration includes specific details for Sentry integration, such as the Data Source Name (DSN) and environment, allowing for flexible and modular logging configuration in the application.
@@ -37,7 +37,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   sentry: {
     /** @description Optional configuration for Sentry logger integration, including details such as the Data Source Name (DSN) and environment. If provided, this configuration will be used to initialize the Sentry logger client for capturing and reporting log messages to the Sentry service. If not defined, default Sentry configuration settings will be used.
@@ -45,7 +45,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     config: Optional<SentryLoggerConfig>
   }
@@ -54,7 +54,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   pino: {
     /** @description Optional configuration for Pino logger integration, including details such as the destination for log output. If provided, this configuration will be used to initialize the Pino logger client for capturing and managing log messages. If not defined, default Pino configuration settings will be used.
@@ -62,7 +62,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     config: Optional<PinoLoggerConfig>
   }
@@ -71,7 +71,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   customLoggers: Optional<(container: IServiceScope<TRegistry>) => ILoggerClient>[]
 }
@@ -83,7 +83,7 @@ export interface LoggerConfig<TRegistry extends ApplicationRegistry = Applicatio
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export interface SentryLoggerConfig {
   /**
@@ -94,7 +94,7 @@ export interface SentryLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   dsn: Optional<string>
   /**
@@ -105,7 +105,7 @@ export interface SentryLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   environment: Optional<string>
 }
@@ -117,7 +117,7 @@ export interface SentryLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export interface PinoLoggerConfig {
   /**
@@ -128,7 +128,7 @@ export interface PinoLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   destination?: Optional<Destination>
   /** @description Optional environment name for the Pino logger configuration. This can be used to specify the context in which the application is running (e.g., development, production) and can help with categorizing and filtering log messages based on the environment.
@@ -136,7 +136,7 @@ export interface PinoLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   env?: Optional<string>
   /** @description Optional file path for the Pino logger configuration. If specified, log messages will be written to the specified file instead of the default output destination. This allows for flexible log management and storage based on application requirements.
@@ -144,7 +144,7 @@ export interface PinoLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   filePath?: Optional<string>
   /** @description Optional flag to enable pretty printing of log messages. When set to true, log messages will be formatted in a more human-readable way, which can be useful for development and debugging purposes.
@@ -152,7 +152,7 @@ export interface PinoLoggerConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   prettyPrint?: Optional<boolean>
 }

@@ -19,7 +19,7 @@ import { GuidHelper, HttpHelper } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export abstract class BaseController<TRequest, TResponse> implements IController<
   TRequest,
@@ -33,7 +33,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
     private readonly _requestContext: IContextAccessor<RequestContext>,
@@ -53,7 +53,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   protected ok<T>(
     data: T,
@@ -75,7 +75,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   protected fail(
     error: AppError,
@@ -117,7 +117,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   protected _query(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
     const signal = new AbortController().signal
@@ -132,7 +132,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   protected _send(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
     const signal = new AbortController().signal

@@ -17,7 +17,7 @@ import { Guards } from '@xeno-js/shared'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class QueryCachingPipeline<
   TInput extends IQuery<TResult>,
@@ -32,7 +32,7 @@ export class QueryCachingPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(
     private readonly _cacheService: ICache,

@@ -6,7 +6,7 @@ import type { HttpMethod } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface IAllowMethod {
   /** @description Check if the given method is allowed for the given path.
@@ -17,7 +17,7 @@ export interface IAllowMethod {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   check(path: string, method: HttpMethod): boolean
 }

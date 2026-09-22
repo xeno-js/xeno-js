@@ -6,7 +6,7 @@ import type { Delegate, IPipelineBehavior, IRequest, ResultType } from '@xeno-js
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class CompositePipeline<
   TInput extends IRequest<TResult>,
@@ -19,7 +19,7 @@ export class CompositePipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(private readonly _pipelines: readonly IPipelineBehavior<TInput, TResult>[] = []) {}
 

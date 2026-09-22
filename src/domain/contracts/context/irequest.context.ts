@@ -4,7 +4,7 @@
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 
 import type { IBaseAccessor, Identity, Optional } from '@xeno-js/shared'
@@ -18,7 +18,7 @@ import type { IServiceScope } from '../container'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface IRequestContext<TCtx, TRegistry extends ApplicationRegistry = ApplicationRegistry>
   extends IBaseAccessor<TCtx>, IServiceScopeAccessor<TRegistry> {
@@ -31,7 +31,7 @@ export interface IRequestContext<TCtx, TRegistry extends ApplicationRegistry = A
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   runAsync<T = unknown>(ctx: TCtx, fn: () => Promise<T>): Promise<T>
 
@@ -45,7 +45,7 @@ export interface IRequestContext<TCtx, TRegistry extends ApplicationRegistry = A
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface IServiceScopeAccessor<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -57,7 +57,7 @@ export interface IServiceScopeAccessor<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   getScope(): Optional<IServiceScope<TRegistry>>
 }

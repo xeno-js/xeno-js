@@ -16,7 +16,7 @@ import { AppError, Result } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export abstract class RemoteDataSource implements IRemoteDataSource {
   /** The constructor of the RemoteDataSource class takes two dependencies: an instance of an agnostic HTTP client that implements the IHttpClient interface, and an instance of a resilience service that implements the IServiceResilience interface.
@@ -28,7 +28,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
     private readonly _httpClient: IHttpClient,
@@ -43,7 +43,7 @@ export abstract class RemoteDataSource implements IRemoteDataSource {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private async send<TResponse, TBody = unknown>(
     endpoint: string,

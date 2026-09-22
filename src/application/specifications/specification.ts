@@ -9,7 +9,7 @@ import type { ISpecification } from '@xeno-js/shared'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
 export abstract class Specification<T> implements ISpecification<T> {
   /**
@@ -22,7 +22,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public abstract isSatisfiedBy(candidate: T): boolean
 
@@ -36,7 +36,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public and(other: ISpecification<T>): ISpecification<T> {
     return new AndSpecification<T>(this, other)
@@ -52,7 +52,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public or(other: ISpecification<T>): ISpecification<T> {
     return new OrSpecification<T>(this, other)
@@ -67,7 +67,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public not(): ISpecification<T> {
     return new NotSpecification<T>(this)
@@ -83,7 +83,7 @@ export abstract class Specification<T> implements ISpecification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 class AndSpecification<T> extends Specification<T> {
   constructor(
@@ -106,7 +106,7 @@ class AndSpecification<T> extends Specification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 class OrSpecification<T> extends Specification<T> {
   constructor(
@@ -129,7 +129,7 @@ class OrSpecification<T> extends Specification<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 class NotSpecification<T> extends Specification<T> {
   constructor(private _spec: ISpecification<T>) {

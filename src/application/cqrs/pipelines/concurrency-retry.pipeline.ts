@@ -15,7 +15,7 @@ import {
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class ConcurrencyRetryPipeline<
   TInput extends ICommand<TResult>,
@@ -27,7 +27,7 @@ export class ConcurrencyRetryPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private readonly _delayConfig: { baseDelayMs: number; maxJitterMs: number }
   /**
@@ -36,7 +36,7 @@ export class ConcurrencyRetryPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private readonly _maxRetries: number
 
@@ -49,7 +49,7 @@ export class ConcurrencyRetryPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
     maxRetries: number = DEFAULT_CONCURRENCY.MAX_RETRIES,
@@ -86,7 +86,7 @@ export class ConcurrencyRetryPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
     let attempts = 0
@@ -120,7 +120,7 @@ export class ConcurrencyRetryPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private isConcurrencyError(error: AppError): boolean {
     return error.code === ERROR_CODES.CONFLICT && error.status === STATUS_CODES.CONFLICT

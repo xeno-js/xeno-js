@@ -4,7 +4,7 @@
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 
 import type { RequestContext } from '@xeno-js/shared'
@@ -19,7 +19,7 @@ import type { IServiceScope } from '../container'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export interface ExecutionContext<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
   /** The request context containing information about the identity, network, and tracing contexts for the current request execution.
@@ -27,7 +27,7 @@ export interface ExecutionContext<TRegistry extends ApplicationRegistry = Applic
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   context: RequestContext
   /** The service scope for managing dependencies during the execution of a request. This allows for proper scoping and disposal of services after the request is processed.
@@ -35,7 +35,7 @@ export interface ExecutionContext<TRegistry extends ApplicationRegistry = Applic
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   scope: IServiceScope<TRegistry>
 }

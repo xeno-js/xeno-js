@@ -10,7 +10,7 @@ import type { ApplicationRegistry } from '../registries'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export interface PipelineConfig<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -21,7 +21,7 @@ export interface PipelineConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   performance: {
     /** @description Optional threshold in milliseconds for logging slow operations. If defined, the PerformancePipeline will log a warning whenever the execution of a command or query exceeds this duration, allowing for performance monitoring and optimization. If not defined, all operations will be monitored without duration-based filtering.
@@ -29,7 +29,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     thresholdMs: Optional<number>
   }
@@ -38,7 +38,7 @@ export interface PipelineConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   authorization: {
     /** @description Configuration for policy-based authorization, allowing the definition of a policy registry and the option to enable role-based or permission-based checks. If policy-based authorization is enabled, the authorization pipeline will include a strategy that evaluates the defined policies for each command or query, ensuring that users meet the necessary criteria based on their roles and permissions. The policy registry allows for central management of authorization policies, making it easier to maintain and update access rules across the application.
@@ -46,7 +46,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     policies: Optional<Dictionary<AuthPolicy>>
     /** @description An optional array of custom authorization strategies defined via injection tokens. If provided, these strategies will be included in the authorization pipeline and evaluated for each command or query, allowing for custom logic to determine if a user is authorized to perform a specific action. This provides flexibility in implementing application-specific access rules that may not fit into standard tenant-based or policy-based checks. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is authorized.
@@ -54,7 +54,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     customAuthorizationStrategy?: Optional<
       (container: IServiceScope<TRegistry>) => IStrategy<IRequest>
@@ -65,7 +65,7 @@ export interface PipelineConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   validation: {
     /** @description An optional configuration for Zod-based validation, allowing the definition of schemas for validating the structure and content of commands and queries. If provided, the validation pipeline will use these schemas to validate incoming requests, ensuring that they conform to the expected format and contain valid data before being processed further. This provides a powerful and flexible way to enforce data integrity and prevent invalid input from causing issues in the application.
@@ -73,7 +73,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     zod: Optional<SchemaConfig<TSchema>>
     /** @description An optional array of custom validation strategies defined via injection tokens. If provided, these strategies will be included in the validation pipeline and evaluated for each command or query, allowing for custom logic to determine if the input data is valid. This provides flexibility in implementing application-specific validation rules that may not fit into standard schema-based validation. Each strategy should implement the IStrategy interface and return a boolean indicating whether the command or query is valid.
@@ -81,7 +81,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     customValidationStrategy?: Optional<
       (container: IServiceScope<TRegistry>) => IStrategy<IRequest, boolean>
@@ -92,7 +92,7 @@ export interface PipelineConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   commandBus: {
     idempotency: Optional<IdempotencyConfig>
@@ -103,7 +103,7 @@ export interface PipelineConfig<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   queryBus: {
     /** @description Flag to enable or disable query bus features. If set to true, the query bus pipeline will include additional behaviors based on the specified configuration, such as result caching. If set to false or not defined, the query bus will operate without these additional features, allowing queries to be processed in a standard manner without caching or other enhancements.
@@ -111,7 +111,7 @@ export interface PipelineConfig<
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     isEnabled: boolean
   }
@@ -122,7 +122,7 @@ export interface PipelineConfig<
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface SchemaConfig<TSchema> {
   /** @description A record of Zod schemas, where each key represents a specific command or query type, and the corresponding value is the Zod schema used to validate that type. If provided, the validation pipeline will use these schemas to validate incoming requests, ensuring that they conform to the expected format and contain valid data before being processed further. This allows for powerful and flexible validation rules based on the structure and content of commands and queries.
@@ -130,7 +130,7 @@ export interface SchemaConfig<TSchema> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   schemas: Dictionary<TSchema>
 }
@@ -140,7 +140,7 @@ export interface SchemaConfig<TSchema> {
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 interface IdempotencyConfig {
   /** @description Optional TTL in seconds for the idempotency lock. This defines how long the lock should be held to prevent duplicate processing of commands with the same ID. If not defined, a default value will be used.
@@ -148,7 +148,7 @@ interface IdempotencyConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   lockTtlSeconds: Optional<number>
   /** @description Optional TTL in seconds for storing the results of processed commands. This defines how long the results of a processed command should be retained in the cache, allowing for retrieval if the same command is received again within that period. If not defined, a default value will be used.
@@ -156,7 +156,7 @@ interface IdempotencyConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   processedTtlSeconds: Optional<number>
 }
@@ -166,7 +166,7 @@ interface IdempotencyConfig {
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 interface ConcurrencyConfig {
   /** @description Optional maximum number of retry attempts in case of concurrency conflicts. This defines how many times the command bus should attempt to retry a command if it fails due to a concurrency issue, such as a version conflict in an optimistic concurrency control scenario. If not defined, a default value will be used.
@@ -174,14 +174,14 @@ interface ConcurrencyConfig {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   maxRetries?: Optional<number> /** @description Optional configuration for delay strategies between retry attempts. This can include settings for exponential backoff, jitter, or fixed delays to manage the timing of retries in case of concurrency conflicts. If not defined, a default delay strategy will be used.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   delayConfig: {
     /** @description Base delay in milliseconds for retries. This defines the initial delay before the first retry attempt in case of a concurrency conflict. If using an exponential backoff strategy, this base delay will be multiplied for each subsequent retry attempt. If not defined, a default value will be used.
@@ -189,7 +189,7 @@ interface ConcurrencyConfig {
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     baseDelayMs: number
     /** @description Optional maximum delay in milliseconds for retries. This defines the upper limit for the delay between retry attempts, preventing excessively long delays in case of multiple retries. If not defined, a default value will be used.
@@ -197,7 +197,7 @@ interface ConcurrencyConfig {
      * @author Xeno
      * @version 1.0.0
      * @since 2025-09-30
-     * @link https://github.com/Mattia-Carcione/xeno-js
+     * @link https://github.com/xeno-js/xeno-js
      */
     maxJitterMs: number
   }

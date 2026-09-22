@@ -11,7 +11,7 @@ import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from 
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class LoggingPipeline<
   TInput extends IRequest<TResult>,
@@ -25,7 +25,7 @@ export class LoggingPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(private readonly _logger: ILogger) {}
 

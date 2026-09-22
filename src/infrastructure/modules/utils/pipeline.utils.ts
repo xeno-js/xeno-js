@@ -8,7 +8,7 @@ import type { XenoRegistry } from '../../xeno-registry'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export const PipelineUtils = Object.freeze({
   /**
@@ -19,7 +19,7 @@ export const PipelineUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addCommand<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
@@ -67,7 +67,7 @@ export const PipelineUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addQuery<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,

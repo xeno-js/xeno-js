@@ -6,7 +6,7 @@ import type { ITransactionState, Maybe } from '@xeno-js/shared'
  * @version 1.0.0
  * @author Xeno
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class TransactionState<T> implements ITransactionState<T> {
   /**
@@ -14,7 +14,7 @@ export class TransactionState<T> implements ITransactionState<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private _state: Maybe<T> = null
 
@@ -24,7 +24,7 @@ export class TransactionState<T> implements ITransactionState<T> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(initialState: Maybe<T> = null) {
     this._state = initialState

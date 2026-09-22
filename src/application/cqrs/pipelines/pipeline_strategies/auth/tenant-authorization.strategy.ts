@@ -17,7 +17,7 @@ import { BaseAuthorizationStrategy } from './base-authorization.strategy'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class TenantAuthorizationStrategy extends BaseAuthorizationStrategy<IRequest> {
   /** @description Constructs a new instance of the TenantAuthorizationStrategy class, which is responsible for checking if the authenticated tenant has the required tenant ID specified in the command. It takes an IContextAccessor as a parameter, which is used to retrieve the identity of the currently authenticated tenant during the authorization process.
@@ -26,7 +26,7 @@ export class TenantAuthorizationStrategy extends BaseAuthorizationStrategy<IRequ
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
     private readonly _policy: IPolicyRegistry,

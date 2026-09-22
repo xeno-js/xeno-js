@@ -8,7 +8,7 @@ import { Guards } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class EnvironmentConfigurationService implements IConfigurationService {
   /**
@@ -16,7 +16,7 @@ export class EnvironmentConfigurationService implements IConfigurationService {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private readonly _env: Dictionary<Optional<string>>
 
@@ -25,7 +25,7 @@ export class EnvironmentConfigurationService implements IConfigurationService {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor() {
     this._env = process.env

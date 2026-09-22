@@ -10,7 +10,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export type DbContext<TSchema extends Dictionary = Dictionary> =
   | NodePgDatabase<TSchema>
@@ -25,6 +25,6 @@ export type DbContext<TSchema extends Dictionary = Dictionary> =
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export type DbTransaction = Parameters<Parameters<DbContext['transaction']>[0]>[0]

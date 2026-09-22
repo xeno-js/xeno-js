@@ -21,7 +21,7 @@ import type { ApplicationRegistry, IAllowMethod, IRequestContext } from '@/domai
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  * @param {IAllowMethod} _allowMethod - The allow method service to check if the method is allowed.
  * @param {IRequestContext<RequestContext, ApplicationRegistry<unknown>>} _requestContext - The request context to get the request context.
  * @returns {IMiddleware<HttpHeaders>} - The middleware function that checks if the method is allowed.

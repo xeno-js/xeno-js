@@ -15,7 +15,7 @@ import type { ApplicationRegistry } from '../../registries'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export interface IModule<
   TRegistry extends ApplicationRegistry<unknown> = ApplicationRegistry<unknown>,
@@ -31,7 +31,7 @@ export interface IModule<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   configure(container: IServiceContainer<TRegistry>, opts?: Optional<TOptions>): Promise<void>
 }

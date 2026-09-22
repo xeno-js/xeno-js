@@ -15,7 +15,7 @@ import { Guards, IDEMPOTENCY_CONSTANTS } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class IdempotencyPipeline<
   TInput extends ICommand<TResult>,
@@ -26,7 +26,7 @@ export class IdempotencyPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private readonly _lockTtlSeconds: number
   /** @description TTL (time-to-live) in seconds for processed command results stored in the idempotency mechanism. This value determines how long the result of a processed command will be stored and available for retrieval when subsequent requests with the same command ID are received. If a result is not retrieved within this time frame, it will automatically expire and be removed from the store, meaning that subsequent requests with the same command ID will not be able to retrieve the previous result and may need to reprocess the command. The default value is set to 86400 seconds (24 hours), which allows for a reasonable window of time for clients to retrieve results of processed commands while also ensuring that stale results do not persist indefinitely in the store. This value can be overridden by providing a different processedTtlSeconds value when constructing the IdempotencyPipeline instance.
@@ -34,7 +34,7 @@ export class IdempotencyPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   private readonly _processedTtlSeconds: number
 
@@ -49,7 +49,7 @@ export class IdempotencyPipeline<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(
     private readonly _requestContextFactory: INetworkContextAccessor,

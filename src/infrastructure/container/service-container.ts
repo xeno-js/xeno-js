@@ -15,7 +15,7 @@ import type { DbContext } from '../db'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 interface RegistrationEntry<
   T,
@@ -27,7 +27,7 @@ interface RegistrationEntry<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   token: keyof Registry
   /**
@@ -36,7 +36,7 @@ interface RegistrationEntry<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   lifetime: Lifetime
   /**
@@ -46,7 +46,7 @@ interface RegistrationEntry<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   factory: Factory<T, [IServiceScope<Registry>]>
 }
@@ -56,7 +56,7 @@ interface RegistrationEntry<
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 interface ResolutionContext<Registry> {
   /**
@@ -65,7 +65,7 @@ interface ResolutionContext<Registry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   stack: Set<keyof Registry>
   /**
@@ -74,7 +74,7 @@ interface ResolutionContext<Registry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   activeLifetime?: Lifetime
 }
@@ -84,7 +84,7 @@ interface ResolutionContext<Registry> {
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 class ContainerScope<
   Registry extends ApplicationRegistry<DbContext> = ApplicationRegistry<DbContext>,
@@ -158,7 +158,7 @@ class ContainerScope<
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class ServiceContainer<
   Registry extends ApplicationRegistry<DbContext> = ApplicationRegistry<DbContext>,
@@ -225,7 +225,7 @@ export class ServiceContainer<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   internalExecuteInContext<T>(callback: () => T): T {
     const currentStack = this.resolutionStack.getStore()
@@ -249,7 +249,7 @@ export class ServiceContainer<
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   internalResolveInternal<K extends keyof Registry>(
     token: K,

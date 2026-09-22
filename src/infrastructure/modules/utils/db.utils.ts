@@ -8,7 +8,7 @@ import type { DbContext } from '../../db/db.types'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export const DbUtils = Object.freeze({
   /**
@@ -20,7 +20,7 @@ export const DbUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addSqlLite(opts: DbConfig): Promise<DbContext<Dictionary>> {
     const { DbSqlLiteClientFactory } = await import('../../factories/sql-light-db-client.factory')
@@ -34,7 +34,7 @@ export const DbUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addDbClient(opts: DbConfig): Promise<DbContext<Dictionary>> {
     const { DbClientFactory } = await import('../../factories/db-client.factory')

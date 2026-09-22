@@ -9,7 +9,7 @@ import type { XenoRegistry } from '../../xeno-registry'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export const HttpUtils = Object.freeze({
   /**
@@ -20,7 +20,7 @@ export const HttpUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addAxios<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
@@ -57,7 +57,7 @@ export const HttpUtils = Object.freeze({
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   async addResilience<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,

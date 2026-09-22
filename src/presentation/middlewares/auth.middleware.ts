@@ -24,7 +24,7 @@ import type { ApplicationRegistry, IRequestContext } from '@/domain'
  * @param {ILogger} _logger - The logger to use for logging.
  * @param {IServiceExtractor<HttpHeaders, Optional<string>>} _tokenExtractor - The token extractor to use for extracting the token from the request.
  * @returns {IMiddleware<HttpHeaders>} - The middleware function.
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  *
  * @see {@link IRequestContext} - The request context interface.
  * @see {@link IGateKeeper} - The gate keeper interface.

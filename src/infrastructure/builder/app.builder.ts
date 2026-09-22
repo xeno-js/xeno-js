@@ -26,7 +26,7 @@ import type { XenoRegistry } from '../xeno-registry'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 interface QueuedModule {
   priority: number
@@ -42,7 +42,7 @@ interface QueuedModule {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
@@ -133,7 +133,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addMiddlewares(setupAction: SetupAction<MiddlewareConfig, IConfigurationService>): this {
     setupAction(this._middlewareConfig, this._configuration)
@@ -149,7 +149,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addContext(): this {
     this._queueContextModule()
@@ -165,7 +165,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addLogger(
     setupAction?: SetupAction<LoggerConfig<TRegistry>, IConfigurationService>,
@@ -202,7 +202,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addCache(setupAction?: SetupAction<CacheConfig, IConfigurationService>): this {
     if (this._isCacheModuleQueued) return this
@@ -229,7 +229,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addAuth(
     setupAction: SetupAction<AuthSsrConfig<SupabaseClientOptions<'public'>>, IConfigurationService>,
@@ -265,7 +265,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addDb(setupAction: SetupAction<DbConfig, IConfigurationService>): this {
     if (this._isDbContextModuleQueued) return this
@@ -292,7 +292,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addConcurrencyService(): this {
     if (this._isConcurrencyServiceQueued) return this
@@ -321,7 +321,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addPipeline(
     setupAction?: SetupAction<PipelineConfig<TRegistry>, IConfigurationService>,
@@ -346,7 +346,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public addHttpCore(
     setupAction: SetupAction<HttpCoreConfig<TRegistry>, IConfigurationService>,
@@ -391,7 +391,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   public addServices(
     setupAction: SetupAction<IServiceContainer<TRegistry>, IConfigurationService>,
@@ -416,7 +416,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   public addModule<T>(name: string, factory: () => Promise<IModule<TRegistry, T>>, opts?: T): this {
     this._modules.push({
@@ -439,7 +439,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public resolve<K extends keyof TRegistry>(token: K): TRegistry[K] {
     return this._container.resolve(token)
@@ -457,7 +457,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   public async build(): Promise<IServiceContainer<TRegistry>> {
     console.info('⚙️ Bootstrapping application modules...')
@@ -495,7 +495,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   private _queuePipelineModule(): void {
     if (this._isPipelineModuleQueued) return
@@ -525,7 +525,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return
@@ -556,7 +556,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   private _queueContextModule(): void {
     if (this._isContextModuleQueued) return

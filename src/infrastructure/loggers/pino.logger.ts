@@ -10,7 +10,7 @@ import type { Logger } from 'pino'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class PinoLogger implements ILoggerClient {
   /**
@@ -22,7 +22,7 @@ export class PinoLogger implements ILoggerClient {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(
     private readonly _logger: Logger,

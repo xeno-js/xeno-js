@@ -10,7 +10,7 @@ import type { Redis } from 'ioredis'
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
 export class RedisCache implements ICache {
   /**
@@ -21,7 +21,7 @@ export class RedisCache implements ICache {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(private readonly _redisClient: Redis) {}
 

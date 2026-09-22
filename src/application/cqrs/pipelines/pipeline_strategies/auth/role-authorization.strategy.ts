@@ -16,7 +16,7 @@ import { BaseAuthorizationStrategy } from './base-authorization.strategy'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IRequest> {
   /** @description Constructs a new instance of the RoleAuthorizationStrategy class, which is responsible for checking if the authenticated user has the required roles specified in the command. It takes an IRequestContext as a parameter, which is used to retrieve the identity of the currently authenticated user during the authorization process.
@@ -25,7 +25,7 @@ export class RoleAuthorizationStrategy extends BaseAuthorizationStrategy<IReques
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
     private readonly _policy: IPolicyRegistry,

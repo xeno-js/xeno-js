@@ -6,7 +6,7 @@ import type { Optional } from '@xeno-js/shared'
  * @author Xeno
  * @version 1.0.0
  * @since 2025-09-30
- * @link https://github.com/Mattia-Carcione/xeno-js
+ * @link https://github.com/xeno-js/xeno-js
  */
 export interface IAllowOrigin {
   /** @description Check if the given origin is allowed.
@@ -16,7 +16,7 @@ export interface IAllowOrigin {
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/Mattia-Carcione/xeno-js
+   * @link https://github.com/xeno-js/xeno-js
    */
   isAllowed(origin: Optional<string>): boolean
 }
