@@ -1,7 +1,4 @@
-import type { Client } from '@libsql/client/web'
 import type { Dictionary } from '@xeno-js/shared'
-import type { LibSQLDatabase } from 'drizzle-orm/libsql'
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 /**
  * @description Type definition for the database context used in the application.
@@ -13,9 +10,12 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
  * @link https://github.com/xeno-js/xeno-js
  */
 export type DbContext<TSchema extends Dictionary = Dictionary> =
-  | NodePgDatabase<TSchema>
-  | (LibSQLDatabase<TSchema> & {
-      $client: Client
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  | import('drizzle-orm/node-postgres').NodePgDatabase<TSchema>
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  | (import('drizzle-orm/libsql').LibSQLDatabase<TSchema> & {
+      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+      $client: import('@libsql/client/web').Client
     })
 
 /**
