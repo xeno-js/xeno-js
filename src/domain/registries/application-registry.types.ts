@@ -5,7 +5,6 @@ import type {
   HttpMethod,
   IBaseAuthService,
   IBaseMapper,
-  ICache,
   ICacheKeyBuilder,
   ICommand,
   IConcurrencyService,
@@ -42,6 +41,10 @@ import type {
 import type {
   IAllowMethod,
   IAllowOrigin,
+  IAtomicCache,
+  ICryptoService,
+  ICsrfTokenService,
+  IIPResolver,
   IRequestContext,
   IServiceContainer,
   IServiceScope,
@@ -97,7 +100,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly CACHE: ICache
+  readonly CACHE: IAtomicCache
 
   /** @description Token used to register and resolve the CacheKeyBuilder instance in the dependency injection container.
    *
@@ -170,6 +173,39 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONSOLE_LOGGER: ILoggerClient
+
+  /** @description Token used to register and resolve the CookieExtractor instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly COOKIE_EXTRACTOR: IServiceExtractor<
+    {
+      header: Optional<string>
+      name: string
+    },
+    Optional<string>
+  >
+
+  /** @description Token used to register and resolve the CsrfTokenService instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly CSRF_TOKEN_SERVICE: ICsrfTokenService
+
+  /** @description Token used to register and resolve the CryptoService instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly CRYPTO_SERVICE: ICryptoService
 
   /** @description Token used to register and resolve the DbContext instance in the dependency injection container.
    *
@@ -253,6 +289,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   readonly MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly AUTH_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly CSRF_MIDDLEWARE: IMiddleware<HttpHeaders>
+  readonly CSRF_COOKIE_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly ALLOW_ORIGIN_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly CORS_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly METHOD_CHECK_MIDDLEWARE: IMiddleware<HttpHeaders>
@@ -340,6 +377,15 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly RESILIENCE_CLIENT: IServiceResilience
+
+  /** @description Token used to register and resolve the IIPResolver instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly IP_RESOLVER: IIPResolver
 
   /** @description Token used to register and resolve the RoleAuthorizationPipeline instance in the dependency injection container.
    *

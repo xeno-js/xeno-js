@@ -12,8 +12,8 @@
     <a href="https://github.com/xeno-js/xeno-js/blob/main/LICENSE">
       <img src="https://img.shields.io/npm/l/@xeno?style=flat-square" alt="License: ISC" />
     </a>
-    <a href="https://www.npmjs.com/package/@xeno/core">
-      <img src="https://img.shields.io/npm/v/@xeno/core?style=flat-square" alt="NPM Version" />
+    <a href="https://www.npmjs.com/package/@xeno-js/core">
+      <img src="https://img.shields.io/npm/v/@xeno-js/core?style=flat-square" alt="NPM Version" />
     </a>
     <a href="https://buymeacoffee.com/xenojs">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />

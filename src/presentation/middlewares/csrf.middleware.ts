@@ -8,18 +8,17 @@ import {
   STATUS_CODES,
 } from '@xeno-js/shared'
 
-import type { ApplicationRegistry, IRequestContext } from '@/domain'
+import type { ApplicationRegistry, ICsrfTokenService, IRequestContext } from '@/domain'
 
+/**
+ * @description The CsrfMiddleware class implements the IMiddleware interface, providing a concrete implementation for handling CSRF token validation. It checks the incoming request for a valid CSRF token and returns an error response if the token is missing or invalid.
+ */
 export class CsrfMiddleware {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
-    private readonly _csrf: string,
+    private readonly _csrfTokenService: ICsrfTokenService,
   ) {}
-  /**
-   * @param requestContext Dati base della richiesta (metodo, path)
-   * @param headers Header HTTP della richiesta
-   * @param next Funzione delegata per passare al middleware successivo
-   */
+
   public async execute<T, TRes, TReq>(
     req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
     _headers: HttpHeaders,
@@ -29,13 +28,57 @@ export class CsrfMiddleware {
     const isStateChanging = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)
 
     if (isStateChanging) {
-      // Estrazione sicura case-insensitive (Node.js/Vercel standardizzano in minuscolo)
-      const { network, tracing } = this._requestContext.getContext() ?? {}
+      const { network, tracing, identity } = this._requestContext.getContext() ?? {}
+      const headerToken = network?.csrf
+      const cookieToken = network?.csrfCookie
 
-      // Fail-fast: se manca o è errato, blocca tutto lanciando un'eccezione di dominio
+      if (!Guards.isDefined(headerToken) || !Guards.isDefined(cookieToken)) {
+        return HttpHelper.error(
+          {
+            success: false,
+            error: {
+              code: ERROR_CODES.FORBIDDEN,
+              message: ERROR_CODE_MESSAGES[ERROR_CODES.FORBIDDEN],
+              details: 'CSRF token missing',
+              path: req.path,
+            },
+            correlationId: tracing?.correlationId ?? GuidHelper.generate(),
+            requestId: network?.requestId ?? GuidHelper.generate(),
+            spanId: tracing?.spanId ?? GuidHelper.generate(),
+            timestamp: new Date().toISOString(),
+          },
+          STATUS_CODES.FORBIDDEN,
+          {
+            'Content-Type': [network?.formatIndicator ?? 'application/json'],
+          },
+        )
+      }
+
+      if (headerToken !== cookieToken) {
+        return HttpHelper.error(
+          {
+            success: false,
+            error: {
+              code: ERROR_CODES.FORBIDDEN,
+              message: ERROR_CODE_MESSAGES[ERROR_CODES.FORBIDDEN],
+              details: 'CSRF token mismatch',
+              path: req.path,
+            },
+            correlationId: tracing?.correlationId ?? GuidHelper.generate(),
+            requestId: network?.requestId ?? GuidHelper.generate(),
+            spanId: tracing?.spanId ?? GuidHelper.generate(),
+            timestamp: new Date().toISOString(),
+          },
+          STATUS_CODES.FORBIDDEN,
+          {
+            'Content-Type': [network?.formatIndicator ?? 'application/json'],
+          },
+        )
+      }
+
       if (
-        !Guards.isDefined(network?.csrf) ||
-        network.csrf.toLowerCase() !== this._csrf.toLowerCase()
+        !Guards.isDefined(identity?.userId) ||
+        !(await this._csrfTokenService.validate(headerToken, identity?.userId))
       ) {
         return HttpHelper.error(
           {
@@ -43,7 +86,7 @@ export class CsrfMiddleware {
             error: {
               code: ERROR_CODES.FORBIDDEN,
               message: ERROR_CODE_MESSAGES[ERROR_CODES.FORBIDDEN],
-              details: 'CSRF header is missing or invalid',
+              details: 'CSRF token invalid',
               path: req.path,
             },
             correlationId: tracing?.correlationId ?? GuidHelper.generate(),

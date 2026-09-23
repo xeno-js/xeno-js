@@ -36,8 +36,7 @@ export class SentryLoggerFactory<TRegistry extends XenoRegistry = XenoRegistry> 
       dsn: sentryConfig.dsn,
       environment: env,
       tracesSampleRate: env === 'production' ? 0.1 : 1.0,
-      sendDefaultPii: false,
-      integrations: [new Sentry.Integrations.Http({ tracing: true })],
+      integrations: [Sentry.httpIntegration()],
       beforeSend(event, hint) {
         const error = hint.originalException
 
