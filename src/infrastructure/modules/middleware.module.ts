@@ -87,17 +87,11 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
         ),
     )
 
-    if (opts.optionsMiddleware) {
-      const { OptionsMiddleware } = await import('@/presentation')
-      container.addSingleton(
-        TOKENS.OPTIONS_MIDDLEWARE,
-        (c) => new OptionsMiddleware(c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)),
-      )
-      middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
-    }
-
     if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
-      if (Guards.isDefined(opts.httpConfig.withCredentials) && opts.allowOrigins.includes('*'))
+      const withCredentials = Guards.isDefined(opts.httpConfig.withCredentials)
+        ? opts.httpConfig.withCredentials
+        : false
+      if (withCredentials && opts.allowOrigins.includes('*'))
         throw new Error('Wildcard CORS origin is not allowed when withCredentials is set to true')
 
       const { AllowOrigin } = await import('../services')
@@ -114,6 +108,15 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
         )
       })
       middlewares.push(TOKENS.ALLOW_ORIGIN_MIDDLEWARE)
+    }
+
+    if (opts.optionsMiddleware) {
+      const { OptionsMiddleware } = await import('@/presentation')
+      container.addSingleton(
+        TOKENS.OPTIONS_MIDDLEWARE,
+        (c) => new OptionsMiddleware(c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)),
+      )
+      middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
     }
 
     if (opts.cors) {
@@ -167,6 +170,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
           csrf,
         )
       })
+      middlewares.push('CSRF_COOKIE_MIDDLEWARE')
 
       const { CsrfMiddleware } = await import('@/presentation')
       container.addSingleton(TOKENS.CSRF_MIDDLEWARE, (c) => {
