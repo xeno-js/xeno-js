@@ -1,9 +1,9 @@
-﻿import type { ILogger, IServiceExtractor, RequestContext } from '@xeno-js/shared'
+import type { ILogger, IServiceExtractor, RequestContext } from '@xeno-js/shared'
 import type { HttpHeaders, HttpMethod, Metadata } from '@xeno-js/shared'
 import { ERROR_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ApplicationRegistry, IRequestContext } from '@/domain'
+import type { ApplicationRegistry, IIPResolver, IRequestContext } from '@/domain'
 
 import { RequestContextMiddleware } from '../request.middleware'
 
@@ -31,7 +31,13 @@ function makeExtractor(meta: Partial<Metadata> = {}): IServiceExtractor<HttpHead
   }
 }
 
-function makeMiddleware(extractor = makeExtractor()) {
+function makeResolver(resolvedIp: string | undefined = '127.0.0.1'): IIPResolver {
+  return {
+    resolve: vi.fn().mockReturnValue(resolvedIp),
+  }
+}
+
+function makeMiddleware(extractor = makeExtractor(), resolver = makeResolver('127.0.0.1')) {
   let captured: RequestContext | undefined
   const runAsync = vi
     .fn()
@@ -46,7 +52,7 @@ function makeMiddleware(extractor = makeExtractor()) {
   const error = vi.fn()
   const logger: ILogger = { info: vi.fn(), warn: vi.fn(), error, debug: vi.fn() }
   return {
-    middleware: new RequestContextMiddleware(requestContext, extractor, logger),
+    middleware: new RequestContextMiddleware(requestContext, extractor, resolver, logger),
     runAsync,
     getContext: () => captured,
     error,

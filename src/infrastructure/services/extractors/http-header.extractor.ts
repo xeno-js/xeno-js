@@ -31,7 +31,15 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
    */
   constructor(
     private readonly _bearerExtractor: IServiceExtractor<HttpHeaders, Optional<string>>,
+    private readonly _cookieExtractor: IServiceExtractor<
+      {
+        header: Optional<string>
+        name: string
+      },
+      Optional<string>
+    >,
     private readonly _trustedIp: Optional<string>,
+    private readonly _cookieName: string,
   ) {}
 
   extract(headers: HttpHeaders): Metadata {
@@ -52,7 +60,12 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
     const size = StringHelper.getSingleValue(headers['x-sequence-size'])
     const expiration = StringHelper.getSingleValue(headers['x-expiration'])
 
-    const csrf = StringHelper.getSingleValue(headers['x-requested-with'])
+    const csrf = StringHelper.getSingleValue(headers['x-csrf-token'])
+    const cookieHeader = StringHelper.getSingleValue(headers['cookie'])
+    const csrfCookie = this._cookieExtractor.extract({
+      header: cookieHeader,
+      name: this._cookieName,
+    })
     const origin = StringHelper.getSingleValue(headers['origin'])
     const cleanOrigin = HttpHelper.sanitizeOriginUrl(origin)
     const referer = StringHelper.getSingleValue(headers['referer'])
@@ -72,6 +85,7 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
       userAgent,
       returnAddress,
       csrf,
+      csrfCookie,
       origin: cleanOrigin,
       referer: cleanReferer,
       sequence: {

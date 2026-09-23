@@ -27,9 +27,9 @@ export class OptionsMiddleware {
         headers['Access-Control-Allow-Credentials'] = 'true'
         headers['Vary'] = 'Origin'
       }
-      headers['Access-Control-Allow-Methods'] = 'POST,GET,PUT,DELETE,OPTIONS'
+      headers['Access-Control-Allow-Methods'] = 'POST,GET,PUT,PATCH,DELETE,OPTIONS'
       headers['Access-Control-Allow-Headers'] =
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Type, Authorization, X-Correlation-Id'
+        'X-CSRF-Token, Accept, Accept-Version, Content-Type, Authorization, X-Correlation-Id'
 
       return HttpHelper.success(null as T, STATUS_CODES.NO_CONTENT, {}, headers)
     }

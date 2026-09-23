@@ -59,7 +59,7 @@ export interface MiddlewareConfig {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  csrf: Optional<string>
+  csrf: Optional<CsrfConfig>
   /**
    * @description
    * The cors property is an optional property that can be used to configure Cross-Origin Resource Sharing (CORS) for the application. CORS is a mechanism that allows resources on a web page to be requested from another domain outside the domain from which the resource originated. The cors property is an object that contains properties to configure CORS, such as allowedOrigins, allowedMethods, allowedHeaders, and exposedHeaders.
@@ -92,6 +92,16 @@ export interface MiddlewareConfig {
   trustedIpHeader: Optional<string>
   /**
    * @description
+   * The trustedProxies property is an optional property that can be used to configure the trusted proxies for the application. It is an array of strings that specifies the IP addresses or hostnames of the proxies that are trusted by the application. This property is used to determine the trusted IP address of the client making the request and can be useful for security and authentication purposes.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  trustedProxies: Optional<string[]>
+  /**
+   * @description
    * The allowOrigins property is an optional property that can be used to configure the allowed origins for the application. It is an array of strings that specifies the origins that are allowed to make requests to the application. This property is used to implement Cross-Origin Resource Sharing (CORS) and restrict access to the application based on the origin of the request.
    *
    * @author Xeno
@@ -110,4 +120,35 @@ export interface MiddlewareConfig {
    * @link https://github.com/xeno-js/xeno-js
    */
   cors: boolean
+}
+
+/**
+ * @description
+ * The csrf property is an object that contains configuration options for the CSRF middleware. The csrf property is used to configure the CSRF middleware that is responsible for handling CSRF requests and responses.
+ */
+interface CsrfConfig {
+  /**
+   * Secret used to sign CSRF tokens.
+   */
+  secret: string
+  /**
+   * @description the name of the cookie that will be used to store the CSRF token.
+   */
+  cookieName: Optional<string>
+  /**
+   * @description the name of the header that will be used to send the CSRF token.
+   */
+  headerName: Optional<string>
+  /**
+   * @description the number of seconds that the CSRF token will be valid for.
+   */
+  cookieMaxAgeSeconds: Optional<number>
+  /**
+   * Cookie SameSite policy.
+   */
+  sameSite?: 'strict' | 'lax' | 'none'
+  /**
+   * Enforce Origin/Referer validation for unsafe requests.
+   */
+  enforceOrigin?: boolean
 }

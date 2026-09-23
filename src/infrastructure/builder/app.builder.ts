@@ -56,6 +56,10 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
       () => new EnvironmentConfigurationService(),
     )
     this._configuration = this._container.resolve(TOKENS.CONFIGURATION_SERVICE)
+    this._middlewareConfig.allowOrigins?.push(
+      this._configuration.get('APP_URL') ??
+        `http://localhost:${this._configuration.getNumber('PORT', 3000)}`,
+    )
   }
 
   // --- Module Configurations ---
@@ -89,7 +93,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     optionsMiddleware: false,
     routeRegistry: undefined,
     trustedIpHeader: undefined,
-    allowOrigins: ['*'],
+    trustedProxies: [],
+    allowOrigins: [],
     cors: true,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
@@ -544,6 +549,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
           isAuth: this._isAuthModuleQueued,
           isLogger: this._isLoggerModuleQueued,
           isCache: this._isCacheModuleQueued || this._isPipelineModuleQueued,
+          httpConfig: this._httpConfig.http.client,
         })
       },
     })
