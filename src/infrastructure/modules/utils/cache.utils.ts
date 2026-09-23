@@ -43,8 +43,8 @@ export const CacheUtils = Object.freeze({
     )
 
     if (opts.inMemory || !Guards.isDefined(opts.redis)) {
-      const { InMemoryCache } = await import('@xeno-js/shared')
-      container.addSingleton(TOKENS.CACHE, () => new InMemoryCache())
+      const { InMemoryCacheExtended } = await import('../../cache/inmemory.cache')
+      container.addSingleton(TOKENS.CACHE, () => new InMemoryCacheExtended())
       return
     }
 

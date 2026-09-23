@@ -1,7 +1,9 @@
-import type { CacheClientConfig, ICache, IFactory } from '@xeno-js/shared'
+import type { CacheClientConfig, IFactory } from '@xeno-js/shared'
 import { Guards } from '@xeno-js/shared'
 import type { RedisOptions } from 'ioredis'
 import { Redis } from 'ioredis'
+
+import type { IAtomicCache } from '@/domain'
 
 import { RedisCache } from '../cache/redis.cache'
 
@@ -14,8 +16,8 @@ import { RedisCache } from '../cache/redis.cache'
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-export class RedisCacheFactory implements IFactory<CacheClientConfig, ICache> {
-  public create(config: CacheClientConfig): ICache {
+export class RedisCacheFactory implements IFactory<CacheClientConfig, IAtomicCache> {
+  public create(config: CacheClientConfig): IAtomicCache {
     const host = config?.host ?? 'localhost'
     const port = config?.port ?? 6379
     const password = config?.password

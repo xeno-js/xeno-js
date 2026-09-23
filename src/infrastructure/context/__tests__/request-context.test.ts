@@ -66,6 +66,7 @@ describe('NodeRequestContext', () => {
         path: '/api/test',
         transport: undefined,
         csrf: '',
+        csrfCookie: '',
         origin: '',
       },
       tracing: {
@@ -130,6 +131,7 @@ describe('NodeRequestContext', () => {
         requestId: '' as unknown as Guid,
         transport: undefined,
         csrf: '',
+        csrfCookie: '',
         origin: '',
       },
       tracing: {

@@ -1,5 +1,13 @@
 import type { HttpHeaders, HttpMethod, IMiddleware, ResponseDto } from '@xeno-js/shared'
 
+/**
+ * @description A middleware that executes a list of middlewares in a chain.
+ *
+ * @author Xeno
+ * @version 1.0.1
+ * @since 2025-09-30
+ * @link https://github.com/xeno-js/xeno-js
+ */
 export class CompositeMiddleware implements IMiddleware<HttpHeaders> {
   constructor(private readonly _middlewares: IMiddleware<HttpHeaders>[]) {}
 

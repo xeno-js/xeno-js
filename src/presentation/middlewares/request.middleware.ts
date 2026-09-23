@@ -15,7 +15,7 @@ import {
   STATUS_CODES,
 } from '@xeno-js/shared'
 
-import type { ApplicationRegistry, IRequestContext } from '@/domain'
+import type { ApplicationRegistry, IIPResolver, IRequestContext } from '@/domain'
 
 import { ContextMapper } from '../mappers/context.mapper'
 
@@ -43,6 +43,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
+    private readonly _resolver: IIPResolver,
     private readonly _logger: ILogger,
   ) {}
 
@@ -59,8 +60,11 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
     try {
       const meta = this._extractor.extract(headers)
 
+      const clientIp = this._resolver.resolve(req.transport.req, meta.clientIp)
+
       const metadata: Metadata = {
         ...meta,
+        clientIp,
         correlationId: meta.correlationId ?? correlationId,
         requestId: meta.requestId ?? requestId,
         spanId: meta.spanId ?? spanId,
