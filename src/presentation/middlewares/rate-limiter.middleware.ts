@@ -7,7 +7,7 @@ import type {
   RequestContext,
   ResponseDto,
 } from '@xeno-js/shared'
-import { ERROR_CODES, GuidHelper, HttpHelper } from '@xeno-js/shared'
+import { ERROR_CODES, Guards, GuidHelper, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
 
 import type { IAtomicCache } from '@/domain'
 
@@ -41,6 +41,28 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const { network, tracing } = this._ctxAccessor.getContext() ?? {}
+    if (!Guards.isDefined(network?.clientIp))
+      return HttpHelper.error(
+        {
+          success: false,
+          error: {
+            code: ERROR_CODES.SYSTEM_ERROR,
+            message: 'IP undefined. Please contact the administrator.',
+            details: `IP undefined. Please contact the administrator.`,
+            path: req.path,
+          },
+          correlationId: tracing?.correlationId ?? GuidHelper.generate(),
+          requestId: network?.requestId ?? GuidHelper.generate(),
+          spanId: tracing?.spanId ?? GuidHelper.generate(),
+          timestamp: new Date().toISOString(),
+        },
+        STATUS_CODES.SERVICE_UNAVAILABLE,
+        {
+          'Content-Type': [network?.formatIndicator ?? 'application/json'],
+          'Retry-After': [String(this._opts.windowSeconds)],
+        },
+      )
+
     const clientIp = network?.clientIp
     const cacheKey = `rate_limit:${clientIp}`
 
@@ -63,7 +85,7 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
           spanId: tracing?.spanId ?? GuidHelper.generate(),
           timestamp: new Date().toISOString(),
         },
-        429,
+        STATUS_CODES.TOO_MANY_REQUESTS,
         {
           'Content-Type': [network?.formatIndicator ?? 'application/json'],
           'Retry-After': [String(this._opts.windowSeconds)],

@@ -64,7 +64,7 @@ describe('RateLimitMiddleware', () => {
     expect(response.headers['Retry-After']).toEqual(['60'])
   })
 
-  it('handles missing network context safely using fallback values', async () => {
+  it('returns error 503 when client ip is undefined', async () => {
     const increment = vi.fn().mockResolvedValue(1)
     const cache = { increment } as unknown as IAtomicCache
     const ctxAccessor = {
@@ -80,7 +80,7 @@ describe('RateLimitMiddleware', () => {
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, data: {} })
     const response = await middleware.execute({ method, path, transport }, {}, next)
 
-    expect(response.ok).toBe(true)
-    expect(increment).toHaveBeenCalledWith('rate_limit:undefined', 60)
+    expect(response.ok).toBe(false)
+    expect(response.status).toBe(503)
   })
 })
