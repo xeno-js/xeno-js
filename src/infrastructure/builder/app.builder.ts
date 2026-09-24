@@ -95,6 +95,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     trustedIpHeader: undefined,
     trustedProxies: [],
     allowOrigins: [],
+    allowHeaders: [],
     cors: true,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {

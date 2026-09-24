@@ -183,11 +183,18 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
         await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
       }
 
+      const { RateLimitKeyBuilder } = await import('../cache')
+      container.addSingleton(
+        'RATE_LIMIT_KEY_BUILDER',
+        (c) => new RateLimitKeyBuilder(c.resolve(TOKENS.REQUEST_CONTEXT)),
+      )
+
       const { RateLimitMiddleware } = await import('@/presentation')
       container.addSingleton(TOKENS.RATE_LIMITER_MIDDLEWARE, (c) => {
         return new RateLimitMiddleware(
           c.resolve(TOKENS.CONTEXT_ACCESSOR),
           c.resolve(TOKENS.CACHE),
+          c.resolve('RATE_LIMIT_KEY_BUILDER'),
           c.resolve(TOKENS.LOGGER),
           {
             maxRequests,

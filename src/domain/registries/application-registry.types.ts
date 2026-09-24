@@ -45,6 +45,7 @@ import type {
   ICryptoService,
   ICsrfTokenService,
   IIPResolver,
+  IRateLimitKeyBuilder,
   IRequestContext,
   IServiceContainer,
   IServiceScope,
@@ -296,6 +297,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   readonly OPTIONS_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly REQUEST_CONTEXT_MIDDLEWARE: IMiddleware<HttpHeaders>
   readonly RATE_LIMITER_MIDDLEWARE: IMiddleware<HttpHeaders>
+  readonly RATE_LIMIT_KEY_BUILDER: IRateLimitKeyBuilder
 
   /** @description Token used to register and resolve the PerformancePipeline instance in the dependency injection container.
    *
