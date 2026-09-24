@@ -130,6 +130,15 @@ export interface MiddlewareConfig {
    * @link https://github.com/xeno-js/xeno-js
    */
   cors: boolean
+  /**
+   * @description The exposeHeaders property is an array of strings that specifies the headers that should be exposed to the client. This property is used to configure the CORS middleware that is responsible for handling CORS requests and responses.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  withCredentials: boolean
 }
 
 /**

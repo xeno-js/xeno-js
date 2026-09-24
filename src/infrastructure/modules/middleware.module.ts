@@ -1,10 +1,4 @@
-import {
-  Guards,
-  type HttpClientConfig,
-  type HttpHeaders,
-  type IGateKeeper,
-  type IMiddleware,
-} from '@xeno-js/shared'
+import { Guards, type HttpHeaders, type IGateKeeper, type IMiddleware } from '@xeno-js/shared'
 
 import type { IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
 
@@ -24,7 +18,6 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     isAuth: boolean
     isLogger: boolean
     isCache: boolean
-    httpConfig: HttpClientConfig
   }
 > {
   async configure(
@@ -33,7 +26,6 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       isAuth: boolean
       isLogger: boolean
       isCache: boolean
-      httpConfig: HttpClientConfig
     },
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
@@ -89,9 +81,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     )
 
     if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
-      const withCredentials = opts.httpConfig.withCredentials ?? false
-
-      if (withCredentials && opts.allowOrigins.includes('*'))
+      if (opts.withCredentials && opts.allowOrigins.includes('*'))
         throw new Error(
           'Wildcard CORS origin is not allowed when withCredentials is set to true in addHttpCore',
         )
@@ -112,10 +102,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       middlewares.push(TOKENS.ALLOW_ORIGIN_MIDDLEWARE)
     }
 
-    const withCredentials =
-      Guards.isDefined(opts.httpConfig.withCredentials) && opts.httpConfig.withCredentials
-        ? 'true'
-        : 'false'
+    const withCredentials = opts.withCredentials ? 'true' : 'false'
     if (opts.optionsMiddleware) {
       const { OptionsMiddleware } = await import('@/presentation')
       container.addSingleton(
