@@ -194,6 +194,9 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
 
     if (Guards.isDefined(opts.csrf)) {
       const csrf = opts.csrf
+      const { EdgeCryptoService } = await import('../services')
+      container.addSingleton('CRYPTO_SERVICE', () => new EdgeCryptoService())
+
       const { CsrfTokenService } = await import('../services')
       container.addSingleton('CSRF_TOKEN_SERVICE', (c) => {
         return new CsrfTokenService(csrf.secret, c.resolve('CRYPTO_SERVICE'))
