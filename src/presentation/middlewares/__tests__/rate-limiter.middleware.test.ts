@@ -3,7 +3,7 @@ import type { HttpMethod } from '@xeno-js/shared'
 import { ERROR_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { IAtomicCache } from '@/domain'
+import type { IAtomicCache, IRateLimitKeyBuilder } from '@/domain'
 
 import { RateLimitMiddleware } from '../rate-limiter.middleware'
 
@@ -11,7 +11,11 @@ const path = '/api/test'
 const method: HttpMethod = 'GET'
 const transport = { res: '', req: '' }
 
-function makeMiddleware(currentHits = 1, maxRequests = 3) {
+function makeMiddleware(
+  currentHits = 1,
+  maxRequests = 3,
+  mockCacheKey: string | undefined = 'ratelimit:ip:127.0.0.1:/api/test',
+) {
   const increment = vi.fn().mockResolvedValue(currentHits)
   const cache = { increment } as unknown as IAtomicCache
 
@@ -20,11 +24,14 @@ function makeMiddleware(currentHits = 1, maxRequests = 3) {
     tracing: { correlationId: 'corr-id', spanId: 'span-id' },
   })
   const ctxAccessor = { getContext } as unknown as IContextAccessor<RequestContext>
+  const keyBuilder = {
+    buildRateLimitKey: vi.fn().mockReturnValue(mockCacheKey),
+  } as unknown as IRateLimitKeyBuilder
 
   const warn = vi.fn()
   const logger: ILogger = { info: vi.fn(), warn, error: vi.fn(), debug: vi.fn() }
 
-  const middleware = new RateLimitMiddleware(ctxAccessor, cache, logger, {
+  const middleware = new RateLimitMiddleware(ctxAccessor, cache, keyBuilder, logger, {
     maxRequests,
     windowSeconds: 60,
   })
@@ -43,7 +50,7 @@ describe('RateLimitMiddleware', () => {
 
     expect(response.ok).toBe(true)
     expect(increment).toHaveBeenCalledOnce()
-    expect(increment).toHaveBeenCalledWith('rate_limit:127.0.0.1', 60)
+    expect(increment).toHaveBeenCalledWith('ratelimit:ip:127.0.0.1:/api/test', 60)
     expect(next).toHaveBeenCalledOnce()
   })
 
@@ -64,15 +71,18 @@ describe('RateLimitMiddleware', () => {
     expect(response.headers['Retry-After']).toEqual(['60'])
   })
 
-  it('returns error 503 when client ip is undefined', async () => {
+  it('returns error 503 when cache key builder returns undefined is undefined', async () => {
     const increment = vi.fn().mockResolvedValue(1)
     const cache = { increment } as unknown as IAtomicCache
     const ctxAccessor = {
       getContext: vi.fn().mockReturnValue(undefined),
     } as unknown as IContextAccessor<RequestContext>
     const logger: ILogger = { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() }
+    const keyBuilder = {
+      buildRateLimitKey: vi.fn().mockReturnValue(undefined),
+    } as unknown as IRateLimitKeyBuilder
 
-    const middleware = new RateLimitMiddleware(ctxAccessor, cache, logger, {
+    const middleware = new RateLimitMiddleware(ctxAccessor, cache, keyBuilder, logger, {
       maxRequests: 3,
       windowSeconds: 60,
     })

@@ -20,4 +20,14 @@ export interface IAllowMethod {
    * @link https://github.com/xeno-js/xeno-js
    */
   check(path: string, method: HttpMethod): boolean
+  /**
+   * @description Get the allowed methods for the given path.
+   * @param path the path to get the allowed methods for.
+   * @returns the allowed methods for the given path.
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  getMethods(path: string): string
 }

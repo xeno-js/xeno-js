@@ -1,6 +1,8 @@
 import type { HttpHeaders, HttpMethod, INetworkContextAccessor, ResponseDto } from '@xeno-js/shared'
 import { Guards, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
 
+import type { IAllowMethod } from '@/domain'
+
 /**
  * @description A middleware that handles OPTIONS requests.
  *
@@ -10,7 +12,12 @@ import { Guards, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
  * @link https://github.com/xeno-js/xeno-js
  */
 export class OptionsMiddleware {
-  constructor(private readonly _requestContext: INetworkContextAccessor) {}
+  constructor(
+    private readonly _requestContext: INetworkContextAccessor,
+    private readonly _alloewMethod: IAllowMethod,
+    private readonly _allowHeaders: string[] = [],
+    private readonly _withCredentials: 'true' | 'false' = 'false',
+  ) {}
 
   public async execute<T, TRes, TReq>(
     req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
@@ -24,12 +31,11 @@ export class OptionsMiddleware {
       const headers: HttpHeaders = {}
       if (Guards.isDefined(origin)) {
         headers['Access-Control-Allow-Origin'] = origin
-        headers['Access-Control-Allow-Credentials'] = 'true'
+        headers['Access-Control-Allow-Credentials'] = this._withCredentials
         headers['Vary'] = 'Origin'
       }
-      headers['Access-Control-Allow-Methods'] = 'POST,GET,PUT,PATCH,DELETE,OPTIONS'
-      headers['Access-Control-Allow-Headers'] =
-        'X-CSRF-Token, Accept, Accept-Version, Content-Type, Authorization, X-Correlation-Id'
+      headers['Access-Control-Allow-Methods'] = this._alloewMethod.getMethods(req.path)
+      headers['Access-Control-Allow-Headers'] = this._allowHeaders.join(', ')
 
       return HttpHelper.success(null as T, STATUS_CODES.NO_CONTENT, {}, headers)
     }
