@@ -17,10 +17,13 @@ import { Guards } from '@xeno-js/shared'
  * @link https://github.com/xeno-js/xeno-js
  */
 export class CORSMiddleware implements IMiddleware<HttpHeaders> {
-  constructor(private readonly _requestContext: IContextAccessor<RequestContext>) {}
+  constructor(
+    private readonly _requestContext: IContextAccessor<RequestContext>,
+    private readonly _withCredentials: 'true' | 'false' = 'false',
+  ) {}
 
   public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
+    _req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
     _headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
@@ -32,7 +35,7 @@ export class CORSMiddleware implements IMiddleware<HttpHeaders> {
       response.headers = {
         ...(response.headers ?? {}),
         'Access-Control-Allow-Origin': origin,
-        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Credentials': this._withCredentials,
         'Vary': 'Origin',
       }
     return response

@@ -50,6 +50,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       const { BearerTokenExtractor } = await import('../services')
       container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
     }
+
     const { HttpCookieExtractor } = await import('../services')
     container.addSingleton('COOKIE_EXTRACTOR', () => new HttpCookieExtractor())
 
@@ -88,11 +89,12 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     )
 
     if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
-      const withCredentials = Guards.isDefined(opts.httpConfig.withCredentials)
-        ? opts.httpConfig.withCredentials
-        : false
+      const withCredentials = opts.httpConfig.withCredentials ?? false
+
       if (withCredentials && opts.allowOrigins.includes('*'))
-        throw new Error('Wildcard CORS origin is not allowed when withCredentials is set to true')
+        throw new Error(
+          'Wildcard CORS origin is not allowed when withCredentials is set to true in addHttpCore',
+        )
 
       const { AllowOrigin } = await import('../services')
       container.addSingleton('ALLOW_ORIGIN', () => {
@@ -110,11 +112,21 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       middlewares.push(TOKENS.ALLOW_ORIGIN_MIDDLEWARE)
     }
 
+    const withCredentials =
+      Guards.isDefined(opts.httpConfig.withCredentials) && opts.httpConfig.withCredentials
+        ? 'true'
+        : 'false'
     if (opts.optionsMiddleware) {
       const { OptionsMiddleware } = await import('@/presentation')
       container.addSingleton(
         TOKENS.OPTIONS_MIDDLEWARE,
-        (c) => new OptionsMiddleware(c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)),
+        (c) =>
+          new OptionsMiddleware(
+            c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR),
+            c.resolve(TOKENS.ALLOW_METHOD),
+            opts.allowHeaders,
+            withCredentials,
+          ),
       )
       middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
     }
@@ -122,7 +134,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     if (opts.cors) {
       const { CORSMiddleware } = await import('@/presentation')
       container.addSingleton(TOKENS.CORS_MIDDLEWARE, (c) => {
-        return new CORSMiddleware(c.resolve(TOKENS.CONTEXT_ACCESSOR))
+        return new CORSMiddleware(c.resolve(TOKENS.CONTEXT_ACCESSOR), withCredentials)
       })
       middlewares.push(TOKENS.CORS_MIDDLEWARE)
     }
@@ -155,6 +167,44 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     })
     middlewares.push(TOKENS.AUTH_MIDDLEWARE)
 
+    if (
+      Guards.isDefined(opts.rateLimite.maxRequests) ||
+      Guards.isDefined(opts.rateLimite.windowSeconds)
+    ) {
+      const maxRequests = opts.rateLimite.maxRequests ?? 30
+      Guards.throwIfNegative(maxRequests, 'MaxRequests must be positive')
+      Guards.throwIfNotInteger(maxRequests, 'MaxRequests must be an integer')
+      const windowSeconds = opts.rateLimite.windowSeconds ?? 30
+      Guards.throwIfNegative(windowSeconds, 'WindowSeconds must be positive')
+      Guards.throwIfNotInteger(windowSeconds, 'WindowSeconds must be an integer')
+
+      if (!opts.isCache) {
+        const { CacheUtils } = await import('./utils/cache.utils')
+        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
+      }
+
+      const { RateLimitKeyBuilder } = await import('../cache')
+      container.addSingleton(
+        'RATE_LIMIT_KEY_BUILDER',
+        (c) => new RateLimitKeyBuilder(c.resolve(TOKENS.REQUEST_CONTEXT)),
+      )
+
+      const { RateLimitMiddleware } = await import('@/presentation')
+      container.addSingleton(TOKENS.RATE_LIMITER_MIDDLEWARE, (c) => {
+        return new RateLimitMiddleware(
+          c.resolve(TOKENS.CONTEXT_ACCESSOR),
+          c.resolve(TOKENS.CACHE),
+          c.resolve('RATE_LIMIT_KEY_BUILDER'),
+          c.resolve(TOKENS.LOGGER),
+          {
+            maxRequests,
+            windowSeconds,
+          },
+        )
+      })
+      middlewares.push(TOKENS.RATE_LIMITER_MIDDLEWARE)
+    }
+
     if (Guards.isDefined(opts.csrf)) {
       const csrf = opts.csrf
       const { CsrfTokenService } = await import('../services')
@@ -180,37 +230,6 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
         )
       })
       middlewares.push(TOKENS.CSRF_MIDDLEWARE)
-    }
-
-    if (
-      Guards.isDefined(opts.rateLimite.maxRequests) ||
-      Guards.isDefined(opts.rateLimite.windowSeconds)
-    ) {
-      const maxRequests = opts.rateLimite.maxRequests ?? 30
-      Guards.throwIfNegative(maxRequests, 'MaxRequests must be positive')
-      Guards.throwIfNotInteger(maxRequests, 'MaxRequests must be an integer')
-      const windowSeconds = opts.rateLimite.windowSeconds ?? 30
-      Guards.throwIfNegative(windowSeconds, 'WindowSeconds must be positive')
-      Guards.throwIfNotInteger(windowSeconds, 'WindowSeconds must be an integer')
-
-      if (!opts.isCache) {
-        const { CacheUtils } = await import('./utils/cache.utils')
-        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
-      }
-
-      const { RateLimitMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.RATE_LIMITER_MIDDLEWARE, (c) => {
-        return new RateLimitMiddleware(
-          c.resolve(TOKENS.CONTEXT_ACCESSOR),
-          c.resolve(TOKENS.CACHE),
-          c.resolve(TOKENS.LOGGER),
-          {
-            maxRequests,
-            windowSeconds,
-          },
-        )
-      })
-      middlewares.push(TOKENS.RATE_LIMITER_MIDDLEWARE)
     }
 
     const { CompositeMiddleware } = await import('@/presentation')

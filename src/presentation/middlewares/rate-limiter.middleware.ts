@@ -7,9 +7,16 @@ import type {
   RequestContext,
   ResponseDto,
 } from '@xeno-js/shared'
-import { ERROR_CODES, Guards, GuidHelper, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
+import {
+  ERROR_CODE_MESSAGES,
+  ERROR_CODES,
+  Guards,
+  GuidHelper,
+  HttpHelper,
+  STATUS_CODES,
+} from '@xeno-js/shared'
 
-import type { IAtomicCache } from '@/domain'
+import type { IAtomicCache, IRateLimitKeyBuilder } from '@/domain'
 
 /**
  * @description The RateLimitMiddleware class implements the IMiddleware interface and provides rate limiting functionality for incoming requests. It uses an IAtomicCache instance to track the number of requests made by each client within a specified time window. If the number of requests exceeds the maximum allowed, the middleware returns a 429 Too Many Requests response. Otherwise it calls the next middleware in the chain.
@@ -28,6 +35,7 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
   constructor(
     private readonly _ctxAccessor: IContextAccessor<RequestContext>,
     private readonly _cache: IAtomicCache,
+    private readonly _keyBuilder: IRateLimitKeyBuilder,
     private readonly _logger: ILogger,
     private readonly _opts: {
       maxRequests: number
@@ -40,15 +48,17 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
     _headers: HttpHeaders,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
+    const cacheKey = this._keyBuilder.buildRateLimitKey(req.path)
     const { network, tracing } = this._ctxAccessor.getContext() ?? {}
-    if (!Guards.isDefined(network?.clientIp))
+
+    if (!Guards.isDefined(cacheKey))
       return HttpHelper.error(
         {
           success: false,
           error: {
             code: ERROR_CODES.SYSTEM_ERROR,
-            message: 'IP undefined. Please contact the administrator.',
-            details: `IP undefined. Please contact the administrator.`,
+            message: ERROR_CODE_MESSAGES[ERROR_CODES.SYSTEM_ERROR],
+            details: `Bad Request: Unable to identify client context for rate limiting.`,
             path: req.path,
           },
           correlationId: tracing?.correlationId ?? GuidHelper.generate(),
@@ -63,21 +73,18 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
         },
       )
 
-    const clientIp = network?.clientIp
-    const cacheKey = `rate_limit:${clientIp}`
-
     const currentHits = await this._cache.increment(cacheKey, this._opts.windowSeconds)
 
     if (currentHits > this._opts.maxRequests) {
-      this._logger.warn(`[RateLimit] IP ${clientIp} blocked on ${req.path}`)
+      this._logger.warn(`[RateLimit] key ${cacheKey} has been  blocked on ${req.path}`)
 
       return HttpHelper.error(
         {
           success: false,
           error: {
             code: ERROR_CODES.TOO_MANY_REQUESTS,
-            message: 'Rate limit exceeded.',
-            details: `IP ${clientIp} throttled.`,
+            message: ERROR_CODE_MESSAGES[ERROR_CODES.TOO_MANY_REQUESTS],
+            details: `Rate limit exceeded. Key ${cacheKey} throttled.`,
             path: req.path,
           },
           correlationId: tracing?.correlationId ?? GuidHelper.generate(),

@@ -112,6 +112,16 @@ export interface MiddlewareConfig {
   allowOrigins: Optional<string[]>
   /**
    * @description
+   * The allowMethods property is an optional property that can be used to configure the allowed methods for the application. It is an array of strings that specifies the methods that are allowed to be used in requests to the application. This property is used to implement CORS and restrict access to the application based on the method of the request.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  allowHeaders: Optional<string[]>
+  /**
+   * @description
    * The cors property is a boolean property that is used to enable or disable Cross-Origin Resource Sharing (CORS) for the application. CORS is a mechanism that allows resources on a web page to be requested from another domain outside the domain from which the first resource was served. This property is used to configure the CORS middleware that is responsible for handling CORS requests and responses.
    *
    * @author Xeno

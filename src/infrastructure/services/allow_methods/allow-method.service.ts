@@ -1,4 +1,4 @@
-import { Guards, type HttpMethod } from '@xeno-js/shared'
+import { Guards, type HttpMethod, type Optional } from '@xeno-js/shared'
 
 import type { IAllowMethod } from '@/domain'
 
@@ -33,6 +33,22 @@ export class AllowMethodRegistry implements IAllowMethod {
     }
 
     return false
+  }
+
+  public getMethods(path: string): string {
+    const cleanPath = this.normalizePath(path.split('?')[0].split('#')[0])
+    const methods = this.findMethods(cleanPath)
+
+    return Guards.isDefined(methods) ? methods.join(', ').toUpperCase() : ''
+  }
+
+  private findMethods(cleanPath: string): Optional<HttpMethod[]> {
+    const staticMethods = this._staticRoutes.get(cleanPath)
+    if (Guards.isDefined(staticMethods)) return staticMethods
+
+    for (const route of this._dynamicRoutes) if (route.pattern.test(cleanPath)) return route.methods
+
+    return undefined
   }
 
   private isDynamicPath(path: string): boolean {
