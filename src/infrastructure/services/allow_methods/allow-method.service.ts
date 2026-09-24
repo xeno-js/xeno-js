@@ -39,7 +39,7 @@ export class AllowMethodRegistry implements IAllowMethod {
     const cleanPath = this.normalizePath(path.split('?')[0].split('#')[0])
     const methods = this.findMethods(cleanPath)
 
-    return Guards.isDefined(methods) ? methods.join(', ') : ''
+    return Guards.isDefined(methods) ? methods.join(', ').toUpperCase() : ''
   }
 
   private findMethods(cleanPath: string): Optional<HttpMethod[]> {

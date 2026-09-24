@@ -63,7 +63,7 @@ export class MethodCheckMiddleware implements IMiddleware<HttpHeaders> {
         },
         STATUS_CODES.NOT_ALLOWED,
         {
-          'access-control-allow-methods': this._allowMethod.getMethods(req.path),
+          Allow: this._allowMethod.getMethods(req.path),
         },
       )
     }
