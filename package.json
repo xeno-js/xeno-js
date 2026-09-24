@@ -1,6 +1,6 @@
 {
   "name": "@xeno-js/core",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Xeno agnostic core — DDD + Clean Architecture npm package",
   "repository": {
     "type": "git",

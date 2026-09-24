@@ -97,6 +97,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     allowOrigins: [],
     allowHeaders: [],
     cors: true,
+    withCredentials: true,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,
@@ -550,7 +551,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
           isAuth: this._isAuthModuleQueued,
           isLogger: this._isLoggerModuleQueued,
           isCache: this._isCacheModuleQueued || this._isPipelineModuleQueued,
-          httpConfig: this._httpConfig.http.client,
         })
       },
     })
