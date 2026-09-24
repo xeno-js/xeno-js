@@ -62,6 +62,9 @@ export class MethodCheckMiddleware implements IMiddleware<HttpHeaders> {
           timestamp: new Date().toISOString(),
         },
         STATUS_CODES.NOT_ALLOWED,
+        {
+          'access-control-allow-methods': this._allowMethod.getMethods(req.path),
+        },
       )
     }
 
