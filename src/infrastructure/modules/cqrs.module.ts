@@ -1,4 +1,4 @@
-import type { ICommand, IPipelineBehavior, IQuery } from '@xeno-js/shared'
+import type { ICommand, IQuery } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
 
 import type { IModule, IServiceContainer, IServiceScopeAccessor, PipelineConfig } from '@/domain'
@@ -19,10 +19,10 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType> & { isLogger: boolean; isCache: boolean },
+    opts: PipelineConfig<TRegistry, ZodType>,
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
-    let isCache = opts.isCache
+    const logger = container.resolve(TOKENS.LOGGER)
 
     const { Mediator } = await import('@/application')
     container.addSingleton(TOKENS.MEDIATOR, (c) => {
@@ -31,26 +31,15 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     })
 
     const { ExceptionPipeline } = await import('@/application')
-    container.addSingleton(TOKENS.EXCEPTION_PIPELINE, () => new ExceptionPipeline())
-    if (!opts.isLogger) {
-      const { LoggerUtils } = await import('./utils/logger.utils')
-      await LoggerUtils.addLogger(container, undefined)
-    }
-
     const { LoggingPipeline } = await import('@/application')
-    container.addSingleton(
-      TOKENS.LOGGING_PIPELINE,
-      (c) => new LoggingPipeline(c.resolve(TOKENS.LOGGER)),
-    )
-    const pipelines: (keyof TRegistry)[] = [TOKENS.EXCEPTION_PIPELINE, TOKENS.LOGGING_PIPELINE]
-
     const { PerformancePipeline } = await import('@/application')
-    container.addSingleton(TOKENS.PERFORMANCE_PIPELINE, (c) => {
-      const logger = c.resolve(TOKENS.LOGGER)
-      const thresholdMs = opts.performance?.thresholdMs
-      return new PerformancePipeline(logger, thresholdMs)
-    })
-    pipelines.push(TOKENS.PERFORMANCE_PIPELINE)
+
+    const thresholdMs = opts.performance?.thresholdMs
+    const pipelines = [
+      new ExceptionPipeline(),
+      new LoggingPipeline(logger),
+      new PerformancePipeline(logger, thresholdMs),
+    ]
 
     const { Guards } = await import('@xeno-js/shared')
     if (
@@ -59,7 +48,7 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     ) {
       const { AuthUtils } = await import('./utils/auth.utils')
       const authPipelines = await AuthUtils.addAuthZ(container, opts.authorization)
-      pipelines.push(...authPipelines)
+      pipelines.push(authPipelines)
     }
 
     if (
@@ -67,58 +56,39 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
       Guards.isDefined(opts.validation.customValidationStrategy)
     ) {
       const { ValidationUtils } = await import('./utils/validation.utils')
-      const logger = container.resolve(TOKENS.LOGGER)
       const validationPipelines = await ValidationUtils.addValidation(
         container,
         opts.validation,
         logger,
       )
-      pipelines.push(...validationPipelines)
+      if (Guards.isDefined(validationPipelines)) pipelines.push(validationPipelines)
     }
 
     const commandPipelines = pipelines
     const queryPipelines = pipelines
 
     if (
-      (Guards.isDefined(opts.commandBus.idempotency) || opts.queryBus.isEnabled) &&
-      opts.isCache
-    ) {
-      const { CacheUtils } = await import('./utils/cache.utils')
-      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
-    }
-
-    if (
       Guards.isDefined(opts.commandBus.idempotency) ||
       Guards.isDefined(opts.commandBus.concurrency)
     ) {
       const { PipelineUtils } = await import('./utils/pipeline.utils')
-      const newCommandPipelines = await PipelineUtils.addCommand(container, {
-        ...opts.commandBus,
-        isCache,
-      })
-      isCache = true
+      const newCommandPipelines = await PipelineUtils.addCommand(container, opts.commandBus)
       commandPipelines.push(...newCommandPipelines)
     }
 
     if (opts.queryBus.isEnabled) {
       const { PipelineUtils } = await import('./utils/pipeline.utils')
-      const newQueryPipelines = await PipelineUtils.addQuery(container, { isCache })
-      queryPipelines.push(...newQueryPipelines)
+      const newQueryPipelines = await PipelineUtils.addQuery(container)
+      queryPipelines.push(newQueryPipelines)
     }
 
     const { CompositePipeline } = await import('@/application')
-    container.addSingleton(TOKENS.COMMAND_PIPELINES_BEHAVIOR, (c) => {
-      const resolvedCommandPipelines = commandPipelines.map((token) => {
-        return c.resolve(token) as IPipelineBehavior<ICommand<unknown>, unknown>
-      })
-      return new CompositePipeline<ICommand<unknown>, unknown>(resolvedCommandPipelines)
+    container.addSingleton(TOKENS.COMMAND_PIPELINES_BEHAVIOR, () => {
+      return new CompositePipeline<ICommand<unknown>, unknown>(commandPipelines)
     })
 
-    container.addSingleton(TOKENS.QUERY_PIPELINES_BEHAVIOR, (c) => {
-      const resolvedQueryPipelines = queryPipelines.map(
-        (token) => c.resolve(token) as IPipelineBehavior<IQuery<unknown>, unknown>,
-      )
-      return new CompositePipeline<IQuery<unknown>, unknown>(resolvedQueryPipelines)
+    container.addSingleton(TOKENS.QUERY_PIPELINES_BEHAVIOR, () => {
+      return new CompositePipeline<IQuery<unknown>, unknown>(queryPipelines)
     })
   }
 }

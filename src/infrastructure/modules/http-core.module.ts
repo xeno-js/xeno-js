@@ -24,13 +24,3 @@ export class HttpCoreModule<TRegistry extends XenoRegistry = XenoRegistry> imple
     await HttpUtils.addResilience(container, opts.resilience)
   }
 }
-
-export class HttpOriginModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
-  TRegistry,
-  string[]
-> {
-  async configure(container: IServiceContainer<TRegistry>, opts: string[]): Promise<void> {
-    const { HttpUtils } = await import('./utils/http.utils')
-    await HttpUtils.addAllowOrigin(container, opts)
-  }
-}

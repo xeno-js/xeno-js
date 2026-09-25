@@ -1,6 +1,4 @@
-import type { IFactory } from '@xeno-js/shared'
-
-import type { IModule, IServiceContainer, IServiceScope } from '@/domain'
+import type { IModule, IServiceContainer } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -19,27 +17,20 @@ export class ContextModule<TRegistry extends XenoRegistry = XenoRegistry> implem
   async configure(container: IServiceContainer<TRegistry>): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
     const { ServiceScopeFactory } = await import('../factories/service-scope.factory')
-    container.addSingleton(TOKENS.SERVICE_SCOPE_FACTORY, () => {
-      const factory = new ServiceScopeFactory<TRegistry>(container)
-      return factory
-    })
 
     const { NodeRequestContextFactory } = await import('../factories/request-context.factory')
-    container.addSingleton(TOKENS.REQUEST_CONTEXT, (c) => {
-      return new NodeRequestContextFactory<TRegistry>(
-        c.resolve(TOKENS.SERVICE_SCOPE_FACTORY) as IFactory<void, IServiceScope<TRegistry>>,
-      ).create()
-    })
+    const requestContext = new NodeRequestContextFactory<TRegistry>(
+      new ServiceScopeFactory<TRegistry>(container),
+    ).create()
 
-    container.addSingleton(TOKENS.CONTEXT_ACCESSOR, (c) => c.resolve(TOKENS.REQUEST_CONTEXT))
-    container.addSingleton(TOKENS.IDENTITY_ACCESSOR, (c) => c.resolve(TOKENS.REQUEST_CONTEXT))
-    container.addSingleton(TOKENS.SERVICE_SCOPE_ACCESSOR, (c) => c.resolve(TOKENS.REQUEST_CONTEXT))
-    container.addSingleton(TOKENS.NETWORK_CONTEXT_ACCESSOR, (c) =>
-      c.resolve(TOKENS.REQUEST_CONTEXT),
-    )
+    container.addSingleton(TOKENS.REQUEST_CONTEXT, () => requestContext)
+    container.addSingleton(TOKENS.CONTEXT_ACCESSOR, () => requestContext)
+    container.addSingleton(TOKENS.IDENTITY_ACCESSOR, () => requestContext)
+    container.addSingleton(TOKENS.SERVICE_SCOPE_ACCESSOR, () => requestContext)
+    container.addSingleton(TOKENS.NETWORK_CONTEXT_ACCESSOR, () => requestContext)
+
     const { UserContextFactory } = await import('../factories/user-context.factory')
-    container.addSingleton(TOKENS.USER_CONTEXT_FACTORY, (c) => {
-      const requestContext = c.resolve(TOKENS.REQUEST_CONTEXT)
+    container.addSingleton('USER_CONTEXT_FACTORY', () => {
       return new UserContextFactory(requestContext)
     })
   }

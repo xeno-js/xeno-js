@@ -1,13 +1,7 @@
-import type { ILogger, IRequest, IStrategy } from '@xeno-js/shared'
-import type { KeysOfType } from '@xeno-js/shared'
+import type { ILogger, IPipelineBehavior, IRequest, IStrategy, Optional } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
 
-import type {
-  ApplicationRegistry,
-  IServiceContainer,
-  IServiceScope,
-  PipelineConfig,
-} from '@/domain'
+import type { IServiceContainer, PipelineConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 
@@ -35,55 +29,30 @@ export const ValidationUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry, ZodType>['validation'],
     logger: ILogger,
-  ): Promise<(keyof TRegistry)[]> {
+  ): Promise<Optional<IPipelineBehavior<IRequest<unknown>, unknown>>> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
-
     if (!Guards.isDefined(opts.zod) && Guards.isNullOrEmpty(opts.customValidationStrategy)) {
-      return []
+      return
     }
 
-    const pipelines: (keyof TRegistry)[] = []
-    const validationStrategies: KeysOfType<
-      ApplicationRegistry<unknown>,
-      IStrategy<IRequest, boolean>
-    >[] = []
+    const validationStrategies: IStrategy<IRequest, boolean>[] = []
 
     if (Guards.isDefined(opts.zod)) {
       const config = opts.zod
-      const { ZodValidatorFactory } = await import('../../factories/zod-validator.factory')
-      container.addSingleton(TOKENS.ZOD_VALIDATOR, () => {
-        return new ZodValidatorFactory().create({ ...config, logger })
-      })
-
+      const { ZodValidatorFactory } = await import('../../factories')
       const { SchemaValidationStrategy } = await import('@/application')
-      container.addSingleton(
-        TOKENS.SCHEMA_VALIDATION_STRATEGY,
-        (c) => new SchemaValidationStrategy(c.resolve(TOKENS.ZOD_VALIDATOR)),
-      )
-      validationStrategies.push(TOKENS.SCHEMA_VALIDATION_STRATEGY)
+      const validatorService = new ZodValidatorFactory().create({ ...config, logger })
+      container.addSingleton(TOKENS.VALIDATOR_SERVICE, () => validatorService)
+      validationStrategies.push(new SchemaValidationStrategy(validatorService))
     }
-    const customValidationFactory: ((
-      c: IServiceScope<TRegistry>,
-    ) => IStrategy<IRequest, boolean>)[] = []
 
     if (!Guards.isNullOrEmpty(opts.customValidationStrategy)) {
       for (const strategyToken of opts.customValidationStrategy) {
-        if (Guards.isDefined(strategyToken)) {
-          customValidationFactory.push(strategyToken)
-        }
+        if (Guards.isDefined(strategyToken)) validationStrategies.push(strategyToken(container))
       }
     }
 
     const { ValidationPipeline } = await import('@/application')
-    container.addSingleton(TOKENS.VALIDATION_PIPELINE, (c) => {
-      const resolvedStrategies = [
-        ...validationStrategies.map((token) => c.resolve(token)),
-        ...customValidationFactory.map((factory) => factory(c)),
-      ]
-      return new ValidationPipeline(resolvedStrategies)
-    })
-
-    pipelines.push(TOKENS.VALIDATION_PIPELINE)
-    return pipelines
+    return new ValidationPipeline(validationStrategies)
   },
 } as const)

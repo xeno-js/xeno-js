@@ -1,6 +1,13 @@
-import { Guards, type HttpHeaders, type IGateKeeper, type IMiddleware } from '@xeno-js/shared'
+import type {
+  Dictionary,
+  HttpHeaders,
+  HttpMethod,
+  IMiddleware,
+  IServiceExtractor,
+  Optional,
+} from '@xeno-js/shared'
 
-import type { IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
+import type { IAllowMethod, IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
 
 import type { XenoRegistry } from '../xeno-registry'
 
@@ -16,68 +23,48 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
   TRegistry,
   MiddlewareConfig & {
     isAuth: boolean
-    isLogger: boolean
-    isCache: boolean
   }
 > {
   async configure(
     container: IServiceContainer<TRegistry>,
     opts: MiddlewareConfig & {
       isAuth: boolean
-      isLogger: boolean
-      isCache: boolean
     },
   ): Promise<void> {
-    const { TOKENS } = await import('@xeno-js/shared')
-
-    if (!opts.isAuth) {
-      const { NoAuthGateKeeper } = await import('@/application')
-      container.addSingleton(TOKENS.GATE_KEEPER, (): IGateKeeper => new NoAuthGateKeeper())
-    }
-
-    if (opts.isSSR) {
-      const { SupabaseSsrTokenExtractor } = await import('../services')
-      container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new SupabaseSsrTokenExtractor())
-    } else {
-      const { BearerTokenExtractor } = await import('../services')
-      container.addSingleton(TOKENS.BEARER_TOKEN_EXTRACTOR, () => new BearerTokenExtractor())
-    }
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
 
     const { HttpCookieExtractor } = await import('../services')
-    container.addSingleton('COOKIE_EXTRACTOR', () => new HttpCookieExtractor())
-
     const { HttpHeaderExtractor } = await import('../services')
+    const tokenExtractor: IServiceExtractor<
+      HttpHeaders,
+      Optional<string>
+    > = await this._getTokenExtractor(opts.isSSR)
+
     container.addSingleton(
       TOKENS.SERVICE_EXTRACTOR,
-      (c) =>
+      () =>
         new HttpHeaderExtractor(
-          c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR),
-          c.resolve('COOKIE_EXTRACTOR'),
+          tokenExtractor,
+          new HttpCookieExtractor(),
           opts.trustedIpHeader,
           opts.csrf?.cookieName ?? '__Host-xeno-csrf',
         ),
     )
 
-    if (!opts.isLogger) {
-      const { LoggerUtils } = await import('./utils/logger.utils')
-      await LoggerUtils.addLogger(container, undefined)
-    }
-
     const { ClientIpResolver } = await import('../services')
-    container.addSingleton('IP_RESOLVER', () => new ClientIpResolver(opts.trustedProxies))
 
-    const middlewares: (keyof TRegistry)[] = [TOKENS.REQUEST_CONTEXT_MIDDLEWARE]
+    const middlewares: IMiddleware<HttpHeaders>[] = []
+    const requestContext = container.resolve(TOKENS.REQUEST_CONTEXT)
+    const logger = container.resolve(TOKENS.LOGGER)
 
     const { RequestContextMiddleware } = await import('@/presentation')
-    container.addSingleton(
-      TOKENS.REQUEST_CONTEXT_MIDDLEWARE,
-      (c) =>
-        new RequestContextMiddleware(
-          c.resolve(TOKENS.REQUEST_CONTEXT),
-          c.resolve(TOKENS.SERVICE_EXTRACTOR),
-          c.resolve('IP_RESOLVER'),
-          c.resolve(TOKENS.LOGGER),
-        ),
+    middlewares.push(
+      new RequestContextMiddleware(
+        requestContext,
+        container.resolve(TOKENS.SERVICE_EXTRACTOR),
+        new ClientIpResolver(opts.trustedProxies),
+        logger,
+      ),
     )
 
     if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
@@ -87,72 +74,58 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
         )
 
       const { AllowOrigin } = await import('../services')
-      container.addSingleton('ALLOW_ORIGIN', () => {
-        return new AllowOrigin(opts.allowOrigins!)
-      })
-
       const { AllowOriginMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.ALLOW_ORIGIN_MIDDLEWARE, (c) => {
-        return new AllowOriginMiddleware(
-          c.resolve(TOKENS.ALLOW_ORIGIN),
-          c.resolve(TOKENS.CONTEXT_ACCESSOR),
-          c.resolve(TOKENS.LOGGER),
-        )
-      })
-      middlewares.push(TOKENS.ALLOW_ORIGIN_MIDDLEWARE)
+      middlewares.push(
+        new AllowOriginMiddleware(new AllowOrigin(opts.allowOrigins), requestContext, logger),
+      )
     }
 
     const withCredentials = opts.withCredentials ? 'true' : 'false'
+    const allowMethod = await this._getAllowMethod(
+      opts.optionsMiddleware || opts.cors,
+      opts.routeRegistry,
+    )
+
     if (opts.optionsMiddleware) {
       const { OptionsMiddleware } = await import('@/presentation')
-      container.addSingleton(
-        TOKENS.OPTIONS_MIDDLEWARE,
-        (c) =>
-          new OptionsMiddleware(
-            c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR),
-            c.resolve(TOKENS.ALLOW_METHOD),
-            opts.allowHeaders,
-            withCredentials,
-          ),
+      middlewares.push(
+        new OptionsMiddleware(requestContext, allowMethod!, opts.allowHeaders, withCredentials),
       )
-      middlewares.push(TOKENS.OPTIONS_MIDDLEWARE)
     }
 
     if (opts.cors) {
       const { CORSMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.CORS_MIDDLEWARE, (c) => {
-        return new CORSMiddleware(c.resolve(TOKENS.CONTEXT_ACCESSOR), withCredentials)
-      })
-      middlewares.push(TOKENS.CORS_MIDDLEWARE)
+      middlewares.push(new CORSMiddleware(requestContext, withCredentials))
     }
 
     if (Guards.isDefined(opts.routeRegistry)) {
-      const registry = opts.routeRegistry
-      const { AllowMethodFactory } = await import('../factories')
-      container.addSingleton(TOKENS.ALLOW_METHOD, () => new AllowMethodFactory().create(registry))
-
       const { MethodCheckMiddleware } = await import('@/presentation')
-      container.addSingleton(
-        TOKENS.METHOD_CHECK_MIDDLEWARE,
-        (c) =>
-          new MethodCheckMiddleware(
-            c.resolve(TOKENS.REQUEST_CONTEXT),
-            c.resolve(TOKENS.ALLOW_METHOD),
-          ),
-      )
-      middlewares.push(TOKENS.METHOD_CHECK_MIDDLEWARE)
+      middlewares.push(new MethodCheckMiddleware(requestContext, allowMethod!))
     }
 
     const { AuthenticationMiddleware } = await import('@/presentation')
-    container.addSingleton(TOKENS.AUTH_MIDDLEWARE, (c) => {
-      return new AuthenticationMiddleware(
-        c.resolve(TOKENS.REQUEST_CONTEXT),
-        c.resolve(TOKENS.BEARER_TOKEN_EXTRACTOR),
-        c.resolve(TOKENS.GATE_KEEPER),
-        c.resolve(TOKENS.LOGGER),
+    if (!opts.isAuth) {
+      const { NoAuthGateKeeper } = await import('@/application')
+      middlewares.push(
+        new AuthenticationMiddleware(
+          requestContext,
+          tokenExtractor,
+          new NoAuthGateKeeper(),
+          logger,
+        ),
       )
-    })
-    middlewares.push(TOKENS.AUTH_MIDDLEWARE)
+    } else {
+      const { ClaimsIdentityMapper } = await import('@/application')
+      const { GateKeeper } = await import('@/application')
+      middlewares.push(
+        new AuthenticationMiddleware(
+          requestContext,
+          tokenExtractor,
+          new GateKeeper(container.resolve(TOKENS.BASE_AUTH_SERVICE), new ClaimsIdentityMapper()),
+          logger,
+        ),
+      )
+    }
 
     if (
       Guards.isDefined(opts.rateLimite.maxRequests) ||
@@ -165,31 +138,17 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       Guards.throwIfNegative(windowSeconds, 'WindowSeconds must be positive')
       Guards.throwIfNotInteger(windowSeconds, 'WindowSeconds must be an integer')
 
-      if (!opts.isCache) {
-        const { CacheUtils } = await import('./utils/cache.utils')
-        await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
-      }
-
       const { RateLimitKeyBuilder } = await import('../cache')
-      container.addSingleton(
-        'RATE_LIMIT_KEY_BUILDER',
-        (c) => new RateLimitKeyBuilder(c.resolve(TOKENS.REQUEST_CONTEXT)),
-      )
-
       const { RateLimitMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.RATE_LIMITER_MIDDLEWARE, (c) => {
-        return new RateLimitMiddleware(
-          c.resolve(TOKENS.CONTEXT_ACCESSOR),
-          c.resolve(TOKENS.CACHE),
-          c.resolve('RATE_LIMIT_KEY_BUILDER'),
-          c.resolve(TOKENS.LOGGER),
-          {
-            maxRequests,
-            windowSeconds,
-          },
-        )
-      })
-      middlewares.push(TOKENS.RATE_LIMITER_MIDDLEWARE)
+      middlewares.push(
+        new RateLimitMiddleware(
+          requestContext,
+          container.resolve(TOKENS.CACHE),
+          new RateLimitKeyBuilder(requestContext),
+          logger,
+          { maxRequests, windowSeconds },
+        ),
+      )
     }
 
     if (Guards.isDefined(opts.csrf)) {
@@ -203,31 +162,45 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       })
 
       const { CsrfCookieMiddleware } = await import('@/presentation')
-      container.addSingleton('CSRF_COOKIE_MIDDLEWARE', (c) => {
-        return new CsrfCookieMiddleware(
-          c.resolve(TOKENS.REQUEST_CONTEXT),
-          c.resolve('CSRF_TOKEN_SERVICE'),
-          csrf,
-        )
-      })
-      middlewares.push('CSRF_COOKIE_MIDDLEWARE')
+      middlewares.push(
+        new CsrfCookieMiddleware(
+          requestContext,
+          container.resolve('CSRF_TOKEN_SERVICE'),
+          opts.csrf,
+        ),
+      )
 
       const { CsrfMiddleware } = await import('@/presentation')
-      container.addSingleton(TOKENS.CSRF_MIDDLEWARE, (c) => {
-        return new CsrfMiddleware(
-          c.resolve(TOKENS.REQUEST_CONTEXT),
-          c.resolve('CSRF_TOKEN_SERVICE'),
-        )
-      })
-      middlewares.push(TOKENS.CSRF_MIDDLEWARE)
+      middlewares.push(new CsrfMiddleware(requestContext, container.resolve('CSRF_TOKEN_SERVICE')))
     }
 
     const { CompositeMiddleware } = await import('@/presentation')
-    container.addSingleton(TOKENS.MIDDLEWARE, (c) => {
-      const resolvedMiddleware = middlewares.map(
-        (token) => c.resolve(token) as IMiddleware<HttpHeaders>,
-      )
-      return new CompositeMiddleware(resolvedMiddleware)
+    container.addSingleton(TOKENS.MIDDLEWARE, () => {
+      return new CompositeMiddleware(middlewares)
     })
+  }
+
+  private async _getTokenExtractor(
+    isSSR: boolean,
+  ): Promise<IServiceExtractor<HttpHeaders, Optional<string>>> {
+    if (isSSR) {
+      const { SupabaseSsrTokenExtractor } = await import('../services')
+      return new SupabaseSsrTokenExtractor()
+    } else {
+      const { BearerTokenExtractor } = await import('../services')
+
+      return new BearerTokenExtractor()
+    }
+  }
+
+  private async _getAllowMethod(
+    configure: boolean,
+    opts: Optional<Dictionary<HttpMethod[]>>,
+  ): Promise<Optional<IAllowMethod>> {
+    const { Guards } = await import('@xeno-js/shared')
+    if (!configure || !Guards.isDefined(opts)) return undefined
+
+    const { AllowMethodFactory } = await import('../factories')
+    return new AllowMethodFactory().create(opts)
   }
 }
