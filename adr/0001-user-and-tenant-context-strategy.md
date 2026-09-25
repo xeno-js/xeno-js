@@ -75,8 +75,8 @@ stack.
 The following flowchart illustrates the security flow in Xeno.JS:
 
 ```mermaid
-flowchart TD Start([Incoming Request]) --> AuthLayer[Auth Layer / Service <br/>
-e.g., Supabase / Custom Auth]
+flowchart TD
+    Start([Incoming Request]) --> AuthLayer[Auth Layer / Service <br/> e.g., Supabase / Custom Auth]
 
     AuthLayer --> TokenCheck{Valid Token <br/> Provided?}
 
