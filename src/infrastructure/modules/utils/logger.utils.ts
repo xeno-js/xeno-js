@@ -1,7 +1,7 @@
 import type { ILoggerClient } from '@xeno-js/shared'
-import type { KeysOfType, Optional } from '@xeno-js/shared'
+import type { Optional } from '@xeno-js/shared'
 
-import type { IServiceContainer, IServiceScope, LoggerConfig } from '@/domain'
+import type { IServiceContainer, LoggerConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
 /**
@@ -29,43 +29,30 @@ export const LoggerUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: Optional<LoggerConfig<XenoRegistry>>,
   ): Promise<void> {
-    const loggerDependencies: KeysOfType<XenoRegistry, ILoggerClient>[] = []
+    const loggerDependencies: ILoggerClient[] = []
 
     const { Guards, LOG_LEVEL, TOKENS } = await import('@xeno-js/shared')
 
     if (!Guards.isDefined(opts) || opts.console) {
       const { ConsoleLogger } = await import('../../loggers/console.logger')
-      container.addSingleton(TOKENS.CONSOLE_LOGGER, () => new ConsoleLogger(opts?.level))
-      loggerDependencies.push(TOKENS.CONSOLE_LOGGER)
+      loggerDependencies.push(new ConsoleLogger(opts?.level))
     }
-
-    const customLoggerFactories: ((c: IServiceScope<TRegistry>) => ILoggerClient)[] = []
 
     if (Guards.isDefined(opts)) {
       if (Guards.isDefined(opts.sentry.config)) {
         const { SentryLoggerFactory } = await import('../../factories/sentry-logger.factory')
-        container.addSingleton(TOKENS.SENTRY_LOGGER, () => {
-          const factory = new SentryLoggerFactory()
-          return factory.create(opts)
-        })
-        loggerDependencies.push(TOKENS.SENTRY_LOGGER)
+        loggerDependencies.push(new SentryLoggerFactory().create(opts))
       }
 
       if (Guards.isDefined(opts.pino.config)) {
         const { PinoLoggerFactory } = await import('../../factories/pino-logger.factory')
-        container.addSingleton(TOKENS.PINO_LOGGER, () => {
-          const factory = new PinoLoggerFactory()
-          return factory.create(opts)
-        })
-        loggerDependencies.push(TOKENS.PINO_LOGGER)
+        loggerDependencies.push(new PinoLoggerFactory().create(opts))
       }
 
       if (!Guards.isNullOrEmpty(opts.customLoggers)) {
         const customLoggers = opts.customLoggers
-        customLoggers.forEach((f) => {
-          if (Guards.isDefined(f)) {
-            customLoggerFactories.push(f)
-          }
+        customLoggers.forEach((fn) => {
+          if (Guards.isDefined(fn)) loggerDependencies.push(fn(container))
         })
       }
     }
@@ -73,11 +60,7 @@ export const LoggerUtils = Object.freeze({
     const { BaseLogger } = await import('@xeno-js/shared')
     container.addSingleton(TOKENS.LOGGER, (c) => {
       const context = c.resolve(TOKENS.CONTEXT_ACCESSOR)
-      const resolvedDependencies = [
-        ...loggerDependencies.map((token) => c.resolve(token)),
-        ...customLoggerFactories.map((factory) => factory(c)),
-      ]
-      return new BaseLogger(context, opts?.level ?? LOG_LEVEL.DEBUG, resolvedDependencies)
+      return new BaseLogger(context, opts?.level ?? LOG_LEVEL.DEBUG, loggerDependencies)
     })
   },
 } as const)

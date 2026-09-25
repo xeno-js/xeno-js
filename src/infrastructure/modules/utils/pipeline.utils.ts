@@ -1,3 +1,5 @@
+import type { ICommand, IPipelineBehavior, IQuery } from '@xeno-js/shared'
+
 import type { IServiceContainer, PipelineConfig } from '@/domain'
 
 import type { XenoRegistry } from '../../xeno-registry'
@@ -23,39 +25,34 @@ export const PipelineUtils = Object.freeze({
    */
   async addCommand<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry>['commandBus'] & { isCache: boolean },
-  ): Promise<(keyof TRegistry)[]> {
-    const pipelines: (keyof TRegistry)[] = []
+    opts: PipelineConfig<TRegistry>['commandBus'],
+  ): Promise<IPipelineBehavior<ICommand<unknown>, unknown>[]> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
+    const pipelines: IPipelineBehavior<ICommand<unknown>, unknown>[] = []
     if (Guards.isDefined(opts.idempotency)) {
-      const { IdempotencyStore } = await import('../../idempotency/idempotency-store')
-      container.addSingleton(
-        TOKENS.IDEMPOTENCY_STORE,
-        (c) => new IdempotencyStore(c.resolve(TOKENS.CACHE), c.resolve(TOKENS.CACHE_KEY_BUILDER)),
+      const { IdempotencyStore } = await import('../../idempotency')
+      const imdStore = new IdempotencyStore(
+        container.resolve(TOKENS.CACHE),
+        container.resolve(TOKENS.CACHE_KEY_BUILDER),
       )
 
       const { IdempotencyPipeline } = await import('@/application')
-      container.addSingleton(TOKENS.IDEMPOTENCY_PIPELINE, (c) => {
-        const requestContext = c.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)
-        const idempotencyStore = c.resolve(TOKENS.IDEMPOTENCY_STORE)
-        const config = opts.idempotency
-        return new IdempotencyPipeline(
+      const requestContext = container.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR)
+      const config = opts.idempotency
+      pipelines.push(
+        new IdempotencyPipeline(
           requestContext,
-          idempotencyStore,
+          imdStore,
           config?.lockTtlSeconds,
           config?.processedTtlSeconds,
-        )
-      })
-      pipelines.push(TOKENS.IDEMPOTENCY_PIPELINE)
+        ),
+      )
     }
 
     if (Guards.isDefined(opts.concurrency)) {
       const { ConcurrencyRetryPipeline } = await import('@/application')
-      container.addSingleton(TOKENS.CONCURRENCY_RETRY_PIPELINE, () => {
-        const config = opts.concurrency
-        return new ConcurrencyRetryPipeline(config?.maxRetries, config?.delayConfig)
-      })
-      pipelines.push(TOKENS.CONCURRENCY_RETRY_PIPELINE)
+      const config = opts.concurrency
+      pipelines.push(new ConcurrencyRetryPipeline(config?.maxRetries, config?.delayConfig))
     }
     return pipelines
   },
@@ -71,27 +68,13 @@ export const PipelineUtils = Object.freeze({
    */
   async addQuery<TRegistry extends XenoRegistry = XenoRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: { isCache: boolean },
-  ): Promise<(keyof TRegistry)[]> {
+  ): Promise<IPipelineBehavior<IQuery<unknown>, unknown>> {
     const { TOKENS } = await import('@xeno-js/shared')
-    const pipelines: (keyof TRegistry)[] = []
-
-    if (!opts.isCache) {
-      const { CacheUtils } = await import('./cache.utils')
-      await CacheUtils.addCache(container, { inMemory: true, redis: undefined })
-    }
-
     const { QueryCachingPipeline } = await import('@/application')
-    container.addSingleton(
-      TOKENS.QUERY_CACHING_PIPELINE,
-      (c) =>
-        new QueryCachingPipeline(
-          c.resolve(TOKENS.CACHE),
-          c.resolve(TOKENS.CACHE_KEY_BUILDER),
-          c.resolve(TOKENS.LOGGER),
-        ),
+    return new QueryCachingPipeline(
+      container.resolve(TOKENS.CACHE),
+      container.resolve(TOKENS.CACHE_KEY_BUILDER),
+      container.resolve(TOKENS.LOGGER),
     )
-    pipelines.push(TOKENS.QUERY_CACHING_PIPELINE)
-    return pipelines
   },
 } as const)

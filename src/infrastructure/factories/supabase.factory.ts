@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type { IExtendendService, IFactory } from '@xeno-js/shared'
+import type { IExtendendAuthService, IFactory } from '@xeno-js/shared'
 import {
   Guards,
   SupabaseAuthService,
@@ -19,13 +19,15 @@ interface SupabaseServerAuthFactoryInput<TRegistry extends XenoRegistry> {
 
 export class SupabaseServerAuthFactory<
   TRegistry extends XenoRegistry = XenoRegistry,
-> implements IFactory<SupabaseServerAuthFactoryInput<TRegistry>, IExtendendService> {
+> implements IFactory<SupabaseServerAuthFactoryInput<TRegistry>, IExtendendAuthService> {
   public create({
     config,
     container,
-  }: SupabaseServerAuthFactoryInput<TRegistry>): IExtendendService {
+  }: SupabaseServerAuthFactoryInput<TRegistry>): IExtendendAuthService {
     if (!Guards.isDefined(config.ssrOpts)) {
-      throw new Error('ISsrCookieHandler is required for @supabase/ssr initialization.')
+      throw new Error(
+        'ISsrCookieHandler is required for @supabase/ssr initialization., Please provide it in the config object.',
+      )
     }
 
     const cookieService = config.ssrOpts(container)
@@ -36,7 +38,6 @@ export class SupabaseServerAuthFactory<
           return cookieService.getAll()
         },
         setAll(cookiesToSet) {
-          // Mappa array di cookie in entrata verso il gestore agnostico del backend
           cookieService.setAll(cookiesToSet)
         },
       },

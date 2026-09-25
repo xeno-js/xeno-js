@@ -1,54 +1,37 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type {
-  AuthClaims,
   HttpHeaders,
-  HttpMethod,
   IBaseAuthService,
-  IBaseMapper,
   ICacheKeyBuilder,
   ICommand,
   IConcurrencyService,
   IConfigurationService,
   IContextAccessor,
-  Identity,
   IDisposable,
-  IExtendendService,
+  IExtendendAuthService,
   IFactory,
-  IGateKeeper,
-  IIdempotencyStore,
   IIdentityAccessor,
   ILogger,
-  ILoggerClient,
   IMediator,
   IMiddleware,
   INetworkContextAccessor,
   IPipelineBehavior,
-  IPolicyRegistry,
   IQuery,
-  IRequest,
   IServiceExtractor,
   IServiceResilience,
-  IStrategy,
-  ITransactionState,
   IUnitOfWork,
   IValidatorService,
   Metadata,
-  Optional,
   RequestContext,
   UserContext,
 } from '@xeno-js/shared'
 
 import type {
-  IAllowMethod,
-  IAllowOrigin,
   IAtomicCache,
   ICryptoService,
   ICsrfTokenService,
-  IIPResolver,
-  IRateLimitKeyBuilder,
   IRequestContext,
   IServiceContainer,
-  IServiceScope,
   IServiceScopeAccessor,
 } from '@/domain'
 
@@ -62,38 +45,23 @@ import type {
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
-  readonly ALLOW_ORIGIN: IAllowOrigin
-  readonly ALLOW_METHOD: IAllowMethod
-  /** @description Token used to register and resolve the AuthorizationPipeline instance in the dependency injection container.
+export interface ApplicationRegistry<T = unknown> {
+  /** @description Token used to register and resolve the Extended AuthService instance in the dependency injection container.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly AUTHORIZATION_PIPELINE: IPipelineBehavior<IRequest, unknown>
-
-  /** @description Token used to register and resolve the AuthService instance in the dependency injection container.
+  readonly AUTH_SERVICE: IExtendendAuthService
+  /** @description Token used to register and resolve the BaseAuthService instance in the dependency injection container.
    *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly AUTH_SERVICE: IExtendendService
-
   readonly BASE_AUTH_SERVICE: IBaseAuthService
-
-  /** @description Token used to register and resolve the BearerTokenExtractor instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly BEARER_TOKEN_EXTRACTOR: IServiceExtractor<HttpHeaders, Optional<string>>
-
   /** @description Token used to register and resolve the InMemoryCache instance in the dependency injection container.
    *
    * @author Xeno
@@ -102,7 +70,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CACHE: IAtomicCache
-
   /** @description Token used to register and resolve the CacheKeyBuilder instance in the dependency injection container.
    *
    * @author Xeno
@@ -111,16 +78,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CACHE_KEY_BUILDER: ICacheKeyBuilder
-
-  /** @description Token used to register and resolve the ClaimsIdentityMapper instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly CLAIMS_IDENTITY_MAPPER: IBaseMapper<AuthClaims, Identity>
-
   /** @description Token used to register and resolve the CommandPipeline behaviors in the dependency injection container.
    *
    * @author Xeno
@@ -129,25 +86,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly COMMAND_PIPELINES_BEHAVIOR: IPipelineBehavior<ICommand, unknown>
-
-  /** @description Token used to register and resolve the CompositePipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly COMPOSITE_PIPELINE: IPipelineBehavior<IQuery, unknown>
-
-  /** @description Token used to register and resolve the ConcurrencyRetryPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly CONCURRENCY_RETRY_PIPELINE: IPipelineBehavior<ICommand, unknown>
-
   /** @description Token used to register and resolve the ConcurrencyService instance in the dependency injection container.
    *
    * @author Xeno
@@ -156,7 +94,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONCURRENCY_SERVICE: IConcurrencyService
-
   /** @description Token used to register and resolve the ConfigurationService instance in the dependency injection container.
    *
    * @author Xeno
@@ -165,31 +102,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CONFIGURATION_SERVICE: IConfigurationService
-
-  /** @description Token used to register and resolve the ConsoleLogger instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly CONSOLE_LOGGER: ILoggerClient
-
-  /** @description Token used to register and resolve the CookieExtractor instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly COOKIE_EXTRACTOR: IServiceExtractor<
-    {
-      header: Optional<string>
-      name: string
-    },
-    Optional<string>
-  >
-
   /** @description Token used to register and resolve the CsrfTokenService instance in the dependency injection container.
    *
    * @author Xeno
@@ -198,7 +110,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CSRF_TOKEN_SERVICE: ICsrfTokenService
-
   /** @description Token used to register and resolve the CryptoService instance in the dependency injection container.
    *
    * @author Xeno
@@ -207,7 +118,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly CRYPTO_SERVICE: ICryptoService
-
   /** @description Token used to register and resolve the DbContext instance in the dependency injection container.
    *
    * @author Xeno
@@ -216,43 +126,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly DB_CONTEXT: T
-
-  /** @description Token used to register and resolve the ExceptionPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly EXCEPTION_PIPELINE: IPipelineBehavior<IRequest, unknown>
-
-  /** @description Token used to register and resolve the GateKeeper instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly GATE_KEEPER: IGateKeeper
-
-  /** @description Token used to register and resolve the IdempotencyPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly IDEMPOTENCY_PIPELINE: IPipelineBehavior<ICommand, unknown>
-
-  /** @description Token used to register and resolve the IdempotencyStore instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly IDEMPOTENCY_STORE: IIdempotencyStore
-
   /** @description Token used to register and resolve the Logger instance in the dependency injection container.
    *
    * @author Xeno
@@ -261,16 +134,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly LOGGER: ILogger
-
-  /** @description Token used to register and resolve the LoggingPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly LOGGING_PIPELINE: IPipelineBehavior<IRequest, unknown>
-
   /** @description Token used to register and resolve the Mediator instance in the dependency injection container.
    *
    * @author Xeno
@@ -279,7 +142,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly MEDIATOR: IMediator
-
   /** @description Token used to register and resolve the RequestContextMiddleware in the dependency injection container.
    *
    * @author Xeno
@@ -288,62 +150,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly AUTH_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly CSRF_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly CSRF_COOKIE_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly ALLOW_ORIGIN_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly CORS_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly METHOD_CHECK_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly OPTIONS_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly REQUEST_CONTEXT_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly RATE_LIMITER_MIDDLEWARE: IMiddleware<HttpHeaders>
-  readonly RATE_LIMIT_KEY_BUILDER: IRateLimitKeyBuilder
-
-  /** @description Token used to register and resolve the PerformancePipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly PERFORMANCE_PIPELINE: IPipelineBehavior<IRequest, unknown>
-
-  /** @description Token used to register and resolve the PermissionAuthorizationPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly PERMISSION_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
-
-  /** @description Token used to register and resolve the PinoLogger instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly PINO_LOGGER: ILoggerClient
-
-  /** @description Token used to register and resolve the PolicyRegistry instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly POLICY_REGISTRY: IPolicyRegistry
-
-  /** @description Token used to register and resolve the QueryCachingPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly QUERY_CACHING_PIPELINE: IPipelineBehavior<IQuery, unknown>
-
   /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container.
    *
    * @author Xeno
@@ -352,16 +158,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly QUERY_PIPELINES_BEHAVIOR: IPipelineBehavior<IQuery, unknown>
-
-  /** @description Token used to register and resolve the RoutesRegistry instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly REGISTRY_ROUTES: Record<`/${string}`, Record<HttpMethod, 'isPublic'>>
-
   /** @description Token used to register and resolve the RequestContext instance in the dependency injection container.
    *
    * @author Xeno
@@ -370,7 +166,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly REQUEST_CONTEXT: IRequestContext<RequestContext, ApplicationRegistry<T>>
-
   /** @description Token used to register and resolve the IServiceResilience instance in the dependency injection container.
    *
    * @author Xeno
@@ -379,43 +174,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly RESILIENCE_CLIENT: IServiceResilience
-
-  /** @description Token used to register and resolve the IIPResolver instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly IP_RESOLVER: IIPResolver
-
-  /** @description Token used to register and resolve the RoleAuthorizationPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly ROLE_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
-
-  /** @description Token used to register and resolve the SchemaValidationStrategy instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly SCHEMA_VALIDATION_STRATEGY: IStrategy<IRequest, boolean>
-
-  /** @description Token used to register and resolve the SentryLogger instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly SENTRY_LOGGER: ILoggerClient
-
   /** @description Token used to register and resolve the ServiceContainer instance in the dependency injection container.
    *
    * @author Xeno
@@ -424,7 +182,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_CONTAINER: IServiceContainer
-
   /** @description Token used to register and resolve the ServiceExtractor instance in the dependency injection container.
    *
    * @author Xeno
@@ -433,34 +190,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly SERVICE_EXTRACTOR: IServiceExtractor<HttpHeaders, Metadata>
-
-  /** @description Token used to register and resolve the ServiceScopeFactory instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly SERVICE_SCOPE_FACTORY: IFactory<void, IServiceScope>
-
-  /** @description Token used to register and resolve the TenantAuthorizationPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly TENANT_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
-
-  /** @description Token used to register and resolve the TransactionState instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly TRANSACTION_STATE: ITransactionState<Ttx>
-
   /** @description Token used to register and resolve the UnitOfWork instance in the dependency injection container.
    *
    * @author Xeno
@@ -469,25 +198,6 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly UNIT_OF_WORK: IUnitOfWork & IDisposable
-
-  /** @description Token used to register and resolve the UserAuthorizationPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly USER_AUTHORIZATION_PIPELINE: IStrategy<IRequest>
-
-  /** @description Token used to register and resolve the ValidationPipeline instance in the dependency injection container.
-   *
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js
-   */
-  readonly VALIDATION_PIPELINE: IPipelineBehavior<IRequest, unknown>
-
   /** @description Token used to register and resolve the ZodValidator instance in the dependency injection container.
    *
    * @author Xeno
@@ -495,10 +205,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly ZOD_VALIDATOR: IValidatorService
-
-  // --- COMPONENTI ACCESSOR STRUTTURATI ED ESTRATTORI (NUOVI) ---
-
+  readonly VALIDATOR_SERVICE: IValidatorService
   /** @description Token used to register and resolve the IIdentityAccessor in the dependency injection container, allowing access only to current user identity information.
    *
    * @author Xeno

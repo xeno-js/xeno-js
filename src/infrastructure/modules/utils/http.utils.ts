@@ -70,22 +70,4 @@ export const HttpUtils = Object.freeze({
       return factory.create(opts)
     })
   },
-
-  async addAllowOrigin<TRegistry extends XenoRegistry = XenoRegistry>(
-    container: IServiceContainer<TRegistry>,
-    opts: string[],
-  ): Promise<void> {
-    const { Guards } = await import('@xeno-js/shared')
-    if (Guards.isNullOrEmpty(opts)) throw new Error('At least an allow origin must be passed')
-
-    const { TOKENS } = await import('@xeno-js/shared')
-    const { AllowOrigin } = await import('../../services')
-    const allowOrigin: string[] = []
-
-    opts.forEach((x) => {
-      allowOrigin.push(x.trim().toLowerCase())
-    })
-
-    container.addSingleton(TOKENS.ALLOW_ORIGIN, () => new AllowOrigin(allowOrigin))
-  },
 } as const)
