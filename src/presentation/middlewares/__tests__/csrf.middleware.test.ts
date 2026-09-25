@@ -32,7 +32,7 @@ function makeMiddleware(
   const getContext = vi.fn().mockReturnValue(contextData)
   const ctxAccessor = { getContext } as unknown as IRequestContext<
     RequestContext,
-    ApplicationRegistry<unknown, unknown>
+    ApplicationRegistry<unknown>
   >
 
   const validate = vi.fn().mockResolvedValue(validateResult)

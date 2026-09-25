@@ -1,6 +1,5 @@
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type { CacheConfig, DbConfig, IConfigurationService } from '@xeno-js/shared'
-import type { Optional, SetupAction } from '@xeno-js/shared'
+import type { CacheConfig, DbConfig, IConfigurationService, SetupAction } from '@xeno-js/shared'
 import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
 import type { ZodType } from 'zod'
 
@@ -117,6 +116,13 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     },
     resilience: { retry: {}, circuitBreaker: {}, bulkhead: {} },
   } as unknown as HttpCoreConfig<TRegistry>
+  private readonly _loggerConfig = {
+    level: LOG_LEVEL.DEBUG,
+    console: true,
+    sentry: { config: undefined },
+    pino: { config: undefined },
+    customLoggers: undefined,
+  } as unknown as LoggerConfig<ApplicationRegistry<unknown>>
 
   // --- Module Queuing Flags ---
   private _isContextModuleQueued = false
@@ -167,34 +173,26 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @description Configures the logger for the application. This method allows you to set up logging options such as log level, console logging, and integration with external logging services like Sentry or Pino.
    * @param setupAction A callback function that receives a LoggerConfig object to configure the logger settings.
    * @returns The current instance of AppBuilder for method chaining.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js
    */
   public addLogger(
     setupAction?: SetupAction<LoggerConfig<TRegistry>, IConfigurationService>,
   ): this {
+    if (Guards.isDefined(setupAction)) setupAction(this._loggerConfig, this._configuration)
+
     if (this._isLoggerModuleQueued) return this
     this._isLoggerModuleQueued = true
-    const config = {
-      level: LOG_LEVEL.DEBUG,
-      console: true,
-      sentry: { config: undefined },
-      pino: { config: undefined },
-      customLoggers: undefined,
-    } as unknown as Optional<LoggerConfig<ApplicationRegistry<unknown>>>
-    if (Guards.isDefined(setupAction) && Guards.isDefined(config))
-      setupAction(config, this._configuration)
 
     this._modules.push({
-      priority: 3,
+      priority: 1,
       name: 'LoggerModule',
       action: async () => {
         const { LoggerUtils } = await import('../modules/utils/logger.utils')
-        await LoggerUtils.addLogger(this._container, config)
+        await LoggerUtils.addLogger(this._container, this._loggerConfig)
       },
     })
     return this
@@ -212,12 +210,13 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @link https://github.com/xeno-js/xeno-js 
    */
   public addCache(setupAction?: SetupAction<CacheConfig, IConfigurationService>): this {
-    if (this._isCacheModuleQueued) return this
-    this._isCacheModuleQueued = true
     if (Guards.isDefined(setupAction)) setupAction(this._config, this._configuration)
 
+    if (this._isCacheModuleQueued) return this
+    this._isCacheModuleQueued = true
+
     this._modules.push({
-      priority: 3,
+      priority: 2,
       name: 'CacheModule',
       action: async () => {
         const { CacheUtils } = await import('../modules/utils/cache.utils')
@@ -253,7 +252,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     }
     setupAction(config, this._configuration)
     this._modules.push({
-      priority: 2,
+      priority: 3,
       name: 'AuthModule',
       action: async () => {
         const { AuthUtils } = await import('../modules/utils/auth.utils')
@@ -366,21 +365,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         const { HttpCoreModule } = await import('../modules/http-core.module')
         const coreModule = new HttpCoreModule<TRegistry>()
         await coreModule.configure(this._container, this._httpConfig)
-      },
-    })
-    return this
-  }
-
-  public addAllowOrigin(setupAction: SetupAction<string[], IConfigurationService>): this {
-    const config: string[] = []
-    setupAction(config, this._configuration)
-    this._modules.push({
-      priority: 30,
-      name: 'HttpCoreModule',
-      action: async () => {
-        const { HttpOriginModule } = await import('../modules/http-core.module')
-        const httpOriginModule = new HttpOriginModule()
-        await httpOriginModule.configure(this._container, config)
       },
     })
     return this
@@ -510,17 +494,16 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
 
     this._queueContextModule()
 
+    if (!this._isLoggerModuleQueued) this.addLogger()
+    if (!this._isCacheModuleQueued) this.addCache()
+
     this._modules.push({
       priority: 5,
       name: 'CqrsModule',
       action: async () => {
         const { CqrsModule } = await import('../modules/cqrs.module')
         const pipelineModule = new CqrsModule<TRegistry>()
-        await pipelineModule.configure(this._container, {
-          ...this._pipelineConfig,
-          isLogger: this._isLoggerModuleQueued || this._isMiddlewareModuleQueued,
-          isCache: !this._isCacheModuleQueued,
-        })
+        await pipelineModule.configure(this._container, this._pipelineConfig)
       },
     })
   }
@@ -540,8 +523,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
 
     this._queueContextModule()
 
+    if (!this._isLoggerModuleQueued) this.addLogger()
+    if (!this._isCacheModuleQueued) this.addCache()
+
     this._modules.push({
-      priority: 3,
+      priority: 4,
       name: 'MiddlewareModule',
       action: async () => {
         const { MiddlewareModule } = await import('../modules/middleware.module')
@@ -549,8 +535,6 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         await middlewareModule.configure(this._container, {
           ...this._middlewareConfig,
           isAuth: this._isAuthModuleQueued,
-          isLogger: this._isLoggerModuleQueued,
-          isCache: this._isCacheModuleQueued || this._isPipelineModuleQueued,
         })
       },
     })

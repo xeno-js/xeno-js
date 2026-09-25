@@ -1,7 +1,7 @@
 import type { Dictionary, IHttpClient, IRemoteDataSource } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { IServiceContainer } from '@/domain'
+import type { IServiceContainer, ISsrCookie, ISsrCookieHandler, ISsrCookieToSet } from '@/domain'
 
 import { RemoteDataSource } from '../../datasources'
 import type { XenoRegistry } from '../../xeno-registry'
@@ -20,6 +20,15 @@ type Registry = XenoRegistry<
 
 class DummyDataSource extends RemoteDataSource {}
 
+class SSRCookie implements ISsrCookieHandler {
+  getAll(): ISsrCookie[] {
+    return []
+  }
+  setAll(_cookies: ISsrCookieToSet[]): void {
+    return
+  }
+}
+
 function makeBuilder(): AppBuilder<Registry> {
   return new AppBuilder<Registry>()
 }
@@ -33,6 +42,7 @@ describe('AppBuilder � full smoke test', () => {
       .addAuth((opts, config) => {
         opts.url = config.get('AUTH_URL', 'https://dummy-auth.local') ?? 'https://dummy-auth.local'
         opts.key = config.get('AUTH_KEY', 'dummy-key') ?? 'dummy-key'
+        opts.ssrOpts = () => new SSRCookie()
       })
       .addDb((opts, config) => {
         opts.connectionString =
@@ -77,6 +87,10 @@ describe('AppBuilder � full smoke test', () => {
         opts.http.client.defaultHeaders = { 'X-Custom-Header': 'dummy-value' }
         opts.resilience.retry.attempts = 5
       })
+      .addMiddlewares((opts) => {
+        opts.allowOrigins = ['*']
+        opts.withCredentials = false
+      })
 
     await expect(builder.build()).resolves.toBeDefined()
   })
@@ -98,12 +112,14 @@ describe('AppBuilder � idempotency guards', () => {
   it('addAuth called twice only queues one module', async () => {
     const builder = makeBuilder()
     builder.addAuth((c) => {
-      c.url = 'u'
+      c.url = 'https://dummy-auth.local'
       c.key = 'k'
+      c.ssrOpts = () => new SSRCookie()
     })
     const second = builder.addAuth((c) => {
-      c.url = 'u2'
+      c.url = 'https://dummy-auth.local-2'
       c.key = 'k2'
+      c.ssrOpts = () => new SSRCookie()
     })
     expect(second).toBe(builder)
     await expect(builder.build()).resolves.toBeDefined()
