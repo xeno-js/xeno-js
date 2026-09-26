@@ -24,13 +24,18 @@ export class DbModule<TRegistry extends XenoRegistry = XenoRegistry> implements 
     const db = opts.enableSqlLite ? await DbUtils.addSqlLite(opts) : await DbUtils.addDbClient(opts)
 
     const { TransactionState } = await import('../transaction/transaction-state')
-    const ttx = new TransactionState<DbTransaction>()
+    container.addScoped('TRANSACTION_STATE', () => {
+      return new TransactionState<DbTransaction>()
+    })
+
     const { UnitOfWork } = await import('../transaction/unit-of-work')
-    container.addScoped(TOKENS.UNIT_OF_WORK, () => {
+    container.addScoped(TOKENS.UNIT_OF_WORK, (c) => {
+      const ttx = c.resolve('TRANSACTION_STATE')
       return new UnitOfWork(db, ttx)
     })
 
-    container.addScoped(TOKENS.DB_CONTEXT, () => {
+    container.addScoped(TOKENS.DB_CONTEXT, (c) => {
+      const ttx = c.resolve('TRANSACTION_STATE')
       return new Proxy(db, {
         get(_target, prop, receiver) {
           const activeState = ttx.state
