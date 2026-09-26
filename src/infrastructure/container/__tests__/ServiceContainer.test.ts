@@ -180,10 +180,25 @@ describe('ServiceContainer', () => {
       expect(result).toBe(container)
     })
 
-    it('allows resolving scoped service from root container scope', () => {
-      container.addScoped('scopedB', () => new ServiceB())
-      const instance = container.resolve('scopedB')
-      expect(instance).toBeInstanceOf(ServiceB)
+    it('does not allow resolving scoped service from root container', () => {
+      container.addScoped('scopedB', () => {
+        return new ServiceB()
+      })
+
+      expect(() => {
+        container.resolve('scopedB')
+      }).toThrow("[DI Container Error]: Scoped service 'scopedB' requires an active scope.")
+    })
+
+    it('resolves scoped service from a created scope', () => {
+      container.addScoped('scopedB', () => {
+        return new ServiceB()
+      })
+
+      const scope = container.createScope()
+      const instance = scope.resolve('scopedB')
+
+      expect(instance).toBeDefined()
     })
   })
 
