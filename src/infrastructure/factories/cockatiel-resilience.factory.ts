@@ -131,10 +131,7 @@ export class CockatielResilienceFactory implements IFactory<ResilienceConfig, IS
 
     if (isNetworkError) return true
 
-    if (Guards.isDefined(status)) {
-      // 408 Request Timeout, 429 Too Many Requests, and Server Errors (5xx)
-      return status === 408 || status === 429 || (status >= 500 && status < 600)
-    }
+    if (Guards.isDefined(status)) return status === 408 || (status >= 500 && status < 600)
 
     return false
   }
