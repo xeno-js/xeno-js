@@ -214,7 +214,8 @@ The transport remains outside the application composition:
 
 ```typescript
 app.get('/users/:id', async (request, reply) => {
-  const handler = resolveScoped('FIND_USER_HANDLER')
+  const container = await builder.build()
+  const handler = container.resolve('FIND_USER_HANDLER')
 
   const result = await handler.execute({
     id: request.params.id,
