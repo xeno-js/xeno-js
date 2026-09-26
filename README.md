@@ -198,9 +198,11 @@ npm install zod pino cockatiel drizzle-orm
 The composition root is explicit:
 
 ```typescript
+// src/bootstrap.ts
 import { AppBuilder } from '@xeno-js/core'
 
-const app = new AppBuilder().addServices((services) => {
+const app = new AppBuilder()
+.addServices((services) => {
   services.addScoped('USER_REPOSITORY', (container) => {
     return new UserRepository(container.resolve('USER_DATA_SOURCE'))
   })
@@ -210,12 +212,14 @@ const app = new AppBuilder().addServices((services) => {
   })
 
   services.addTransient('FIND_USER_CONTROLLER', (c) => {
-    return new FindUserHandler(
+    return new FindUserController(
       c.resolve(TOKENS.REQUEST_CONTEXT),
       c.resolve(TOKENS.MEDIATOR),
     )
   })
 })
+
+await app.build()
 ```
 
 The transport remains outside the application composition:
@@ -228,17 +232,17 @@ The transport remains outside the application composition:
 
 ```typescript
 import Fastify from 'fastify'
-import { builder } from './bootstrap'
+import { app } from './bootstrap'
 
-const app = Fastify({ logger: true })
+const fastify = Fastify({ logger: true })
 
-app.get('/users/:id', async (req, reply) => {
+fastify.get('/users/:id', async (req, reply) => {
   const endpoint = req.url
-  const container = await builder.build()
+
   const action = async () => {
     const controller = ContainerUtils.resolveServiceScoped(
       'FIND_USER_CONTROLLER',
-      container,
+      app,
     )
     return await controller.handle()
   }
@@ -248,7 +252,7 @@ app.get('/users/:id', async (req, reply) => {
     req.method,
     req.headers,
     { reply, req },
-    container,
+    app,
     action,
   )
 
