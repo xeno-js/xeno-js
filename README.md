@@ -209,7 +209,7 @@ const app = new AppBuilder().addServices((services) => {
     return new FindUserHandler(container.resolve('USER_REPOSITORY'))
   })
 
-  service.addTransient('FIND_USER_CONTROLLER', (container) => {
+  services.addTransient('FIND_USER_CONTROLLER', (c) => {
     return new FindUserHandler(c.resolve(TOKENS.REQUEST_CONTEXT), c.resolve(TOKENS.MEDIATOR))
   })
 })
