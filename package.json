@@ -1,6 +1,6 @@
 {
   "name": "@xeno-js/core",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Application architecture framework for TypeScript with explicit dependency injection, DDD, CQRS and modular application boundaries",
   "repository": {
     "type": "git",

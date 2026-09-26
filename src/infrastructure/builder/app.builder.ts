@@ -46,6 +46,7 @@ interface QueuedModule {
 export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
   private readonly _configuration: IConfigurationService
+  private _isBuilded = false
 
   constructor(container?: IServiceContainer<TRegistry>) {
     this._container = container ?? new ServiceContainer<TRegistry>()
@@ -451,6 +452,8 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @link https://github.com/xeno-js/xeno-js 
    */
   public async build(): Promise<IServiceContainer<TRegistry>> {
+    if (this._isBuilded) return this._container
+
     console.info('⚙️ Bootstrapping application modules...')
     const sortedModules = this._modules.sort((a, b) => a.priority - b.priority)
     for (const queued of sortedModules) {
@@ -472,6 +475,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
       }
     }
     console.info('✅ Application modules bootstrapped successfully.')
+    this._isBuilded = true
     return this._container
   }
 
