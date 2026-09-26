@@ -1,6 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { ApplicationRegistry } from '@/domain'
+
+import { ServiceContainer } from '../../container/service-container'
+import type { DbContext, DbTransaction } from '../../db'
+import { TransactionState } from '../../transaction/transaction-state'
 import { UnitOfWork } from '../unit-of-work'
+
+type TestRegistry = ApplicationRegistry<DbContext> & {
+  transactionState: TransactionState<DbTransaction>
+}
 
 interface State {
   state: unknown
@@ -98,6 +107,70 @@ describe('UnitOfWork', () => {
       await expect(createUnitOfWork(state, vi.fn()).dispose()).rejects.toBe(failure)
       expect(rollback).toHaveBeenCalledOnce()
       expect(state.state).toBeNull()
+    })
+  })
+  describe('ServiceContainer scoped services', () => {
+    let container: ServiceContainer<TestRegistry>
+
+    beforeEach(() => {
+      container = new ServiceContainer<TestRegistry>()
+    })
+
+    afterEach(async () => {
+      await container.dispose()
+    })
+
+    it('creates one scoped instance per scope', async () => {
+      let createdInstances = 0
+
+      container.addScoped('transactionState', () => {
+        createdInstances += 1
+
+        return new TransactionState<DbTransaction>()
+      })
+
+      const scopeA = container.createScope()
+      const scopeB = container.createScope()
+
+      const stateA = scopeA.resolve('transactionState')
+      const stateAAgain = scopeA.resolve('transactionState')
+      const stateB = scopeB.resolve('transactionState')
+
+      expect(stateA).toBe(stateAAgain)
+      expect(stateA).not.toBe(stateB)
+
+      expect(createdInstances).toBe(2)
+
+      await scopeA.dispose()
+      await scopeB.dispose()
+    })
+
+    it('does not share scoped transaction state between scopes', async () => {
+      container.addScoped('transactionState', () => new TransactionState<DbTransaction>())
+
+      const scopeA = container.createScope()
+      const scopeB = container.createScope()
+
+      const stateA = scopeA.resolve('transactionState')
+      const stateB = scopeB.resolve('transactionState')
+
+      const transactionA = {} as DbTransaction
+
+      stateA.state = transactionA
+
+      expect(stateA.state).toBe(transactionA)
+      expect(stateB.state).toBeNull()
+
+      await scopeA.dispose()
+      await scopeB.dispose()
+    })
+
+    it('does not allow resolving a scoped service from the root container', () => {
+      container.addScoped('transactionState', () => new TransactionState<DbTransaction>())
+
+      expect(() => {
+        container.resolve('transactionState')
+      }).toThrow()
     })
   })
 })

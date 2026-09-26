@@ -1,20 +1,14 @@
 <div align="center">
   <img src="logo/logo.png" alt="Xeno Logo" width="140" />
 
-  <h1>Xeno Core</h1>
-
-  <p><em>Enterprise-grade DDD & CQRS framework for Node.js</em></p>
+  <h1>Xeno.JS</h1>
+  <p><strong>The application architecture framework for TypeScript.</strong></p>
+  <p>Build long-lived applications with explicit dependency injection, DDD, CQRS, and transport-independent business logic.</p>
 
   <p>
-    <a href="https://github.com/xeno-js/xeno-js">
-      <img src="https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square" alt="Powered by Xeno" />
-    </a>
-    <a href="https://github.com/xeno-js/xeno-js/blob/main/LICENSE">
-      <img src="https://img.shields.io/npm/l/@xeno?style=flat-square" alt="License: ISC" />
-    </a>
-    <a href="https://www.npmjs.com/package/@xeno-js/core">
-      <img src="https://img.shields.io/npm/v/@xeno-js/core?style=flat-square" alt="NPM Version" />
-    </a>
+    <a href="https://www.npmjs.com/package/@xeno-js/core"><img src="https://img.shields.io/npm/v/@xeno-js/core?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://github.com/xeno-js/xeno-js"><img src="https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square" alt="Powered by Xeno" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License: MIT" /></a>
     <a href="https://buymeacoffee.com/xenojs">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
     </a>
@@ -25,305 +19,368 @@
 
 ## What is Xeno?
 
-**Xeno** is an enterprise-grade, runtime-agnostic architectural framework for
-Node.js built natively with TypeScript. It provides structural primitives for
-implementing robust **Domain-Driven Design (DDD)** and **Command Query
-Responsibility Segregation (CQRS)** patterns. By shifting operational logic away
-from delivery mechanisms and transport frameworks, Xeno ensures your core
-application architecture remains pristine, testable, and completely isolated
-from external infrastructural churn.
+Xeno is a TypeScript application architecture framework for Node.js.
+
+It provides explicit building blocks for applications organized around:
+
+- **Dependency Injection** with explicit service registration and lifetimes
+- **Domain-Driven Design (DDD)** and domain/application boundaries
+- **CQRS** with commands, queries, handlers, and composable pipelines
+- **Request context** built around asynchronous execution context
+- **Repositories and data sources** that keep persistence behind application
+  boundaries
+- **Infrastructure adapters** for databases, Redis, authentication, logging,
+  resilience, and other integrations
+
+The goal is simple: **make application architecture explicit in code.**
+
+Xeno is not tied to a specific HTTP server. Your application layer can remain
+independent from the transport that delivers a request.
 
 ---
 
-## 💡 Why Choose Xeno?
+## Why Xeno?
 
-Modern Node.js frameworks often tie business workflows tightly to HTTP server
-abstractions or rely heavily on experimental language features. Xeno fixes this
-with an emphasis on developer experience, type safety, and clean separation of
-concerns.
+### 01 — Explicit Architecture
 
-- **Zero Decorators**: Xeno eliminates reliance on experimental or unstable TS
-  decorator specifications (`reflect-metadata`). The IoC container
-  (`ServiceContainer`) uses pure, explicit functional factories that optimize
-  compilation speeds and eliminate runtime black-box behaviors.
-- **Complete Server Decoupling**: Xeno does not care if you use Fastify, Hono,
-  Express, Koa, or AWS Lambda. The presentation layer handles incoming data
-  using plain, primitive contracts, making migration or multi-runtime hosting
-  completely seamless.
-- **Pay-For-What-You-Use (Opt-in Modularity)**: Core dependencies are
-  strategically classified as optional peer dependencies. If your architecture
-  doesn't use Redis, Sentry, or Supabase, you do not pull them into your node
-  modules.
-- **Enterprise-Grade Resiliency & Cross-Cutting Pipelines**: Address complex
-  distributed patterns natively without code duplication. Xeno provides
-  out-of-the-box composite behaviors:
-  - **Idempotency**: Implements multi-tenant logic keyspaces matching advanced
-    SaaS factory patterns for logical partitioning.
-  - **Concurrency Control**: Mitigates thundering herd impacts via advanced
-    backoff retry strategies coupled with randomized jitter.
-  - **Resilience Policies**: Deep integration with circuit breakers, bulkheads,
-    and fallbacks.
-  - **Deterministic Type Safety**: Strong infrastructure validation strategies
-    using Zod schemas.
+**Your dependency graph is code.**
+
+Xeno does not require decorators, runtime scanning, or implicit dependency
+discovery. Services are registered explicitly, and their lifetimes are visible
+at the composition root.
+
+```typescript
+services.addScoped('USER_REPOSITORY', (container) => {
+  return new UserRepository(
+    container.resolve('USER_DATA_SOURCE'),
+    container.resolve('USER_MAPPER'),
+  )
+})
+```
+
+This makes the composition of the application easier to inspect, test, and
+reason about.
+
+### 02 — Transport Independence
+
+Business logic should not belong to your HTTP framework.
+
+Xeno keeps application concerns separate from delivery mechanisms, allowing the
+same application architecture to be hosted behind transports such as Fastify,
+Hono, Express, or other adapters.
+
+```text
+HTTP / CLI / Worker / Lambda
+            |
+            v
+      Presentation
+            |
+            v
+      Application
+   Commands / Queries
+            |
+            v
+         Domain
+            |
+            v
+     Infrastructure
+       DB / Redis / APIs
+```
+
+### 03 — CQRS as an Application Primitive
+
+Commands and queries are first-class application concepts.
+
+Pipelines can compose cross-cutting behavior around execution, such as:
+
+- authorization
+- idempotency
+- concurrency control
+- caching
+- resilience policies
+- request context
+
+This keeps cross-cutting concerns out of individual handlers.
+
+### 04 — Explicit Lifetimes and Request Boundaries
+
+Xeno distinguishes service lifetimes such as singleton, scoped, and transient
+services.
+
+Request-scoped dependencies can be resolved inside an application scope, while
+request metadata can be carried through asynchronous execution using
+`AsyncLocalStorage`.
+
+**State isolation:** the upcoming state fix is part of the framework's hardening
+work around request and transaction boundaries under concurrent execution.
+
+### 05 — Infrastructure Stays Outside the Domain
+
+Database clients, Redis, HTTP clients, authentication providers, loggers, and
+other infrastructure integrations are composed at the edge of the application.
+
+Your domain and application code can depend on contracts instead of concrete
+infrastructure.
 
 ---
 
-## 📖 Documentation & Getting Started
+## Architecture
 
-To explore the architecture, programmatic configurations, and extension
-workflows of Xeno, read the full technical manuals located inside the main
-documentation hub:
+A typical Xeno application can be organized like this:
 
-- **[Framework Documentation Repository](https://www.xeno-js.it/introduction)**
+```text
++------------------------------------------+
+|                Presentation              |
+|       HTTP / CLI / Workers / Lambda      |
++---------------------+--------------------+
+                      |
+                      v
++------------------------------------------+
+|                Application               |
+|   Commands / Queries / Handlers / Pipes |
++---------------------+--------------------+
+                      |
+                      v
++------------------------------------------+
+|                  Domain                  |
+|       Entities / Policies / Rules        |
++---------------------+--------------------+
+                      |
+                      v
++------------------------------------------+
+|               Infrastructure             |
+|       DB / Redis / APIs / Auth / Logs   |
++------------------------------------------+
+```
 
-Inside, you will find exhaustive, step-by-step assembly guides covering core
-host building (`AppBuilder`), isolated request middleware lifecycles, functional
-`Result` monads, and zero-trust authorization pipeline behavior tracks.
+Xeno's core is focused on composition and application architecture.
+Infrastructure capabilities can be enabled only when they are needed.
 
 ---
 
-## 🚀 Live Executable Demos
+## Core Concepts
 
-Want to see how Xeno works? Check out the functional example application
-showcasing end-to-end command/query segregation, multi-tenant databases, and
-resilient schema handling.
-
-You can dive straight into the explicit source code modules of specialized
-sandbox environments:
-
-- **[`pipelines_middleware_demo/`](./demo/pipelines_middleware_demo/)**: Traces
-  an execution thread from the raw HTTP transport presentation layer, executing
-  automated header extraction and anchoring metadata variables into
-  `AsyncLocalStorage` thread boundaries.
+| Concept            | Purpose                                                   |
+| ------------------ | --------------------------------------------------------- |
+| `AppBuilder`       | Composition root for assembling an application            |
+| `ServiceContainer` | Explicit dependency injection and service lifetimes       |
+| `CQRS`             | Commands, queries, handlers, and mediator-based execution |
+| `Pipelines`        | Cross-cutting behavior around application execution       |
+| `Request Context`  | Request metadata across asynchronous execution            |
+| `Repository`       | Application-facing persistence abstraction                |
+| `DataSource`       | Infrastructure-facing data access implementation          |
+| `Module`           | Explicit registration of related capabilities             |
+| `Result`           | Typed success/failure flow for application operations     |
 
 ---
 
-## 📦 Installation
-
-Install the core package:
+## Installation
 
 ```bash
 npm install @xeno-js/core
-
 ```
 
-Xeno uses **Optional Peer Dependencies**. You only install the external
-libraries you actually need. Node.js will strictly lazy-load only the modules
-you enable in the configuration.
+Install only the integrations your application uses. Xeno exposes optional
+infrastructure dependencies for capabilities such as databases, Redis, logging,
+resilience, and authentication.
+
+For example:
 
 ```bash
-# Example: Install tools only if you enable them in the builder
 npm install zod pino cockatiel drizzle-orm
-
 ```
 
 ---
 
-## ⚡ Bootstrapping & Middleware Example
+## A Small Example
 
-Below is an architectural example of how to configure the Xeno
-`ServiceContainer`, load core modules, and process an incoming application
-payload natively inside a server middleware wrapper.
-
-### 1. Initialize the Container and Configure Modules
+The composition root is explicit:
 
 ```typescript
-import { AppBuilder, LOG_LEVEL, TOKENS, XenoRegistry } from '@xeno-js/core'
-import { FindUserQueryHandler } from './user/cqrs/handlers/index'
-import { FindUserController } from './user/controllers/index'
-import { UserMapper } from './user/mappers/user.mapper'
-import { UserWriteRepository } from './user/repositories/user-write.repository'
-import { UserDataSource } from './user/datasources/user.datasource'
+import { AppBuilder } from '@xeno-js/core'
 
-// Map your registry token with XenoRegistry<TSchemaDb, TExtension>
-type MyRegistry = XenoRegistry<{ /** Your Db Schema here **/}, {
-  USER_MAPPER_TOKEN: UserMapper
-  USER_DS_TOKEN: UserDataSource
-  USER_REPOSITORY_TOKEN: UserWriteRepository
-  FIND_USER_QUERY_HANDLER_TOKEN: FindUserQueryHandler
-  FIND_USER_CONTROLLER_TOKEN: FindUserController
-}>
+const app = new AppBuilder().addServices((services) => {
+  services.addScoped('USER_REPOSITORY', (container) => {
+    return new UserRepository(container.resolve('USER_DATA_SOURCE'))
+  })
 
-// Create the root IoC container context
-export const xeno = new AppBuilder<MyRegistry>()
-        // Configure middleware and only PUBLIC routes
-        .addMiddlewares(opts => {
-            opts.routeRegistry = {
-                '/api/user/:id': ['GET', 'UPDATE', 'DELETE'],
-            }
-        })
-        // Configure the CQRS pipeline
-            // Can register Policies for your intent
-              .addPipeline((config) => {
-                config.authorization.policies = {
-                  'FIND_USER_QUERY_HANDLER_TOKEN': {
-                    // Add authz by user id
-                    userId: true
-                    // Add authz by tenant id
-                    tenantId: true
-                    // Add authz by roles
-                    roles: ['admin']
-                    // Add authz by perissions
-                    permissions: ['read'],
-                }
-            }
-            // Can add idempotency pipeline for command
-            config.commandBus.idempotency = { lockTtlSeconds: 30, processedTtlSeconds: 60 }
-            // Can add concurrency pipeline for command
-            config.commandBus.concurrency = { delayConfig: { baseDelayMs: 100, maxJitterMs: 500 }, maxRetries: 3 }
-            // Can add caching pipeline for query
-            config.queryBus.isEnabled = true
-        })
-        // Configure Database with drizzle
-        .addDb((opts, config) => {
-            opts.connectionString = config.getOrThrow('DATABASE_URL')
-        })
-        // Configure Authentication with supabase
-        .addAuth((opts, config) => {
-            opts.key = 'demo-key'
-            opts.url = config.getOrThrow('API_BASE_URL')
-        })
-        // Configure your logger (e.g. Console, Sentry, Pino or custom logger)
-        .addLogger((config) => {
-            config.level = LOG_LEVEL.INFO
-            config.console = true
-        })
-        // Register your services
-        .addServices((services) => {
-            // REGISTER MAPPER
-            services.addScoped('USER_MAPPER_TOKEN', () => new UserMapper())
-
-            // REGISTER DATASOURCES
-            services.addScoped('USER_DS_TOKEN', (c) => new UserDataSource(c.resolve(TOKENS.DB_CONTEXT)))
-
-            // REGISTER REPOSITORIES
-            services.addScoped('USER_REPOSITORY_TOKEN', (c) => new UserWriteRepository(c.resolve('USER_DS_TOKEN'), c.resolve('USER_MAPPER_TOKEN')))
-
-            // REGISTER HANDLERS
-            services.addScoped('FIND_USER_QUERY_HANDLER_TOKEN', (c) => {
-                const requestcontext = c.resolve('USER_CONTEXT_FACTORY')
-                const repository = c.resolve('USER_READ_REPOSITORY')
-                return new FindUserQueryHandler(repository, requestcontext)
-            })
-
-            // REGISTER CONTROLLERS
-            services.addTransient('FIND_USER_CONTROLLER_TOKEN', (c) => {
-                return new FindUserController(c.resolve(TOKENS.CONTEXT_ACCESSOR), c.resolve(TOKENS.MEDIATOR))
-            })
-        })
-
+  services.addTransient('FIND_USER_HANDLER', (container) => {
+    return new FindUserHandler(container.resolve('USER_REPOSITORY'))
+  })
+})
 ```
 
-### 2. Wrap and Run within Server Middleware (e.g., Fastify / Hono)
+The transport remains outside the application composition:
 
 ```typescript
-import 'dotenv/config'
-import { ContainerUtils, TOKENS } from '@xeno-js/core'
-import fastify from 'fastify'
-import { bootstrap } from './bootstrap'
+app.get('/users/:id', async (request, reply) => {
+  const handler = resolveScoped('FIND_USER_HANDLER')
 
-async function runDemo() {
-  console.log('⚙️ Initialized Xeno Container...')
-  try {
-    // 1. Bootstrap the application and get the service container
-    const xenoApp = await bootstrap.build()
+  const result = await handler.execute({
+    id: request.params.id,
+  })
 
-    console.log('🚀 Starting Fastify server on http://localhost:3000...')
+  return reply.send(result)
+})
+```
 
-    // 2. Resolve the middleware from the container
-    const middleware = xeno.resolve(TOKENS.MIDDLEWARE)
-    // 3. Create a Fastify instance to handle HTTP requests
-    const app = fastify()
+The HTTP adapter is responsible for HTTP. The application handler is responsible
+for the use case.
 
-    // ─── ENDPOINT 2: QUERY ────────────────────────────────────────────
-    app.get('/api/user/:id', async (request, reply) => {
-      // 4. Execute the middleware to handle the request context and authentication, then call the StatusController's handle method with the request payload.
-      const responseDto = await middleware.execute(
-        {
-          path: '/api/user/:id',
-          method: 'GET',
-          transport: { res: reply, req: request },
-        },
-        { ...request.headers },
-        async () => {
-          const { id } = request.params as any
-          const controller = ContainerUtils.resolveServiceScoped(
-            'FIND_USER_CONTROLLER_TOKEN',
-            xenoApp,
-          )
-          return await controller.handle({ id: id ?? '123' })
-        },
-      )
+---
 
-      return reply
-        .status(responseDto.status)
-        .type('application/json')
-        .send(responseDto.data)
-    })
+## CQRS & Pipelines
 
-    console.log('✅ Routes set up. Ready to accept requests.')
+Cross-cutting behavior can be composed around commands and queries:
 
-    // ─── START SERVER ─────────────────────────────────────────────────
-    try {
-      await app.listen({ port: 3000 })
-      console.log('🚀 Application running on http://localhost:3000')
-      console.log('👉 GET  /api/user/:id  (GET: api/user/1)')
-    } catch (err) {
-      console.error('Error starting Fastify server:', err)
-      app.log.error(err)
-      process.exit(1)
-    }
-  } catch (error) {
-    console.error('Error during bootstrap or server setup:', error)
-    process.exit(1)
+```typescript
+.addPipeline((config) => {
+  config.authorization.policies = {
+    FIND_USER_QUERY_HANDLER: {
+      roles: ['admin'],
+      permissions: ['read'],
+    },
   }
-}
 
-runDemo()
+  config.commandBus.idempotency = {
+    lockTtlSeconds: 30,
+    processedTtlSeconds: 60,
+  }
+
+  config.commandBus.concurrency = {
+    delayConfig: {
+      baseDelayMs: 100,
+      maxJitterMs: 500,
+    },
+    maxRetries: 3,
+  }
+
+  config.queryBus.isEnabled = true
+})
 ```
+
+The exact pipeline configuration depends on the integrations enabled by your
+application.
 
 ---
 
-## 🛠 Scaffold your project with CLI
+## Infrastructure & Integrations
 
-Xeno includes an official CLI tool, `@xeno-js/cli`, designed to bootstrap your
-new application in seconds. It offers an interactive setup to select exactly the
-modules you need (Database, HTTP, Auth, Logging, etc.), ensuring you start with
-a clean, pre-configured architecture tailored to your specific requirements.
+Xeno Core can be composed with infrastructure such as:
 
-If you want to learn how to use it, see the full options available, or
-understand how the scaffolding engine works, check the
-**[CLI Documentation](https://www.xeno-js.it/cli/overview)**.
+- **Database:** Drizzle ORM, PostgreSQL, LibSQL
+- **Cache / distributed coordination:** Redis
+- **Authentication:** Supabase integrations and custom strategies
+- **HTTP clients:** Axios
+- **Resilience:** Cockatiel
+- **Logging:** Console, Pino, Sentry, or custom loggers
+- **Validation:** Zod
+
+These integrations are opt-in rather than mandatory parts of the application
+architecture.
 
 ---
 
-## 🤝 For Contributors
+## CLI
 
-We welcome contributions to Xeno! To maintain the highest code quality and
-stability of the core framework, **direct pushes to the `main` and `develop`
-branches are strictly prohibited.** Please follow this Git Flow to contribute:
-
-1. **Branch off from `develop`**: Create a new branch for your feature or
-   bugfix.
+Use the official CLI to scaffold a Xeno application:
 
 ```bash
-   git checkout develop
-   git pull origin develop
-   git checkout -b feat/your-awesome-feature
+npm install @xeno-js/cli
+xeno-js new my-xeno-app --core
 ```
 
-2. **Make your changes**: Write your code and ensure it passes all local checks
-   (linting, types, and tests).
+See the [CLI documentation](https://www.xeno-js.it/cli/overview).
+
+---
+
+## Documentation
+
+The documentation hub contains the architecture and integration guides:
+
+**[xeno-js.it](https://www.xeno-js.it/introduction)**
+
+Recommended starting points:
+
+- [Introduction](https://www.xeno-js.it/introduction)
+- [Architecture](https://www.xeno-js.it/architecture)
+- [Dependency Injection](https://www.xeno-js.it/architecture/dependency-injection)
+- [CQRS](https://www.xeno-js.it/architecture/cqrs)
+- [Pipelines](https://www.xeno-js.it/architecture/pipelines)
+- [Request Lifecycle](https://www.xeno-js.it/architecture/request-lifecycle)
+- [Modules](https://www.xeno-js.it/architecture/modules)
+- [CLI](https://www.xeno-js.it/cli/overview)
+
+---
+
+## Ecosystem
+
+Xeno is designed as an ecosystem rather than a single monolithic package:
+
+| Package           | Role                                      |
+| ----------------- | ----------------------------------------- |
+| `@xeno-js/core`   | Application architecture and backend core |
+| `@xeno-js/shared` | Shared contracts and types                |
+| `@xeno-js/vue`    | Vue integration                           |
+| `@xeno-js/cli`    | Project scaffolding and developer tooling |
+
+---
+
+## What Xeno Is Not
+
+Xeno is not primarily an HTTP framework.
+
+If you are looking for a framework centered on routing, controllers, middleware,
+and server lifecycle, there are excellent options already available in the
+Node.js ecosystem.
+
+Xeno focuses on the layer above transport:
+
+> **How should a TypeScript application be structured so that its business
+> logic, dependencies, and infrastructure boundaries remain explicit as the
+> application grows?**
+
+---
+
+## Production Considerations
+
+Xeno provides architectural primitives, but application correctness still
+depends on how those primitives are composed.
+
+Before deploying an application, test the behaviors that matter to your
+workload, especially:
+
+- request and transaction isolation
+- service lifetime boundaries
+- authorization policies
+- idempotency semantics
+- concurrency behavior
+- cache consistency
+- failure and retry behavior
+- trusted proxy / client IP configuration
+- database transaction boundaries
+
+The framework is designed to make these boundaries explicit rather than hide
+them behind conventions.
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+Development happens from feature branches targeting `develop`.
 
 ```bash
+git checkout develop
+git pull origin develop
+git checkout -b feat/your-feature
+
+npm install
 npm run check
 ```
 
-3. **Commit your changes**: We enforce
-   [Conventional Commits](https://www.conventionalcommits.org/). Husky will
-   verify your commit message format.
-
-4. **Commit Format:**
+We use Conventional Commits:
 
 ```bash
 feat(scope): add new feature
@@ -331,87 +388,34 @@ fix(scope): resolve bug
 chore(scope): update dependencies
 ```
 
-5. **Submit a Pull Request (PR)**: Push your branch to GitHub and open a Pull
-   Request targeting the **`develop`** branch.
+Before opening a pull request, run:
 
-6. **Review**: The repository owner will review your code, run pipeline tests,
-   and merge it into `develop`.
-
-_Note: The `main` branch is strictly reserved for production releases. Code
-flows from feature branches ➡️ `develop` ➡️ `main`._
-
-### Scripts
-
-| Command                 | Description                                    |
-| ----------------------- | ---------------------------------------------- |
-| `npm run build`         | Builds the TypeScript source code into `dist/` |
-| `npm run typecheck`     | Checks types without emitting files            |
-| `npm run lint`          | Runs ESLint                                    |
-| `npm run format`        | Formats code with Prettier                     |
-| `npm run test`          | Runs the Vitest test suite                     |
-| `npm run test:coverage` | Runs tests and generates a coverage report     |
-
-### Code Quality (Husky & Git Hooks)
-
-This project strictly enforces code quality rules before pushing to the
-repository:
-
-- **`pre-commit`**: Runs `lint-staged` on staged files (ESLint + Prettier).
-- **`commit-msg`**: Checks commit messages with `commitlint` (we use
-  Conventional Commits).
-- **`pre-push`**: Runs type checking, linting, and testing before code leaves
-  your machine.
-
----
-
-## 🌱 Support & Appreciation
-
-Building, benchmarking, and maintaining a progressive, enterprise-ready
-open-source framework requires a massive amount of continuous dedication and
-architectural engineering.
-
-If Xeno has brought value to your development workflows, helped decouple your
-core business logic, or simplified your system infrastructure layout, consider
-supporting its open-source lifecycle. Your backing directly accelerates our
-strategic roadmap for new out-of-the-box transport integrations (such as gRPC,
-RabbitMQ, and GraphQL) and keeps the documentation pristine.
-
-**Want to know how you can contribute or sponsor Xeno?** We rely on the
-commitment of our community to keep the project independent and thriving.
-Whether you are an individual developer or a business using Xeno, your support
-makes a real difference.
-
-👉
-**[Read our support guidelines and find out how to help](https://www.xeno-js.it/support-us)**
-
-Thank you for being part of this decoupled open-source journey!
-
-<amp-bounce>
-</amp-bounce>
-<a href="https://www.buymeacoffee.com/xenojs" target="_blank">
-<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="42" style="height: 42px !important;" />
-</a>
-
----
-
-## 🛡️ Powered by Xeno
-
-If you are using Xeno in your project, let the world know! Add this badge to
-your README:
-
-```html
-<a
-  href="[https://github.com/xeno-js/xeno-js](https://github.com/xeno-js/xeno-js)"
-  target="_blank"
->
-  <img
-    src="[https://img.shields.io/badge/Powered%20by-Xeno-black?style=flat-square](https://img.shields.io/badge/Powered%20by-Xeno-black?style=flat-square)"
-    alt="Powered by Xeno"
-    height="20"
-  />
-</a>
+```bash
+npm run check
 ```
 
-## 📄 License
+| Command                 | Description              |
+| ----------------------- | ------------------------ |
+| `npm run build`         | Build the package        |
+| `npm run typecheck`     | TypeScript type checking |
+| `npm run lint`          | ESLint                   |
+| `npm run format:check`  | Prettier validation      |
+| `npm run test`          | Vitest test suite        |
+| `npm run test:coverage` | Test suite with coverage |
 
-Copyright (c) 2026 Xeno. Licensed under the [ISC License](LICENSE).
+---
+
+## Support
+
+If Xeno is useful to you, you can support the project through the community and
+sponsorship channels documented on the website:
+
+**[Support Xeno](https://www.xeno-js.it/support-us)**
+
+---
+
+## License
+
+Copyright (c) 2026 Xeno.
+
+Licensed under the [MIT License](LICENSE).

@@ -1,7 +1,7 @@
 {
   "name": "@xeno-js/core",
   "version": "0.1.10",
-  "description": "Xeno agnostic core — DDD + Clean Architecture npm package",
+  "description": "Application architecture framework for TypeScript with explicit dependency injection, DDD, CQRS and modular application boundaries",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xeno-js/xeno-js.git"
@@ -53,20 +53,25 @@
     "release:major": "npm version major && npm run changelog && npm run prepublishOnly && npm publish --access public"
   },
   "keywords": [
+    "typescript",
+    "nodejs",
+    "application-framework",
+    "application-architecture",
+    "dependency-injection",
+    "ioc",
     "ddd",
-    "clean-architecture",
-    "core",
-    "kernel",
     "domain-driven-design",
-    "mediator",
-    "event-sourcing",
     "cqrs",
-    "repository-pattern",
-    "supabase",
-    "zod"
+    "clean-architecture",
+    "hexagonal-architecture",
+    "modular-architecture",
+    "request-context",
+    "service-container",
+    "pipeline",
+    "repository-pattern"
   ],
   "author": "Xeno",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": ">=20.0.0"
   },
