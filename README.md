@@ -212,7 +212,15 @@ const app = new AppBuilder().addServices((services) => {
 
 The transport remains outside the application composition:
 
+> ⚠️ **Implementation note: Example using Fastify**
+> The following snippet uses **Fastify** solely for demonstration purposes to illustrate the transport layer. Thanks to the framework's agnostic architecture, the underlying logic (`container` and `handler`) remains unchanged regardless of the chosen HTTP system (e.g., Express, Koa) or interface (CLI, gRPC).
+
 ```typescript
+import Fastify from 'fastify';
+import { builder } from './bootstrap';
+
+const app = Fastify({ logger: true });
+
 app.get('/users/:id', async (request, reply) => {
   const container = await builder.build()
   const handler = container.resolve('FIND_USER_HANDLER')
