@@ -111,9 +111,9 @@ Request-scoped dependencies are resolved inside an explicit application scope,
 while request metadata can be carried through asynchronous execution using
 `AsyncLocalStorage`.
 
-Database transaction state is scoped to the same application boundary,
-allowing `UnitOfWork` and `DbContext` to operate against the transaction
-associated with the current scope.
+Database transaction state is scoped to the same application boundary, allowing
+`UnitOfWork` and `DbContext` to operate against the transaction associated with
+the current scope.
 
 ### 05 — Infrastructure Stays Outside the Domain
 
@@ -210,31 +210,47 @@ const app = new AppBuilder().addServices((services) => {
   })
 
   services.addTransient('FIND_USER_CONTROLLER', (c) => {
-    return new FindUserHandler(c.resolve(TOKENS.REQUEST_CONTEXT), c.resolve(TOKENS.MEDIATOR))
+    return new FindUserHandler(
+      c.resolve(TOKENS.REQUEST_CONTEXT),
+      c.resolve(TOKENS.MEDIATOR),
+    )
   })
 })
 ```
 
 The transport remains outside the application composition:
 
-> ⚠️ **Implementation note: Example using Fastify**
-> The following snippet uses **Fastify** solely for demonstration purposes to illustrate the transport layer. Thanks to the framework's agnostic architecture, the underlying logic (`container` and `handler`) remains unchanged regardless of the chosen HTTP system (e.g., Express, Koa) or interface (CLI, gRPC).
+> ⚠️ **Implementation note: Example using Fastify** The following snippet uses
+> **Fastify** solely for demonstration purposes to illustrate the transport
+> layer. Thanks to the framework's agnostic architecture, the underlying logic
+> (`container` and `handler`) remains unchanged regardless of the chosen HTTP
+> system (e.g., Express, Koa) or interface (CLI, gRPC).
 
 ```typescript
-import Fastify from 'fastify';
-import { builder } from './bootstrap';
+import Fastify from 'fastify'
+import { builder } from './bootstrap'
 
-const app = Fastify({ logger: true });
+const app = Fastify({ logger: true })
 
 app.get('/users/:id', async (req, reply) => {
   const endpoint = req.url
-  const container = await builder.build();
+  const container = await builder.build()
   const action = async () => {
-      const controller = ContainerUtils.resolveServiceScoped('FIND_USER_CONTROLLER', container)
-      return await controller.handle()
+    const controller = ContainerUtils.resolveServiceScoped(
+      'FIND_USER_CONTROLLER',
+      container,
+    )
+    return await controller.handle()
   }
 
-  const result = await ContainerUtils.runExecute(endpoint, req.method, req.headers, { reply, req }, container, action)
+  const result = await ContainerUtils.runExecute(
+    endpoint,
+    req.method,
+    req.headers,
+    { reply, req },
+    container,
+    action,
+  )
 
   return reply.send(result)
 })
@@ -319,13 +335,13 @@ The documentation hub contains the architecture and integration guides:
 Recommended starting points:
 
 - [Introduction](https://www.xeno-js.it/introduction)
-- [Architecture](https://www.xeno-js.it/architecture)
-- [Dependency Injection](https://www.xeno-js.it/architecture/dependency-injection)
-- [CQRS](https://www.xeno-js.it/architecture/cqrs)
-- [Pipelines](https://www.xeno-js.it/architecture/pipelines)
-- [Request Lifecycle](https://www.xeno-js.it/architecture/request-lifecycle)
-- [Modules](https://www.xeno-js.it/architecture/modules)
-- [CLI](https://www.xeno-js.it/cli/overview)
+- [Fundamentals](https://www.xeno-js.it/docs/core/overview)
+- [Dependency Injection](https://www.xeno-js.it/docs/core/fundamentals/app-builder)
+- [CQRS](https://www.xeno-js.it/docs/core/fundamentals/command-query)
+- [Pipelines](https://www.xeno-js.it/docs/core/cqrs/overview)
+- [Request Lifecycle](https://www.xeno-js.it/docs/core/fundamentals/service-container)
+- [Middleware](https://www.xeno-js.it/docs/core/fundamentals/middleware)
+- [CLI](https://www.xeno-js.it/docs/cli/overview)
 
 ---
 

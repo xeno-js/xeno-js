@@ -64,8 +64,8 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
       if (Guards.isDefined(validationPipelines)) pipelines.push(validationPipelines)
     }
 
-    const commandPipelines = pipelines
-    const queryPipelines = pipelines
+    const commandPipelines = [...pipelines]
+    const queryPipelines = [...pipelines]
 
     if (
       Guards.isDefined(opts.commandBus.idempotency) ||
