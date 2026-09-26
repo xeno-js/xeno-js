@@ -211,6 +211,14 @@ export class ServiceContainer<
   }
 
   public resolve<K extends keyof Registry>(token: K): Registry[K] {
+    const registration = this.registrations.get(token)
+
+    if (registration?.lifetime === 'scoped') {
+      throw new Error(
+        `[DI Container Error]: Scoped service '${String(token)}' requires an active scope.`,
+      )
+    }
+
     return this.internalExecuteInContext(() => this.rootScope.resolve(token))
   }
 

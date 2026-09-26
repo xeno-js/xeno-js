@@ -19,6 +19,7 @@ import type {
   IQuery,
   IServiceExtractor,
   IServiceResilience,
+  ITransactionState,
   IUnitOfWork,
   IValidatorService,
   Metadata,
@@ -45,7 +46,7 @@ import type {
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export interface ApplicationRegistry<T = unknown> {
+export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
   /** @description Token used to register and resolve the Extended AuthService instance in the dependency injection container.
    *
    * @author Xeno
@@ -250,4 +251,13 @@ export interface ApplicationRegistry<T = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly USER_CONTEXT_FACTORY: IFactory<void, UserContext>
+
+  /** @description Token used to register and resolve the TransactionState instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.0.0
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly TRANSACTION_STATE: ITransactionState<Ttx>
 }
