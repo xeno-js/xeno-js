@@ -84,7 +84,7 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
           error: {
             code: ERROR_CODES.TOO_MANY_REQUESTS,
             message: ERROR_CODE_MESSAGES[ERROR_CODES.TOO_MANY_REQUESTS],
-            details: `Rate limit exceeded. Key ${cacheKey} throttled.`,
+            details: `Rate limit exceeded.`,
             path: req.path,
           },
           correlationId: tracing?.correlationId ?? GuidHelper.generate(),
