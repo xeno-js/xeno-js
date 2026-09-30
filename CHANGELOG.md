@@ -1,3 +1,17 @@
+## [1.1.1](https://github.com/xeno-js/xeno-js/compare/v1.1.0...v1.1.1) (2026-09-30)
+
+### Bug Fixes
+
+- resolved bug introduced with v1.1.0
+  ([d71d1d0](https://github.com/xeno-js/xeno-js/commit/d71d1d0aeee54bdfad7a248b8fc4b9622321c406))
+
+# [1.1.0](https://github.com/xeno-js/xeno-js/compare/v1.0.0...v1.1.0) (2026-09-30)
+
+### Features
+
+- adding cookie handler service
+  ([96dba64](https://github.com/xeno-js/xeno-js/commit/96dba643b91b993f2651c4aaf3e2f0d956fb4682))
+
 # [1.0.0](https://github.com/xeno-js/xeno-js/compare/b477e3497a9e7f1232ccf5d68148e0ddfd80c96d...v1.0.0) (2026-09-30)
 
 ### Bug Fixes
