@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo/logo.png" alt="Xeno Logo" width="140" />
+  <img src="logo/logo.png" alt="Xeno.JS Logo" width="140" />
 
   <h1>Xeno.JS</h1>
   <p><strong>The application architecture framework for TypeScript.</strong></p>
@@ -19,7 +19,7 @@
 
 ## What is Xeno?
 
-Xeno is a TypeScript application architecture framework for Node.js.
+Xeno.JS is a TypeScript application architecture framework for Node.js.
 
 It provides explicit building blocks for applications organized around:
 
@@ -34,7 +34,7 @@ It provides explicit building blocks for applications organized around:
 
 The goal is simple: **make application architecture explicit in code.**
 
-Xeno is not tied to a specific HTTP server. Your application layer can remain
+Xeno.JS is not tied to a specific HTTP server. Your application layer can remain
 independent from the transport that delivers a request.
 
 ---
@@ -45,7 +45,7 @@ independent from the transport that delivers a request.
 
 **Your dependency graph is code.**
 
-Xeno does not require decorators, runtime scanning, or implicit dependency
+Xeno.JS does not require decorators, runtime scanning, or implicit dependency
 discovery. Services are registered explicitly, and their lifetimes are visible
 at the composition root.
 
@@ -65,9 +65,9 @@ reason about.
 
 Business logic should not belong to your HTTP framework.
 
-Xeno keeps application concerns separate from delivery mechanisms, allowing the
-same application architecture to be hosted behind transports such as Fastify,
-Hono, Express, or other adapters.
+Xeno.JS keeps application concerns separate from delivery mechanisms, allowing
+the same application architecture to be hosted behind transports such as
+Fastify, Hono, Express, or other adapters.
 
 ```text
 HTTP / CLI / Worker / Lambda
@@ -104,7 +104,7 @@ This keeps cross-cutting concerns out of individual handlers.
 
 ### 04 — Explicit Lifetimes and Request Boundaries
 
-Xeno distinguishes service lifetimes such as singleton, scoped, and transient
+Xeno.JS distinguishes service lifetimes such as singleton, scoped, and transient
 services.
 
 Request-scoped dependencies are resolved inside an explicit application scope,
@@ -127,7 +127,7 @@ infrastructure.
 
 ## Architecture
 
-A typical Xeno application can be organized like this:
+A typical Xeno.JS application can be organized like this:
 
 ```text
 +------------------------------------------+
@@ -181,7 +181,7 @@ Infrastructure capabilities can be enabled only when they are needed.
 npm install @xeno-js/core
 ```
 
-Install only the integrations your application uses. Xeno exposes optional
+Install only the integrations your application uses. Xeno.JS exposes optional
 infrastructure dependencies for capabilities such as databases, Redis, logging,
 resilience, and authentication.
 
@@ -201,8 +201,7 @@ The composition root is explicit:
 // src/bootstrap.ts
 import { AppBuilder } from '@xeno-js/core'
 
-const app = new AppBuilder()
-.addServices((services) => {
+const app = new AppBuilder().addServices((services) => {
   services.addScoped('USER_REPOSITORY', (container) => {
     return new UserRepository(container.resolve('USER_DATA_SOURCE'))
   })
@@ -302,7 +301,7 @@ application.
 
 ## Infrastructure & Integrations
 
-Xeno Core can be composed with infrastructure such as:
+Xeno.JS Core can be composed with infrastructure such as:
 
 - **Database:** Drizzle ORM, PostgreSQL, LibSQL
 - **Cache / distributed coordination:** Redis
@@ -319,7 +318,7 @@ architecture.
 
 ## CLI
 
-Use the official CLI to scaffold a Xeno application:
+Use the official CLI to scaffold a Xeno.JS application:
 
 ```bash
 npm install @xeno-js/cli
@@ -351,7 +350,7 @@ Recommended starting points:
 
 ## Ecosystem
 
-Xeno is designed as an ecosystem rather than a single monolithic package:
+Xeno.JS is designed as an ecosystem rather than a single monolithic package:
 
 | Package           | Role                                      |
 | ----------------- | ----------------------------------------- |
@@ -362,15 +361,15 @@ Xeno is designed as an ecosystem rather than a single monolithic package:
 
 ---
 
-## What Xeno Is Not
+## What Xeno.JS Is Not
 
-Xeno is not primarily an HTTP framework.
+Xeno.JS is not primarily an HTTP framework.
 
 If you are looking for a framework centered on routing, controllers, middleware,
 and server lifecycle, there are excellent options already available in the
 Node.js ecosystem.
 
-Xeno focuses on the layer above transport:
+Xeno.JS focuses on the layer above transport:
 
 > **How should a TypeScript application be structured so that its business
 > logic, dependencies, and infrastructure boundaries remain explicit as the
@@ -380,7 +379,7 @@ Xeno focuses on the layer above transport:
 
 ## Production Considerations
 
-Xeno provides architectural primitives, but application correctness still
+Xeno.JS provides architectural primitives, but application correctness still
 depends on how those primitives are composed.
 
 Before deploying an application, test the behaviors that matter to your
@@ -443,8 +442,8 @@ npm run check
 
 ## Support
 
-If Xeno is useful to you, you can support the project through the community and
-sponsorship channels documented on the website:
+If Xeno.JS is useful to you, you can support the project through the community
+and sponsorship channels documented on the website:
 
 **[Support Xeno](https://www.xeno-js.it/docs/support-us)**
 
