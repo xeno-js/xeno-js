@@ -40,7 +40,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
     private readonly _mediator: IMediator,
   ) {}
 
-  abstract handle(request: TRequest): Promise<ResponseDto<TResponse>>
+  abstract handle(request: TRequest, signal: AbortSignal): Promise<ResponseDto<TResponse>>
 
   /**
    * Helper to return a successful 200/201 response.
@@ -112,6 +112,7 @@ export abstract class BaseController<TRequest, TResponse> implements IController
   /**
    * Helper to send a query through the mediator and return the result.
    * @param request - The IQuery instance to be sent.
+   * @param signal - The AbortSignal
    * @returns A promise resolving to the result of the query.
    *
    * @author Xeno
@@ -119,14 +120,17 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  protected _query(request: IQuery<TResponse>): Promise<ResultType<TResponse>> {
-    const signal = new AbortController().signal
+  protected _query(
+    request: IQuery<TResponse>,
+    signal: AbortSignal,
+  ): Promise<ResultType<TResponse>> {
     return this._mediator.query(request, signal)
   }
 
   /**
    * Helper to send a command through the mediator and return the result.
    * @param request - The ICommand instance to be sent.
+   * @param signal - The AbortSignal
    * @returns A promise resolving to the result of the command.
    *
    * @author Xeno
@@ -134,8 +138,10 @@ export abstract class BaseController<TRequest, TResponse> implements IController
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  protected _send(request: ICommand<TResponse>): Promise<ResultType<TResponse>> {
-    const signal = new AbortController().signal
+  protected _send(
+    request: ICommand<TResponse>,
+    signal: AbortSignal,
+  ): Promise<ResultType<TResponse>> {
     return this._mediator.send(request, signal)
   }
 

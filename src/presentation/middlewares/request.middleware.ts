@@ -1,11 +1,12 @@
 import type {
+  ExtendedRequest,
   Identity,
   ILogger,
   IMiddleware,
   IServiceExtractor,
   RequestContext,
 } from '@xeno-js/shared'
-import type { Guid, HttpHeaders, HttpMethod, Metadata, ResponseDto } from '@xeno-js/shared'
+import type { Guid, Metadata, ResponseDto } from '@xeno-js/shared'
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
@@ -28,7 +29,7 @@ import { ContextMapper } from '../mappers/context.mapper'
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
+export class RequestContextMiddleware implements IMiddleware {
   /**
    * @description Constructs a new instance of the RequestContextMiddleware class, which is responsible for handling the request context in the middleware chain. It takes several dependencies as parameters, including an IRequestContext for managing the execution context, an IServiceExtractor for extracting metadata from HTTP headers, an IGateKeeper for performing authentication, and an IServiceContainer for managing service scopes and dependencies. These dependencies are essential for the middleware to function correctly, allowing it to extract necessary information from incoming requests, authenticate users, and set up the execution context for downstream processing.
    * @param _requestContext An instance of IRequestContext used to manage the execution context for the request. This context allows the middleware to set and retrieve contextual information that can be accessed by downstream handlers, controllers, or use cases during the processing of the request.
@@ -42,14 +43,14 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
    */
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
-    private readonly _extractor: IServiceExtractor<HttpHeaders, Metadata>,
+    private readonly _extractor: IServiceExtractor<Request['headers'], Metadata>,
     private readonly _resolver: IIPResolver,
     private readonly _logger: ILogger,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const correlationId = GuidHelper.generate()
@@ -58,9 +59,9 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
     const formatIndicator = 'application/json'
 
     try {
-      const meta = this._extractor.extract(headers)
+      const meta = this._extractor.extract(req.headers)
 
-      const clientIp = this._resolver.resolve(req.transport.req, meta.clientIp)
+      const clientIp = this._resolver.resolve(req, meta.clientIp)
 
       const metadata: Metadata = {
         ...meta,
@@ -75,7 +76,7 @@ export class RequestContextMiddleware implements IMiddleware<HttpHeaders> {
         metadata,
         identity: GUEST as unknown as Identity,
         path: req.path,
-        transport: req.transport,
+        transport: { req, res },
       })
 
       const result = await this._requestContext.runAsync(tmpContext, async () => {

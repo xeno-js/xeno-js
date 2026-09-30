@@ -139,6 +139,10 @@ export interface MiddlewareConfig {
    * @link https://github.com/xeno-js/xeno-js
    */
   withCredentials: boolean
+  /**
+   * @description The cookie prefix
+   */
+  authCookieName: Optional<string>
 }
 
 /**

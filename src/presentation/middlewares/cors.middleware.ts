@@ -1,6 +1,5 @@
 import type {
-  HttpHeaders,
-  HttpMethod,
+  ExtendedRequest,
   IContextAccessor,
   IMiddleware,
   RequestContext,
@@ -16,15 +15,15 @@ import { Guards } from '@xeno-js/shared'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class CORSMiddleware implements IMiddleware<HttpHeaders> {
+export class CORSMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: IContextAccessor<RequestContext>,
     private readonly _withCredentials: 'true' | 'false' = 'false',
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    _req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    _req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const { network } = this._requestContext.getContext() ?? {}

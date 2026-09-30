@@ -1,4 +1,10 @@
-import type { AuthConfig, CookieOptions, Optional } from '@xeno-js/shared'
+import type {
+  AuthConfig,
+  CookieOptions,
+  IExtendendAuthService,
+  IServiceExtractor,
+  Optional,
+} from '@xeno-js/shared'
 
 import type { IServiceContainer } from '../contracts'
 import type { ApplicationRegistry } from '../registries'
@@ -22,4 +28,8 @@ export interface AuthSsrConfig<
   TRegistry extends ApplicationRegistry = ApplicationRegistry,
 > extends AuthConfig<TOption> {
   ssrOpts: Optional<(container: IServiceContainer<TRegistry>) => ISsrCookieHandler>
+  customAuth: Optional<{
+    authHeaderExtractor: () => IServiceExtractor<Request['headers'], Optional<string>>
+    authExtendedService: () => IExtendendAuthService
+  }>
 }

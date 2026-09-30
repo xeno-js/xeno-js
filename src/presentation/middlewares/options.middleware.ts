@@ -1,4 +1,10 @@
-import type { HttpHeaders, HttpMethod, INetworkContextAccessor, ResponseDto } from '@xeno-js/shared'
+import type {
+  ExtendedRequest,
+  HttpHeaders,
+  IMiddleware,
+  INetworkContextAccessor,
+  ResponseDto,
+} from '@xeno-js/shared'
 import { Guards, HttpHelper, STATUS_CODES } from '@xeno-js/shared'
 
 import type { IAllowMethod } from '@/domain'
@@ -11,7 +17,7 @@ import type { IAllowMethod } from '@/domain'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class OptionsMiddleware {
+export class OptionsMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: INetworkContextAccessor,
     private readonly _alloewMethod: IAllowMethod,
@@ -19,9 +25,9 @@ export class OptionsMiddleware {
     private readonly _withCredentials: 'true' | 'false' = 'false',
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     if (req.method.toUpperCase() === 'OPTIONS') {

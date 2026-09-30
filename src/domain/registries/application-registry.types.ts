@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type {
-  HttpHeaders,
   IBaseAuthService,
   ICacheKeyBuilder,
   ICommand,
@@ -150,7 +149,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly MIDDLEWARE: IMiddleware<HttpHeaders>
+  readonly MIDDLEWARE: IMiddleware
   /** @description Token used to register and resolve the QueryPipeline behaviors in the dependency injection container.
    *
    * @author Xeno
@@ -190,7 +189,7 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  readonly SERVICE_EXTRACTOR: IServiceExtractor<HttpHeaders, Metadata>
+  readonly SERVICE_EXTRACTOR: IServiceExtractor<Request['headers'], Metadata>
   /** @description Token used to register and resolve the UnitOfWork instance in the dependency injection container.
    *
    * @author Xeno

@@ -1,4 +1,4 @@
-import type { Guid, NetworkContext, RequestContext } from '@xeno-js/shared'
+import type { ExtendedRequest, Guid, NetworkContext, RequestContext } from '@xeno-js/shared'
 import type { HttpMethod } from '@xeno-js/shared'
 import { ERROR_CODES, STATUS_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -7,8 +7,17 @@ import type { ApplicationRegistry, ICsrfTokenService, IRequestContext } from '@/
 
 import { CsrfMiddleware } from '../csrf.middleware'
 
-const path = '/api/protected'
-const transport = { res: '', req: '' }
+const headers: Request['headers'] = new Headers({ Authorization: 'Bearer tok' })
+const path = '/api/test'
+const method = 'GET'
+const transport = {
+  req: {
+    path,
+    method,
+    headers,
+  } as unknown as ExtendedRequest,
+  res: {} as unknown as Response,
+}
 
 function makeMiddleware(
   _cookieNamemethod: HttpMethod = 'POST',
@@ -50,7 +59,7 @@ describe('CsrfMiddleware', () => {
     const { middleware, validate } = makeMiddleware('GET', undefined)
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, data: {} })
 
-    const response = await middleware.execute({ method: 'GET', path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(next).toHaveBeenCalledOnce()
@@ -79,7 +88,12 @@ describe('CsrfMiddleware', () => {
     )
     const next = vi.fn().mockResolvedValue({ status: 201, ok: true, data: {} })
 
-    const response = await middleware.execute({ method: 'POST', path, transport }, {}, next)
+    const req = {
+      path,
+      method: 'POST',
+      headers,
+    } as unknown as ExtendedRequest
+    const response = await middleware.execute(req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(next).toHaveBeenCalledOnce()
@@ -104,7 +118,12 @@ describe('CsrfMiddleware', () => {
     })
     const next = vi.fn()
 
-    const response = await middleware.execute({ method: 'POST', path, transport }, {}, next)
+    const req = {
+      path,
+      method: 'POST',
+      headers,
+    } as unknown as ExtendedRequest
+    const response = await middleware.execute(req, transport.res, next)
 
     expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
     expect(response.ok).toBe(false)
@@ -133,7 +152,12 @@ describe('CsrfMiddleware', () => {
     })
     const next = vi.fn()
 
-    const response = await middleware.execute({ method: 'POST', path, transport }, {}, next)
+    const req = {
+      path,
+      method: 'POST',
+      headers,
+    } as unknown as ExtendedRequest
+    const response = await middleware.execute(req, transport.res, next)
 
     expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
     expect(response.ok).toBe(false)
@@ -160,8 +184,12 @@ describe('CsrfMiddleware', () => {
       },
     })
     const next = vi.fn()
-
-    const response = await middleware.execute({ method: 'POST', path, transport }, {}, next)
+    const req = {
+      path,
+      method: 'POST',
+      headers,
+    } as unknown as ExtendedRequest
+    const response = await middleware.execute(req, transport.res, next)
 
     expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
     expect(response.ok).toBe(false)
@@ -193,8 +221,12 @@ describe('CsrfMiddleware', () => {
       false,
     ) // validate returns false
     const next = vi.fn()
-
-    const response = await middleware.execute({ method: 'POST', path, transport }, {}, next)
+    const req = {
+      path,
+      method: 'POST',
+      headers,
+    } as unknown as ExtendedRequest
+    const response = await middleware.execute(req, transport.res, next)
 
     expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
     expect(response.ok).toBe(false)

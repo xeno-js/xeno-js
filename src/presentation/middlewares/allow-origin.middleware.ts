@@ -1,6 +1,5 @@
 import type {
-  HttpHeaders,
-  HttpMethod,
+  ExtendedRequest,
   IContextAccessor,
   ILogger,
   IMiddleware,
@@ -25,16 +24,16 @@ import type { IAllowOrigin } from '@/domain'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class AllowOriginMiddleware implements IMiddleware<HttpHeaders> {
+export class AllowOriginMiddleware implements IMiddleware {
   constructor(
     private readonly _allowOrigin: IAllowOrigin,
     private readonly _requestContext: IContextAccessor<RequestContext>,
     private readonly _logger: ILogger,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const { network, tracing } = this._requestContext.getContext() ?? {}

@@ -1,4 +1,4 @@
-import type { HttpHeaders, HttpMethod, IMiddleware, ResponseDto } from '@xeno-js/shared'
+import type { ExtendedRequest, IMiddleware, ResponseDto } from '@xeno-js/shared'
 
 /**
  * @description A middleware that executes a list of middlewares in a chain.
@@ -8,12 +8,12 @@ import type { HttpHeaders, HttpMethod, IMiddleware, ResponseDto } from '@xeno-js
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class CompositeMiddleware implements IMiddleware<HttpHeaders> {
-  constructor(private readonly _middlewares: IMiddleware<HttpHeaders>[]) {}
+export class CompositeMiddleware implements IMiddleware {
+  constructor(private readonly _middlewares: IMiddleware[]) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     let currentNext = next
@@ -21,7 +21,7 @@ export class CompositeMiddleware implements IMiddleware<HttpHeaders> {
     for (let i = this._middlewares.length - 1; i >= 0; i--) {
       const currentBehavior = this._middlewares[i]
       const previousNext = currentNext
-      currentNext = () => currentBehavior.execute(req, headers, previousNext)
+      currentNext = () => currentBehavior.execute(req, res, previousNext)
     }
 
     return currentNext()

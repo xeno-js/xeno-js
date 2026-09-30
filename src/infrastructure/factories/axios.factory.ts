@@ -1,12 +1,12 @@
 import http from 'node:http'
 import https from 'node:https'
 
-import type { HttpClientConfig, IHttpClient } from '@xeno-js/shared'
-import { AxiosFactory, AxiosHttpClient } from '@xeno-js/shared'
+import type { HttpClientConfig, IFactory, IHttpClient } from '@xeno-js/shared'
+import { AxiosHttpClient } from '@xeno-js/shared'
 import axios from 'axios'
 
-export class NodeAxiosFactory extends AxiosFactory {
-  public override create(config: HttpClientConfig): IHttpClient {
+export class NodeAxiosFactory implements IFactory<HttpClientConfig, IHttpClient> {
+  public create(config: HttpClientConfig): IHttpClient {
     const isKeepAlive = config.keepAlive ?? true
     const maxSockets = config.maxSockets ?? 100
 

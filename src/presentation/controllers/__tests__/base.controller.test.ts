@@ -28,11 +28,11 @@ class TestController extends BaseController<string, string> {
   }
 
   public exposeQuery(request: IQuery<string>) {
-    return this._query(request)
+    return this._query(request, new AbortController().signal)
   }
 
   public exposeSend(request: ICommand<string>) {
-    return this._send(request)
+    return this._send(request, new AbortController().signal)
   }
 }
 

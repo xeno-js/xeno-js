@@ -1,6 +1,5 @@
 import type {
-  HttpHeaders,
-  HttpMethod,
+  ExtendedRequest,
   IContextAccessor,
   IMiddleware,
   RequestContext,
@@ -19,23 +18,16 @@ import type { ICsrfTokenService, MiddlewareConfig } from '@/domain'
  * @link https://github.com/xeno-js/xeno-js
  * @license MIT
  */
-export class CsrfCookieMiddleware implements IMiddleware<HttpHeaders> {
+export class CsrfCookieMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: IContextAccessor<RequestContext>,
     private readonly _csrfTokenService: ICsrfTokenService,
     private readonly _csrf: NonNullable<MiddlewareConfig['csrf']>,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    _req: {
-      method: HttpMethod
-      path: string
-      transport: {
-        req: TRes
-        res: TReq
-      }
-    },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    _req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const response = await next()

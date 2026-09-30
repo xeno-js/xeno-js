@@ -1,6 +1,5 @@
 import type {
   Dictionary,
-  HttpHeaders,
   HttpMethod,
   IMiddleware,
   IServiceExtractor,
@@ -29,16 +28,18 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     container: IServiceContainer<TRegistry>,
     opts: MiddlewareConfig & {
       isAuth: boolean
+      customTokenExtractor: Optional<() => IServiceExtractor<Request['headers'], Optional<string>>>
     },
   ): Promise<void> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
 
     const { HttpCookieExtractor } = await import('../services')
     const { HttpHeaderExtractor } = await import('../services')
-    const tokenExtractor: IServiceExtractor<
-      HttpHeaders,
-      Optional<string>
-    > = await this._getTokenExtractor(opts.isSSR)
+    const tokenExtractor = await this._getTokenExtractor(
+      opts.isSSR,
+      opts.authCookieName,
+      opts.customTokenExtractor,
+    )
 
     container.addSingleton(
       TOKENS.SERVICE_EXTRACTOR,
@@ -53,7 +54,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
 
     const { ClientIpResolver } = await import('../services')
 
-    const middlewares: IMiddleware<HttpHeaders>[] = []
+    const middlewares: IMiddleware[] = []
     const requestContext = container.resolve(TOKENS.REQUEST_CONTEXT)
     const logger = container.resolve(TOKENS.LOGGER)
 
@@ -182,14 +183,18 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
 
   private async _getTokenExtractor(
     isSSR: boolean,
-  ): Promise<IServiceExtractor<HttpHeaders, Optional<string>>> {
+    cookieName: Optional<string>,
+    customTokenExtractor: Optional<() => IServiceExtractor<Request['headers'], Optional<string>>>,
+  ): Promise<IServiceExtractor<Request['headers'], Optional<string>>> {
+    const { Guards } = await import('@xeno-js/shared')
+    if (Guards.isDefined(customTokenExtractor)) return customTokenExtractor()
     if (isSSR) {
       const { SupabaseSsrTokenExtractor } = await import('../services')
       return new SupabaseSsrTokenExtractor()
     } else {
       const { BearerTokenExtractor } = await import('../services')
 
-      return new BearerTokenExtractor()
+      return new BearerTokenExtractor(cookieName ?? 'sb-access-token')
     }
   }
 
