@@ -60,6 +60,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
       this._configuration.get('APP_URL') ??
         `http://localhost:${this._configuration.getNumber('PORT', 3000)}`,
     )
+    this.addContext()
   }
 
   // --- Module Configurations ---
@@ -108,6 +109,12 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     storageOpts: { type: 'memory', cookieOpts: undefined, storage: undefined },
     ssrOpts: undefined,
     customAuth: undefined,
+    cookieOpts: {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true,
+    },
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,

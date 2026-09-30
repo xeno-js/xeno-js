@@ -1,6 +1,7 @@
 export * from './allow_methods/index'
 export * from './allow_origins/index'
 export * from './concurrency/index'
+export * from './cookies/index'
 export * from './crypto/index'
 export * from './csrf/index'
 export * from './extractors/index'
