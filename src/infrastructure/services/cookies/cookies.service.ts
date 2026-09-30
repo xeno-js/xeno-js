@@ -1,12 +1,7 @@
-import type {
-  CookieHandlerOptions,
-  IConfigurationService,
-  ISsrCookie,
-  ISsrCookieHandler,
-  ISsrCookieToSet,
-} from '@xeno-js/core'
-import type { INetworkContextAccessor } from '@xeno-js/core'
-import { Guards } from '@xeno-js/core'
+import type { IConfigurationService, INetworkContextAccessor } from '@xeno-js/shared'
+import { Guards } from '@xeno-js/shared'
+
+import type { CookieHandlerOptions, ISsrCookie, ISsrCookieHandler, ISsrCookieToSet } from '@/domain'
 
 /**
  *
