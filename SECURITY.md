@@ -7,7 +7,7 @@ updates and patches are applied to the latest minor version.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.x   | :white_check_mark: |
+| 1.x.x   | :white_check_mark: |
 | < 0.1   | :x:                |
 
 ## Reporting a Vulnerability
@@ -22,7 +22,7 @@ Instead, please report it privately:
 
 - **Email:** <xeno-js@outlook.it>
 
-### What to include in your report:
+### What to include in your report
 
 To help us triage and verify the issue as quickly as possible, please provide:
 
@@ -30,7 +30,7 @@ To help us triage and verify the issue as quickly as possible, please provide:
 - Steps or a minimal proof-of-concept (PoC) code snippet to reproduce the issue.
 - Any relevant logs, configuration details, or environment specifications.
 
-### Our Response Process:
+### Our Response Process
 
 1. **Acknowledgment:** We will acknowledge receipt of your vulnerability report
    within 48 hours.

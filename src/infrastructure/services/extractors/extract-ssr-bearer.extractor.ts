@@ -1,10 +1,4 @@
-import {
-  Guards,
-  type HttpHeaders,
-  type IServiceExtractor,
-  type Optional,
-  StringHelper,
-} from '@xeno-js/shared'
+import { Guards, type IServiceExtractor, type Optional, StringHelper } from '@xeno-js/shared'
 
 /**
  * @description The SupabaseSsrTokenExtractor class is a specialized implementation of the IServiceExtractor interface that extracts the Supabase SSR token from the HTTP headers. It is designed to work with Supabase's server-side rendering (SSR) functionality, where the token is stored in the HTTP headers for server-side rendering purposes. The extract method retrieves the token from the headers and returns it as a string.
@@ -14,14 +8,17 @@ import {
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class SupabaseSsrTokenExtractor implements IServiceExtractor<HttpHeaders, Optional<string>> {
-  extract(headers: HttpHeaders): Optional<string> {
-    const authHeader = StringHelper.getSingleValue(headers['authorization'])
+export class SupabaseSsrTokenExtractor implements IServiceExtractor<
+  Request['headers'],
+  Optional<string>
+> {
+  extract(headers: Request['headers']): Optional<string> {
+    const authHeader = headers.get('authorization')
     if (Guards.isDefined(authHeader) && authHeader.toLowerCase().startsWith('bearer ')) {
       return authHeader.substring(7)
     }
 
-    const cookieHeader = StringHelper.getSingleValue(headers['cookie'])
+    const cookieHeader = headers.get('cookie')
     if (Guards.isNullOrEmpty(cookieHeader)) return undefined
 
     const cookies = cookieHeader.split(';').map((c) => c.trim())

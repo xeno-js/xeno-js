@@ -1,4 +1,5 @@
 import type {
+  ExtendedRequest,
   IBaseMapper,
   Identity,
   MessagingContext,
@@ -12,7 +13,7 @@ interface ContextMapperSource {
   readonly metadata: Metadata
   readonly identity: Identity
   readonly path: string
-  readonly transport: { req: unknown; res: unknown }
+  readonly transport: { req: ExtendedRequest; res: Response }
 }
 
 export const ContextMapper: IBaseMapper<ContextMapperSource, RequestContext> = Object.freeze({

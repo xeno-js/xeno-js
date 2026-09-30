@@ -20,14 +20,14 @@ describe('HttpHeaderExtractor', () => {
       const cookieExtractor = makeCookieExtractor('csrf-cookie-val')
       const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
 
-      const headers = {
+      const headers = new Headers({
         'x-correlation-id': VALID_GUID,
         'x-request-id': VALID_GUID,
         'x-forwarded-for': '192.168.1.1',
         'x-span-id': VALID_GUID,
         'cookie': 'XSRF-TOKEN=csrf-cookie-val',
         'origin': 'http://localhost:3000',
-      }
+      })
 
       const result = extractor.extract(headers)
 
@@ -45,7 +45,7 @@ describe('HttpHeaderExtractor', () => {
       const cookieExtractor = makeCookieExtractor(undefined)
       const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
 
-      const result = extractor.extract({})
+      const result = extractor.extract(new Headers())
 
       expect(result.correlationId).toBeUndefined()
       expect(result.requestId).toBeUndefined()
@@ -60,7 +60,7 @@ describe('HttpHeaderExtractor', () => {
       const cookieExtractor = makeCookieExtractor(undefined)
       const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
 
-      const result = extractor.extract({ 'x-correlation-id': 'not-a-guid' })
+      const result = extractor.extract(new Headers({ 'x-correlation-id': 'not-a-guid' }))
 
       expect(result.correlationId).toBeUndefined()
     })
@@ -70,7 +70,7 @@ describe('HttpHeaderExtractor', () => {
       const cookieExtractor = makeCookieExtractor(undefined)
       const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
 
-      const result = extractor.extract({ 'x-request-id': 'not-a-guid' })
+      const result = extractor.extract(new Headers({ 'x-request-id': 'not-a-guid' }))
 
       expect(result.requestId).toBeUndefined()
     })
@@ -79,22 +79,12 @@ describe('HttpHeaderExtractor', () => {
       const bearer = makeBearerExtractor(TOKEN)
       const cookieExtractor = makeCookieExtractor(undefined)
       const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
-      const headers = { authorization: `Bearer ${TOKEN}` }
+      const headers = new Headers({ authorization: `Bearer ${TOKEN}` })
 
       extractor.extract(headers)
 
       expect(bearer.extract).toHaveBeenCalledOnce()
       expect(bearer.extract).toHaveBeenCalledWith(headers)
-    })
-
-    it('accepts array header values for x-forwarded-for', () => {
-      const bearer = makeBearerExtractor(undefined)
-      const cookieExtractor = makeCookieExtractor(undefined)
-      const extractor = new HttpHeaderExtractor(bearer, cookieExtractor, undefined, 'XSRF-TOKEN')
-
-      const result = extractor.extract({ 'x-forwarded-for': ['10.0.0.1', '10.0.0.2'] })
-
-      expect(result.clientIp).toBe('10.0.0.1')
     })
 
     it('respects custom trustedIp header configuration', () => {
@@ -107,10 +97,12 @@ describe('HttpHeaderExtractor', () => {
         'XSRF-TOKEN',
       )
 
-      const result = extractor.extract({
-        'x-custom-ip': '172.16.0.1',
-        'x-forwarded-for': '192.168.1.1',
-      })
+      const result = extractor.extract(
+        new Headers({
+          'x-custom-ip': '172.16.0.1',
+          'x-forwarded-for': '192.168.1.1',
+        }),
+      )
 
       expect(result.clientIp).toBe('172.16.0.1')
     })

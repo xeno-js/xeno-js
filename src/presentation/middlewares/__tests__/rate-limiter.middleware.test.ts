@@ -1,5 +1,4 @@
-import type { IContextAccessor, ILogger, RequestContext } from '@xeno-js/shared'
-import type { HttpMethod } from '@xeno-js/shared'
+import type { ExtendedRequest, IContextAccessor, ILogger, RequestContext } from '@xeno-js/shared'
 import { ERROR_CODES } from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -7,9 +6,17 @@ import type { IAtomicCache, IRateLimitKeyBuilder } from '@/domain'
 
 import { RateLimitMiddleware } from '../rate-limiter.middleware'
 
+const headers: Request['headers'] = new Headers({ Authorization: 'Bearer tok' })
 const path = '/api/test'
-const method: HttpMethod = 'GET'
-const transport = { res: '', req: '' }
+const method = 'GET'
+const transport = {
+  req: {
+    path,
+    method,
+    headers,
+  } as unknown as ExtendedRequest,
+  res: {} as unknown as Response,
+}
 
 function makeMiddleware(
   currentHits = 1,
@@ -46,7 +53,7 @@ describe('RateLimitMiddleware', () => {
     const { middleware, increment } = makeMiddleware(2, 3) // 2 hits, max 3
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, data: {} })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(increment).toHaveBeenCalledOnce()
@@ -58,7 +65,7 @@ describe('RateLimitMiddleware', () => {
     const { middleware, increment, warn } = makeMiddleware(4, 3) // 4 hits, max 3
     const next = vi.fn()
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.status).toBe(429)
     expect(response.ok).toBe(false)
@@ -88,7 +95,7 @@ describe('RateLimitMiddleware', () => {
     })
 
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, data: {} })
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(false)
     expect(response.status).toBe(503)

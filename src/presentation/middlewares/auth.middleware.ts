@@ -1,6 +1,5 @@
 import type {
-  HttpHeaders,
-  HttpMethod,
+  ExtendedRequest,
   IGateKeeper,
   ILogger,
   IMiddleware,
@@ -23,7 +22,7 @@ import type { ApplicationRegistry, IRequestContext } from '@/domain'
  * @param {IGateKeeper} _gateKeeper - The gate keeper to use for authentication.
  * @param {ILogger} _logger - The logger to use for logging.
  * @param {IServiceExtractor<HttpHeaders, Optional<string>>} _tokenExtractor - The token extractor to use for extracting the token from the request.
- * @returns {IMiddleware<HttpHeaders>} - The middleware function.
+ * @returns {IMiddleware} - The middleware function.
  * @link https://github.com/xeno-js/xeno-js
  *
  * @see {@link IRequestContext} - The request context interface.
@@ -31,20 +30,20 @@ import type { ApplicationRegistry, IRequestContext } from '@/domain'
  * @see {@link ILogger} - The logger interface.
  * @see {@link IServiceExtractor} - The service extractor interface.
  */
-export class AuthenticationMiddleware implements IMiddleware<HttpHeaders> {
+export class AuthenticationMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
-    private readonly _tokenExtractor: IServiceExtractor<HttpHeaders, Optional<string>>,
+    private readonly _tokenExtractor: IServiceExtractor<Request['headers'], Optional<string>>,
     private readonly _gateKeeper: IGateKeeper,
     private readonly _logger: ILogger,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
-    const token = this._tokenExtractor.extract(headers)
+    const token = this._tokenExtractor.extract(req.headers)
     const authResult = await this._gateKeeper.authenticate(token)
 
     if (!authResult.isOk()) {

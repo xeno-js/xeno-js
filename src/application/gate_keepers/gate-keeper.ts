@@ -45,7 +45,5 @@ export class GateKeeper implements IGateKeeper {
     }
 
     return Result.ok(guest)
-
-    return Result.ok(guest)
   }
 }

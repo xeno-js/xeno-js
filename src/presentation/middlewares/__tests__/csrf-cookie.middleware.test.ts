@@ -1,14 +1,27 @@
-import type { Guid, IContextAccessor, NetworkContext, RequestContext } from '@xeno-js/shared'
-import type { HttpMethod } from '@xeno-js/shared'
+import type {
+  ExtendedRequest,
+  Guid,
+  IContextAccessor,
+  NetworkContext,
+  RequestContext,
+} from '@xeno-js/shared'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ICsrfTokenService, MiddlewareConfig } from '@/domain'
 
 import { CsrfCookieMiddleware } from '../csrf-cookie.middleware'
 
+const headers: Request['headers'] = new Headers({ Authorization: 'Bearer tok' })
 const path = '/api/test'
-const method: HttpMethod = 'GET'
-const transport = { res: '', req: '' }
+const method = 'GET'
+const transport = {
+  req: {
+    path,
+    method,
+    headers,
+  } as unknown as ExtendedRequest,
+  res: {} as unknown as Response,
+}
 
 function makeMiddleware(
   contextData: Partial<RequestContext> | undefined = {
@@ -66,7 +79,7 @@ describe('CsrfCookieMiddleware', () => {
     })
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(generate).not.toHaveBeenCalled()
@@ -91,7 +104,7 @@ describe('CsrfCookieMiddleware', () => {
     })
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(generate).not.toHaveBeenCalled()
@@ -125,7 +138,7 @@ describe('CsrfCookieMiddleware', () => {
     )
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     expect(response.ok).toBe(true)
     expect(generate).toHaveBeenCalledOnce()
@@ -171,7 +184,7 @@ describe('CsrfCookieMiddleware', () => {
     )
     const next = vi.fn().mockResolvedValue({ status: 200, ok: true, headers: {}, data: {} })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     const setCookieHeaders = response.headers['Set-Cookie'] as string[]
     expect(setCookieHeaders[0]).toContain('custom_csrf=custom-token')
@@ -214,7 +227,7 @@ describe('CsrfCookieMiddleware', () => {
       data: {},
     })
 
-    const response = await middleware.execute({ method, path, transport }, {}, next)
+    const response = await middleware.execute(transport.req, transport.res, next)
 
     const setCookieHeaders = response.headers['Set-Cookie'] as string[]
     expect(setCookieHeaders).toHaveLength(2)

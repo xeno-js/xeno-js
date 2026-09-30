@@ -1,5 +1,5 @@
 import type {
-  HttpHeaders,
+  ExtendedRequest,
   HttpMethod,
   IMiddleware,
   RequestContext,
@@ -24,25 +24,25 @@ import type { ApplicationRegistry, IAllowMethod, IRequestContext } from '@/domai
  * @link https://github.com/xeno-js/xeno-js
  * @param {IAllowMethod} _allowMethod - The allow method service to check if the method is allowed.
  * @param {IRequestContext<RequestContext, ApplicationRegistry<unknown>>} _requestContext - The request context to get the request context.
- * @returns {IMiddleware<HttpHeaders>} - The middleware function that checks if the method is allowed.
+ * @returns {IMiddleware} - The middleware function that checks if the method is allowed.
  * @throws {Error} - If the method is not allowed, it throws an error with a 405 status code and an error message.
  * @see {@link IAllowMethod} - The allow method service.
  * @see {@link IRequestContext} - The request context.
  * @see {@link IMiddleware} - The middleware interface.
  * @see {@link IResponseDto} - The response DTO.
  */
-export class MethodCheckMiddleware implements IMiddleware<HttpHeaders> {
+export class MethodCheckMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _allowMethod: IAllowMethod,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
-    const isAllowed = this._allowMethod.check(req.path, req.method)
+    const isAllowed = this._allowMethod.check(req.path, req.method as HttpMethod)
 
     if (!isAllowed) {
       const { network, tracing } = this._requestContext.getContext() ?? {}

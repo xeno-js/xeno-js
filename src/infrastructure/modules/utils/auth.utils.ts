@@ -113,18 +113,28 @@ export const AuthUtils = Object.freeze({
     container: IServiceContainer<TRegistry>,
     opts: AuthSsrConfig<SupabaseClientOptions<'public'>>,
   ): Promise<void> {
-    const { TOKENS } = await import('@xeno-js/shared')
-    const _t = opts
-    const { SupabaseServerAuthFactory } = await import('../../factories')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
+    if (Guards.isDefined(opts.customAuth)) {
+      const authService = opts.customAuth.authExtendedService()
+      container.addScoped(TOKENS.AUTH_SERVICE, () => {
+        return authService
+      })
 
-    const factory = new SupabaseServerAuthFactory()
-    const supabase = factory.create({ config: opts, container })
-    container.addScoped(TOKENS.AUTH_SERVICE, () => {
-      return supabase
-    })
+      container.addSingleton(TOKENS.BASE_AUTH_SERVICE, () => {
+        return authService
+      })
+    } else {
+      const { SupabaseServerAuthFactory } = await import('../../factories')
 
-    container.addSingleton(TOKENS.BASE_AUTH_SERVICE, () => {
-      return supabase
-    })
+      const factory = new SupabaseServerAuthFactory()
+      const supabase = factory.create({ config: opts, container })
+      container.addScoped(TOKENS.AUTH_SERVICE, () => {
+        return supabase
+      })
+
+      container.addSingleton(TOKENS.BASE_AUTH_SERVICE, () => {
+        return supabase
+      })
+    }
   },
 } as const)

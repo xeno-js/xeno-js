@@ -1,14 +1,6 @@
 import type { IServiceExtractor } from '@xeno-js/shared'
 import type { Metadata } from '@xeno-js/shared'
-import {
-  Guards,
-  GuidHelper,
-  type HttpHeaders,
-  HttpHelper,
-  MathHelper,
-  type Optional,
-  StringHelper,
-} from '@xeno-js/shared'
+import { Guards, GuidHelper, HttpHelper, MathHelper, type Optional } from '@xeno-js/shared'
 
 /**
  * @description The HttpHeaderExtractor class implements the IServiceExtractor interface, providing a concrete implementation for extracting HTTP header values from an incoming HttpRequest. The extract method retrieves the value of a specified header, handling both string and array formats for header values. If the header is not present or if the headers object is null or empty, it returns undefined, allowing for consistent handling of missing headers in the application.
@@ -19,7 +11,7 @@ import {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metadata> {
+export class HttpHeaderExtractor implements IServiceExtractor<Request['headers'], Metadata> {
   /**
    * @description Constructor for HttpHeaderExtractor. It takes an instance of IServiceExtractor for extracting Bearer tokens, allowing for separation of concerns and adherence to the Single Responsibility Principle (SRP). This design enables the HttpHeaderExtractor to focus on general header extraction while delegating the specific logic of Bearer token extraction to a dedicated extractor, promoting code reusability and maintainability.
   
@@ -30,7 +22,7 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
    * @link https://github.com/xeno-js/xeno-js 
    */
   constructor(
-    private readonly _bearerExtractor: IServiceExtractor<HttpHeaders, Optional<string>>,
+    private readonly _bearerExtractor: IServiceExtractor<Request['headers'], Optional<string>>,
     private readonly _cookieExtractor: IServiceExtractor<
       {
         header: Optional<string>
@@ -42,33 +34,34 @@ export class HttpHeaderExtractor implements IServiceExtractor<HttpHeaders, Metad
     private readonly _cookieName: string,
   ) {}
 
-  extract(headers: HttpHeaders): Metadata {
-    const correlationId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-correlation-id']))
-    const requestId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-request-id']))
+  extract(headers: Request['headers']): Metadata {
+    const correlationId = GuidHelper.parse(headers.get('x-correlation-id') ?? undefined)
+    const requestId = GuidHelper.parse(headers.get('x-request-id') ?? undefined)
     const token = this._bearerExtractor.extract(headers)
     const clientIp =
-      StringHelper.getSingleValue(headers[this._trustedIp?.toLowerCase() ?? 'x-forwarded-for']) ??
-      StringHelper.getSingleValue(headers['x-real-ip'])
-    const spanId = GuidHelper.parse(StringHelper.getSingleValue(headers['x-span-id']))
-    const parentSpanId = StringHelper.getSingleValue(headers['x-parent-span-id'])
-    const acceptHeader = StringHelper.getSingleValue(headers['accept'])
-    const contentTypeHeader = StringHelper.getSingleValue(headers['content-type'])
-    const userAgent = StringHelper.getSingleValue(headers['user-agent'])
-    const returnAddress = StringHelper.getSingleValue(headers['x-return-address'])
-    const sequenceId = StringHelper.getSingleValue(headers['x-sequence-id'])
-    const position = StringHelper.getSingleValue(headers['x-sequence-position'])
-    const size = StringHelper.getSingleValue(headers['x-sequence-size'])
-    const expiration = StringHelper.getSingleValue(headers['x-expiration'])
+      headers.get(this._trustedIp?.toLowerCase() ?? 'x-forwarded-for') ??
+      headers.get('x-real-ip') ??
+      undefined
+    const spanId = GuidHelper.parse(headers.get('x-span-id') ?? undefined)
+    const parentSpanId = headers.get('x-parent-span-id') ?? undefined
+    const acceptHeader = headers.get('accept')
+    const contentTypeHeader = headers.get('content-type')
+    const userAgent = headers.get('user-agent') ?? undefined
+    const returnAddress = headers.get('x-return-address') ?? undefined
+    const sequenceId = headers.get('x-sequence-id') ?? undefined
+    const position = headers.get('x-sequence-position')
+    const size = headers.get('x-sequence-size')
+    const expiration = headers.get('x-expiration')
 
-    const csrf = StringHelper.getSingleValue(headers['x-csrf-token'])
-    const cookieHeader = StringHelper.getSingleValue(headers['cookie'])
+    const csrf = headers.get('x-csrf-token') ?? undefined
+    const cookieHeader = headers.get('cookie') ?? undefined
     const csrfCookie = this._cookieExtractor.extract({
       header: cookieHeader,
       name: this._cookieName,
     })
-    const origin = StringHelper.getSingleValue(headers['origin'])
+    const origin = headers.get('origin') ?? undefined
     const cleanOrigin = HttpHelper.sanitizeOriginUrl(origin)
-    const referer = StringHelper.getSingleValue(headers['referer'])
+    const referer = headers.get('referer') ?? undefined
     const cleanReferer = HttpHelper.sanitizeOriginUrl(referer)
 
     const accept = acceptHeader === '*/*' ? undefined : acceptHeader

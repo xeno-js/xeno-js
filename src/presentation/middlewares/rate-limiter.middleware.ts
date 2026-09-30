@@ -1,6 +1,5 @@
 import type {
-  HttpHeaders,
-  HttpMethod,
+  ExtendedRequest,
   IContextAccessor,
   ILogger,
   IMiddleware,
@@ -31,7 +30,7 @@ import type { IAtomicCache, IRateLimitKeyBuilder } from '@/domain'
  * @param {number} _opts.windowSeconds - The time window in seconds within which the maximum number of requests is allowed.
  * @link https://github.com/xenowits/xeno-js
  */
-export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
+export class RateLimitMiddleware implements IMiddleware {
   constructor(
     private readonly _ctxAccessor: IContextAccessor<RequestContext>,
     private readonly _cache: IAtomicCache,
@@ -43,9 +42,9 @@ export class RateLimitMiddleware implements IMiddleware<HttpHeaders> {
     },
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const cacheKey = this._keyBuilder.buildRateLimitKey(req.path)

@@ -1,11 +1,4 @@
-import {
-  Guards,
-  type HttpHeaders,
-  type HttpMethod,
-  type Optional,
-  type ResponseDto,
-  TOKENS,
-} from '@xeno-js/shared'
+import { type ExtendedRequest, Guards, type ResponseDto, TOKENS } from '@xeno-js/shared'
 
 import type { ApplicationRegistry, IServiceContainer, IServiceScope } from '@/domain'
 
@@ -48,22 +41,21 @@ export const ContainerUtils = Object.freeze({
    * @throws Error If the service is not found in the container.
    * @throws Error If the service is not a scoped service.
    */
-  async runExecute<TResponse, T extends ApplicationRegistry, TRes, TReq>(
-    endpoint: string,
-    method: Optional<string>,
-    headers: HttpHeaders,
-    transport: { res: TRes; req: TReq },
+  async runExecute<
+    TResponse,
+    T extends ApplicationRegistry,
+    TRes extends Response,
+    TReq extends ExtendedRequest,
+  >(
+    res: TRes,
+    req: TReq,
     container: IServiceContainer<T>,
     action: () => Promise<ResponseDto<TResponse>>,
   ): Promise<ResponseDto<TResponse>> {
     const middleware = container.resolve(TOKENS.MIDDLEWARE)
 
-    return await middleware.execute(
-      { path: endpoint, method: (method as HttpMethod) ?? 'GET', transport },
-      { ...headers },
-      async () => {
-        return await action()
-      },
-    )
+    return await middleware.execute(req, res, async () => {
+      return await action()
+    })
   },
 })

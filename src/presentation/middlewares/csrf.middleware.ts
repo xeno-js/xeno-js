@@ -1,4 +1,4 @@
-import type { HttpHeaders, HttpMethod, RequestContext, ResponseDto } from '@xeno-js/shared'
+import type { ExtendedRequest, IMiddleware, RequestContext, ResponseDto } from '@xeno-js/shared'
 import {
   ERROR_CODE_MESSAGES,
   ERROR_CODES,
@@ -13,15 +13,15 @@ import type { ApplicationRegistry, ICsrfTokenService, IRequestContext } from '@/
 /**
  * @description The CsrfMiddleware class implements the IMiddleware interface, providing a concrete implementation for handling CSRF token validation. It checks the incoming request for a valid CSRF token and returns an error response if the token is missing or invalid.
  */
-export class CsrfMiddleware {
+export class CsrfMiddleware implements IMiddleware {
   constructor(
     private readonly _requestContext: IRequestContext<RequestContext, ApplicationRegistry<unknown>>,
     private readonly _csrfTokenService: ICsrfTokenService,
   ) {}
 
-  public async execute<T, TRes, TReq>(
-    req: { method: HttpMethod; path: string; transport: { req: TRes; res: TReq } },
-    _headers: HttpHeaders,
+  public async execute<T, TRes extends Response, TReq extends ExtendedRequest>(
+    req: TReq,
+    _res: TRes,
     next: () => Promise<ResponseDto<T>>,
   ): Promise<ResponseDto<T>> {
     const method = req.method.toUpperCase()

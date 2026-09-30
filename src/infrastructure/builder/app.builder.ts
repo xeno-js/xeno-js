@@ -98,6 +98,16 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     allowHeaders: [],
     cors: true,
     withCredentials: true,
+    authCookieName: 'sb-access-token',
+  }
+  private readonly _authConfig: AuthSsrConfig<SupabaseClientOptions<'public'>> = {
+    url: '',
+    key: '',
+    opts: undefined,
+    redirectTo: '',
+    storageOpts: { type: 'memory', cookieOpts: undefined, storage: undefined },
+    ssrOpts: undefined,
+    customAuth: undefined,
   }
   private readonly _httpConfig: HttpCoreConfig<TRegistry> = {
     dataSourceToken: undefined,
@@ -243,21 +253,14 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   ): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
-    const config: AuthSsrConfig<SupabaseClientOptions<'public'>> = {
-      url: '',
-      key: '',
-      opts: undefined,
-      redirectTo: '',
-      storageOpts: { type: 'memory', cookieOpts: undefined, storage: undefined },
-      ssrOpts: undefined,
-    }
-    setupAction(config, this._configuration)
+
+    setupAction(this._authConfig, this._configuration)
     this._modules.push({
       priority: 3,
       name: 'AuthModule',
       action: async () => {
         const { AuthUtils } = await import('../modules/utils/auth.utils')
-        await AuthUtils.addAuthN(this._container, config)
+        await AuthUtils.addAuthN(this._container, this._authConfig)
       },
     })
     return this
@@ -539,6 +542,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
         await middlewareModule.configure(this._container, {
           ...this._middlewareConfig,
           isAuth: this._isAuthModuleQueued,
+          customTokenExtractor: this._authConfig.customAuth?.authHeaderExtractor,
         })
       },
     })
