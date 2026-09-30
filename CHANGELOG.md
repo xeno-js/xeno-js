@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/xeno-js/xeno-js/compare/v1.1.0...v1.1.1) (2026-09-30)
+
+### Bug Fixes
+
+- resolved bug introduced with v1.1.0
+  ([d71d1d0](https://github.com/xeno-js/xeno-js/commit/d71d1d0aeee54bdfad7a248b8fc4b9622321c406))
+
 # [1.1.0](https://github.com/xeno-js/xeno-js/compare/v1.0.0...v1.1.0) (2026-09-30)
 
 ### Features
