@@ -1,3 +1,17 @@
+## [1.2.4](https://github.com/xeno-js/xeno-js/compare/v1.2.3...v1.2.4) (2026-10-01)
+
+### Bug Fixes
+
+- **cookiehandler:** update getall setall with arrow function
+  ([8d366f8](https://github.com/xeno-js/xeno-js/commit/8d366f8c7a2452cc491a5b82a310d81f3bd7621f))
+
+## [1.2.3](https://github.com/xeno-js/xeno-js/compare/v1.2.2...v1.2.3) (2026-10-01)
+
+### Bug Fixes
+
+- **cookie-handler:** resolve bug di - now di resolves network context
+  ([cd7fa04](https://github.com/xeno-js/xeno-js/commit/cd7fa045183163b7db365e62cc4dd0e8e944d52b))
+
 ## [1.2.2](https://github.com/xeno-js/xeno-js/compare/v1.2.1...v1.2.2) (2026-10-01)
 
 ### Bug Fixes
