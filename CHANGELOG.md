@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/xeno-js/xeno-js/compare/v1.2.1...v1.2.2) (2026-10-01)
+
+### Bug Fixes
+
+- removed spread operator to mantain getter-setter
+  ([b83949e](https://github.com/xeno-js/xeno-js/commit/b83949e15e5398948793a04b59a5015cfcc0a41f))
+
 ## [1.2.1](https://github.com/xeno-js/xeno-js/compare/v1.2.0...v1.2.1) (2026-10-01)
 
 ### Bug Fixes
