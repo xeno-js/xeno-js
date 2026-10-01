@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/xeno-js/xeno-js/compare/v1.2.5...v1.2.6) (2026-10-01)
+
+### Bug Fixes
+
+- **adapter-http:** managed headers for response
+  ([8508595](https://github.com/xeno-js/xeno-js/commit/850859554a7eb216a473b152a8c29b33f42b7fc2))
+
 ## [1.2.5](https://github.com/xeno-js/xeno-js/compare/v1.2.4...v1.2.5) (2026-10-01)
 
 ### Bug Fixes
