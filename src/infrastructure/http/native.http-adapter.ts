@@ -1,3 +1,5 @@
+import type { ExtendedRequest } from '@xeno-js/shared'
+
 import type { XenoWebTransport } from '@/domain'
 
 import { BaseHttpAdapter } from './base.http-adapter'
@@ -11,11 +13,11 @@ import { BaseHttpAdapter } from './base.http-adapter'
  */
 export class NativeHttpAdapter extends BaseHttpAdapter {
   public adapt(req: Request, res: Response): XenoWebTransport {
+    const extendedRequest = req as ExtendedRequest
+    extendedRequest.path = new URL(req.url).pathname
+
     return {
-      request: {
-        ...req,
-        path: new URL(req.url).pathname,
-      },
+      request: extendedRequest,
       response: res,
     }
   }

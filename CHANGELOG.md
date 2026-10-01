@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/xeno-js/xeno-js/compare/v1.2.0...v1.2.1) (2026-10-01)
+
+### Bug Fixes
+
+- fixing creation url in base adapter
+  ([791deea](https://github.com/xeno-js/xeno-js/commit/791deea70e09e830823d6324f47717219f320063))
+
 # [1.2.0](https://github.com/xeno-js/xeno-js/compare/v0.1.13...v1.2.0) (2026-10-01)
 
 ### Bug Fixes

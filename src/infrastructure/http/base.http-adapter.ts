@@ -120,11 +120,10 @@ export abstract class BaseHttpAdapter<
       init.duplex = 'half'
     }
 
+    const extendedRequest = new Request(url, init) as ExtendedRequest
+    extendedRequest.path = url.pathname
     return {
-      request: {
-        ...new Request(url, init),
-        path: url.pathname,
-      },
+      request: extendedRequest,
       response: new Response(),
     }
   }
