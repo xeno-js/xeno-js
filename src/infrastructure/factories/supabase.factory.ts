@@ -52,7 +52,7 @@ export class SupabaseServerAuthFactory<
       return ssrOpts(container)
     } else {
       return new CookieHandler(
-        container.resolve(TOKENS.REQUEST_CONTEXT),
+        container.resolve(TOKENS.NETWORK_CONTEXT_ACCESSOR),
         container.resolve(TOKENS.CONFIGURATION_SERVICE),
         config,
       )
