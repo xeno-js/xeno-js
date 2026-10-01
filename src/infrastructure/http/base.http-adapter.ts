@@ -30,7 +30,8 @@ export abstract class BaseHttpAdapter<
   ): URL {
     const protocol = StringHelper.getSingleValue(headers['x-forwarded-proto']) ?? 'https'
     const host = StringHelper.safeStringify(headers['host']) ?? 'localhost'
-    const url = new URL(rawUrl, `${protocol}://${host}`)
+    const cleanHost = host.replace(/['"]/g, '')
+    const url = new URL(rawUrl, `${protocol}://${cleanHost}`)
 
     if (!Guards.isNullOrEmpty(queryParams)) {
       for (const [key, value] of Object.entries(queryParams)) {
@@ -119,11 +120,10 @@ export abstract class BaseHttpAdapter<
       init.duplex = 'half'
     }
 
+    const extendedRequest = new Request(url, init) as ExtendedRequest
+    extendedRequest.path = url.pathname
     return {
-      request: {
-        ...new Request(url, init),
-        path: url.pathname,
-      },
+      request: extendedRequest,
       response: new Response(),
     }
   }

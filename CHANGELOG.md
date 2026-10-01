@@ -1,3 +1,17 @@
+## [1.2.2](https://github.com/xeno-js/xeno-js/compare/v1.2.1...v1.2.2) (2026-10-01)
+
+### Bug Fixes
+
+- removed spread operator to mantain getter-setter
+  ([b83949e](https://github.com/xeno-js/xeno-js/commit/b83949e15e5398948793a04b59a5015cfcc0a41f))
+
+## [1.2.1](https://github.com/xeno-js/xeno-js/compare/v1.2.0...v1.2.1) (2026-10-01)
+
+### Bug Fixes
+
+- fixing creation url in base adapter
+  ([791deea](https://github.com/xeno-js/xeno-js/commit/791deea70e09e830823d6324f47717219f320063))
+
 # [1.2.0](https://github.com/xeno-js/xeno-js/compare/v0.1.13...v1.2.0) (2026-10-01)
 
 ### Bug Fixes
