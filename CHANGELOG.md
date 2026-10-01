@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/xeno-js/xeno-js/compare/v1.2.6...v1.2.7) (2026-10-01)
+
+### Bug Fixes
+
+- **http-adapter:** now passing the response to base
+  ([01eba3b](https://github.com/xeno-js/xeno-js/commit/01eba3b85d44b9b19796af039f2e874d73218deb))
+
 ## [1.2.6](https://github.com/xeno-js/xeno-js/compare/v1.2.5...v1.2.6) (2026-10-01)
 
 ### Bug Fixes
