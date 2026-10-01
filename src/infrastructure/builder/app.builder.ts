@@ -6,6 +6,7 @@ import type { ZodType } from 'zod'
 import type {
   ApplicationRegistry,
   AuthSsrConfig,
+  HttpAdapterConfig,
   HttpCoreConfig,
   IModule,
   IServiceContainer,
@@ -67,6 +68,12 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private readonly _modules: QueuedModule[] = []
 
   // --- Specific Configurations ---
+  private _adapterConfig: HttpAdapterConfig = {
+    native: true,
+    vercel: false,
+    fastify: false,
+    custom: undefined,
+  }
   private _pipelineConfig: PipelineConfig<TRegistry, ZodType> = {
     performance: { thresholdMs: 500 },
     authorization: {
@@ -151,10 +158,27 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private _isDbContextModuleQueued = false
   private _isConcurrencyServiceQueued = false
   private _isCacheModuleQueued = false
+  private _isAdapterModuleQueued = false
 
   // ─────────────────────────────────────────────────────────────────────────────
   // Application Modules Configuration
   // ─────────────────────────────────────────────────────────────────────────────
+
+  public addAdapter(setupAction: SetupAction<HttpAdapterConfig, IConfigurationService>): this {
+    if (this._isAdapterModuleQueued) return this
+    setupAction(this._adapterConfig, this._configuration)
+    this._isAdapterModuleQueued = true
+
+    this._modules.push({
+      priority: 50,
+      name: 'AdapterModule',
+      action: async () => {
+        const { HttpAdapterModule } = await import('../modules')
+        await new HttpAdapterModule().configure(this._container, this._adapterConfig)
+      },
+    })
+    return this
+  }
 
   /**
    * @description Enables the use of middlewares in the application. Middlewares can be used for cross-cutting concerns such as logging, authentication, and request/response manipulation.

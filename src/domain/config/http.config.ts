@@ -1,6 +1,6 @@
-import type { HttpClientConfig, SetupAction } from '@xeno-js/shared'
+import type { HttpClientConfig, Optional, SetupAction } from '@xeno-js/shared'
 
-import type { IServiceContainer } from '../contracts'
+import type { IHttpAdapter, IServiceContainer } from '../contracts'
 import type { ApplicationRegistry } from '../registries'
 import type { ResilienceConfig } from './resilience.config'
 
@@ -68,4 +68,50 @@ export interface HttpConfig<
    * @link https://github.com/xeno-js/xeno-js
    */
   client: HttpClientConfig
+}
+
+/**
+ * @description The configuration options for the HTTP client, including default headers, base URL, and timeout settings.
+ * @author Xeno
+ * @version 1.2.1
+ * @since 2025-09-30
+ * @link https://github.com/xeno-js/xeno-js
+ */
+export interface HttpAdapterConfig {
+  /**
+   * @description Boolean for Native node js adapter (default true).
+   * @type boolean
+   * @author Xeno
+   * @version 1.2.1
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  native: boolean
+  /**
+   * @description Boolean for Vercel adapter.
+   * @type boolean
+   * @author Xeno
+   * @version 1.2.1
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  vercel: boolean
+  /**
+   * @description Boolean for Fastify adapter.
+   * @type boolean
+   * @author Xeno
+   * @version 1.2.1
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  fastify: boolean
+  /**
+   * @description Optional function for custom adapter.
+   * @type Optional<() => IHttpAdapter>
+   * @author Xeno
+   * @version 1.2.1
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  custom: Optional<() => IHttpAdapter>
 }
