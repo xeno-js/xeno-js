@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/xeno-js/xeno-js/compare/v1.2.2...v1.2.3) (2026-10-01)
+
+### Bug Fixes
+
+- **cookie-handler:** resolve bug di - now di resolves network context
+  ([cd7fa04](https://github.com/xeno-js/xeno-js/commit/cd7fa045183163b7db365e62cc4dd0e8e944d52b))
+
 ## [1.2.2](https://github.com/xeno-js/xeno-js/compare/v1.2.1...v1.2.2) (2026-10-01)
 
 ### Bug Fixes
