@@ -21,4 +21,13 @@ export class NativeHttpAdapter extends BaseHttpAdapter {
       response: res,
     }
   }
+
+  protected handleHeaderChange(
+    _res: Response,
+    _name: string,
+    _value: string,
+    _action: 'set' | 'append' | 'delete',
+  ): void {
+    return
+  }
 }

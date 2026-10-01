@@ -95,6 +95,22 @@ export abstract class BaseHttpAdapter<
   }
 
   /**
+   * @description Handles the header change.
+   * @param res The response.
+   * @param name The name.
+   * @param value The value.
+   * @param action The action.
+   * @param action The action.
+   * @returns void
+   */
+  protected abstract handleHeaderChange(
+    _res: TRes,
+    _name: string,
+    _value: string,
+    _action: 'set' | 'append' | 'delete',
+  ): void
+
+  /**
    * @description Creates the XenoWebTransport.
    * @param url The url.
    * @param method The method.
@@ -107,6 +123,7 @@ export abstract class BaseHttpAdapter<
     method = 'GET',
     headers: Headers,
     body: Optional<unknown> = undefined,
+    res: Optional<TRes> = undefined,
   ): XenoWebTransport {
     const init: RequestInit & { duplex?: 'half' } = {
       method: method.toUpperCase(),
@@ -122,9 +139,33 @@ export abstract class BaseHttpAdapter<
 
     const extendedRequest = new Request(url, init) as ExtendedRequest
     extendedRequest.path = url.pathname
+
+    const webResponse = new Response()
+
+    if (Guards.isDefined(res)) {
+      const originalAppend = webResponse.headers.append.bind(webResponse.headers)
+      const originalSet = webResponse.headers.set.bind(webResponse.headers)
+      const originalDelete = webResponse.headers.delete.bind(webResponse.headers)
+
+      webResponse.headers.append = (name: string, value: string) => {
+        originalAppend(name, value)
+        this.handleHeaderChange(res, name, value, 'append')
+      }
+
+      webResponse.headers.set = (name: string, value: string) => {
+        originalSet(name, value)
+        this.handleHeaderChange(res, name, value, 'set')
+      }
+
+      webResponse.headers.delete = (name: string) => {
+        originalDelete(name)
+        this.handleHeaderChange(res, name, '', 'delete')
+      }
+    }
+
     return {
       request: extendedRequest,
-      response: new Response(),
+      response: webResponse,
     }
   }
 }
