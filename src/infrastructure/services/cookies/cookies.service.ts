@@ -13,7 +13,7 @@ export class CookieHandler implements ISsrCookieHandler {
     private readonly _cookieOpts: CookieHandlerOptions,
   ) {}
 
-  public getAll = (): ISsrCookie[] => {
+  public getAll(): ISsrCookie[] {
     const network = this.contextAccessor.getNetworkContext()
     const req = network?.transport?.req
 
@@ -30,7 +30,7 @@ export class CookieHandler implements ISsrCookieHandler {
     )
   }
 
-  public setAll = (cookies: ISsrCookieToSet[]): void => {
+  public setAll(cookies: ISsrCookieToSet[]): void {
     const network = this.contextAccessor.getNetworkContext()
     const res = network?.transport?.res
 

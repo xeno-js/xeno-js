@@ -34,7 +34,14 @@ export class SupabaseServerAuthFactory<
     const cookieService = this._getCookieSsr(config.ssrOpts, container, config.cookieOpts)
     const client = createServerClient(config.url, config.key, {
       ...config.opts,
-      cookies: cookieService,
+      cookies: {
+        getAll() {
+          return cookieService.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookieService.setAll(cookiesToSet)
+        },
+      },
     })
 
     const mapper = new SupabaseClaimsMapper()
