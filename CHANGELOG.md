@@ -1,18 +1,41 @@
-## [1.1.1](https://github.com/xeno-js/xeno-js/compare/v1.1.0...v1.1.1) (2026-09-30)
+# [1.2.0](https://github.com/xeno-js/xeno-js/compare/v0.1.13...v1.2.0) (2026-10-01)
 
 ### Bug Fixes
 
 - resolved bug introduced with v1.1.0
   ([d71d1d0](https://github.com/xeno-js/xeno-js/commit/d71d1d0aeee54bdfad7a248b8fc4b9622321c406))
 
-# [1.1.0](https://github.com/xeno-js/xeno-js/compare/v1.0.0...v1.1.0) (2026-09-30)
-
 ### Features
 
 - adding cookie handler service
   ([96dba64](https://github.com/xeno-js/xeno-js/commit/96dba643b91b993f2651c4aaf3e2f0d956fb4682))
+- adding http adapter for native fastify vercel
+  ([bd04fc9](https://github.com/xeno-js/xeno-js/commit/bd04fc9a6c1703932ea9633d576f07632667365c))
 
-# [1.0.0](https://github.com/xeno-js/xeno-js/compare/b477e3497a9e7f1232ccf5d68148e0ddfd80c96d...v1.0.0) (2026-09-30)
+## [0.1.13](https://github.com/xeno-js/xeno-js/compare/v0.1.12...v0.1.13) (2026-09-27)
+
+### Bug Fixes
+
+- **rate-limiter:** remove critical details on error response
+  ([f4845d8](https://github.com/xeno-js/xeno-js/commit/f4845d8709ea83f24e0bbb2e696967255584870e))
+
+## [0.1.12](https://github.com/xeno-js/xeno-js/compare/v0.1.10...v0.1.12) (2026-09-26)
+
+### Bug Fixes
+
+- **builder:** building container once
+  ([e4cabb9](https://github.com/xeno-js/xeno-js/commit/e4cabb9539a88406d06ce471d48924b759208b91))
+- **pipeline:** command-query pipeline instantiated with spread operator
+  ([fe2edbb](https://github.com/xeno-js/xeno-js/commit/fe2edbbc3d97eb89d6a7b8d92eb75863d388271a))
+- **resilience:** removed retry for 409
+  ([d162ebc](https://github.com/xeno-js/xeno-js/commit/d162ebcbd775d3739be8cbf6127261b6939c57fe))
+
+### Features
+
+- **container:** refactor service container and registry infrastructure
+  ([5b34153](https://github.com/xeno-js/xeno-js/commit/5b3415398622687d902fe9291c8bb76b7a7547e7))
+
+## [0.1.10](https://github.com/xeno-js/xeno-js/compare/b477e3497a9e7f1232ccf5d68148e0ddfd80c96d...v0.1.10) (2026-09-25)
 
 ### Bug Fixes
 
@@ -20,8 +43,6 @@
   ([1941d2d](https://github.com/xeno-js/xeno-js/commit/1941d2de42e8561ea5ea1737186e95c9733a96a6))
 - **authz:** fixed the authz strategy for tenant and user id
   ([0a5e3f4](https://github.com/xeno-js/xeno-js/commit/0a5e3f4a2281b8e73f61dd8cd1bebb4a7f222387))
-- **builder:** building container once
-  ([e4cabb9](https://github.com/xeno-js/xeno-js/commit/e4cabb9539a88406d06ce471d48924b759208b91))
 - **cqrs:** defer handler resolution inside next delegate in mediator
   ([e4012ba](https://github.com/xeno-js/xeno-js/commit/e4012badb7d3835cb982310fdaa39408246b447a))
 - **csrf:** fixing csrf matching
@@ -50,12 +71,6 @@
   ([5de9d18](https://github.com/xeno-js/xeno-js/commit/5de9d181849d6ece766c094f8d56e00673b02446))
 - **pino:** risolto bug per pino logger
   ([ee37957](https://github.com/xeno-js/xeno-js/commit/ee37957492836de5fda72494ab881b0064483fa5))
-- **pipeline:** command-query pipeline instantiated with spread operator
-  ([fe2edbb](https://github.com/xeno-js/xeno-js/commit/fe2edbbc3d97eb89d6a7b8d92eb75863d388271a))
-- **rate-limiter:** remove critical details on error response
-  ([f4845d8](https://github.com/xeno-js/xeno-js/commit/f4845d8709ea83f24e0bbb2e696967255584870e))
-- **resilience:** removed retry for 409
-  ([d162ebc](https://github.com/xeno-js/xeno-js/commit/d162ebcbd775d3739be8cbf6127261b6939c57fe))
 - resolve registration not found for crypto srv
   ([19c3a90](https://github.com/xeno-js/xeno-js/commit/19c3a90a1c45782a2ef23cec2eda5905417caa1d))
 - rimosso il cast per i config in appbuilder
@@ -139,8 +154,6 @@
   ([53a041f](https://github.com/xeno-js/xeno-js/commit/53a041f64011e0d7f8b09b245163b9b099b9d375))
 - **config:** add configuration service
   ([ccfab0f](https://github.com/xeno-js/xeno-js/commit/ccfab0fb79b4bcd9753862769c73723d6076b704))
-- **container:** refactor service container and registry infrastructure
-  ([5b34153](https://github.com/xeno-js/xeno-js/commit/5b3415398622687d902fe9291c8bb76b7a7547e7))
 - **cqrs:** support public requests in auth strategies
   ([e162869](https://github.com/xeno-js/xeno-js/commit/e16286924bf26879a07e12fa361f33d6ac9a31ed))
 - **domain:** add contracts interfaces for all layers
