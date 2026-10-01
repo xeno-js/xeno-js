@@ -30,6 +30,7 @@ import type {
   IAtomicCache,
   ICryptoService,
   ICsrfTokenService,
+  IHttpAdapter,
   IRequestContext,
   IServiceContainer,
   IServiceScopeAccessor,
@@ -126,6 +127,14 @@ export interface ApplicationRegistry<T = unknown, Ttx = unknown> {
    * @link https://github.com/xeno-js/xeno-js
    */
   readonly DB_CONTEXT: T
+  /** @description Token used to register and resolve the HTTP Adapter instance in the dependency injection container.
+   *
+   * @author Xeno
+   * @version 1.2.1
+   * @since 2025-09-30
+   * @link https://github.com/xeno-js/xeno-js
+   */
+  readonly HTTP_ADAPTER: IHttpAdapter<unknown, unknown>
   /** @description Token used to register and resolve the Logger instance in the dependency injection container.
    *
    * @author Xeno
