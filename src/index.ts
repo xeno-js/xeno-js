@@ -8,6 +8,7 @@ export type * from './domain'
 export type { XenoRegistry } from './infrastructure'
 export {
   AppBuilder,
+  BaseHttpAdapter,
   BasePostgresSqlDataSource,
   BaseSqliteSqlDataSource,
   ReadDao,
