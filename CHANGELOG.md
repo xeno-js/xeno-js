@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/xeno-js/xeno-js/compare/v1.2.7...v1.2.8) (2026-10-02)
+
+### Features
+
+- **performance-pipeline:** adding opts threshold ms for specific intent
+  ([2144e23](https://github.com/xeno-js/xeno-js/commit/2144e23e6f7143ae4ca1ea371646cc8e979572be))
+
 ## [1.2.7](https://github.com/xeno-js/xeno-js/compare/v1.2.6...v1.2.7) (2026-10-01)
 
 ### Bug Fixes
