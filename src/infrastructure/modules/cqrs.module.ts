@@ -21,7 +21,7 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry, ZodType>,
   ): Promise<void> {
-    const { TOKENS } = await import('@xeno-js/shared')
+    const { Guards, TOKENS } = await import('@xeno-js/shared')
     const logger = container.resolve(TOKENS.LOGGER)
 
     const { Mediator } = await import('@/application')
@@ -38,10 +38,9 @@ export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implement
     const pipelines = [
       new ExceptionPipeline(),
       new LoggingPipeline(logger),
-      new PerformancePipeline(logger, thresholdMs),
+      new PerformancePipeline(logger, opts.performance.intentThresholdMs, thresholdMs),
     ]
 
-    const { Guards } = await import('@xeno-js/shared')
     if (
       Guards.isDefined(opts.authorization.policies) ||
       Guards.isDefined(opts.authorization.customAuthorizationStrategy)

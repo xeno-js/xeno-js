@@ -1,4 +1,11 @@
-import type { Delegate, ILogger, IPipelineBehavior, IRequest, ResultType } from '@xeno-js/shared'
+import type {
+  Delegate,
+  Dictionary,
+  ILogger,
+  IPipelineBehavior,
+  IRequest,
+  ResultType,
+} from '@xeno-js/shared'
 import { Guards } from '@xeno-js/shared'
 
 /**
@@ -39,6 +46,8 @@ export class PerformancePipeline<
    */
   private readonly _thresholdMs: number
 
+  private readonly _intentThresholdMS: Dictionary<number>
+
   /**
    * @description Constructs a new instance of the PerformancePipeline class, which requires an ILogger for logging. The pipeline will use this dependency to log performance-related information about each request being handled, including any warnings when execution times exceed the specified threshold.
    * @param _logger An instance of ILogger used for logging performance warnings related to the handling of requests.
@@ -53,6 +62,7 @@ export class PerformancePipeline<
    */
   constructor(
     private readonly _logger: ILogger,
+    intentThresholdMS: Dictionary<number> = {},
     thresholdMs: number = defaultThresholdMs,
   ) {
     const message = `Invalid thresholdMs value: ${thresholdMs}. It must be a positive integer.`
@@ -61,6 +71,16 @@ export class PerformancePipeline<
       throw new Error(message)
     }
     this._thresholdMs = thresholdMs
+
+    for (const [intent, val] of Object.entries(intentThresholdMS)) {
+      const intentMessage = `Invalid thresholdMs value for intent '${intent}': ${val}. It must be a positive integer.`
+      Guards.throwIfNegative(val, intentMessage)
+      Guards.throwIfNotInteger(val, intentMessage)
+      if (val === 0) {
+        throw new Error(intentMessage)
+      }
+    }
+    this._intentThresholdMS = intentThresholdMS
   }
 
   public async handle(request: TInput, next: Delegate<TResult>): Promise<ResultType<TResult>> {
@@ -71,7 +91,8 @@ export class PerformancePipeline<
       const endTime = performance.now()
       const duration = endTime - startTime
 
-      if (duration > this._thresholdMs) {
+      const thresholdMs = this._intentThresholdMS?.[request.intent] ?? this._thresholdMs
+      if (duration > thresholdMs) {
         this._logger.warn(`Performance warning: ${request.intent} took ${duration.toFixed(2)}ms`)
       }
     }

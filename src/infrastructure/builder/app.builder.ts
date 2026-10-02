@@ -75,7 +75,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     custom: undefined,
   }
   private _pipelineConfig: PipelineConfig<TRegistry, ZodType> = {
-    performance: { thresholdMs: 500 },
+    performance: { thresholdMs: 500, intentThresholdMs: undefined },
     authorization: {
       policies: undefined,
       customAuthorizationStrategy: undefined,

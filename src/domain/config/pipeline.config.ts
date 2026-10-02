@@ -32,6 +32,14 @@ export interface PipelineConfig<
      * @link https://github.com/xeno-js/xeno-js
      */
     thresholdMs: Optional<number>
+    /** @description Optional threshold in milliseconds for logging slow operations by intent. If defined, the PerformancePipeline will log a warning whenever the execution of a command or query exceeds this duration, allowing for performance monitoring and optimization. If not defined, all operations will be monitored without duration-based filtering.
+     *
+     * @author Xeno
+     * @version 1.0.0
+     * @since 2025-09-30
+     * @link https://github.com/xeno-js/xeno-js
+     */
+    intentThresholdMs: Optional<Dictionary<number>>
   }
   /** @description Configuration for authorization, allowing the enabling of authorization strategies based on tenant, policy, roles, and permissions. If enabled, the authorization pipeline will evaluate the specified strategies for each command or query, ensuring that only authorized users can perform certain actions. The configuration also includes the ability to define custom authorization strategies via injection tokens, providing flexibility in implementing application-specific access rules.
    *
