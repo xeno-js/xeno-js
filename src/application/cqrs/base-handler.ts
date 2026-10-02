@@ -26,7 +26,7 @@ export abstract class BaseHandler<
   public async handle(request: TRequest, signal: AbortSignal): Promise<ResultType<TResponse>> {
     AppError.throwIfAborted(signal, this.constructor.name)
 
-    return await this.executeAsync(request)
+    return await this.executeAsync(request, signal)
   }
 
   /**
