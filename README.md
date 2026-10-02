@@ -236,8 +236,6 @@ import { app } from './bootstrap'
 const fastify = Fastify({ logger: true })
 
 fastify.get('/users/:id', async (req, reply) => {
-  const endpoint = req.url
-
   const action = async () => {
     const controller = ContainerUtils.resolveServiceScoped(
       'FIND_USER_CONTROLLER',
@@ -246,14 +244,7 @@ fastify.get('/users/:id', async (req, reply) => {
     return await controller.handle()
   }
 
-  const result = await ContainerUtils.runExecute(
-    endpoint,
-    req.method,
-    req.headers,
-    { reply, req },
-    app,
-    action,
-  )
+  const result = await ContainerUtils.runExecute(req, reply, app, action)
 
   return reply.send(result)
 })
@@ -333,17 +324,15 @@ See the [CLI documentation](https://www.xeno-js.it/cli/overview).
 
 The documentation hub contains the architecture and integration guides:
 
-**[xeno-js.it](https://www.xeno-js.it/introduction)**
+**[xeno-js.it](https://www.xeno-js.it/docs/introduction)**
 
 Recommended starting points:
 
-- [Introduction](https://www.xeno-js.it/introduction)
-- [Fundamentals](https://www.xeno-js.it/docs/core/overview)
-- [Dependency Injection](https://www.xeno-js.it/docs/core/fundamentals/app-builder)
-- [CQRS](https://www.xeno-js.it/docs/core/fundamentals/command-query)
-- [Pipelines](https://www.xeno-js.it/docs/core/cqrs/overview)
-- [Request Lifecycle](https://www.xeno-js.it/docs/core/fundamentals/service-container)
-- [Middleware](https://www.xeno-js.it/docs/core/fundamentals/middleware)
+- [Introduction](https://www.xeno-js.it/docs/introduction)
+- [Fundamentals](https://www.xeno-js.it/docs/fundamentals/overview)
+- [Dependency Injection](https://www.xeno-js.it/docs/dependency-injection/service-container)
+- [CQRS](https://www.xeno-js.it/docs/application/cqrs/overview)
+- [Pipelines](https://www.xeno-js.it/docs/application/overview)
 - [CLI](https://www.xeno-js.it/docs/cli/overview)
 
 ---
@@ -445,7 +434,7 @@ npm run check
 If Xeno.JS is useful to you, you can support the project through the community
 and sponsorship channels documented on the website:
 
-**[Support Xeno](https://www.xeno-js.it/docs/support-us)**
+**[Support Xeno](https://www.xeno-js.it/support-us)**
 
 ---
 

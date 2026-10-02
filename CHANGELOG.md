@@ -1,3 +1,14 @@
+## [1.2.10](https://github.com/xeno-js/xeno-js/compare/v1.2.9...v1.2.10) (2026-10-02)
+
+### Bug Fixes
+
+- **basehandler:** passing signal to execute async from handle
+  ([7f3c99b](https://github.com/xeno-js/xeno-js/commit/7f3c99b546e3a87a4035daffac653ae6cd218144))
+- **basehandler:** passing signal to execute async from handle
+  ([c17b5a5](https://github.com/xeno-js/xeno-js/commit/c17b5a5dd85b1d660fa8df9a025519b41271dff5))
+
+## [1.2.9](https://github.com/xeno-js/xeno-js/compare/v1.2.8...v1.2.9) (2026-10-02)
+
 ## [1.2.8](https://github.com/xeno-js/xeno-js/compare/v1.2.7...v1.2.8) (2026-10-02)
 
 ### Features

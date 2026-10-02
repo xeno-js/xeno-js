@@ -30,10 +30,8 @@ export const ContainerUtils = Object.freeze({
 
   /**
    * Executes a service action within the context of a scoped service.
-   * @param endpoint * The endpoint to execute the action on.
-   * @param method * The HTTP method to use for the action.
-   * @param headers * The headers to include in the request.
-   * @param transport * The transport object containing the request and response objects.
+   * @param res * The response DTO to be returned.
+   * @param req * The request DTO to be passed to the action.
    * @param container * The container to resolve the service from.
    * @param action * The action to execute within the scoped service.
    *
