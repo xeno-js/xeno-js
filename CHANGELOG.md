@@ -1,3 +1,10 @@
+## [1.2.11](https://github.com/xeno-js/xeno-js/compare/v1.2.10...v1.2.11) (2026-10-03)
+
+### Bug Fixes
+
+- **auth:** enforce fail-first strategy for explicit tokens in gatekeeper
+  ([72c76dc](https://github.com/xeno-js/xeno-js/commit/72c76dc28d441b1bcefcc996abd5beb14462b780))
+
 ## [1.2.10](https://github.com/xeno-js/xeno-js/compare/v1.2.9...v1.2.10) (2026-10-02)
 
 ### Bug Fixes
