@@ -27,8 +27,8 @@ export abstract class ReadDao<T, TDto> implements IReadDao<T> {
    * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
-    private readonly _dataSource: IReadDataSource<TDto>,
-    private readonly _mapper: IMapper<T, TDto>,
+    protected readonly _dataSource: IReadDataSource<TDto>,
+    protected readonly _mapper: IMapper<T, TDto>,
   ) {}
 
   public async findById(

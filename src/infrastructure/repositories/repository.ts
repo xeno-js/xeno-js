@@ -27,8 +27,8 @@ export abstract class Repository<T, TDto> implements IRepository<T> {
    * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
-    private readonly _dataSource: IWriteDataSource<TDto>,
-    private readonly _mapper: IMapper<T, TDto>,
+    protected readonly _dataSource: IWriteDataSource<TDto>,
+    protected readonly _mapper: IMapper<T, TDto>,
   ) {}
 
   public async findById(
