@@ -59,7 +59,7 @@ describe('GateKeeper', () => {
   })
 
   describe('authenticate — authService returns error', () => {
-    it('falls back to GUEST when authentication fails and no session exists', async () => {
+    it('returns error when jwt authentication fails', async () => {
       const error = AppError.create({
         code: 'AUTH_FAILED',
         message: 'bad token',
@@ -71,6 +71,22 @@ describe('GateKeeper', () => {
       const gk = new GateKeeper(authService, mapper)
 
       const result = await gk.authenticate('bad-token')
+
+      expect(result.isOk()).toBe(false)
+    })
+
+    it('returns GUEST when token is undefined and no session exists', async () => {
+      const error = AppError.create({
+        code: 'AUTH_FAILED',
+        message: 'user is not authenticated',
+        status: STATUS_CODES.UNAUTHORIZED,
+        name: 'Authenticate',
+        cause: new Error('user is not authenticated'),
+      })
+      authenticate.mockResolvedValue(Result.fail(error))
+      const gk = new GateKeeper(authService, mapper)
+
+      const result = await gk.authenticate(undefined)
 
       expect(result.isOk()).toBe(true)
       expect(result.getValueOrThrow()).toEqual(GUEST)

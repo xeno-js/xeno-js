@@ -11,13 +11,12 @@ import { Guards, GUEST } from '@xeno-js/shared'
 
 /**
  * @description The GateKeeper class is responsible for authenticating users based on their identity and permissions. It provides a method to authenticate a user using a token and returns their identity. If the token is invalid or missing, it returns a guest identity.
-
-   * 
-   * @author Xeno
-   * @version 1.0.0
-   * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
-   */
+ *
+ * @author Xeno
+ * @version 1.0.0
+ * @since 2025-09-30
+ * @link https://github.com/xeno-js/xeno-js
+ */
 export class GateKeeper implements IGateKeeper {
   constructor(
     private readonly _authService: IBaseAuthService,
@@ -29,10 +28,13 @@ export class GateKeeper implements IGateKeeper {
 
     if (!Guards.isNullOrEmpty(token)) {
       const authResult = await this._authService.authenticate(token)
-      if (authResult.isOk()) {
-        const claims = authResult.getValueOrThrow()
-        if (Guards.isDefined(claims)) return Result.ok(this._mapper.map(claims))
-      }
+
+      if (!authResult.isOk()) return Result.fail(authResult.getErrorOrThrow())
+
+      const claims = authResult.getValueOrThrow()
+      if (Guards.isDefined(claims)) return Result.ok(this._mapper.map(claims))
+
+      return Result.ok(guest)
     }
 
     const userResult = await this._authService.getUser()
