@@ -1,3 +1,10 @@
+## [1.2.12](https://github.com/xeno-js/xeno-js/compare/v1.2.11...v1.2.12) (2026-10-03)
+
+### Bug Fixes
+
+- **repositories:** change datasource and mapper visibility
+  ([fa2d3e8](https://github.com/xeno-js/xeno-js/commit/fa2d3e847cda68b39a46c65eb4a3b668753c3f7f))
+
 ## [1.2.11](https://github.com/xeno-js/xeno-js/compare/v1.2.10...v1.2.11) (2026-10-03)
 
 ### Bug Fixes
