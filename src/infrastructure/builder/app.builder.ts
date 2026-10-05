@@ -49,18 +49,15 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   private readonly _configuration: IConfigurationService
   private _isBuilded = false
 
-  constructor(container?: IServiceContainer<TRegistry>) {
+  constructor(
+    container?: IServiceContainer<TRegistry>,
+    configurationService?: IConfigurationService,
+  ) {
     this._container = container ?? new ServiceContainer<TRegistry>()
 
-    this._container.addSingleton(
-      TOKENS.CONFIGURATION_SERVICE,
-      () => new EnvironmentConfigurationService(),
-    )
-    this._configuration = this._container.resolve(TOKENS.CONFIGURATION_SERVICE)
-    this._middlewareConfig.allowOrigins?.push(
-      this._configuration.get('APP_URL') ??
-        `http://localhost:${this._configuration.getNumber('PORT', 3000)}`,
-    )
+    this._configuration = configurationService ?? new EnvironmentConfigurationService()
+    this._container.addSingleton(TOKENS.CONFIGURATION_SERVICE, () => this._configuration)
+
     this.addContext()
   }
 
@@ -460,12 +457,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @description Resolves a service from the dependency injection container.
    * @param token The injection token used to identify the service.
    * @returns The resolved service instance.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js
    */
   public resolve<K extends keyof TRegistry>(token: K): TRegistry[K] {
     return this._container.resolve(token)
@@ -478,12 +474,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
   /**
    * @description Finalizes the configuration and initializes all registered modules in the container.
    * @returns The fully configured ServiceContainer.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js
    */
   public async build(): Promise<IServiceContainer<TRegistry>> {
     if (this._isBuilded) return this._container
@@ -519,12 +514,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
 
   /**
    * @description Queues the configuration of the CQRS pipeline module if it has not already been queued. This method ensures that the pipeline module is only added once, even if multiple pipeline-related configurations are made.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js
    */
   private _queuePipelineModule(): void {
     if (this._isPipelineModuleQueued) return
@@ -548,12 +542,11 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
 
   /**
    * @description Queues the configuration of the middleware module if it has not already been queued. This method ensures that the middleware module is only added once, even if multiple middleware-related configurations are made.
-  
-   * 
+   *
    * @author Xeno
    * @version 1.0.0
    * @since 2025-09-30
-   * @link https://github.com/xeno-js/xeno-js 
+   * @link https://github.com/xeno-js/xeno-js
    */
   private _queueMiddlewareModule(): void {
     if (this._isMiddlewareModuleQueued) return

@@ -22,6 +22,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
   TRegistry,
   MiddlewareConfig & {
     isAuth: boolean
+    customTokenExtractor: Optional<() => IServiceExtractor<Request['headers'], Optional<string>>>
   }
 > {
   async configure(
@@ -68,18 +69,20 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
       ),
     )
 
-    if (!Guards.isNullOrEmpty(opts.allowOrigins)) {
-      if (opts.withCredentials && opts.allowOrigins.includes('*'))
-        throw new Error(
-          'Wildcard CORS origin is not allowed when withCredentials is set to true in addHttpCore',
-        )
+    const configuration = container.resolve(TOKENS.CONFIGURATION_SERVICE)
+    const defaultOrigin =
+      configuration.get('APP_URL') ?? `http://localhost:${configuration.getNumber('PORT', 3000)}`
 
-      const { AllowOrigin } = await import('../services')
-      const { AllowOriginMiddleware } = await import('@/presentation')
-      middlewares.push(
-        new AllowOriginMiddleware(new AllowOrigin(opts.allowOrigins), requestContext, logger),
+    const origins = !Guards.isNullOrEmpty(opts.allowOrigins) ? opts.allowOrigins : [defaultOrigin]
+
+    if (opts.withCredentials && origins.includes('*'))
+      throw new Error(
+        'Wildcard CORS origin is not allowed when withCredentials is set to true in addHttpCore',
       )
-    }
+
+    const { AllowOrigin } = await import('../services')
+    const { AllowOriginMiddleware } = await import('@/presentation')
+    middlewares.push(new AllowOriginMiddleware(new AllowOrigin(origins), requestContext, logger))
 
     const withCredentials = opts.withCredentials ? 'true' : 'false'
     const allowMethod = await this._getAllowMethod(
