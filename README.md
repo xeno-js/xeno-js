@@ -2,7 +2,7 @@
   <img src="logo/logo.png" alt="Xeno.JS Logo" width="140" />
 
   <h1>Xeno.JS</h1>
-  <p><strong>A Typescript application framework for Node.js</strong></p>
+  <p><strong>A Typescript application framework architecture for Node.js, designed for lower technical debt, and faster infrastructure migrations.</strong></p>
   <p>Build long-lived applications with explicit dependency injection, DDD, CQRS, and transport-independent business logic.</p>
 
   <p>
