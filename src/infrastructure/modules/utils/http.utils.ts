@@ -1,6 +1,4 @@
-import type { HttpConfig, IServiceContainer, ResilienceConfig } from '@/domain'
-
-import type { XenoRegistry } from '../../xeno-registry'
+import type { ApplicationRegistry, HttpConfig, IServiceContainer, ResilienceConfig } from '@/domain'
 
 /**
  * @description Utility functions for configuring HTTP clients and resilience features in the service container.
@@ -22,11 +20,11 @@ export const HttpUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  async addAxios<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addAxios<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
     opts: HttpConfig<TRegistry>,
   ): Promise<void> {
-    const { NodeAxiosFactory } = await import('../../factories')
+    const { NodeAxiosFactory } = await import('../../factories/axios.factory')
     const { Guards } = await import('@xeno-js/shared')
     if (!Guards.isDefined(opts.token)) {
       throw new Error('HttpConfig.token is required and must be defined.')
@@ -59,12 +57,13 @@ export const HttpUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  async addResilience<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addResilience<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
     opts: ResilienceConfig,
   ): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
-    const { CockatielResilienceFactory } = await import('../../factories')
+    const { CockatielResilienceFactory } =
+      await import('../../factories/cockatiel-resilience.factory')
     container.addSingleton(TOKENS.RESILIENCE_CLIENT, () => {
       const factory = new CockatielResilienceFactory()
       return factory.create(opts)

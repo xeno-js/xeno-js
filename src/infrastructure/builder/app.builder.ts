@@ -1,7 +1,11 @@
-import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type { CacheConfig, DbConfig, IConfigurationService, SetupAction } from '@xeno-js/shared'
+import type {
+  CacheConfig,
+  DbConfig,
+  Dictionary,
+  IConfigurationService,
+  SetupAction,
+} from '@xeno-js/shared'
 import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
-import type { ZodType } from 'zod'
 
 import type {
   ApplicationRegistry,
@@ -17,7 +21,6 @@ import type {
 
 import { EnvironmentConfigurationService } from '../configuration'
 import { ServiceContainer } from '../container/service-container'
-import type { XenoRegistry } from '../xeno-registry'
 
 /**
  * @description The AppBuilder class provides a fluent, .NET-style API for configuring and bootstrapping the application. It orchestrates the registration of various modules (CQRS, HTTP, Database, Logging, Auth) into the ServiceContainer.
@@ -44,7 +47,7 @@ interface QueuedModule {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
+export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
   private readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
   private readonly _configuration: IConfigurationService
   private _isBuilded = false
@@ -71,7 +74,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     fastify: false,
     custom: undefined,
   }
-  private _pipelineConfig: PipelineConfig<TRegistry, ZodType> = {
+  private _pipelineConfig: PipelineConfig<TRegistry, Dictionary> = {
     performance: { thresholdMs: 500, intentThresholdMs: undefined },
     authorization: {
       policies: undefined,
@@ -105,7 +108,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
     withCredentials: true,
     authCookieName: 'sb-access-token',
   }
-  private readonly _authConfig: AuthSsrConfig<SupabaseClientOptions<'public'>> = {
+  private readonly _authConfig: AuthSsrConfig<Dictionary> = {
     url: '',
     key: '',
     opts: undefined,
@@ -276,9 +279,7 @@ export class AppBuilder<TRegistry extends XenoRegistry = XenoRegistry> {
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-  public addAuth(
-    setupAction: SetupAction<AuthSsrConfig<SupabaseClientOptions<'public'>>, IConfigurationService>,
-  ): this {
+  public addAuth(setupAction: SetupAction<AuthSsrConfig, IConfigurationService>): this {
     if (this._isAuthModuleQueued) return this
     this._isAuthModuleQueued = true
 

@@ -5,8 +5,6 @@ import { Guards } from '@xeno-js/shared'
 
 import type { ApplicationRegistry, IServiceContainer, IServiceScope, Lifetime } from '@/domain'
 
-import type { DbContext } from '../db'
-
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -17,10 +15,7 @@ import type { DbContext } from '../db'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-interface RegistrationEntry<
-  T,
-  Registry extends ApplicationRegistry<DbContext> = ApplicationRegistry<DbContext>,
-> {
+interface RegistrationEntry<T, Registry extends ApplicationRegistry = ApplicationRegistry> {
   /**
    * The unique injection token that identifies the service registration.
    *
@@ -87,7 +82,7 @@ interface ResolutionContext<Registry> {
  * @link https://github.com/xeno-js/xeno-js
  */
 class ContainerScope<
-  Registry extends ApplicationRegistry<DbContext> = ApplicationRegistry<DbContext>,
+  Registry extends ApplicationRegistry = ApplicationRegistry,
 > implements IServiceScope<Registry> {
   private readonly scopedInstances = new Map<keyof Registry, unknown>()
   private readonly trackedDisposables: unknown[] = []
@@ -161,7 +156,7 @@ class ContainerScope<
  * @link https://github.com/xeno-js/xeno-js
  */
 export class ServiceContainer<
-  Registry extends ApplicationRegistry<DbContext> = ApplicationRegistry<DbContext>,
+  Registry extends ApplicationRegistry = ApplicationRegistry,
 > implements IServiceContainer<Registry> {
   private readonly registrations = new Map<keyof Registry, RegistrationEntry<unknown, Registry>>()
   private readonly singletonInstances = new Map<keyof Registry, unknown>()

@@ -1,5 +1,5 @@
 import type { IFactory, ILogger, IValidatorService } from '@xeno-js/shared'
-import { ZodValidatorService } from '@xeno-js/shared'
+import { ZodValidatorService } from '@xeno-js/shared/zod'
 import type { ZodType } from 'zod'
 
 import type { SchemaConfig } from '@/domain'

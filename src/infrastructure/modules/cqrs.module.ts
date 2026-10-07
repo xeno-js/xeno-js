@@ -1,9 +1,12 @@
-import type { ICommand, IQuery } from '@xeno-js/shared'
-import type { ZodType } from 'zod'
+import type { Dictionary, ICommand, IQuery } from '@xeno-js/shared'
 
-import type { IModule, IServiceContainer, IServiceScopeAccessor, PipelineConfig } from '@/domain'
-
-import type { XenoRegistry } from '../xeno-registry'
+import type {
+  ApplicationRegistry,
+  IModule,
+  IServiceContainer,
+  IServiceScopeAccessor,
+  PipelineConfig,
+} from '@/domain'
 
 /**
  * @description CqrsModule is responsible for configuring and registering the necessary services and dependencies related to the Command Query Responsibility Segregation (CQRS) pattern in the application. It sets up the Mediator service, which acts as a central hub for handling commands and queries, allowing for a clean separation of concerns between the command and query sides of the application. By registering the Mediator in the dependency injection container, it enables other parts of the application to easily resolve and utilize its functionality for processing commands and queries.
@@ -13,13 +16,12 @@ import type { XenoRegistry } from '../xeno-registry'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class CqrsModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
-  TRegistry,
-  PipelineConfig<TRegistry, ZodType>
-> {
+export class CqrsModule<
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
+> implements IModule<TRegistry, PipelineConfig<TRegistry, Dictionary>> {
   async configure(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType>,
+    opts: PipelineConfig<TRegistry, Dictionary>,
   ): Promise<void> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
     const logger = container.resolve(TOKENS.LOGGER)

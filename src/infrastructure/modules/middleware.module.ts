@@ -6,9 +6,13 @@ import type {
   Optional,
 } from '@xeno-js/shared'
 
-import type { IAllowMethod, IModule, IServiceContainer, MiddlewareConfig } from '@/domain'
-
-import type { XenoRegistry } from '../xeno-registry'
+import type {
+  ApplicationRegistry,
+  IAllowMethod,
+  IModule,
+  IServiceContainer,
+  MiddlewareConfig,
+} from '@/domain'
 
 /**
  * @description MiddlewareModule is responsible for registering essential services and middlewares that are fundamental to the application's operation. This includes setting up the logging infrastructure and the request context middleware. By implementing the IModule interface, MiddlewareModule can be easily integrated into the application's dependency injection container, allowing it to configure necessary services and middlewares during the application startup phase.
@@ -18,7 +22,9 @@ import type { XenoRegistry } from '../xeno-registry'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
+export class MiddlewareModule<
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
+> implements IModule<
   TRegistry,
   MiddlewareConfig & {
     isAuth: boolean
@@ -208,7 +214,7 @@ export class MiddlewareModule<TRegistry extends XenoRegistry = XenoRegistry> imp
     const { Guards } = await import('@xeno-js/shared')
     if (!configure || !Guards.isDefined(opts)) return undefined
 
-    const { AllowMethodFactory } = await import('../factories')
+    const { AllowMethodFactory } = await import('../factories/allow-method.factory')
     return new AllowMethodFactory().create(opts)
   }
 }

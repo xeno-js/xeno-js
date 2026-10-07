@@ -1,9 +1,14 @@
-import type { ILogger, IPipelineBehavior, IRequest, IStrategy, Optional } from '@xeno-js/shared'
+import type {
+  Dictionary,
+  ILogger,
+  IPipelineBehavior,
+  IRequest,
+  IStrategy,
+  Optional,
+} from '@xeno-js/shared'
 import type { ZodType } from 'zod'
 
-import type { IServiceContainer, PipelineConfig } from '@/domain'
-
-import type { XenoRegistry } from '../../xeno-registry'
+import type { ApplicationRegistry, IServiceContainer, PipelineConfig, SchemaConfig } from '@/domain'
 
 /**
  * @description ValidationUtils is a utility class that provides methods for adding validation strategies to the dependency injection container based on the provided configuration. It checks if the validation configuration is defined and, if so, it registers the appropriate validation strategies (such as Zod schema validation) in the container and adds them to the pipeline behaviors. This allows for flexible and configurable validation of requests in the application.
@@ -25,9 +30,9 @@ export const ValidationUtils = Object.freeze({
    * @link https://github.com/xeno-js/xeno-js
    */
 
-  async addValidation<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addValidation<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType>['validation'],
+    opts: PipelineConfig<TRegistry, Dictionary>['validation'],
     logger: ILogger,
   ): Promise<Optional<IPipelineBehavior<IRequest<unknown>, unknown>>> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
@@ -38,8 +43,8 @@ export const ValidationUtils = Object.freeze({
     const validationStrategies: IStrategy<IRequest, boolean>[] = []
 
     if (Guards.isDefined(opts.zod)) {
-      const config = opts.zod
-      const { ZodValidatorFactory } = await import('../../factories')
+      const config = opts.zod as unknown as SchemaConfig<ZodType>
+      const { ZodValidatorFactory } = await import('../../factories/zod-validator.factory')
       const { SchemaValidationStrategy } = await import('@/application')
       const validatorService = new ZodValidatorFactory().create({ ...config, logger })
       container.addSingleton(TOKENS.VALIDATOR_SERVICE, () => validatorService)

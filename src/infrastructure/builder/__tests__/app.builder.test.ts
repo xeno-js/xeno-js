@@ -1,4 +1,4 @@
-import type { Dictionary, IHttpClient, IRemoteDataSource } from '@xeno-js/shared'
+import type { IHttpClient, IRemoteDataSource } from '@xeno-js/shared'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { IServiceContainer } from '@/domain'
@@ -9,14 +9,11 @@ import { AppBuilder } from '../app.builder'
 
 // -- helpers ----------------------------------------------------------------
 
-type Registry = XenoRegistry<
-  Dictionary,
-  {
-    myDummyDs: IRemoteDataSource
-    myDummyHttpClient: IHttpClient
-    resolveTest: number
-  }
->
+type Registry = XenoRegistry<{
+  myDummyDs: IRemoteDataSource
+  myDummyHttpClient: IHttpClient
+  resolveTest: number
+}>
 
 class DummyDataSource extends RemoteDataSource {}
 
