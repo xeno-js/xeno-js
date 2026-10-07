@@ -2,10 +2,14 @@ import { AsyncLocalStorage } from 'node:async_hooks'
 
 import type { IFactory, RequestContext } from '@xeno-js/shared'
 
-import type { ExecutionContext, IRequestContext, IServiceScope } from '@/domain'
+import type {
+  ApplicationRegistry,
+  ExecutionContext,
+  IRequestContext,
+  IServiceScope,
+} from '@/domain'
 
 import { NodeRequestContext } from '../context/request-context'
-import type { XenoRegistry } from '../xeno-registry'
 
 /**
  * @description Factory class responsible for creating instances of NodeRequestContext. It implements the IFactory interface, allowing for easy integration with dependency injection systems. The factory encapsulates the creation logic for the NodeRequestContext, promoting separation of concerns and flexibility in managing request context instances across the application.
@@ -16,10 +20,9 @@ import type { XenoRegistry } from '../xeno-registry'
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-export class NodeRequestContextFactory<TRegistry extends XenoRegistry> implements IFactory<
-  void,
-  IRequestContext<RequestContext, TRegistry>
-> {
+export class NodeRequestContextFactory<
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
+> implements IFactory<void, IRequestContext<RequestContext, TRegistry>> {
   private _store: AsyncLocalStorage<ExecutionContext<TRegistry>> = new AsyncLocalStorage<
     ExecutionContext<TRegistry>
   >()

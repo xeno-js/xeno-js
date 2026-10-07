@@ -2,7 +2,7 @@ import http from 'node:http'
 import https from 'node:https'
 
 import type { HttpClientConfig, IFactory, IHttpClient } from '@xeno-js/shared'
-import { AxiosHttpClient } from '@xeno-js/shared'
+import { AxiosHttpClient } from '@xeno-js/shared/axios'
 import axios from 'axios'
 
 export class NodeAxiosFactory implements IFactory<HttpClientConfig, IHttpClient> {

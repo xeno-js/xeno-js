@@ -3,9 +3,12 @@ import type { AsyncLocalStorage } from 'node:async_hooks'
 import type { Identity, IFactory, NetworkContext, Optional, RequestContext } from '@xeno-js/shared'
 import { Guards } from '@xeno-js/shared'
 
-import type { ExecutionContext, IRequestContext, IServiceScope } from '@/domain'
-
-import type { XenoRegistry } from '../xeno-registry'
+import type {
+  ApplicationRegistry,
+  ExecutionContext,
+  IRequestContext,
+  IServiceScope,
+} from '@/domain'
 
 /**
  * @description The NodeRequestContext class is an implementation of the IRequestContext interface that utilizes Node.js's AsyncLocalStorage to manage and access request-specific context data, such as user identity information, across asynchronous operations. This class provides methods to run asynchronous functions within a specific context and to retrieve the current identity information from the context when needed. By leveraging AsyncLocalStorage, the NodeRequestContext ensures that the context data is properly propagated across asynchronous calls, allowing for seamless access to identity information throughout the execution flow of a request.
@@ -18,7 +21,7 @@ import type { XenoRegistry } from '../xeno-registry'
    * @link https://github.com/xeno-js/xeno-js 
    */
 export class NodeRequestContext<
-  TRegistry extends XenoRegistry = XenoRegistry,
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
 > implements IRequestContext<RequestContext, TRegistry> {
   /**
    * @description Constructs a new instance of the NodeRequestContext class, which requires an instance of AsyncLocalStorage to manage the request context. The AsyncLocalStorage instance is used to create and access the context for each request, allowing for the storage of identity information and other relevant data that needs to be accessible across asynchronous operations. This constructor initializes the NodeRequestContext with the provided AsyncLocalStorage, enabling it to implement the methods defined in the IRequestContext interface for managing request-specific context data.

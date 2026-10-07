@@ -1,15 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import type { SupabaseClientOptions } from '@supabase/supabase-js'
 import type { IExtendendAuthService, IFactory, Optional } from '@xeno-js/shared'
+import { Guards, TOKENS } from '@xeno-js/shared'
 import {
-  Guards,
   SupabaseAuthService,
   SupabaseClaimsMapper,
   SupabaseSessionMapper,
-  TOKENS,
-} from '@xeno-js/shared'
+} from '@xeno-js/shared/supabase'
 
 import type {
+  ApplicationRegistry,
   AuthSsrConfig,
   CookieHandlerOptions,
   IServiceContainer,
@@ -17,15 +17,16 @@ import type {
 } from '@/domain'
 
 import { CookieHandler } from '../services'
-import type { XenoRegistry } from '../xeno-registry'
 
-interface SupabaseServerAuthFactoryInput<TRegistry extends XenoRegistry> {
+interface SupabaseServerAuthFactoryInput<
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
+> {
   config: AuthSsrConfig<SupabaseClientOptions<'public'>>
   container: IServiceContainer<TRegistry>
 }
 
 export class SupabaseServerAuthFactory<
-  TRegistry extends XenoRegistry = XenoRegistry,
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
 > implements IFactory<SupabaseServerAuthFactoryInput<TRegistry>, IExtendendAuthService> {
   public create({
     config,

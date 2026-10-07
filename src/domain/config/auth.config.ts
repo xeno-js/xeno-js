@@ -28,7 +28,7 @@ export interface CookieHandlerOptions extends CookieOptions {
 }
 
 export interface AuthSsrConfig<
-  TOption,
+  TOption = unknown,
   TRegistry extends ApplicationRegistry = ApplicationRegistry,
 > extends AuthConfig<TOption> {
   ssrOpts: Optional<(container: IServiceContainer<TRegistry>) => ISsrCookieHandler>

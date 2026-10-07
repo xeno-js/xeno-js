@@ -1,8 +1,6 @@
 import type { ICommand, IPipelineBehavior, IQuery } from '@xeno-js/shared'
 
-import type { IServiceContainer, PipelineConfig } from '@/domain'
-
-import type { XenoRegistry } from '../../xeno-registry'
+import type { ApplicationRegistry, IServiceContainer, PipelineConfig } from '@/domain'
 
 /**
  * @description Utility functions for configuring command and query pipelines in the service container.
@@ -23,7 +21,7 @@ export const PipelineUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  async addCommand<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addCommand<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
     opts: PipelineConfig<TRegistry>['commandBus'],
   ): Promise<IPipelineBehavior<ICommand<unknown>, unknown>[]> {
@@ -66,7 +64,7 @@ export const PipelineUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  async addQuery<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addQuery<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
   ): Promise<IPipelineBehavior<IQuery<unknown>, unknown>> {
     const { TOKENS } = await import('@xeno-js/shared')

@@ -1,6 +1,4 @@
-import type { IModule, IServiceContainer } from '@/domain'
-
-import type { XenoRegistry } from '../xeno-registry'
+import type { ApplicationRegistry, IModule, IServiceContainer } from '@/domain'
 
 /**
  * @description ContextModule is responsible for configuring and registering the necessary services and dependencies related to the request context in the application. It sets up the RequestContext service, which provides a way to manage and access contextual information related to a specific request or operation. By registering the RequestContext in the dependency injection container, it enables other parts of the application to easily resolve and utilize its functionality for managing request-specific data and state.
@@ -10,10 +8,9 @@ import type { XenoRegistry } from '../xeno-registry'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class ContextModule<TRegistry extends XenoRegistry = XenoRegistry> implements IModule<
-  TRegistry,
-  void
-> {
+export class ContextModule<
+  TRegistry extends ApplicationRegistry = ApplicationRegistry,
+> implements IModule<TRegistry, void> {
   async configure(container: IServiceContainer<TRegistry>): Promise<void> {
     const { TOKENS } = await import('@xeno-js/shared')
     const { ServiceScopeFactory } = await import('../factories/service-scope.factory')

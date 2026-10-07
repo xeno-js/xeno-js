@@ -1,9 +1,7 @@
 import type { ILoggerClient } from '@xeno-js/shared'
 import type { Optional } from '@xeno-js/shared'
 
-import type { IServiceContainer, LoggerConfig } from '@/domain'
-
-import type { XenoRegistry } from '../../xeno-registry'
+import type { ApplicationRegistry, IServiceContainer, LoggerConfig } from '@/domain'
 /**
  * @description LoggerUtils is a utility object that provides helper functions for the CoreModule. It includes the addLogger function, which is responsible for configuring and registering the logging services in the dependency injection container based on the provided LoggerConfig options. This function dynamically imports the necessary logger implementations (e.g., ConsoleLogger, SentryLogger, PinoLogger) and registers them with the container, allowing for flexible and modular logging configuration in the application.
  *
@@ -25,9 +23,9 @@ export const LoggerUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-  async addLogger<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addLogger<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: Optional<LoggerConfig<XenoRegistry>>,
+    opts: Optional<LoggerConfig<ApplicationRegistry>>,
   ): Promise<void> {
     const loggerDependencies: ILoggerClient[] = []
 

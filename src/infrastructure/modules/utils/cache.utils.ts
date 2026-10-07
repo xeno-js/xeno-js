@@ -1,8 +1,6 @@
 import type { CacheConfig } from '@xeno-js/shared'
 
-import type { IServiceContainer } from '@/domain'
-
-import type { XenoRegistry } from '../../xeno-registry'
+import type { ApplicationRegistry, IServiceContainer } from '@/domain'
 
 /**
  * @description Utility functions for configuring caching in the service container.
@@ -25,7 +23,7 @@ export const CacheUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  async addCache<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addCache<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
     opts: CacheConfig,
   ): Promise<void> {

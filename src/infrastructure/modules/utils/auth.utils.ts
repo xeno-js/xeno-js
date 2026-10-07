@@ -1,9 +1,11 @@
-import type { SupabaseClientOptions } from '@supabase/supabase-js'
-import type { IPipelineBehavior, IRequest, IStrategy } from '@xeno-js/shared'
-import type { ZodType } from 'zod'
+import type { Dictionary, IPipelineBehavior, IRequest, IStrategy } from '@xeno-js/shared'
 
-import type { AuthSsrConfig, IServiceContainer, PipelineConfig } from '@/domain'
-import type { XenoRegistry } from '@/infrastructure'
+import type {
+  ApplicationRegistry,
+  AuthSsrConfig,
+  IServiceContainer,
+  PipelineConfig,
+} from '@/domain'
 
 /**
  *  @description Utility functions for configuring authentication and authorization in the service container.
@@ -27,9 +29,9 @@ export const AuthUtils = Object.freeze({
    * @link https://github.com/xeno-js/xeno-js 
    */
 
-  async addAuthZ<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addAuthZ<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: PipelineConfig<TRegistry, ZodType>['authorization'],
+    opts: PipelineConfig<TRegistry>['authorization'],
   ): Promise<IPipelineBehavior<IRequest<unknown>, unknown>> {
     const { TOKENS } = await import('@xeno-js/shared')
     const strategies: IStrategy<IRequest>[] = []
@@ -109,9 +111,9 @@ export const AuthUtils = Object.freeze({
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-  async addAuthN<TRegistry extends XenoRegistry = XenoRegistry>(
+  async addAuthN<TRegistry extends ApplicationRegistry = ApplicationRegistry>(
     container: IServiceContainer<TRegistry>,
-    opts: AuthSsrConfig<SupabaseClientOptions<'public'>>,
+    opts: AuthSsrConfig<Dictionary>,
   ): Promise<void> {
     const { Guards, TOKENS } = await import('@xeno-js/shared')
     if (Guards.isDefined(opts.customAuth)) {
@@ -124,7 +126,7 @@ export const AuthUtils = Object.freeze({
         return authService
       })
     } else {
-      const { SupabaseServerAuthFactory } = await import('../../factories')
+      const { SupabaseServerAuthFactory } = await import('../../factories/supabase.factory')
 
       const factory = new SupabaseServerAuthFactory()
       const supabase = factory.create({ config: opts, container })
