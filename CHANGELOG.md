@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/xeno-js/xeno-js/compare/v2.0.0...v2.0.1) (2026-10-07)
+
+### Bug Fixes
+
+- update export package
+  ([96d6def](https://github.com/xeno-js/xeno-js/commit/96d6def0155ad8131b3122c4e86c845e4813c815))
+
 # [2.0.0](https://github.com/xeno-js/xeno-js/compare/v1.2.13...v2.0.0) (2026-10-07)
 
 ## [1.2.13](https://github.com/xeno-js/xeno-js/compare/v1.2.12...v1.2.13) (2026-10-05)
