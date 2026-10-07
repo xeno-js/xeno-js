@@ -2,7 +2,10 @@ import { defineConfig } from 'tsup'
 import { resolve } from 'node:path'
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: [
+    'src/index.ts',
+    'src/db.ts',
+  ],
   format: ['esm', 'cjs'],
   target: 'es2023',
   dts: true,
