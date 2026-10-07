@@ -1,3 +1,5 @@
+# [2.0.0](https://github.com/xeno-js/xeno-js/compare/v1.2.13...v2.0.0) (2026-10-07)
+
 ## [1.2.13](https://github.com/xeno-js/xeno-js/compare/v1.2.12...v1.2.13) (2026-10-05)
 
 ## [1.2.12](https://github.com/xeno-js/xeno-js/compare/v1.2.11...v1.2.12) (2026-10-03)
