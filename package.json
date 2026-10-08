@@ -1,7 +1,7 @@
 {
   "name": "@xeno-js/core",
   "version": "2.0.2",
-  "description": "Application architecture framework for TypeScript with explicit dependency injection, DDD, CQRS and modular application boundaries",
+  "description": "A Typescript application framework architecture for Node.js with explicit dependency injection, DDD, CQRS and modular application boundaries",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xeno-js/xeno-js.git"
@@ -19,11 +19,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./db": {
-      "types": "./dist/db.d.ts",
-      "import": "./dist/db.js",
-      "require": "./dist/db.cjs"
     }
   },
   "files": [
@@ -149,8 +144,6 @@
     "conventional-changelog-angular": "^9.4.0",
     "conventional-changelog-cli": "^5.0.0",
     "conventional-changelog-writer": "^9.2.1",
-    "drizzle-kit": "^0.31.11",
-    "drizzle-orm": "^0.45.3",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^14.0.0",
@@ -159,7 +152,6 @@
     "ioredis": "^6.0.0",
     "lint-staged": "^17.5.1",
     "p-limit": "^7.3.3",
-    "pg": "^8.23.0",
     "pino": "^10.3.1",
     "prettier": "^3.9.9",
     "tsc-alias": "^1.9.5",
