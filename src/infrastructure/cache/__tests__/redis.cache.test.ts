@@ -9,6 +9,15 @@ function makeDeps() {
   const delMock = vi.fn()
   const existsMock = vi.fn()
   const flushdbMock = vi.fn()
+  const incrMock = vi.fn()
+  const expireMock = vi.fn()
+  const execMock = vi.fn()
+  const multiMock = {
+    incr: incrMock,
+    expire: expireMock,
+    exec: execMock,
+  }
+  const multiFactoryMock = vi.fn().mockReturnValue(multiMock)
 
   const redisClient = {
     get: getMock,
@@ -16,6 +25,7 @@ function makeDeps() {
     del: delMock,
     exists: existsMock,
     flushdb: flushdbMock,
+    multi: multiFactoryMock,
   } as unknown as Redis
 
   return {
@@ -26,6 +36,10 @@ function makeDeps() {
       delMock,
       existsMock,
       flushdbMock,
+      incrMock,
+      expireMock,
+      execMock,
+      multiFactoryMock,
     },
   }
 }
@@ -58,6 +72,58 @@ describe('RedisCache', () => {
     const cache = new RedisCache(redisClient)
 
     await expect(cache.get('k1')).rejects.toBeInstanceOf(SyntaxError)
+  })
+
+  it('increment uses a transactional multi command and returns the atomic result', async () => {
+    const { redisClient, mocks } = makeDeps()
+    mocks.execMock.mockResolvedValue([
+      [null, 3],
+      [null, true],
+    ])
+
+    const cache = new RedisCache(redisClient)
+    const result = await cache.increment('counter', 90)
+
+    expect(result).toBe(3)
+    expect(mocks.multiFactoryMock).toHaveBeenCalledOnce()
+    expect(mocks.incrMock).toHaveBeenCalledWith('counter')
+    expect(mocks.expireMock).toHaveBeenCalledWith('counter', 90)
+    expect(mocks.execMock).toHaveBeenCalledOnce()
+  })
+
+  it('increment falls back to 1 when the transaction result is unavailable', async () => {
+    const { redisClient, mocks } = makeDeps()
+    mocks.execMock.mockResolvedValue(undefined)
+
+    const cache = new RedisCache(redisClient)
+
+    await expect(cache.increment('counter', undefined)).resolves.toBe(1)
+    expect(mocks.expireMock).toHaveBeenCalledWith('counter', 60)
+  })
+
+  it('increment keeps concurrent calls in independent transactions without leaking state', async () => {
+    const { redisClient, mocks } = makeDeps()
+    mocks.execMock
+      .mockResolvedValueOnce([
+        [null, 1],
+        [null, true],
+      ])
+      .mockResolvedValueOnce([
+        [null, 2],
+        [null, true],
+      ])
+
+    const cache = new RedisCache(redisClient)
+    const [first, second] = await Promise.all([
+      cache.increment('counter', 5),
+      cache.increment('counter', 5),
+    ])
+
+    expect(first).toBe(1)
+    expect(second).toBe(2)
+    expect(mocks.multiFactoryMock).toHaveBeenCalledTimes(2)
+    expect(mocks.incrMock).toHaveBeenCalledTimes(2)
+    expect(mocks.expireMock).toHaveBeenCalledTimes(2)
   })
 
   it('set stores stringified value with provided ttl', async () => {
