@@ -1,10 +1,4 @@
-import type {
-  CacheConfig,
-  DbConfig,
-  Dictionary,
-  IConfigurationService,
-  SetupAction,
-} from '@xeno-js/shared'
+import type { CacheConfig, Dictionary, IConfigurationService, SetupAction } from '@xeno-js/shared'
 import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
 
 import type {
@@ -48,8 +42,8 @@ interface QueuedModule {
    * @link https://github.com/xeno-js/xeno-js 
    */
 export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
-  private readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
-  private readonly _configuration: IConfigurationService
+  protected readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
+  protected readonly _configuration: IConfigurationService
   private _isBuilded = false
 
   constructor(
@@ -65,7 +59,7 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
   }
 
   // --- Module Configurations ---
-  private readonly _modules: QueuedModule[] = []
+  protected readonly _modules: QueuedModule[] = []
 
   // --- Specific Configurations ---
   private _adapterConfig: HttpAdapterConfig = {
@@ -164,7 +158,7 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
   // Application Modules Configuration
   // ─────────────────────────────────────────────────────────────────────────────
 
-  public addAdapter(setupAction: SetupAction<HttpAdapterConfig, IConfigurationService>): this {
+  protected addAdapter(setupAction: SetupAction<HttpAdapterConfig, IConfigurationService>): this {
     if (this._isAdapterModuleQueued) return this
     setupAction(this._adapterConfig, this._configuration)
     this._isAdapterModuleQueued = true
@@ -173,7 +167,7 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
       priority: 50,
       name: 'AdapterModule',
       action: async () => {
-        const { HttpAdapterModule } = await import('../modules')
+        const { HttpAdapterModule } = await import('../modules/http-adapter.module')
         await new HttpAdapterModule().configure(this._container, this._adapterConfig)
       },
     })
@@ -306,21 +300,11 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-  public addDb(setupAction: SetupAction<DbConfig, IConfigurationService>): this {
+  public addDb(plugin: (builder: this, config: IConfigurationService) => this): this {
     if (this._isDbContextModuleQueued) return this
+    const result = plugin(this, this._configuration)
     this._isDbContextModuleQueued = true
-    const config = { connectionString: '', enableSqlLite: false }
-    setupAction(config, this._configuration)
-    this._modules.push({
-      priority: 4,
-      name: 'DbModule',
-      action: async () => {
-        const { DbModule } = await import('../modules/db.module')
-        const dbModule = new DbModule()
-        await dbModule.configure(this._container, config)
-      },
-    })
-    return this
+    return result
   }
 
   /**

@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ApplicationRegistry } from '@/domain'
+import type { ApplicationRegistry, ITransactionalDb } from '@/domain'
 
-import type { DbContext } from '../../db'
 import { ServiceContainer } from '../service-container'
 
 class Dep {}
@@ -18,7 +17,7 @@ class MySingleton {
   constructor(public readonly scopedDep: unknown) {}
 }
 
-type TestRegistry = ApplicationRegistry<DbContext> & {
+type TestRegistry = ApplicationRegistry<ITransactionalDb> & {
   dep: Dep
   singletonA: ServiceA
   transientB: ServiceB

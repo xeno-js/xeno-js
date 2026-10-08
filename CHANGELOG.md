@@ -1,3 +1,21 @@
+## [3.0.2](https://github.com/xeno-js/xeno-js/compare/v3.0.1...v3.0.2) (2026-10-08)
+
+### Bug Fixes
+
+- passing non optional config to add db
+  ([febadf4](https://github.com/xeno-js/xeno-js/commit/febadf450ce12a09a8e486ee0bde388701198963))
+
+## [3.0.1](https://github.com/xeno-js/xeno-js/compare/v3.0.0...v3.0.1) (2026-10-08)
+
+# [3.0.0](https://github.com/xeno-js/xeno-js/compare/v2.0.2...v3.0.0) (2026-10-08)
+
+- refactor(db)!: accept generic database clients
+  ([78e625f](https://github.com/xeno-js/xeno-js/commit/78e625f3e686fd13958bb00c92a87969b37f8275))
+
+### BREAKING CHANGES
+
+- use generic transactional clients
+
 ## [2.0.2](https://github.com/xeno-js/xeno-js/compare/v2.0.1...v2.0.2) (2026-10-08)
 
 ## [2.0.1](https://github.com/xeno-js/xeno-js/compare/v2.0.0...v2.0.1) (2026-10-07)
