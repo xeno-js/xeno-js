@@ -1,9 +1,4 @@
-export {
-  BaseAuthorizationStrategy,
-  BaseHandler,
-  ContainerUtils,
-  Specification,
-} from './application'
+export { BaseAuthorizationStrategy, ContainerUtils, Specification } from './application'
 export type * from './domain'
 export type { XenoRegistry } from './infrastructure'
 export { AppBuilder, BaseHttpAdapter, ReadDao, Repository } from './infrastructure'
