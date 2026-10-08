@@ -1,4 +1,10 @@
-import type { CacheConfig, Dictionary, IConfigurationService, SetupAction } from '@xeno-js/shared'
+import type {
+  CacheConfig,
+  Dictionary,
+  IConfigurationService,
+  Optional,
+  SetupAction,
+} from '@xeno-js/shared'
 import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
 
 import type {
@@ -300,9 +306,9 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js 
    */
-  public addDb(plugin: (builder: this) => this): this {
+  public addDb(plugin: (builder: this, config: Optional<IConfigurationService>) => this): this {
     if (this._isDbContextModuleQueued) return this
-    const result = plugin(this)
+    const result = plugin(this, this._configuration)
     this._isDbContextModuleQueued = true
     return result
   }
