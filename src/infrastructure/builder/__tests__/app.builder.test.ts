@@ -31,11 +31,6 @@ describe('AppBuilder � full smoke test', () => {
         opts.url = config.get('AUTH_URL', 'https://dummy-auth.local') ?? 'https://dummy-auth.local'
         opts.key = config.get('AUTH_KEY', 'dummy-key') ?? 'dummy-key'
       })
-      .addDb((opts, config) => {
-        opts.connectionString =
-          config.get('DB_CONNECTION_STRING', 'postgres://dummy:dummy@localhost:5432/dummy') ??
-          'postgres://dummy:dummy@localhost:5432/dummy'
-      })
       .addPipeline((config) => {
         config.performance.thresholdMs = 100
         // config.commandBus.idempotency = { lockTtlSeconds: 60, processedTtlSeconds: 300 }
@@ -105,18 +100,6 @@ describe('AppBuilder � idempotency guards', () => {
     const second = builder.addAuth((c) => {
       c.url = 'https://dummy-auth.local-2'
       c.key = 'k2'
-    })
-    expect(second).toBe(builder)
-    await expect(builder.build()).resolves.toBeDefined()
-  })
-
-  it('addDb called twice only queues one module', async () => {
-    const builder = makeBuilder()
-    builder.addDb((c) => {
-      c.connectionString = 'pg://a'
-    })
-    const second = builder.addDb((c) => {
-      c.connectionString = 'pg://b'
     })
     expect(second).toBe(builder)
     await expect(builder.build()).resolves.toBeDefined()

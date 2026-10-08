@@ -2,8 +2,7 @@ import type { IDisposable, ITransactionState, IUnitOfWork } from '@xeno-js/share
 import { AppError } from '@xeno-js/shared'
 import { Guards, type Optional } from '@xeno-js/shared'
 
-import type { DbContext, DbTransaction } from '../db/db.types'
-
+import type { ITransactionalDb } from '@/domain'
 /**
  * @file unit-of-work.ts
  * @description This file contains the implementation of the Unit of Work pattern.
@@ -13,7 +12,7 @@ import type { DbContext, DbTransaction } from '../db/db.types'
  * @since 2025-09-30
  * @link https://github.com/xeno-js/xeno-js
  */
-export class UnitOfWork implements IUnitOfWork, IDisposable {
+export class UnitOfWork<TTransaction = unknown> implements IUnitOfWork, IDisposable {
   /**
    * Creates an instance of UnitOfWork.
    * @param _dbContext - The database context used for managing transactions.
@@ -25,8 +24,8 @@ export class UnitOfWork implements IUnitOfWork, IDisposable {
    * @link https://github.com/xeno-js/xeno-js
    */
   constructor(
-    private readonly _dbContext: DbContext,
-    private readonly _ttx: ITransactionState<DbTransaction>,
+    private readonly _dbContext: ITransactionalDb<TTransaction>,
+    private readonly _ttx: ITransactionState<TTransaction>,
   ) {}
 
   async runInTransaction<T>(callback: () => Promise<T>, signal: Optional<AbortSignal>): Promise<T> {
@@ -47,7 +46,7 @@ export class UnitOfWork implements IUnitOfWork, IDisposable {
     if (Guards.isDefined(this._ttx.state)) {
       try {
         if (Guards.hasMethod(this._ttx.state, 'rollback')) {
-          await (this._ttx.state as DbContext & { rollback: () => Promise<void> }).rollback()
+          await (this._ttx.state as { rollback: () => Promise<void> }).rollback()
         }
       } finally {
         this._ttx.state = null

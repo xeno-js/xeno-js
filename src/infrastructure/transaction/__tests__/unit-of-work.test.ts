@@ -3,12 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ApplicationRegistry } from '@/domain'
 
 import { ServiceContainer } from '../../container/service-container'
-import type { DbContext, DbTransaction } from '../../db'
 import { TransactionState } from '../../transaction/transaction-state'
 import { UnitOfWork } from '../unit-of-work'
 
-type TestRegistry = ApplicationRegistry<DbContext> & {
-  transactionState: TransactionState<DbTransaction>
+type TestRegistry = ApplicationRegistry & {
+  transactionState: TransactionState<unknown>
 }
 
 interface State {
@@ -20,7 +19,7 @@ interface Context {
 }
 
 const createUnitOfWork = (state: State, transaction: Context['transaction']) =>
-  new UnitOfWork({ transaction } as never, state as never)
+  new UnitOfWork({ transaction } as never, state)
 
 describe('UnitOfWork', () => {
   describe('runInTransaction', () => {
@@ -126,7 +125,7 @@ describe('UnitOfWork', () => {
       container.addScoped('transactionState', () => {
         createdInstances += 1
 
-        return new TransactionState<DbTransaction>()
+        return new TransactionState<unknown>()
       })
 
       const scopeA = container.createScope()
@@ -146,7 +145,7 @@ describe('UnitOfWork', () => {
     })
 
     it('does not share scoped transaction state between scopes', async () => {
-      container.addScoped('transactionState', () => new TransactionState<DbTransaction>())
+      container.addScoped('transactionState', () => new TransactionState<unknown>())
 
       const scopeA = container.createScope()
       const scopeB = container.createScope()
@@ -154,7 +153,7 @@ describe('UnitOfWork', () => {
       const stateA = scopeA.resolve('transactionState')
       const stateB = scopeB.resolve('transactionState')
 
-      const transactionA = {} as DbTransaction
+      const transactionA = {} as unknown
 
       stateA.state = transactionA
 
@@ -166,7 +165,7 @@ describe('UnitOfWork', () => {
     })
 
     it('does not allow resolving a scoped service from the root container', () => {
-      container.addScoped('transactionState', () => new TransactionState<DbTransaction>())
+      container.addScoped('transactionState', () => new TransactionState<unknown>())
 
       expect(() => {
         container.resolve('transactionState')

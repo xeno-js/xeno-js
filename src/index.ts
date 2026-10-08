@@ -1,7 +1,7 @@
 export { BaseAuthorizationStrategy, ContainerUtils, Specification } from './application'
 export type * from './domain'
 export type { XenoRegistry } from './infrastructure'
-export { AppBuilder, BaseHttpAdapter, ReadDao, Repository } from './infrastructure'
+export { AppBuilder, BaseHttpAdapter, DbModule, ReadDao, Repository } from './infrastructure'
 export { BaseController } from './presentation'
 export * from '@xeno-js/shared'
 export { Query } from '@xeno-js/shared'

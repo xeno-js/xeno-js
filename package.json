@@ -48,9 +48,6 @@
     "verify:commit": "npm run lint-staged && npm run test",
     "verify:push": "npm run check",
     "prepare": "husky",
-    "db:generate": "drizzle-kit generate",
-    "db:push": "drizzle-kit push",
-    "db:migrate": "drizzle-kit migrate",
     "changelog": "npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "prepublishOnly": "npm run check && npm run build",
     "release:patch": "npm version patch && npm run changelog && npm run prepublishOnly && npm publish --access public",
@@ -87,7 +84,6 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
-    "@libsql/client": "^0.14.0",
     "@sentry/node": "^11.0.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.1",
@@ -95,19 +91,13 @@
     "@xeno-js/shared": "^3.0.0",
     "axios": "^1.20.0",
     "cockatiel": "^4.0.0",
-    "drizzle-orm": "^0.45.3",
     "fastify": "^5.12.5",
     "ioredis": "^6.0.0",
     "p-limit": "^7.3.3",
-    "pg": "^8.23.0",
     "pino": "^10.3.1",
-    "postgres": "^3.4.9",
     "zod": "^4.6.5"
   },
   "peerDependenciesMeta": {
-    "@libsql/client": {
-      "optional": true
-    },
     "@sentry/node": {
       "optional": true
     },
@@ -126,9 +116,6 @@
     "cockatiel": {
       "optional": true
     },
-    "drizzle-orm": {
-      "optional": true
-    },
     "fastify": {
       "optional": true
     },
@@ -138,13 +125,7 @@
     "p-limit": {
       "optional": true
     },
-    "pg": {
-      "optional": true
-    },
     "pino": {
-      "optional": true
-    },
-    "postgres": {
       "optional": true
     },
     "zod": {
@@ -155,7 +136,6 @@
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
     "@eslint/js": "^10.0.1",
-    "@libsql/client": "^0.18.0",
     "@sentry/node": "^11.0.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.1",
@@ -181,7 +161,6 @@
     "p-limit": "^7.3.3",
     "pg": "^8.23.0",
     "pino": "^10.3.1",
-    "postgres": "^3.4.9",
     "prettier": "^3.9.9",
     "tsc-alias": "^1.9.5",
     "tsup": "^8.5.1",
