@@ -7,7 +7,7 @@ updates and patches are applied to the latest minor version.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
+| 3.x.x   | :white_check_mark: |
 | < 0.1   | :x:                |
 
 ## Reporting a Vulnerability
