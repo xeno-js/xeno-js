@@ -471,12 +471,26 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  public async build(): Promise<IServiceContainer<TRegistry>> {
-    if (Guards.isDefined(this._buildPromise)) return this._buildPromise
+  public build(): Promise<IServiceContainer<TRegistry>> {
+    if (Guards.isDefined(this._buildPromise)) {
+      return this._buildPromise
+    }
 
-    this._buildPromise = this._executeBuild()
+    const attempt = this._executeBuild()
+    this._buildPromise = attempt
 
-    return this._buildPromise
+    void attempt.then(
+      () => {
+        /* noop */
+      },
+      () => {
+        if (this._buildPromise === attempt) {
+          this._buildPromise = null
+        }
+      },
+    )
+
+    return attempt
   }
 
   /**

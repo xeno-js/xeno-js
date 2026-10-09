@@ -2,21 +2,18 @@
 
 ## Supported Versions
 
-Because **Xeno.JS** is currently in its active pre-release/early phase, security
-updates and patches are applied to the latest minor version.
-
 | Version | Supported          |
 | ------- | ------------------ |
 | 3.x.x   | :white_check_mark: |
-| < 0.1   | :x:                |
 
 ## Reporting a Vulnerability
 
 We take the security of Xeno.JS and its ecosystem (`@xeno-js/core`,
-`@xeno-js/vue`, `@xeno-js/shared`, `@xeno-js/cli`) very seriously. If you
-discover a security vulnerability (such as an issue with the Double Submit
-Cookie CSRF protection, token validation, or framework internals), please **do
-not disclose it publicly** through GitHub issues or public forums.
+`@xeno-js/vue`, `@xeno-js/shared`, `@xeno-js/cli`, `@xeno-js/fastify`,
+`@xeno-js/postgresql`) very seriously. If you discover a security vulnerability
+(such as an issue with the Double Submit Cookie CSRF protection, token
+validation, or framework internals), please **do not disclose it publicly**
+through GitHub issues or public forums.
 
 Instead, please report it privately:
 
