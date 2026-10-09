@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/xeno-js/xeno-js/compare/v3.0.3...v3.0.4) (2026-10-09)
+
+### Bug Fixes
+
+- **builder:** now you can retry build if is failed
+  ([eb551a0](https://github.com/xeno-js/xeno-js/commit/eb551a0c7f3885e19e6e66f6ed9db48426976800))
+
 ## [3.0.3](https://github.com/xeno-js/xeno-js/compare/v3.0.2...v3.0.3) (2026-10-09)
 
 ### Bug Fixes

@@ -48,9 +48,9 @@ interface QueuedModule {
    * @link https://github.com/xeno-js/xeno-js 
    */
 export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
-  protected readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
+  protected _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
   protected readonly _configuration: IConfigurationService
-  private _buildPromise: Nullable<Promise<IServiceContainer<TRegistry>>> = null
+  protected _buildPromise: Nullable<Promise<IServiceContainer<TRegistry>>> = null
 
   constructor(
     container?: IServiceContainer<TRegistry>,
@@ -483,14 +483,21 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
       () => {
         /* noop */
       },
-      () => {
+      async () => {
         if (this._buildPromise === attempt) {
           this._buildPromise = null
+          await this._resetContainer()
         }
       },
     )
 
     return attempt
+  }
+
+  protected async _resetContainer(): Promise<void> {
+    await this._container.dispose()
+    this._container = new ServiceContainer<TRegistry>()
+    this._container.addSingleton(TOKENS.CONFIGURATION_SERVICE, () => this._configuration)
   }
 
   /**
