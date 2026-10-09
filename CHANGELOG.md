@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/xeno-js/xeno-js/compare/v3.0.2...v3.0.3) (2026-10-09)
+
+### Bug Fixes
+
+- **builder:** resolved build concurrency
+  ([6509286](https://github.com/xeno-js/xeno-js/commit/650928654f428996627e9a3b09190fa368c33d6b))
+
 ## [3.0.2](https://github.com/xeno-js/xeno-js/compare/v3.0.1...v3.0.2) (2026-10-08)
 
 ### Bug Fixes
