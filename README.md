@@ -20,7 +20,7 @@
 
 ---
 
-## What is Xeno?
+## What is Xeno.JS?
 
 Xeno.JS is a TypeScript application architecture framework for Node.js.
 
@@ -42,7 +42,7 @@ independent from the transport that delivers a request.
 
 ---
 
-## Why Xeno?
+## Why Xeno.JS?
 
 ### 01 — Explicit Architecture
 

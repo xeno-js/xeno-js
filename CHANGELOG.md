@@ -1,3 +1,17 @@
+## [3.0.5](https://github.com/xeno-js/xeno-js/compare/v3.0.4...v3.0.5) (2026-10-09)
+
+### Bug Fixes
+
+- **builder:** reset container after build failed
+  ([117c6ea](https://github.com/xeno-js/xeno-js/commit/117c6eae8916cf695d042e9c1cd1ceb55fcee6fb))
+
+## [3.0.4](https://github.com/xeno-js/xeno-js/compare/v3.0.3...v3.0.4) (2026-10-09)
+
+### Bug Fixes
+
+- **builder:** now you can retry build if is failed
+  ([eb551a0](https://github.com/xeno-js/xeno-js/commit/eb551a0c7f3885e19e6e66f6ed9db48426976800))
+
 ## [3.0.3](https://github.com/xeno-js/xeno-js/compare/v3.0.2...v3.0.3) (2026-10-09)
 
 ### Bug Fixes

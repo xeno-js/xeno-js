@@ -48,9 +48,9 @@ interface QueuedModule {
    * @link https://github.com/xeno-js/xeno-js 
    */
 export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
-  protected readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
+  protected _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
   protected readonly _configuration: IConfigurationService
-  private _buildPromise: Nullable<Promise<IServiceContainer<TRegistry>>> = null
+  protected _buildPromise: Nullable<Promise<IServiceContainer<TRegistry>>> = null
 
   constructor(
     container?: IServiceContainer<TRegistry>,
@@ -471,12 +471,33 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
    * @since 2025-09-30
    * @link https://github.com/xeno-js/xeno-js
    */
-  public async build(): Promise<IServiceContainer<TRegistry>> {
-    if (Guards.isDefined(this._buildPromise)) return this._buildPromise
+  public build(): Promise<IServiceContainer<TRegistry>> {
+    if (Guards.isDefined(this._buildPromise)) {
+      return this._buildPromise
+    }
 
-    this._buildPromise = this._executeBuild()
+    const attempt = this._executeBuild()
+    this._buildPromise = attempt
 
-    return this._buildPromise
+    void attempt.then(
+      () => {
+        /* noop */
+      },
+      async () => {
+        if (this._buildPromise === attempt) {
+          this._buildPromise = null
+          await this._resetContainer()
+        }
+      },
+    )
+
+    return attempt
+  }
+
+  protected async _resetContainer(): Promise<void> {
+    await this._container.dispose()
+    this._container = new ServiceContainer<TRegistry>()
+    this._container.addSingleton(TOKENS.CONFIGURATION_SERVICE, () => this._configuration)
   }
 
   /**

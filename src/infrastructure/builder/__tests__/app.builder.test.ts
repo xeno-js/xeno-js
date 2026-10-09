@@ -282,6 +282,28 @@ describe('AppBuilder – concurrency & single-flight bootstrap', () => {
 // -- build error path -------------------------------------------------------
 
 describe('AppBuilder � build error handling', () => {
+  it('resets the build promise on failure and allows a subsequent successful retry', async () => {
+    const builder = makeBuilder()
+    let shouldFail = true
+
+    builder.addModule('FlakyModule', async () => ({
+      configure: vi.fn().mockImplementation(async () => {
+        if (shouldFail) {
+          throw new Error('temporary failure')
+        }
+      }),
+    }))
+
+    await expect(builder.build()).rejects.toThrow(
+      'Bootstrap failed at [FlakyModule]: temporary failure',
+    )
+
+    shouldFail = false
+
+    const container = await builder.build()
+    expect(container).toBeDefined()
+  })
+
   it('rejects with a descriptive Bootstrap failed error when a module throws', async () => {
     const builder = makeBuilder()
     const cause = new Error('module exploded')
