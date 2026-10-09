@@ -1,4 +1,10 @@
-import type { CacheConfig, Dictionary, IConfigurationService, SetupAction } from '@xeno-js/shared'
+import type {
+  CacheConfig,
+  Dictionary,
+  IConfigurationService,
+  Nullable,
+  SetupAction,
+} from '@xeno-js/shared'
 import { Guards, LOG_LEVEL, TOKENS } from '@xeno-js/shared'
 
 import type {
@@ -44,7 +50,7 @@ interface QueuedModule {
 export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegistry> {
   protected readonly _container: IServiceContainer<TRegistry> = new ServiceContainer<TRegistry>()
   protected readonly _configuration: IConfigurationService
-  private _isBuilded = false
+  private _buildPromise: Nullable<Promise<IServiceContainer<TRegistry>>> = null
 
   constructor(
     container?: IServiceContainer<TRegistry>,
@@ -164,7 +170,7 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
     this._isAdapterModuleQueued = true
 
     this._modules.push({
-      priority: 50,
+      priority: 3,
       name: 'AdapterModule',
       action: async () => {
         const { HttpAdapterModule } = await import('../modules/http-adapter.module')
@@ -466,8 +472,17 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
    * @link https://github.com/xeno-js/xeno-js
    */
   public async build(): Promise<IServiceContainer<TRegistry>> {
-    if (this._isBuilded) return this._container
+    if (Guards.isDefined(this._buildPromise)) return this._buildPromise
 
+    this._buildPromise = this._executeBuild()
+
+    return this._buildPromise
+  }
+
+  /**
+   * @description Executes the build process by initializing all registered modules in the container.
+   */
+  private async _executeBuild(): Promise<IServiceContainer<TRegistry>> {
     console.info('⚙️ Bootstrapping application modules...')
     const sortedModules = this._modules.sort((a, b) => a.priority - b.priority)
     for (const queued of sortedModules) {
@@ -489,7 +504,6 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
       }
     }
     console.info('✅ Application modules bootstrapped successfully.')
-    this._isBuilded = true
     return this._container
   }
 
@@ -548,6 +562,11 @@ export class AppBuilder<TRegistry extends ApplicationRegistry = ApplicationRegis
       action: async () => {
         const { MiddlewareModule } = await import('../modules/middleware.module')
         const middlewareModule = new MiddlewareModule()
+        if (!this._isAdapterModuleQueued) {
+          const { HttpAdapterModule } = await import('../modules/http-adapter.module')
+          await new HttpAdapterModule().configure(this._container, this._adapterConfig)
+        }
+
         await middlewareModule.configure(this._container, {
           ...this._middlewareConfig,
           isAuth: this._isAuthModuleQueued,

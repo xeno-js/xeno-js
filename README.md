@@ -8,6 +8,9 @@
   <p>
     <a href="https://www.npmjs.com/package/@xeno-js/core"><img src="https://img.shields.io/npm/v/@xeno-js/core?style=flat-square" alt="NPM Version" /></a>
     <a href="https://github.com/xeno-js/xeno-js"><img src="https://img.shields.io/badge/Powered%20by-Xeno-blueviolet?style=flat-square" alt="Powered by Xeno" /></a>
+    <a href="https://www.npmjs.com/package/@xeno-js/core">
+      <img src="https://img.shields.io/npm/dt/@xeno-js/core?style=flat-square" alt="NPM Total Downloads" />
+    </a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License: MIT" /></a>
     <a href="https://buymeacoffee.com/xenojs">
       <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
@@ -197,28 +200,111 @@ npm install zod pino cockatiel drizzle-orm
 
 The composition root is explicit:
 
+> For this example we are using the PostgreSql integration. If you want to use
+> it, please install the following packages:
+
+```bash
+ npm i @xeno-js/postgresql
+```
+
+> See [xeno-js/xeno-postgresql](https://github.com/xeno-js/xeno-postgresql)
+
 ```typescript
+// src/registry.ts
+import type {
+  IReadDataSource,
+  IReadDao,
+  IHandler,
+  IController,
+} from '@xeno-js/core'
+import type { XenoDbRegistry } from '@xeno-js/postgresql'
+/** We need to import the databse schema: see @link https://www.xeno-js.it/docs/data/db-schema */
+import { DbSchema } from './schema'
+
+export interface AppRegistry extends XenoDbRegistry<DbSchema> {
+  USER_DATA_SOURCE: IReadDataSource
+  USER_REPOSITORY: IReadDao
+  FIND_USER_HANDLER: IHandler<FindUserQuery, void>
+  FIND_USER_CONTROLLER: IController<FindUserDto, void>
+}
+
 // src/bootstrap.ts
-import { AppBuilder } from '@xeno-js/core'
+import { AppBuilder, TOKENS } from '@xeno-js/core'
+import { withPostgresql } from '@xeno-js/postgresql'
+import { AppRegistry } from './registry'
+import {
+  UserDataSource,
+  UserRepository,
+  FindUserHandler,
+  FindUserController,
+} from './user'
 
-const app = new AppBuilder().addServices((services) => {
-  services.addScoped('USER_REPOSITORY', (container) => {
-    return new UserRepository(container.resolve('USER_DATA_SOURCE'))
+const app = new AppBuilder<AppRegistry>()
+  .addServices((services) => {
+    services.addScoped('USER_DATA_SOURCE', (c) => {
+      return new UserDataSource(c.resolve(TOKENS.DB_CONTEXT))
+    })
+
+    services.addScoped('USER_REPOSITORY', (container) => {
+      return new UserRepository(container.resolve('USER_DATA_SOURCE'))
+    })
+
+    services.addScoped('FIND_USER_HANDLER', (container) => {
+      return new FindUserHandler(
+        container.resolve('USER_REPOSITORY'),
+        container.resolve(TOKENS.USER_CONTEXT_FACTORY),
+      )
+    })
+
+    services.addTransient('FIND_USER_CONTROLLER', (c) => {
+      return new FindUserController(
+        c.resolve(TOKENS.REQUEST_CONTEXT),
+        c.resolve(TOKENS.MEDIATOR),
+      )
+    })
   })
+  .addLogger()
+  .addPipeline()
+  .addDb(
+    withPostgresql((opts, config) => {
+      opts.connectionString = config.getOrThrow('DATABASE_URL')
+    }),
+  )
 
-  services.addScoped('FIND_USER_HANDLER', (container) => {
-    return new FindUserHandler(container.resolve('USER_REPOSITORY'))
-  })
+export const container = await app.build()
 
-  services.addTransient('FIND_USER_CONTROLLER', (c) => {
-    return new FindUserController(
-      c.resolve(TOKENS.REQUEST_CONTEXT),
-      c.resolve(TOKENS.MEDIATOR),
+// src/main.ts
+import { TOKENS } from '@xeno-js/core'
+import { container } from './bootstrap'
+
+async function Main(args: string[]) {
+  const logger = container.resolve(TOKENS.LOGGER)
+  const scope = container.createScope()
+  try {
+    const controller = scope.resolve('FIND_USER_CONTROLLER')
+    const response = await controller.handle(
+      { id: args[0] },
+      new AbortController().signal,
     )
-  })
-})
+    return {
+      success: response.ok,
+      status: response.status,
+      data: response.data,
+    }
+  } catch (err: unknown) {
+    logger.error('Error during CLI execution', err)
+    return {
+      success: false,
+      error: { message: 'Internal Server Error' },
+    }
+  } finally {
+    await scope.dispose()
+  }
+}
 
-await app.build()
+Main(process.argv.slice(2))
+  .then((res) => console.log(res))
+  .catch(console.error)
 ```
 
 The transport remains outside the application composition:
@@ -227,31 +313,101 @@ The transport remains outside the application composition:
 > **Fastify** solely for demonstration purposes to illustrate the transport
 > layer. Thanks to the framework's agnostic architecture, the underlying logic
 > (`container` and `handler`) remains unchanged regardless of the chosen HTTP
-> system (e.g., Express, Koa) or interface (CLI, gRPC).
+> system (e.g., Express, Koa) or interface (CLI, gRPC). Xeno.js offers fastify
+> adapter, if you want to try it install the following package:
+
+```bash
+# Install the package
+npm i @xeno-js/fastify
+# See the source code: https://github.com/xeno-js/xeno-fastify
+```
 
 ```typescript
-import Fastify from 'fastify'
-import { app } from './bootstrap'
+// src/bootstrap.ts
+import { FastifyXenoBuilder } from '@xeno-js/fastify'
+import { TOKENS } from '@xeno-js/core'
+import { withPostgresql } from '@xeno-js/postgresql'
+import { AppRegistry } from './registry'
+import {
+  UserDataSource,
+  UserRepository,
+  FindUserHandler,
+  FindUserController,
+} from './user'
 
-const fastify = Fastify({ logger: true })
+const app = new FastifyXenoBuilder<AppRegistry>()
+  .addServices((services) => {
+    services.addScoped('USER_DATA_SOURCE', (c) => {
+      return new UserDataSource(c.resolve(TOKENS.DB_CONTEXT))
+    })
 
-fastify.get('/users/:id', async (req, reply) => {
-  const action = async () => {
-    const controller = ContainerUtils.resolveServiceScoped(
-      'FIND_USER_CONTROLLER',
-      app,
-    )
-    return await controller.handle()
-  }
+    services.addScoped('USER_REPOSITORY', (container) => {
+      return new UserRepository(container.resolve('USER_DATA_SOURCE'))
+    })
 
-  const result = await ContainerUtils.runExecute(req, reply, app, action)
+    services.addScoped('FIND_USER_HANDLER', (container) => {
+      return new FindUserHandler(
+        container.resolve('USER_REPOSITORY'),
+        container.resolve(TOKENS.USER_CONTEXT_FACTORY),
+      )
+    })
 
-  return reply.send(result)
+    services.addTransient('FIND_USER_CONTROLLER', (c) => {
+      return new FindUserController(
+        c.resolve(TOKENS.REQUEST_CONTEXT),
+        c.resolve(TOKENS.MEDIATOR),
+      )
+    })
+  })
+  .addLogger()
+  .addPipeline()
+  .addDb(
+    withPostgresql((opts, config) => {
+      opts.connectionString = config.getOrThrow('DATABASE_URL')
+    }),
+  )
+  .addFastify((opts) => {
+    opts.logger = true
+  })
+
+await app.start((fastify, opts, container, config) => {
+  fastify.get('/user/:id', async (req, res) => {
+    const scope = container.createScope()
+    try {
+      const controller = scope.resolve('FIND_USER_CONTROLLER')
+      const response = await controller.handle(
+        req.params,
+        new AbortController().signal,
+      )
+      return res.status(response.status).send(response.data)
+    } catch (err: unknown) {
+      req.log.error(err)
+      return res.status(500).send({
+        success: false,
+        error: { message: 'Internal Server Error' },
+      })
+    } finally {
+      await scope.dispose()
+    }
+  })
+
+  opts.port = config.getNumber('PORT', 3000)
 })
 ```
 
 The HTTP adapter is responsible for HTTP. The application handler is responsible
 for the use case.
+
+---
+
+### One Application. Multiple Entry Points
+
+Build your application once and expose it through different entry points. With
+Xeno.JS, CLI commands and HTTP APIs can share the same application core, keeping
+business logic independent from the transport layer.
+
+Adding Fastify does not require rewriting your use cases. Changing how your
+application is exposed should not force changes to what your application does.
 
 ---
 

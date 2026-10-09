@@ -1,5 +1,6 @@
 export { BaseAuthorizationStrategy, ContainerUtils, Specification } from './application'
 export type * from './domain'
+export { TOKENS } from './domain'
 export type { XenoRegistry } from './infrastructure'
 export { AppBuilder, BaseHttpAdapter, DbModule, ReadDao, Repository } from './infrastructure'
 export { BaseController } from './presentation'

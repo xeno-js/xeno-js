@@ -238,6 +238,47 @@ describe('AppBuilder � resolve', () => {
   })
 })
 
+// -- Concurrency & Single-flight tests --------------------------------------
+
+describe('AppBuilder – concurrency & single-flight bootstrap', () => {
+  it('executes module actions only once when build is called concurrently', async () => {
+    const builder = makeBuilder()
+    const configureSpy = vi.fn().mockImplementation(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50))
+    })
+
+    builder.addModule('ConcurrentModule', async () => ({
+      configure: configureSpy,
+    }))
+
+    const [containerA, containerB] = await Promise.all([
+      builder.build(),
+      builder.build(),
+      builder.build(),
+    ])
+
+    expect(configureSpy).toHaveBeenCalledOnce()
+
+    expect(containerA).toBeDefined()
+    expect(containerA).toBe(containerB)
+  })
+
+  it('returns the cached promise on subsequent calls after bootstrap completes', async () => {
+    const builder = makeBuilder()
+    const configureSpy = vi.fn().mockResolvedValue(undefined)
+
+    builder.addModule('SequentialModule', async () => ({
+      configure: configureSpy,
+    }))
+
+    const firstRun = await builder.build()
+    const secondRun = await builder.build()
+
+    expect(configureSpy).toHaveBeenCalledOnce()
+    expect(firstRun).toBe(secondRun)
+  })
+})
+
 // -- build error path -------------------------------------------------------
 
 describe('AppBuilder � build error handling', () => {
