@@ -274,6 +274,7 @@ const app = new AppBuilder<AppRegistry>()
 export const container = await app.build()
 
 // src/main.ts
+import { TOKENS } from '@xeno-js/core'
 import { container } from './bootstrap'
 
 async function Main(args: string[]) {
@@ -396,6 +397,17 @@ await app.start((fastify, opts, container, config) => {
 
 The HTTP adapter is responsible for HTTP. The application handler is responsible
 for the use case.
+
+---
+
+### One Application. Multiple Entry Points
+
+Build your application once and expose it through different entry points. With
+Xeno.JS, CLI commands and HTTP APIs can share the same application core, keeping
+business logic independent from the transport layer.
+
+Adding Fastify does not require rewriting your use cases. Changing how your
+application is exposed should not force changes to what your application does.
 
 ---
 
